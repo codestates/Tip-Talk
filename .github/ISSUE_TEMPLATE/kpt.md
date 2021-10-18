@@ -1,7 +1,7 @@
 ---
 name: KPT
 about: KPT
-title: KPT
+title: "[KPT] 0주차 0요일"
 labels: ''
 assignees: ''
 

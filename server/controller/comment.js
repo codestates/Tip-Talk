@@ -25,76 +25,75 @@ let comments = [
   },
 ];
 
-export function getAll(req, res) {
-  const { postid } = req.params;
-
-  const filtered = comments.filter((comment) => comment.postId === +postid);
-
-  res.status(200).json({ status: true, data: filtered });
-}
-
 async function getOne(id) {
   return await comments.find((comment) => comment.id === +id);
 }
 
-export function upload(req, res) {
-  const { postid } = req.params;
-  const { text } = req.body;
+module.exports = {
+  getAll: (req, res) => {
+    const { postid } = req.params;
 
-  // ToDo postid로 post를 찾고 없을때 처리
-  /*
-  if (!post) {
-    return res.status(404).json({ status: false, message: '존재하지 않는 게시글입니다.' });
-  }
-  */
+    const filtered = comments.filter((comment) => comment.postId === +postid);
 
-  if (!text) {
-    return res
-      .status(400)
-      .json({ status: false, message: '댓글을 입력해주세요' });
-  }
+    res.status(200).json({ status: true, data: filtered });
+  },
+  upload: (req, res) => {
+    const { postid } = req.params;
+    const { text } = req.body;
 
-  const created = {
-    id: +Date.now(),
-    text,
-    userId: 1, // ToDo 유저 아이디로 변경
-    postId: +postid,
-    updatedAt: Date.now(),
-    createdAt: Date.now(),
-  };
+    // ToDo postid로 post를 찾고 없을때 처리
+    /*
+    if (!post) {
+      return res.status(404).json({ status: false, message: '존재하지 않는 게시글입니다.' });
+    }
+    */
 
-  comments.push(created);
+    if (!text) {
+      return res
+        .status(400)
+        .json({ status: false, message: '댓글을 입력해주세요' });
+    }
 
-  res.status(200).json({ status: true, data: created });
-}
+    const created = {
+      id: +Date.now(),
+      text,
+      userId: 1, // ToDo 유저 아이디로 변경
+      postId: +postid,
+      updatedAt: Date.now(),
+      createdAt: Date.now(),
+    };
 
-export async function update(req, res) {
-  const { commentid } = req.params;
-  const { text } = req.body;
+    comments.push(created);
 
-  // * 텍스트 입력했는지 확인
-  if (!text) {
-    return res
-      .status(400)
-      .json({ status: false, message: '댓글을 입력해주세요' });
-  }
+    res.status(200).json({ status: true, data: created });
+  },
+  update: async (req, res) => {
+    const { commentid } = req.params;
+    const { text } = req.body;
 
-  // * commentid를 이용 comment 찾기
-  const comment = await getOne(commentid);
+    // * 텍스트 입력했는지 확인
+    if (!text) {
+      return res
+        .status(400)
+        .json({ status: false, message: '댓글을 입력해주세요' });
+    }
 
-  if (!comment) {
-    return res
-      .status(404)
-      .json({ status: false, message: '존재하지 않는 댓글입니다.' });
-  }
+    // * commentid를 이용 comment 찾기
+    const comment = await getOne(commentid);
 
-  comment.text = text;
+    if (!comment) {
+      return res
+        .status(404)
+        .json({ status: false, message: '존재하지 않는 댓글입니다.' });
+    }
 
-  res.status(200).json({ status: true, data: comment });
-}
+    comment.text = text;
 
-export function deleteOne(req, res) {
-  const { commentid } = req.params;
-  comments = comments.filter((comment) => comment.id !== +commentid);
-  res.sendStatus(204);
-}
+    res.status(200).json({ status: true, data: comment });
+  },
+  deleteOne: (req, res) => {
+    const { commentid } = req.params;
+    comments = comments.filter((comment) => comment.id !== +commentid);
+    res.sendStatus(204);
+  },
+};

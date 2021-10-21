@@ -1,5 +1,5 @@
-import express from 'express';
-import * as commentController from '../controller/comment.js';
+const express = require('express');
+const commentController = require('../controller/comment');
 
 const router = express.Router();
 
@@ -15,4 +15,4 @@ router.patch('/:commentid', commentController.update);
 // ToDo 유저 미들웨어 추가
 router.delete('/:commentid', commentController.deleteOne);
 
-export default router;
+module.exports.commentRouter = router;

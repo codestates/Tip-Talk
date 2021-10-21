@@ -1,10 +1,10 @@
-import express from 'express';
-import cors from 'cors';
-import cookieParser from 'cookie-parser';
+const express = require('express');
+const cors = require('cors');
+const cookieParser = require('cookie-parser');
 
-import AuthRouter from './router/auth.js';
-import PostRouter from './router/post.js';
-import UserRouter from './router/user.js';
+const AuthRouter = require('./router/auth.js');
+const PostRouter = require('./router/post.js');
+const UserRouter = require('./router/user.js');
 
 const app = express();
 const port = 8000;

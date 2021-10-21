@@ -2,8 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components';
 
 const SliderContainer = styled.div`
-  overflow-x: hidden;
-  overflow-y: hidden;
+  overflow: hidden;
   display: flex;
   white-space: nowrap;
   will-change: transform;

@@ -35,3 +35,8 @@ export const GlobalStyle = createGlobalStyle`
     background-color: ${(props) => props.theme.bgColor};
   }
 `;
+
+export const Scroll = styled.div`
+  position: absolute;
+  top: 0;
+`;

@@ -18,7 +18,7 @@ const Logo = styled.img`
 const Button = styled.button`
   width: 120px;
   font-size: 26px;
-  color: ${(props) => props.theme.color};
+  color: ${(props) => props.theme.navColor};
   font-family: ${Samlib};
   background-color: transparent;
   border: none;

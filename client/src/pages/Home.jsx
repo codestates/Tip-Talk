@@ -1,7 +1,6 @@
 import React from 'react';
 import { useHistory } from 'react-router';
 import styled from 'styled-components';
-import Menu from '../components/Menu';
 import { Color_3, Samlib } from '../styles/common';
 
 const HomeContainer = styled.section`

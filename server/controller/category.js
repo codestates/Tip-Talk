@@ -19,7 +19,7 @@ export function add(req, res) {
   // ToDo 토큰 확인 후, 역할이 admin인지 확인하기
   /*
   if (user.role !== 0) {
-    res
+    return res
       .status(403)
       .json({ status: false, message: '권한이 없는 사용자입니다.' });
   }

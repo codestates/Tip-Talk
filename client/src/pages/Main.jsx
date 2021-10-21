@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Coin } from '../components/Coin';
+import Slider from '../components/Slider';
 import Thumbnail from '../components/Thumbnail';
 import { data } from '../dummy/post';
 import { Body, Samlib } from '../styles/common';
@@ -27,11 +28,10 @@ const Search = styled.button`
 `;
 
 const ImageUl = styled.ul`
-  display: flex;
   width: 100%;
   padding: 10px;
   overflow: hidden;
-  overflow-x: auto;
+  border: 1px solid black;
 `;
 
 const Main = () => {
@@ -45,21 +45,28 @@ const Main = () => {
       </SearchForm>
 
       <ImageUl>
-        {
-          // * 조회수가 높은
-          posts.map((post) => (
-            <Thumbnail thumbnail={post} key={post.post.id} />
-          ))
-        }
+        <h1>인기 게시물</h1>
+        <Slider>
+          {posts?.map((post) => (
+            <Thumbnail thumbnail={post} draggable key={post.post.id} />
+          ))}
+        </Slider>
       </ImageUl>
 
       <ImageUl>
-        {
-          // * 좋아요가 높은
-          posts.map((post) => (
-            <Thumbnail thumbnail={post} key={post.post.id} />
-          ))
-        }
+        <h1>좋아요를 많이 받은 게시물</h1>
+        <Slider>
+          {posts?.map((post) => (
+            <Thumbnail thumbnail={post} draggable key={post.post.id} />
+          ))}
+        </Slider>
+      </ImageUl>
+
+      <ImageUl>
+        <h1>가장 최근에 올라온 게시물</h1>
+        {posts?.map((post) => (
+          <Thumbnail thumbnail={post} draggable key={post.post.id} />
+        ))}
       </ImageUl>
     </Body>
   );

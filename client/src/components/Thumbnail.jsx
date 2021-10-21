@@ -24,23 +24,25 @@ const ImageInfo = styled.span`
 
 const ImageTitle = styled.h1`
   font-size: 18px;
-  font-weight: 600;
+  font-weight: 500;
 `;
 
 const ImageMeta = styled.span`
   margin-left: 12px;
+  font-weight: 500;
 `;
 
-const Thumbnail = () => {
+const Thumbnail = ({ thumbnail }) => {
+  const { post, user } = thumbnail;
   return (
     <Article>
-      <Image src="https://picsum.photos/240/180" alt="thumbnail" />
+      <Image src={post.images[0]} alt="thumbnail" />
       <ImageInfo>
-        <ImageTitle>제목입니다</ImageTitle>
+        <ImageTitle>{post.title}</ImageTitle>
       </ImageInfo>
       <ImageInfo align="right">
-        <ImageMeta>작성자</ImageMeta>
-        <ImageMeta>132</ImageMeta>
+        <ImageMeta>{user.nickname}</ImageMeta>
+        <ImageMeta>{post.views}</ImageMeta>
         <ImageMeta>❤️</ImageMeta>
         <ImageMeta>1</ImageMeta>
       </ImageInfo>

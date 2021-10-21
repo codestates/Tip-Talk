@@ -1,5 +1,6 @@
 import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
+import Category from '../components/Category';
 import { Coin } from '../components/Coin';
 import Slider from '../components/Slider';
 import Thumbnail from '../components/Thumbnail';
@@ -50,6 +51,7 @@ const Main = () => {
     <Body>
       <Scroll ref={scrollRef} />
       <Coin scrollRef={scrollRef} mode="up" right="40px" bottom="200px" />
+      <Category />
       <SearchForm>
         <Input />
         <Search>TipTalk!</Search>

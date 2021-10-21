@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Samlib } from '../styles/common';
+import Login from './Login';
 
 const Navbar = styled.nav`
   display: flex;
@@ -30,6 +31,11 @@ const Button = styled.button`
 `;
 
 const Menu = () => {
+  const [showLogin, setShowLogin] = useState(false);
+  const showLoginHandler = () => {
+    setShowLogin(true);
+  };
+
   return (
     <Navbar>
       <Logo
@@ -37,9 +43,10 @@ const Menu = () => {
         alt="로고"
       />
       <div>
-        <Button>로그인</Button>
+        <Button onClick={showLoginHandler}>로그인</Button>
         <Button>회원가입</Button>
       </div>
+      {showLogin ? <Login setShowLogin={setShowLogin} /> : null}
     </Navbar>
   );
 };

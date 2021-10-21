@@ -9,13 +9,15 @@ export const Color_6 = '#888';
 export const Samlib = 'SDSamliphopangche_Outline';
 
 export const lightTheme = {
-  color: Color_3,
+  color: Color_5,
+  navColor: Color_3,
   bgColor: 'white',
   navBgColor: Color_1,
 };
 
 export const darkTheme = {
   color: Color_6,
+  navColor: Color_6,
   bgColor: Color_5,
   navBgColor: '#1a1a1a',
 };

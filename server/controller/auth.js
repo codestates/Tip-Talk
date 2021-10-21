@@ -2,10 +2,6 @@ require('dotenv').config();
 const { user } = require('../models');
 const jwt = require('jsonwebtoken');
 
-// export function login(req, res) {
-//   res.status(200).send('done');
-// }
-
 module.exports = {
   login: async (req, res) => {
     try {

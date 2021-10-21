@@ -1,7 +1,9 @@
 const express = require('express');
 
+const { getPost } = require('../controller/post');
+
 const router = express.Router();
 
 router.get('/', getPost);
 
-export default router;
+module.exports.postRouter = router;

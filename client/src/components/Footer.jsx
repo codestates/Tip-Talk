@@ -4,7 +4,7 @@ import styled from 'styled-components';
 const Continer = styled.header`
   width: 100%;
   height: 200px;
-  color: ${(props) => props.theme.color};
+  color: ${(props) => props.theme.navColor};
   background-color: ${(props) => props.theme.navBgColor};
 `;
 

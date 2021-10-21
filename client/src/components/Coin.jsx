@@ -10,7 +10,7 @@ import { Color_4 } from '../styles/common';
 
 const CoinForm = styled.div`
   display: flex;
-  position: absolute;
+  position: fixed;
   color: white;
   top: ${({ position }) => (position.bottom ? 'none' : '150px')};
   bottom: ${({ position }) => (position.bottom ? position.bottom : 'none')};

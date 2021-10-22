@@ -15,7 +15,7 @@ const Logo = styled.img`
   width: 100px;
 `;
 
-const Button = styled.button`
+export const Button = styled.button`
   width: 120px;
   font-size: 26px;
   color: ${(props) => props.theme.navColor};

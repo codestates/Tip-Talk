@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
 import { Coin } from '../components/Coin';
+import KakaoMap from '../components/KakaoMap';
 import Slider from '../components/Slider';
 import Thumbnail from '../components/Thumbnail';
 import { data } from '../dummy/post';
@@ -41,43 +42,40 @@ const ImageGrid = styled.ul`
 `;
 
 const Main = () => {
-  const [posts, setPosts] = useState(data);
+  const [posts, setPosts] = useState(data); // * 모든 posts
+  const [filteredPosts, setFilteredPosts] = useState(data); // * 검색 결과에 따른 posts
   const scrollRef = useRef();
+  const inputRef = useRef();
+
+  const handleSearch = () => {
+    const { value } = inputRef.current;
+    // ToDo Axios getPosts로 필터된 posts 불러오기
+  };
 
   return (
-    <Body>
-      <Scroll ref={scrollRef} />
-      <Coin scrollRef={scrollRef} mode="up" right="40px" bottom="200px" />
-      <SearchForm>
-        <Input />
-        <Search>TipTalk!</Search>
-      </SearchForm>
+    <>
+      {posts ? (
+        <Body>
+          <Scroll ref={scrollRef} />
+          <Coin scrollRef={scrollRef} mode="up" right="40px" bottom="200px" />
+          <SearchForm>
+            <Input ref={inputRef} placeholder="검색어를 입력해주세요" />
+            <Search onClick={handleSearch}>TipTalk!</Search>
+          </SearchForm>
 
-      <Title>인기 게시물</Title>
-      <ImageUl>
-        <Slider>
-          {posts?.map((post) => (
-            <Thumbnail thumbnail={post} draggable key={post.post.id} />
-          ))}
-        </Slider>
-      </ImageUl>
+          <KakaoMap posts={filteredPosts} />
 
-      <Title>좋아요를 많이 받은 게시물</Title>
-      <ImageUl>
-        <Slider>
-          {posts?.map((post) => (
-            <Thumbnail thumbnail={post} draggable key={post.post.id} />
-          ))}
-        </Slider>
-      </ImageUl>
-
-      <Title>가장 최근에 올라온 게시물</Title>
-      <ImageGrid>
-        {posts?.map((post) => (
-          <Thumbnail thumbnail={post} draggable key={post.post.id} />
-        ))}
-      </ImageGrid>
-    </Body>
+          <Title>가장 최근에 올라온 게시물</Title>
+          <ImageGrid>
+            {posts?.map((post) => (
+              <Thumbnail thumbnail={post} draggable key={post.post.id} />
+            ))}
+          </ImageGrid>
+        </Body>
+      ) : (
+        <div>로딩중</div>
+      )}
+    </>
   );
 };
 

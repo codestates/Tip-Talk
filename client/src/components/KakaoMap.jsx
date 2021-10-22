@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { kakao } from '../App';
 
@@ -6,14 +6,29 @@ const Map = styled.div`
   width: 100%;
   height: 60vh;
   max-height: 800px;
+  border-radius: 12px;
+  margin-bottom: 50px;
 `;
 
-const KakaoMap = ({ place }) => {
+const Background = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 11;
+`;
+
+const InfoModal = styled.div``;
+
+const KakaoMap = ({ posts }) => {
   const containerRef = useRef();
+  const [current, setCurrent] = useState();
+
+  console.log(current);
 
   useEffect(() => {
-    const infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
-
     const options = {
       center: new kakao.maps.LatLng(37.566826, 126.9786567),
       level: 4,
@@ -30,45 +45,44 @@ const KakaoMap = ({ place }) => {
     const zoomControl = new kakao.maps.ZoomControl();
     map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
 
-    const ps = new kakao.maps.services.Places();
+    if (posts) {
+      let bounds = new kakao.maps.LatLngBounds();
 
-    ps.keywordSearch(place, placesSearchCB);
-
-    function placesSearchCB(data, status, pagination) {
-      if (status === kakao.maps.services.Status.OK) {
-        let bounds = new kakao.maps.LatLngBounds();
-
-        for (let i = 0; i < data.length; i++) {
-          displayMarker(data[i]);
-          bounds.extend(new kakao.maps.LatLng(data[i].y, data[i].x));
-        }
-
-        map.setBounds(bounds);
+      for (let i = 0; i < posts.length; i++) {
+        displayMarker(posts[i].post);
+        bounds.extend(
+          new kakao.maps.LatLng(posts[i].post.lng, posts[i].post.lat),
+        );
       }
+      map.setBounds(bounds);
     }
 
-    function displayMarker(place) {
+    function displayMarker(post) {
       let marker = new kakao.maps.Marker({
         map: map,
-        position: new kakao.maps.LatLng(place.y, place.x),
+        position: new kakao.maps.LatLng(post.lng, post.lat),
       });
 
       // 마커에 클릭이벤트를 등록합니다
       kakao.maps.event.addListener(marker, 'click', function () {
         // 마커를 클릭하면 장소명이 인포윈도우에 표출됩니다
-        infowindow.setContent(
-          '<div style="padding:5px;font-size:12px;">' +
-            place.place_name +
-            '</div>',
-        );
-        infowindow.open(map, marker);
+        setCurrent(post);
       });
     }
-  }, [place]);
+  }, [posts]);
+
+  const handleClose = () => {
+    setCurrent(null);
+  };
 
   return (
     <>
-      <Map ref={containerRef} id="map"></Map>
+      {current && (
+        <Background onClick={handleClose}>
+          <InfoModal />
+        </Background>
+      )}
+      <Map ref={containerRef} id="map" />
     </>
   );
 };

@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { Color_2, Color_3, Samlib } from '../styles/common';
+import { Color_3, Samlib } from '../styles/common';
 import googleButton from '../google-button.png';
 import axios from 'axios';
-import Header from './Header';
-import MenuAfterLogin from './MenuAfterLogin';
 
 export const ModalBackdrop = styled.div`
   position: fixed;

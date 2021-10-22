@@ -7,8 +7,6 @@ import Header from './components/Header';
 import Home from './pages/Home';
 import Main from './pages/Main';
 import NotFound from './pages/NotFound';
-import Login from './components/Login';
-import Menu from './components/Menu';
 import { darkTheme, GlobalStyle, lightTheme } from './styles/common';
 
 const Container = styled.div`

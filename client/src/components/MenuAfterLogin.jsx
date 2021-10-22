@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { Samlib } from '../styles/common';
-import Login from './Login';
 
 const Navbar = styled.nav`
   display: flex;

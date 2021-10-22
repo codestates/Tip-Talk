@@ -32,7 +32,6 @@ const ImageUl = styled.ul`
   width: 100%;
   padding: 10px;
   overflow: hidden;
-  border: 1px solid black;
 `;
 
 const ImageGrid = styled.ul`
@@ -40,7 +39,6 @@ const ImageGrid = styled.ul`
   grid-template-columns: 1fr 1fr 1fr;
   width: 100%;
   padding: 10px;
-  border: 1px solid black;
 `;
 
 const Main = () => {

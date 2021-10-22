@@ -7,6 +7,8 @@ export const data = [
       images: [
         'https://picsum.photos/280/240',
         'https://picsum.photos/280/240',
+        'https://picsum.photos/280/240',
+        'https://picsum.photos/280/240',
       ],
       views: 232,
       likes: 4,

@@ -18,7 +18,7 @@ export const lightTheme = {
 
 export const darkTheme = {
   color: Color_6,
-  navColor: '#777',
+  navColor: '#3a3a3a',
   bgColor: Color_5,
   navBgColor: Color_7,
 };
@@ -44,5 +44,5 @@ export const Scroll = styled.div`
 
 export const Title = styled.h1`
   font-size: 26px;
-  padding: 5px;
+  color: ${(props) => props.theme.color};
 `;

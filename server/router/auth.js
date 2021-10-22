@@ -1,13 +1,12 @@
 const express = require('express');
 
-const { login, signup, signout, deleteUser } = require('../controller/auth.js');
-
+const authController = require('../controller/auth.js');
 
 const router = express.Router();
 
-router.post('/', login);
-router.post('/', signup);
-router.post('/', signout);
-router.delete('/', deleteUser);
+router.post('/login', authController.login);
+router.post('/signup', authController.signup);
+router.post('/signout', authController.signout);
+router.delete('/deleteUser', authController.deleteUser);
 
 module.exports.authRouter = router;

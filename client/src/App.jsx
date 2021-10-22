@@ -18,8 +18,11 @@ const Container = styled.div`
   flex-direction: column;
 `;
 
+export const { kakao } = window;
+
 function App() {
   const [darkMode, setDarkMode] = useState(localStorage.getItem('darkmode'));
+
   return (
     <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
       <GlobalStyle />

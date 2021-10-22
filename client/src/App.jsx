@@ -7,6 +7,7 @@ import Header from './components/Header';
 import Home from './pages/Home';
 import Main from './pages/Main';
 import NotFound from './pages/NotFound';
+import Post from './pages/Post';
 import { darkTheme, GlobalStyle, lightTheme } from './styles/common';
 
 const Container = styled.div`
@@ -37,6 +38,10 @@ function App() {
             </Route>
             <Route path="/main">
               <Main />
+              <Coin mode="reply" />
+            </Route>
+            <Route path="/post/:postId">
+              <Post />
               <Coin mode="reply" />
             </Route>
             <Route>

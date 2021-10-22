@@ -1,4 +1,5 @@
 import React from 'react';
+import { useHistory } from 'react-router';
 import styled from 'styled-components';
 
 const Article = styled.li`
@@ -7,6 +8,9 @@ const Article = styled.li`
   height: 280px;
   margin: 6px;
   flex-direction: column;
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 const Image = styled.img`
@@ -34,8 +38,14 @@ const ImageMeta = styled.span`
 
 const Thumbnail = ({ thumbnail }) => {
   const { post, user } = thumbnail;
+  const history = useHistory();
+
+  const goToPost = () => {
+    history.push(`/post/${post.id}`);
+  };
+
   return (
-    <Article>
+    <Article onClick={goToPost}>
       <Image src={post.images[0]} alt="thumbnail" />
       <ImageInfo>
         <ImageTitle>{post.title}</ImageTitle>

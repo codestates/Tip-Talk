@@ -7,7 +7,7 @@ import { Button } from './Menu';
 const CategoryContainer = styled.nav`
   position: fixed;
   top: 320px;
-  left: 50px;
+  left: 20px;
   width: 170px;
   font-family: ${Samlib};
   font-size: 30px;

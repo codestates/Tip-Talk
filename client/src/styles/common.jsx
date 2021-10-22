@@ -41,3 +41,8 @@ export const Scroll = styled.div`
   position: absolute;
   top: 0;
 `;
+
+export const Title = styled.h1`
+  font-size: 26px;
+  padding: 5px;
+`;

@@ -5,7 +5,7 @@ import { Coin } from '../components/Coin';
 import Slider from '../components/Slider';
 import Thumbnail from '../components/Thumbnail';
 import { data } from '../dummy/post';
-import { Body, Samlib, Scroll } from '../styles/common';
+import { Body, Samlib, Scroll, Title } from '../styles/common';
 
 const SearchForm = styled.div`
   display: flex;
@@ -26,11 +26,6 @@ const Search = styled.button`
   height: 100%;
   font-family: ${Samlib};
   font-size: 28px;
-`;
-
-const Title = styled.h1`
-  font-size: 26px;
-  padding: 5px;
 `;
 
 const ImageUl = styled.ul`

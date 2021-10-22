@@ -7,26 +7,29 @@ import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 
 const CarouselContainer = styled.div`
+  position: relative;
+  width: 100%;
   border-radius: 8px;
   overflow: hidden;
-  position: relative;
 `;
 
 const Slide = styled.div`
   display: flex;
+  width: 100%;
+  height: 600px;
   white-space: nowrap;
   will-change: transform;
   user-select: none;
 `;
 
 const Image = styled.img`
-  width: 400px;
-  object-fit: contain;
+  width: 100%;
+  height: 600px;
 `;
 
 const Button = styled.button`
   position: absolute;
-  top: 190px;
+  bottom: 20px;
   right: ${({ right }) => right};
   width: 30px;
   height: 30px;
@@ -66,10 +69,10 @@ const Carousel = ({ images }) => {
   return (
     <CarouselContainer>
       <Button onClick={handlePrevScroll}>
-        <FontAwesomeIcon icon={faChevronLeft} />
+        <FontAwesomeIcon size="2x" icon={faChevronLeft} />
       </Button>
       <Button onClick={handleNextScroll} right="0">
-        <FontAwesomeIcon icon={faChevronRight} />
+        <FontAwesomeIcon size="2x" icon={faChevronRight} />
       </Button>
       <Slide ref={scrollRef}>
         {images?.map((image, i) => (

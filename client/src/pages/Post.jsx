@@ -8,16 +8,17 @@ import Carousel from '../components/Carousel';
 
 const PostContainer = styled.article`
   display: flex;
-  width: 100%;
+  flex-direction: column;
   min-height: 600px;
-  margin: 40px 0;
+  margin: 40px 100px;
+  padding: 50px 80px;
   border-radius: 8px;
   background-color: ${({ theme }) => theme.navColor};
 `;
 
-const Left = styled.div`
-  width: 40%;
-  padding: 16px;
+const Meta = styled.div`
+  padding: 0 60px;
+  margin-bottom: 20px;
 `;
 
 const Label = styled.div`
@@ -31,15 +32,7 @@ const Text = styled.div`
   font-size: 24px;
   font-weight: 500;
   text-align: end;
-`;
-
-const Meta = styled.div`
-  margin: 10px 0;
-`;
-
-const Right = styled.div`
-  width: 60%;
-  padding: 16px;
+  margin-bottom: 10px;
 `;
 
 const Post = () => {
@@ -54,17 +47,15 @@ const Post = () => {
   return (
     <Body>
       <PostContainer>
-        <Left>
-          <Title>{post?.post.title}</Title>
-          <Meta>
-            <Label>카테고리</Label>
-            <Text>여행지</Text> {/* // ToDo 동적 데이터로 변경 */}
-            <Label>조회수</Label>
-            <Text>{post?.post.views}</Text>
-          </Meta>
-          <Carousel images={post?.post.images} />
-        </Left>
-        <Right></Right>
+        <Meta>
+          <Label>제목</Label>
+          <Text>{post?.post.title}</Text>
+          <Label>카테고리</Label>
+          <Text>여행지</Text> {/* // ToDo 동적 데이터로 변경 */}
+          <Label>조회수</Label>
+          <Text>{post?.post.views}</Text>
+        </Meta>
+        <Carousel images={post?.post.images} />
       </PostContainer>
     </Body>
   );

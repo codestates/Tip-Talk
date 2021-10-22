@@ -8,6 +8,7 @@ import Home from './pages/Home';
 import Main from './pages/Main';
 import NotFound from './pages/NotFound';
 import Post from './pages/Post';
+import UploadPost from './pages/UploadPost';
 import { darkTheme, GlobalStyle, lightTheme } from './styles/common';
 
 const Container = styled.div`
@@ -43,6 +44,9 @@ function App() {
             <Route path="/post/:postId">
               <Post />
               <Coin mode="reply" />
+            </Route>
+            <Route path="/upload">
+              <UploadPost />
             </Route>
             <Route>
               <NotFound />

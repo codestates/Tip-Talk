@@ -106,7 +106,7 @@ const Home = () => {
             </svg>
           </SvgDiv>
           <PreView>
-            <P>여러분의 사소한 고민들,</P>
+            <P>여행을 떠나고 싶으신가요?</P>
             <P>TipTalk이 해결해 드리겠습니다!</P>
             <Button onClick={goToMain}>시작하기</Button>
           </PreView>

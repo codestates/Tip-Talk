@@ -1,3 +1,5 @@
-export function getPost(req, res) {
-  res.status(200).send('done');
-}
+module.exports = {
+  getPost(req, res) {
+    res.status(200).send('done');
+  },
+};

@@ -10,7 +10,7 @@ import { Color_4 } from '../styles/common';
 
 const CoinForm = styled.div`
   display: flex;
-  position: absolute;
+  position: fixed;
   color: white;
   top: ${({ position }) => (position.bottom ? 'none' : '150px')};
   bottom: ${({ position }) => (position.bottom ? position.bottom : 'none')};
@@ -28,7 +28,21 @@ const CoinForm = styled.div`
   }
 `;
 
-export const Coin = ({ mode, darkMode, setDarkMode, ...position }) => {
+export const Coin = ({
+  mode,
+  darkMode,
+  setDarkMode,
+  scrollRef,
+  ...position
+}) => {
+  const scrollToTop = () => {
+    scrollRef.current.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start',
+      inline: 'nearest',
+    });
+  };
+
   const getStyle = () => {
     switch (mode) {
       case 'reply':
@@ -47,9 +61,9 @@ export const Coin = ({ mode, darkMode, setDarkMode, ...position }) => {
       case 'reply':
         break;
       case 'up':
+        scrollToTop();
         break;
       case 'light':
-        console.log('ddd');
         if (darkMode) {
           localStorage.removeItem('darkmode');
         } else {

@@ -1,10 +1,12 @@
-import express from 'express';
-import cors from 'cors';
-import cookieParser from 'cookie-parser';
+const express = require('express');
+const cors = require('cors');
+const cookieParser = require('cookie-parser');
 
-import AuthRouter from './router/auth.js';
-import PostRouter from './router/post.js';
-import UserRouter from './router/user.js';
+const { authRouter } = require('./router/auth');
+const { postRouter } = require('./router/post');
+const { userRouter } = require('./router/user');
+const { commentRouter } = require('./router/comment');
+const { categoryRouter } = require('./router/category');
 
 const app = express();
 const port = 8000;
@@ -14,9 +16,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-app.use('/auth', AuthRouter);
-app.use('/post', PostRouter);
-app.use('/user', UserRouter);
+app.use('/auth', authRouter);
+app.use('/post', postRouter);
+app.use('/user', userRouter);
+app.use('/comment', commentRouter);
+app.use('/category', categoryRouter);
 
 app.listen(port, () => {
   console.log(`the server is running http://localhost:${port}`);

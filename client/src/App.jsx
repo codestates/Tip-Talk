@@ -7,6 +7,8 @@ import Header from './components/Header';
 import Home from './pages/Home';
 import Main from './pages/Main';
 import NotFound from './pages/NotFound';
+import Login from './components/Login';
+import Menu from './components/Menu';
 import { darkTheme, GlobalStyle, lightTheme } from './styles/common';
 
 const Container = styled.div`
@@ -18,35 +20,45 @@ const Container = styled.div`
 
 function App() {
   const [darkMode, setDarkMode] = useState(localStorage.getItem('darkmode'));
+  const [isLogin, setIsLogin] = useState(false);
+  const [showLogin, setShowLogin] = useState(false);
+
   return (
-    <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
-      <GlobalStyle />
-      <Coin
-        mode="light"
-        darkMode={darkMode}
-        setDarkMode={setDarkMode}
-        right="40px"
-        bottom="150px"
-      />
-      <Router>
-        <Container>
-          <Header />
-          <Switch>
-            <Route exact path="/">
-              <Home />
-            </Route>
-            <Route path="/main">
-              <Main />
-              <Coin mode="reply" />
-            </Route>
-            <Route>
-              <NotFound />
-            </Route>
-          </Switch>
-          <Footer />
-        </Container>
-      </Router>
-    </ThemeProvider>
+    <>
+      <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
+        <GlobalStyle />
+        <Coin
+          mode="light"
+          darkMode={darkMode}
+          setDarkMode={setDarkMode}
+          right="40px"
+          bottom="150px"
+        />
+        <Router>
+          <Container>
+            <Header
+              showLogin={showLogin}
+              setShowLogin={setShowLogin}
+              isLogin={isLogin}
+              setIsLogin={setIsLogin}
+            />
+            <Switch>
+              <Route exact path="/">
+                <Home />
+              </Route>
+              <Route path="/main">
+                <Main />
+                <Coin mode="reply" />
+              </Route>
+              <Route>
+                <NotFound />
+              </Route>
+            </Switch>
+            <Footer />
+          </Container>
+        </Router>
+      </ThemeProvider>
+    </>
   );
 }
 

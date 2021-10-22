@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Color_2, Color_3, Samlib } from '../styles/common';
 import googleButton from '../google-button.png';
+import axios from 'axios';
+import Header from './Header';
+import MenuAfterLogin from './MenuAfterLogin';
 
 export const ModalBackdrop = styled.div`
   position: fixed;
@@ -108,18 +111,19 @@ export const BottomContainer = styled.div`
 export const ErrorMessage = styled.div`
   color: red;
   font-family: ${Samlib};
+  border: black;
 `;
 
 export const IdError = styled(ErrorMessage)`
-  position: absolute;
-  top: 25em;
-  left: 26em;
+  position: relative;
+  top: 0.5em;
+  left: -4em;
 `;
 
 export const PasswordError = styled(ErrorMessage)`
-  position: absolute;
-  top: 30em;
-  left: 26em;
+  position: relative;
+  top: 0.5em;
+  left: -1.3em;
 `;
 
 export const GoogleButton = styled.img`
@@ -161,23 +165,42 @@ const oauthSignIn = () => {
   form.submit();
 };
 
-const Login = ({ setShowLogin }) => {
-  const [email, setEmail] = useState();
+const Login = ({ setShowLogin, setIsLogin }) => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   const closeLoginModal = () => {
     setShowLogin(false);
   };
 
-  const onChange = (e) => {
+  const emailHandler = (e) => {
     setEmail(e.target.value);
+  };
+
+  const passwordHandler = (e) => {
+    setPassword(e.target.value);
   };
 
   const emailValidation = () => {
     const regex = /^[a-zA-Z0-9]+@(?:[a-zA-Z0-9]+\.)+[A-Za-z]+$/;
-    if (email === null || regex.test(email) === false) {
+    if (email.length === 0) {
+      return true;
+    }
+    if (regex.test(email) === false) {
       return false;
     }
     return true;
+  };
+
+  const loginHandler = () => {
+    console.log('test = ', { email, password });
+    // axios
+    //   .post('http://localhost:8000/auth/login', userInfo)
+    //   .then((res) => console.log('res = ' + res));
+  };
+
+  const isLoginHandler = () => {
+    setIsLogin(true);
   };
 
   return (
@@ -194,8 +217,11 @@ const Login = ({ setShowLogin }) => {
                 id="id"
                 name="id"
                 placeholder="email"
-                onChange={onChange}
+                onChange={emailHandler}
               />
+              {emailValidation() === false ? (
+                <IdError>이메일 형식을 입력해주세요</IdError>
+              ) : null}
             </div>
             <div className="password-line">
               <input
@@ -203,11 +229,21 @@ const Login = ({ setShowLogin }) => {
                 id="password"
                 name="password"
                 placeholder="password"
+                onChange={passwordHandler}
               />
+              <PasswordError>
+                이메일이나 비밀번호가 올바르지 않습니다
+              </PasswordError>
             </div>
           </InputSection>
           <LoginButtonContainer>
-            <button className="loginButton">로그인</button>
+            <button
+              className="loginButton"
+              // onClick={loginHandler}
+              onClick={isLoginHandler}
+            >
+              로그인
+            </button>
           </LoginButtonContainer>
           <BottomContainer>
             <div className="bottomSection">
@@ -219,11 +255,6 @@ const Login = ({ setShowLogin }) => {
               <button className="signupButton">회원가입</button>
             </div>
           </BottomContainer>
-          {emailValidation() === false ? (
-            <IdError>이메일 형식을 입력해주세요</IdError>
-          ) : null}
-
-          <PasswordError>이메일이나 비밀번호가 올바르지 않습니다</PasswordError>
         </ModalView>
       </ModalBackdrop>
     </>

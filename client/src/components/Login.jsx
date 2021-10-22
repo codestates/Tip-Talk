@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Color_2, Color_3, Samlib } from '../styles/common';
 import googleButton from '../google-button.png';
@@ -26,7 +26,7 @@ export const ModalView = styled.div`
     margin-top: 5px;
     cursor: pointer;
     position: relative;
-    left: 26em;
+    left: 17.5em;
     border: none;
     background-color: ${Color_3};
     font-size: 16px;
@@ -35,7 +35,7 @@ export const ModalView = styled.div`
     }
     transition-duration: 0.3s;
     font-family: ${Samlib};
-    font-size: 1.3em;
+    font-size: 2em;
 `;
 
 export const InputSection = styled.div`
@@ -105,6 +105,23 @@ export const BottomContainer = styled.div`
   }
 `;
 
+export const ErrorMessage = styled.div`
+  color: red;
+  font-family: ${Samlib};
+`;
+
+export const IdError = styled(ErrorMessage)`
+  position: absolute;
+  top: 25em;
+  left: 26em;
+`;
+
+export const PasswordError = styled(ErrorMessage)`
+  position: absolute;
+  top: 30em;
+  left: 26em;
+`;
+
 export const GoogleButton = styled.img`
   width: 15em;
   cursor: pointer;
@@ -145,19 +162,40 @@ const oauthSignIn = () => {
 };
 
 const Login = ({ setShowLogin }) => {
+  const [email, setEmail] = useState();
+
   const closeLoginModal = () => {
     setShowLogin(false);
   };
+
+  const onChange = (e) => {
+    setEmail(e.target.value);
+  };
+
+  const emailValidation = () => {
+    const regex = /^[a-zA-Z0-9]+@(?:[a-zA-Z0-9]+\.)+[A-Za-z]+$/;
+    if (email === null || regex.test(email) === false) {
+      return false;
+    }
+    return true;
+  };
+
   return (
     <>
       <ModalBackdrop onClick={closeLoginModal}>
         <ModalView onClick={(e) => e.stopPropagation()}>
           <button onClick={closeLoginModal} className="close-btn">
-            닫기
+            &times;
           </button>
           <InputSection>
             <div className="id-line">
-              <input type="text" id="id" name="id" placeholder="email" />
+              <input
+                type="text"
+                id="id"
+                name="id"
+                placeholder="email"
+                onChange={onChange}
+              />
             </div>
             <div className="password-line">
               <input
@@ -181,6 +219,11 @@ const Login = ({ setShowLogin }) => {
               <button className="signupButton">회원가입</button>
             </div>
           </BottomContainer>
+          {emailValidation() === false ? (
+            <IdError>이메일 형식을 입력해주세요</IdError>
+          ) : null}
+
+          <PasswordError>이메일이나 비밀번호가 올바르지 않습니다</PasswordError>
         </ModalView>
       </ModalBackdrop>
     </>

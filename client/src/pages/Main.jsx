@@ -28,6 +28,11 @@ const Search = styled.button`
   font-size: 28px;
 `;
 
+const Title = styled.h1`
+  font-size: 26px;
+  padding: 5px;
+`;
+
 const ImageUl = styled.ul`
   width: 100%;
   padding: 10px;
@@ -57,7 +62,7 @@ const Main = () => {
         <Search>TipTalk!</Search>
       </SearchForm>
 
-      <h1>인기 게시물</h1>
+      <Title>인기 게시물</Title>
       <ImageUl>
         <Slider>
           {posts?.map((post) => (
@@ -66,7 +71,7 @@ const Main = () => {
         </Slider>
       </ImageUl>
 
-      <h1>좋아요를 많이 받은 게시물</h1>
+      <Title>좋아요를 많이 받은 게시물</Title>
       <ImageUl>
         <Slider>
           {posts?.map((post) => (
@@ -75,7 +80,7 @@ const Main = () => {
         </Slider>
       </ImageUl>
 
-      <h1>가장 최근에 올라온 게시물</h1>
+      <Title>가장 최근에 올라온 게시물</Title>
       <ImageGrid>
         {posts?.map((post) => (
           <Thumbnail thumbnail={post} draggable key={post.post.id} />

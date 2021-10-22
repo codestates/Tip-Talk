@@ -22,7 +22,7 @@ const CategoryList = styled.ul`
   text-align: center;
   transition: 0.25s;
   &:hover {
-    height: 100%;
+    height: ${({ length }) => length * 42}px;
   }
 `;
 
@@ -41,7 +41,7 @@ const Category = () => {
 
   return (
     <CategoryContainer>
-      <CategoryList>
+      <CategoryList length={categories?.length + 1}>
         <NavTitle>카테고리</NavTitle>
         {categories?.map((category) => (
           <Column key={category.id}>

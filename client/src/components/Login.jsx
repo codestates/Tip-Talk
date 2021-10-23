@@ -14,29 +14,29 @@ export const ModalBackdrop = styled.div`
   background-color: rgba(0, 0, 0, 0.4);
   display: grid;
   place-items: center;
-`;
 
-export const ModalView = styled.div`
-  border-radius: 10px;
-  background-color: #ffffff;
-  width: 600px;
-  height: 600px;
-
-  .close-btn {
+  .ModalView {
     border-radius: 10px;
-    margin-top: 5px;
-    cursor: pointer;
-    position: relative;
-    left: 17.5em;
-    border: none;
-    background-color: ${Color_3};
-    font-size: 16px;
-    :hover {
-      box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+    background-color: #ffffff;
+    width: 600px;
+    height: 600px;
+  
+    .close-btn {
+      border-radius: 10px;
+      margin-top: 5px;
+      cursor: pointer;
+      position: relative;
+      left: 17.5em;
+      border: none;
+      background-color: ${Color_3};
+      font-size: 16px;
+      :hover {
+        box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+      }
+      transition-duration: 0.3s;
+      font-family: ${Samlib};
+      font-size: 2em;
     }
-    transition-duration: 0.3s;
-    font-family: ${Samlib};
-    font-size: 2em;
 `;
 
 export const InputSection = styled.div`
@@ -166,9 +166,15 @@ const oauthSignIn = () => {
 const Login = ({ setShowLogin, setIsLogin }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [checkUser, setCheckUser] = useState(null);
+  const [showSignup, setShowSignup] = useState(false);
 
   const closeLoginModal = () => {
     setShowLogin(false);
+  };
+
+  const closeSignupModal = () => {
+    setShowSignup(false);
   };
 
   const emailHandler = (e) => {
@@ -191,20 +197,24 @@ const Login = ({ setShowLogin, setIsLogin }) => {
   };
 
   const loginHandler = () => {
-    console.log('test = ', { email, password });
-    // axios
-    //   .post('http://localhost:8000/auth/login', userInfo)
-    //   .then((res) => console.log('res = ' + res));
+    axios
+      .post('http://localhost:8000/auth/login', {
+        email,
+        password,
+      })
+      .then((res) => setCheckUser(true))
+      .then(() => setIsLogin(true))
+      .catch((err) => setCheckUser(err.response.data.status));
   };
 
-  const isLoginHandler = () => {
-    setIsLogin(true);
+  const signupHandler = () => {
+    setShowSignup(true);
   };
 
   return (
     <>
       <ModalBackdrop onClick={closeLoginModal}>
-        <ModalView onClick={(e) => e.stopPropagation()}>
+        <div className="ModalView" onClick={(e) => e.stopPropagation()}>
           <button onClick={closeLoginModal} className="close-btn">
             &times;
           </button>
@@ -229,17 +239,15 @@ const Login = ({ setShowLogin, setIsLogin }) => {
                 placeholder="password"
                 onChange={passwordHandler}
               />
-              <PasswordError>
-                이메일이나 비밀번호가 올바르지 않습니다
-              </PasswordError>
+              {checkUser === true || checkUser === null ? null : (
+                <PasswordError>
+                  이메일이나 비밀번호가 올바르지 않습니다
+                </PasswordError>
+              )}
             </div>
           </InputSection>
           <LoginButtonContainer>
-            <button
-              className="loginButton"
-              // onClick={loginHandler}
-              onClick={isLoginHandler}
-            >
+            <button className="loginButton" onClick={loginHandler}>
               로그인
             </button>
           </LoginButtonContainer>
@@ -250,10 +258,12 @@ const Login = ({ setShowLogin, setIsLogin }) => {
                 alt="google-button"
                 onClick={oauthSignIn}
               ></GoogleButton>
-              <button className="signupButton">회원가입</button>
+              <button className="signupButton" onClick={signupHandler}>
+                회원가입
+              </button>
             </div>
           </BottomContainer>
-        </ModalView>
+        </div>
       </ModalBackdrop>
     </>
   );

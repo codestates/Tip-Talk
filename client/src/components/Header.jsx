@@ -11,7 +11,6 @@ const HeaderContainer = styled.header`
 `;
 
 const Header = ({ showLogin, setShowLogin, isLogin, setIsLogin }) => {
-  console.log('isLogin = ' + isLogin);
   return (
     <>
       {isLogin === false ? (

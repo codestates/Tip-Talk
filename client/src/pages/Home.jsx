@@ -50,13 +50,13 @@ const P = styled.p`
 `;
 
 const PreView = styled.article`
-  width: 400px;
+  width: 450px;
   margin-right: 50px;
 `;
 
 const Button = styled.button`
   width: 160px;
-  height: 42px;
+  height: 50px;
   margin-top: 20px;
   font-family: ${Samlib};
   font-size: 2rem;
@@ -66,11 +66,16 @@ const Button = styled.button`
     rgba(213, 164, 25, 1) 0%,
     rgba(213, 201, 25, 1) 100%
   );
-  box-shadow: 0px 0px 3px 0px rgba(255, 255, 255, 0.75);
-  -webkit-box-shadow: 0px 0px 3px 0px rgba(255, 255, 255, 0.75);
+  box-shadow: 0px 0px 3px 0px rgba(255, 255, 255, 0.45);
+  -webkit-box-shadow: 0px 0px 3px 0px rgba(255, 255, 255, 0.45);
   border: none;
   border-radius: 6px;
   float: right;
+  transition: 0.25s;
+  &:hover {
+    box-shadow: 0px 0px 10px 0px rgba(255, 255, 255, 0.75);
+    -webkit-box-shadow: 0px 0px 10px 0px rgba(255, 255, 255, 0.75);
+  }
 `;
 
 const MainImage = styled.img`
@@ -106,7 +111,8 @@ const Home = () => {
             </svg>
           </SvgDiv>
           <PreView>
-            <P>여행을 떠나고 싶으신가요?</P>
+            <P>여행지는 많지만,</P>
+            <P>마땅한 여행지를 찾기 어려우셨죠?</P>
             <P>TipTalk이 해결해 드리겠습니다!</P>
             <Button onClick={goToMain}>시작하기</Button>
           </PreView>

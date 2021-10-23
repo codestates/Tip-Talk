@@ -2,7 +2,6 @@ import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
 import { Coin } from '../components/Coin';
 import KakaoMap from '../components/KakaoMap';
-import Slider from '../components/Slider';
 import Thumbnail from '../components/Thumbnail';
 import { data } from '../dummy/post';
 import { Body, Samlib, Scroll, Title } from '../styles/common';
@@ -48,33 +47,34 @@ const Main = () => {
   const inputRef = useRef();
 
   const handleSearch = () => {
-    const { value } = inputRef.current;
+    // const { value } = inputRef.current;
     // ToDo Axios getPosts로 필터된 posts 불러오기
+    // setFilteredPosts();
   };
 
   return (
     <>
-      {posts ? (
-        <Body>
-          <Scroll ref={scrollRef} />
-          <Coin scrollRef={scrollRef} mode="up" right="40px" bottom="200px" />
-          <SearchForm>
-            <Input ref={inputRef} placeholder="검색어를 입력해주세요" />
-            <Search onClick={handleSearch}>TipTalk!</Search>
-          </SearchForm>
+      <Body>
+        <Scroll ref={scrollRef} />
+        <Coin scrollRef={scrollRef} mode="up" right="40px" bottom="200px" />
+        <SearchForm>
+          <Input ref={inputRef} placeholder="검색어를 입력해주세요" />
+          <Search onClick={handleSearch}>TipTalk!</Search>
+        </SearchForm>
 
-          <KakaoMap posts={filteredPosts} />
+        <KakaoMap posts={filteredPosts} />
 
-          <Title>가장 최근에 올라온 게시물</Title>
-          <ImageGrid>
-            {posts?.map((post) => (
+        <Title>가장 최근에 올라온 게시물</Title>
+        <ImageGrid>
+          {posts ? (
+            posts.map((post) => (
               <Thumbnail thumbnail={post} draggable key={post.post.id} />
-            ))}
-          </ImageGrid>
-        </Body>
-      ) : (
-        <div>로딩중</div>
-      )}
+            ))
+          ) : (
+            <div>로딩 페이지</div>
+          )}
+        </ImageGrid>
+      </Body>
     </>
   );
 };

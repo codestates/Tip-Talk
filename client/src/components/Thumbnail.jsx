@@ -4,9 +4,7 @@ import styled from 'styled-components';
 
 const Article = styled.li`
   display: flex;
-  width: 280px;
-  height: 280px;
-  margin: 6px;
+  margin: 10px;
   flex-direction: column;
   &:hover {
     cursor: pointer;
@@ -14,19 +12,21 @@ const Article = styled.li`
 `;
 
 const Image = styled.img`
-  height: 260px;
+  width: 100%;
+  height: 100%;
   border-radius: 10px;
   overflow: hidden;
 `;
 
 const ImageInfo = styled.span`
-  height: 24px;
+  height: 28px;
   padding: 3px 7px 0;
   overflow: hidden;
   text-align: ${({ align }) => (align ? align : 'left')};
 `;
 
 const ImageTitle = styled.h1`
+  margin-top: 5px;
   font-size: 18px;
   font-weight: 500;
 `;

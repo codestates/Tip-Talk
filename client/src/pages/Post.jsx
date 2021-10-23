@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
-import { Body, Title } from '../styles/common';
+import { Body } from '../styles/common';
 import { useParams } from 'react-router';
 import { data } from '../dummy/post';
 import Carousel from '../components/Carousel';

@@ -1,4 +1,5 @@
 import React, { useRef, useState } from 'react';
+import { useLocation } from 'react-router';
 import styled from 'styled-components';
 import KakaoMap from '../components/KakaoMap';
 import { Body } from '../styles/common';
@@ -15,21 +16,15 @@ const UploadContainer = styled.article`
 `;
 
 const UploadPost = () => {
-  const searchRef = useRef();
-  const [place, setPlace] = useState();
+  const [address, setAddress] = useState({ ...useLocation().state });
 
+  console.log(address);
   const handleSubmit = () => {
-    const { value } = searchRef.current;
-    setPlace(value);
     // searchRef.current.value = '';
   };
   return (
     <Body>
-      <UploadContainer>
-        <input ref={searchRef} placeholder="장소 검색하기" />
-        <button onClick={handleSubmit}>검색</button>
-        <KakaoMap place={place} />
-      </UploadContainer>
+      <UploadContainer></UploadContainer>
     </Body>
   );
 };

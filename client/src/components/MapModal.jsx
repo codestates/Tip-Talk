@@ -1,17 +1,20 @@
+import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 import { useHistory } from 'react-router';
 import styled from 'styled-components';
-import { Color_3, Samlib } from '../styles/common';
+import { Color_1, Color_3, Samlib } from '../styles/common';
 
-const Background = styled.div`
+export const ModalBackground = styled.div`
   display: flex;
   flex-direction: column;
   position: absolute;
   left: -300px;
-  top: 0;
+  top: 70px;
   width: 300px;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(0, 0, 0, 0.6);
+  border-radius: 6px;
   transition: 0.25s;
   align-items: center;
   z-index: 11;
@@ -19,6 +22,7 @@ const Background = styled.div`
 
 const Thumbnail = styled.img`
   width: 100%;
+  border-radius: 6px;
 `;
 
 const Info = styled.div`
@@ -30,13 +34,18 @@ const Info = styled.div`
 const Close = styled.button`
   position: absolute;
   top: 0px;
-  left: 275px;
-  font-size: 20px;
-  font-style: ${Samlib};
-  font-weight: bold;
-  color: ${Color_3};
+  right: -38px;
+  width: 38px;
+  height: 46px;
+  text-align: center;
+  color: ${Color_1};
   border: none;
-  background-color: transparent;
+  border-radius: 4px;
+  background-color: rgba(255, 255, 255, 0.8);
+  &:hover {
+    background-color: ${Color_1};
+    color: rgba(255, 255, 255, 0.8);
+  }
 `;
 
 const Label = styled.div`
@@ -73,8 +82,11 @@ const MapModal = ({ data, backgroundRef, handleClose }) => {
     history.push(`/post/${post.id}`);
   };
   return (
-    <Background ref={backgroundRef}>
-      <Close onClick={handleClose}>x</Close>
+    <ModalBackground ref={backgroundRef}>
+      <Close onClick={handleClose}>
+        <FontAwesomeIcon size="2x" icon={faChevronLeft} />
+      </Close>
+
       <Thumbnail src={post.images[0]} alt={post.title} />
       <Info>
         <Label>제목</Label>
@@ -87,7 +99,7 @@ const MapModal = ({ data, backgroundRef, handleClose }) => {
         <Text>{user.nickname}</Text>
       </Info>
       <Button onClick={goToPost}>게시글 보기</Button>
-    </Background>
+    </ModalBackground>
   );
 };
 

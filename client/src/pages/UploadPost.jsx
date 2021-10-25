@@ -18,7 +18,11 @@ const UploadContainer = styled.article`
 const UploadPost = () => {
   const [address, setAddress] = useState({ ...useLocation().state });
 
-  console.log(address);
+  if (!address.name) {
+    console.log('비정상적인 접근입니다');
+    console.log(address);
+  }
+
   const handleSubmit = () => {
     // searchRef.current.value = '';
   };

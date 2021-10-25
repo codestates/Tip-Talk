@@ -50,6 +50,7 @@ function App() {
             </Route>
             <Route path="/upload">
               <UploadPost />
+              <Coin mode="reply" />
             </Route>
             <Route>
               <NotFound />

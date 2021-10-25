@@ -89,16 +89,14 @@ const MapModal = ({ data, backgroundRef, handleClose }) => {
 
       <Thumbnail src={post.images[0]} alt={post.title} />
       <Info>
-        <Label>제목</Label>
+        <Label>이름</Label>
         <Text>{post.title}</Text>
         <Label>지역</Label>
-        <Text>dd</Text>
+        <Text>인천광역시 강화군 길상면</Text>
         <Label>카테고리</Label>
-        <Text>dd</Text>
-        <Label>작성자</Label>
-        <Text>{user.nickname}</Text>
+        <Text>문화시설</Text>
       </Info>
-      <Button onClick={goToPost}>게시글 보기</Button>
+      <Button onClick={goToPost}>자세히 보기</Button>
     </ModalBackground>
   );
 };

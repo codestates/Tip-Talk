@@ -116,7 +116,7 @@ const Home = () => {
             <P>TipTalk이 해결해 드리겠습니다!</P>
             <Button onClick={goToMain}>시작하기</Button>
           </PreView>
-          <MainImage src="https://drawit.s3.ap-northeast-2.amazonaws.com/tip-talk/facebook_cover_photo_1.png" />
+          <MainImage src="https://drawit.s3.ap-northeast-2.amazonaws.com/tip-talk/logo_transparent.png" />
         </Body>
       </Section>
     </HomeContainer>

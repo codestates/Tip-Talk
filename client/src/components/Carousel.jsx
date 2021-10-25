@@ -5,6 +5,7 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
+import { Color_6 } from '../styles/common';
 
 const CarouselContainer = styled.div`
   position: relative;
@@ -27,9 +28,26 @@ const Image = styled.img`
   height: 600px;
 `;
 
+const StepForm = styled.div`
+  position: absolute;
+  display: flex;
+  width: 100%;
+  bottom: 20px;
+  justify-content: center;
+  z-index: 11;
+`;
+
+const Step = styled.div`
+  width: 8px;
+  height: 8px;
+  margin: 0 5px;
+  background-color: ${({ current }) => (current ? 'white' : Color_6)};
+  border-radius: 50%;
+`;
+
 const Button = styled.button`
   position: absolute;
-  bottom: 20px;
+  top: 300px;
   right: ${({ right }) => right};
   width: 30px;
   height: 30px;
@@ -68,6 +86,11 @@ const Carousel = ({ images }) => {
 
   return (
     <CarouselContainer>
+      <StepForm>
+        {images?.map((_, i) => (
+          <Step current={current === i} key={i} />
+        ))}
+      </StepForm>
       <Button onClick={handlePrevScroll}>
         <FontAwesomeIcon size="2x" icon={faChevronLeft} />
       </Button>

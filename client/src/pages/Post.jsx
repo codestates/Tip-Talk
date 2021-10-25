@@ -25,7 +25,6 @@ const Label = styled.div`
   font-size: 15px;
   margin: 6px 0;
   font-weight: 500;
-  text-align: end;
 `;
 
 const Text = styled.div`
@@ -47,6 +46,7 @@ const Post = () => {
   return (
     <Body>
       <PostContainer>
+        <Carousel images={post?.post.images} />
         <Meta>
           <Label>제목</Label>
           <Text>{post?.post.title}</Text>
@@ -55,7 +55,6 @@ const Post = () => {
           <Label>조회수</Label>
           <Text>{post?.post.views}</Text>
         </Meta>
-        <Carousel images={post?.post.images} />
       </PostContainer>
     </Body>
   );

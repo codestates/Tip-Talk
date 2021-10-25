@@ -47,7 +47,8 @@ const Main = () => {
   const inputRef = useRef();
 
   const handleSearch = () => {
-    // const { value } = inputRef.current;
+    const { value } = inputRef.current;
+
     // ToDo Axios getPosts로 필터된 posts 불러오기
     // setFilteredPosts();
   };

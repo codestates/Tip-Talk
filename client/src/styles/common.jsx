@@ -1,6 +1,6 @@
 import styled, { createGlobalStyle } from 'styled-components';
 
-export const Color_1 = '#2C73D2';
+export const Color_1 = '#76adf5';
 export const Color_2 = '#D5A419';
 export const Color_3 = '#E5F0FF';
 export const Color_4 = 'orangered';

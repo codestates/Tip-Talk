@@ -6,8 +6,8 @@ import MapModal from './MapModal';
 const MapContainer = styled.div`
   position: relative;
   display: flex;
-  height: 60vh;
-  max-height: 800px;
+  height: 70vh;
+  max-height: 1000px;
 `;
 
 const Map = styled.div`
@@ -16,7 +16,7 @@ const Map = styled.div`
   margin-bottom: 50px;
 `;
 
-const KakaoMap = ({ posts, place }) => {
+const KakaoMap = ({ posts }) => {
   const containerRef = useRef();
   const backgroundRef = useRef();
   const map = useRef(null);

@@ -19,7 +19,9 @@ export const ModalBackdrop = styled.div`
     background-color: #ffffff;
     width: 38rem;
     height: 45rem;
-    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     position: fixed;
     left: 50%;
     top: 40%;
@@ -30,8 +32,8 @@ export const ModalBackdrop = styled.div`
       cursor: pointer;
       border: none;
       position: relative;
-      left: 9rem;
-      top: -3rem;
+      left: 17rem;
+      top: -5rem;
       background-color: ${Color_3};
       :hover {
         box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
@@ -51,6 +53,9 @@ export const ModalBackdrop = styled.div`
 export const InputSection = styled.div`
   width: 38rem;
   height: 18rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
   .id-line {
     height: 5rem;
@@ -67,7 +72,7 @@ export const InputSection = styled.div`
 
   .password-line {
     position: relative;
-    top: 9rem;
+    top: 8rem;
     #password {
       font-size: 1.5rem;
       border-top: none;
@@ -88,7 +93,7 @@ export const InputSection = styled.div`
 
   .nickname-line {
     position: relative;
-    top: 7rem;
+    top: 6rem;
     #nickname {
       font-size: 1.5rem;
       border-top: none;
@@ -104,7 +109,7 @@ export const BottomContainer = styled.div`
   align-items: center;
   flex-direction: column;
   position: relative;
-  top: 11rem;
+  top: 10rem;
 
   .signupSubmitButton {
     font-size: 2rem;
@@ -136,25 +141,25 @@ export const ErrorMessage = styled.div`
 
 export const IdError = styled(ErrorMessage)`
   position: relative;
-  top: 0.5rem;
+  top: -1.5rem;
   left: -4rem;
 `;
 
 export const PasswordError = styled(ErrorMessage)`
   position: relative;
-  top: 11.5rem;
+  top: 9.5rem;
   left: -3.5rem;
 `;
 
 export const InsufficientError = styled(ErrorMessage)`
   position: relative;
-  top: 2.5rem;
+  top: 1.5rem;
   left: -4rem;
 `;
 
 export const RadioSection = styled.div`
   position: relative;
-  top: 7rem;
+  top: 6rem;
   text-align: center;
   display: flex;
   justify-content: center;
@@ -273,9 +278,6 @@ const Signup = ({ setShowLogin, setShowSignup }) => {
                 placeholder="email"
                 onChange={emailHandler}
               />
-              {emailValidation() === false ? (
-                <IdError>이메일 형식을 입력해주세요</IdError>
-              ) : null}
             </div>
             <div className="nickname-line">
               <input
@@ -304,6 +306,9 @@ const Signup = ({ setShowLogin, setShowSignup }) => {
                 onChange={rePasswordHandler}
               />
             </div>
+            {emailValidation() === false ? (
+              <IdError>이메일 형식을 입력해주세요</IdError>
+            ) : null}
             {passwordValidation() === true || rePassword.length === 0 ? null : (
               <PasswordError>비밀번호가 일치하지 않습니다</PasswordError>
             )}

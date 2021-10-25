@@ -17,8 +17,8 @@ export const ModalBackdrop = styled.div`
   .ModalView {
     border-radius: 10px;
     background-color: #ffffff;
-    width: 600px;
-    height: 750px;
+    width: 38rem;
+    height: 45rem;
     text-align: center;
   
     .close-btn {
@@ -46,8 +46,8 @@ export const ModalBackdrop = styled.div`
 `;
 
 export const InputSection = styled.div`
-  width: 600px;
-  height: 300px;
+  width: 38rem;
+  height: 18rem;
 
   .id-line {
     text-align: center;

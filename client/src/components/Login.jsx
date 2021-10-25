@@ -18,8 +18,8 @@ export const ModalBackdrop = styled.div`
   .modalView {
     border-radius: 10px;
     background-color: #ffffff;
-    width: 600px;
-    height: 600px;
+    width: 38rem;
+    height: 38rem;
     text-align: center;
   
     .close-btn {
@@ -30,13 +30,12 @@ export const ModalBackdrop = styled.div`
       left: 9rem;
       border: none;
       background-color: ${Color_3};
-      font-size: 16px;
       :hover {
         box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
       }
       transition-duration: 0.3s;
       font-family: ${Samlib};
-      font-size: 2em;
+      font-size: 2rem;
     }
 
     .icon {
@@ -47,8 +46,8 @@ export const ModalBackdrop = styled.div`
 `;
 
 export const InputSection = styled.div`
-  width: 600px;
-  height: 300px;
+  width: 38rem;
+  height: 18rem;
 
   .id-line {
     text-align: center;
@@ -81,9 +80,9 @@ export const InputSection = styled.div`
 export const LoginButtonContainer = styled.div`
   text-align: center;
   .loginButton {
-    font-size: 2em;
-    width: 8em;
-    height: 1.5em;
+    font-size: 2rem;
+    width: 12rem;
+    height: 3rem;
     border-radius: 10px;
     border: none;
     background-color: ${Color_3};

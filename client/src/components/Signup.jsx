@@ -219,7 +219,7 @@ const Signup = ({ setShowLogin, setShowSignup }) => {
       nickname.length === 0 ||
       password.length === 0 ||
       rePassword.length === 0 ||
-      position === null
+      role === null
     ) {
       setInsufficient(true);
     } else {
@@ -234,7 +234,7 @@ const Signup = ({ setShowLogin, setShowSignup }) => {
           email,
           password,
           nickname,
-          position,
+          role,
         })
         .then((res) => console.log(res));
     }
@@ -297,7 +297,7 @@ const Signup = ({ setShowLogin, setShowSignup }) => {
                 <input
                   type="radio"
                   id="owner"
-                  name="position"
+                  name="role"
                   value="1"
                   onClick={roleHandler}
                 />
@@ -307,7 +307,7 @@ const Signup = ({ setShowLogin, setShowSignup }) => {
                 <input
                   type="radio"
                   id="user"
-                  name="position"
+                  name="role"
                   value="2"
                   onClick={roleHandler}
                 />

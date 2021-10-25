@@ -20,7 +20,9 @@ export const ModalBackdrop = styled.div`
     background-color: #ffffff;
     width: 38rem;
     height: 38rem;
-    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     position: fixed;
     left: 50%;
     top: 40%;
@@ -29,10 +31,10 @@ export const ModalBackdrop = styled.div`
   
     .close-btn {
       border-radius: 10px;
-      top: -3rem;
+      top: -5rem;
       cursor: pointer;
       position: relative;
-      left: 9rem;
+      left: 17rem;
       border: none;
       background-color: ${Color_3};
       :hover {
@@ -53,6 +55,9 @@ export const ModalBackdrop = styled.div`
 export const InputSection = styled.div`
   width: 38rem;
   height: 18rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
   .id-line {
     position: relative;
@@ -93,9 +98,6 @@ export const LoginButtonContainer = styled.div`
 `;
 
 export const BottomContainer = styled.div`
-  display: flex;
-  justify-content: center;
-
   .bottomSection {
     display: flex;
     justify-content: space-around;

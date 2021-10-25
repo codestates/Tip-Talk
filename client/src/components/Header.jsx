@@ -5,7 +5,7 @@ import MenuAfterLogin from './MenuAfterLogin';
 
 const HeaderContainer = styled.header`
   width: 100%;
-  height: 120px;
+  height: 70px;
   color: ${(props) => props.theme.navColor};
   background-color: ${(props) => props.theme.navBgColor};
 `;

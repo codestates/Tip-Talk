@@ -5,6 +5,7 @@ import {
   faSun,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useHistory } from 'react-router';
 import styled from 'styled-components';
 import { Color_4 } from '../styles/common';
 
@@ -35,6 +36,7 @@ export const Coin = ({
   scrollRef,
   ...position
 }) => {
+  const history = useHistory();
   const scrollToTop = () => {
     scrollRef.current.scrollIntoView({
       behavior: 'smooth',
@@ -59,6 +61,7 @@ export const Coin = ({
   const handleEvent = () => {
     switch (mode) {
       case 'reply':
+        history.goBack();
         break;
       case 'up':
         scrollToTop();

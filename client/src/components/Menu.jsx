@@ -6,14 +6,14 @@ import Login from './Login';
 const Navbar = styled.nav`
   display: flex;
   max-width: 1000px;
-  height: 120px;
+  height: 70px;
   margin: 0 auto;
   align-items: center;
   justify-content: space-between;
 `;
 
 const Logo = styled.img`
-  width: 100px;
+  width: 60px;
 `;
 
 export const Button = styled.button`

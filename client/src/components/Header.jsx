@@ -33,7 +33,7 @@ const Header = ({
         </HeaderContainer>
       ) : (
         <HeaderContainer>
-          <MenuAfterLogin />
+          <MenuAfterLogin setIsLogin={setIsLogin} setShowLogin={setShowLogin} />
         </HeaderContainer>
       )}
     </>

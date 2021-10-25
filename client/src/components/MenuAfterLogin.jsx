@@ -29,7 +29,15 @@ export const Button = styled.button`
   }
 `;
 
-const MenuAfterLogin = ({ isLogin }) => {
+const MenuAfterLogin = ({ setIsLogin, setShowLogin }) => {
+  const logoutHandler = () => {
+    setIsLogin(false);
+  };
+
+  const showLoginHandler = () => {
+    setShowLogin(false);
+  };
+
   return (
     <Navbar>
       <Logo
@@ -38,7 +46,10 @@ const MenuAfterLogin = ({ isLogin }) => {
       />
       <div>
         <Button>마이페이지</Button>
-        <Button>로그아웃</Button>
+        <Button onClick={() => [logoutHandler(), showLoginHandler()]}>
+          로그아웃
+        </Button>
+        <Button>글 올리기</Button>
       </div>
     </Navbar>
   );

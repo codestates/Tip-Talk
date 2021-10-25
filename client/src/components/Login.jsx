@@ -55,7 +55,6 @@ export const InputSection = styled.div`
   height: 18rem;
 
   .id-line {
-    text-align: center;
     position: relative;
     top: 7rem;
     height: 5rem;
@@ -69,7 +68,6 @@ export const InputSection = styled.div`
   }
 
   .password-line {
-    text-align: center;
     position: relative;
     top: 7rem;
     #password {
@@ -83,7 +81,6 @@ export const InputSection = styled.div`
 `;
 
 export const LoginButtonContainer = styled.div`
-  text-align: center;
   .loginButton {
     font-size: 2rem;
     width: 12rem;

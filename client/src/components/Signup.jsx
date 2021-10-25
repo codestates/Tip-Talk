@@ -29,7 +29,6 @@ export const ModalBackdrop = styled.div`
       left: 9rem;
       top: -3rem;
       background-color: ${Color_3};
-      font-size: 16px;
       :hover {
         box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
       }
@@ -108,7 +107,7 @@ export const BottomContainer = styled.div`
 
   .signupSubmitButton {
     font-size: 2rem;
-    width: 13rem;
+    width: 12rem;
     height: 3rem;
     border-radius: 10px;
     border: none;
@@ -119,7 +118,7 @@ export const BottomContainer = styled.div`
     position: relative;
     top: 1rem;
     font-size: 2rem;
-    width: 13rem;
+    width: 12rem;
     height: 3rem;
     border-radius: 10px;
     border: none;

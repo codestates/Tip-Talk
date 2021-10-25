@@ -1,19 +1,18 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Samlib } from '../styles/common';
-import Login from './Login';
 
 const Navbar = styled.nav`
   display: flex;
   max-width: 1000px;
-  height: 70px;
+  height: 120px;
   margin: 0 auto;
   align-items: center;
   justify-content: space-between;
 `;
 
 const Logo = styled.img`
-  width: 60px;
+  width: 100px;
 `;
 
 export const Button = styled.button`
@@ -30,11 +29,7 @@ export const Button = styled.button`
   }
 `;
 
-const Menu = ({ showLogin, setShowLogin, isLogin, setIsLogin }) => {
-  const showLoginHandler = () => {
-    setShowLogin(true);
-  };
-
+const MenuAfterLogin = ({ isLogin }) => {
   return (
     <Navbar>
       <Logo
@@ -42,14 +37,11 @@ const Menu = ({ showLogin, setShowLogin, isLogin, setIsLogin }) => {
         alt="로고"
       />
       <div>
-        <Button onClick={showLoginHandler}>로그인</Button>
-        <Button>회원가입</Button>
+        <Button>마이페이지</Button>
+        <Button>로그아웃</Button>
       </div>
-      {showLogin ? (
-        <Login setShowLogin={setShowLogin} setIsLogin={setIsLogin} />
-      ) : null}
     </Navbar>
   );
 };
 
-export default Menu;
+export default MenuAfterLogin;

@@ -154,7 +154,7 @@ const oauthSignIn = () => {
   var params = {
     client_id:
       '529912951931-8sp74vii7gf3nkuslvq4i47d85dcjvd3.apps.googleusercontent.com',
-    redirect_uri: 'http://localhost:3000',
+    redirect_uri: 'http://localhost:3000/main',
     response_type: 'token',
     scope: 'https://www.googleapis.com/auth/drive.metadata.readonly',
     include_granted_scopes: 'true',

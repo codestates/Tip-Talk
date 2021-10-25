@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 
 module.exports = {
   getUserInfo: async (req, res) => {
-    const accessToken = req.cookies.accessToken;
+    // const accessToken = req.cookies.accessToken;
     const { id } = req.params;
     const { nickname, password, img } = req.body;
     const userInfo = await user.findOne({ where: { id } });
@@ -19,7 +19,7 @@ module.exports = {
     });
   },
   editUserInfo: async (req, res) => {
-    const accessToken = req.cookies.accessToken;
+    // const accessToken = req.cookies.accessToken;
     const { id } = req.params;
     const { nickname, password, img } = req.body;
     const userInfo = await user.update(
@@ -36,3 +36,5 @@ module.exports = {
     return res.status(200).json({ status: true });
   },
 };
+
+//role -> 0관리자 1소비자 2사업자

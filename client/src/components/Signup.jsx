@@ -19,14 +19,15 @@ export const ModalBackdrop = styled.div`
     background-color: #ffffff;
     width: 600px;
     height: 750px;
+    text-align: center;
   
     .close-btn {
       border-radius: 10px;
-      margin-top: 5px;
       cursor: pointer;
-      position: relative;
-      left: 35rem;
       border: none;
+      position: relative;
+      left: 9rem;
+      top: -3rem;
       background-color: ${Color_3};
       font-size: 16px;
       :hover {
@@ -36,6 +37,12 @@ export const ModalBackdrop = styled.div`
       font-family: ${Samlib};
       font-size: 2rem;
     }
+
+    .icon {
+      width: 15rem;
+      position: relative;
+      top: 5rem;
+    }
 `;
 
 export const InputSection = styled.div`
@@ -44,8 +51,9 @@ export const InputSection = styled.div`
 
   .id-line {
     text-align: center;
-    margin-top: 10rem;
     height: 5rem;
+    position: relative;
+    top: 7rem;
     #id {
       font-size: 1.5rem;
       border-top: none;
@@ -57,7 +65,8 @@ export const InputSection = styled.div`
 
   .password-line {
     text-align: center;
-    margin-bottom: 2.5rem;
+    position: relative;
+    top: 9rem;
     #password {
       font-size: 1.5rem;
       border-top: none;
@@ -66,6 +75,8 @@ export const InputSection = styled.div`
       outline: none;
     }
     #re-password {
+      position: relative;
+      top: 2rem;
       font-size: 1.5rem;
       border-top: none;
       border-left: none;
@@ -76,7 +87,8 @@ export const InputSection = styled.div`
 
   .nickname-line {
     text-align: center;
-    margin-bottom: 2.5rem;
+    position: relative;
+    top: 7rem;
     #nickname {
       font-size: 1.5rem;
       border-top: none;
@@ -91,7 +103,8 @@ export const BottomContainer = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
-  margin-top: 3rem;
+  position: relative;
+  top: 11rem;
 
   .signupSubmitButton {
     font-size: 2rem;
@@ -100,17 +113,17 @@ export const BottomContainer = styled.div`
     border-radius: 10px;
     border: none;
     background-color: ${Color_3};
-    margin-top: 1rem;
     font-family: ${Samlib};
   }
   .toLogin {
+    position: relative;
+    top: 1rem;
     font-size: 2rem;
     width: 13rem;
     height: 3rem;
     border-radius: 10px;
     border: none;
     background-color: ${Color_3};
-    margin-top: 1rem;
     font-family: ${Samlib};
   }
 `;
@@ -129,22 +142,22 @@ export const IdError = styled(ErrorMessage)`
 
 export const PasswordError = styled(ErrorMessage)`
   position: relative;
-  top: -1rem;
-  left: 9.5rem;
+  top: 11.5rem;
+  left: -3.5rem;
 `;
 
 export const InsufficientError = styled(ErrorMessage)`
   position: relative;
-  top: -9.3rem;
-  left: 9.5rem;
+  top: 2.5rem;
+  left: -4rem;
 `;
 
 export const RadioSection = styled.div`
-  top: 0rem;
+  position: relative;
+  top: 7rem;
   text-align: center;
   display: flex;
   justify-content: center;
-  margin-top: 1rem;
   font-family: ${Samlib};
   .radioContainer {
     width: 20rem;
@@ -244,6 +257,10 @@ const Signup = ({ setShowLogin, setShowSignup }) => {
     <>
       <ModalBackdrop onClick={closeSignupModal}>
         <div className="ModalView" onClick={(e) => e.stopPropagation()}>
+          <img
+            className="icon"
+            src="https://drawit.s3.ap-northeast-2.amazonaws.com/tip-talk/facebook_cover_photo_1.png"
+          />
           <button onClick={closeSignupModal} className="close-btn">
             &times;
           </button>

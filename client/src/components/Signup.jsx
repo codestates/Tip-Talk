@@ -53,7 +53,6 @@ export const InputSection = styled.div`
   height: 18rem;
 
   .id-line {
-    text-align: center;
     height: 5rem;
     position: relative;
     top: 7rem;
@@ -67,7 +66,6 @@ export const InputSection = styled.div`
   }
 
   .password-line {
-    text-align: center;
     position: relative;
     top: 9rem;
     #password {
@@ -89,7 +87,6 @@ export const InputSection = styled.div`
   }
 
   .nickname-line {
-    text-align: center;
     position: relative;
     top: 7rem;
     #nickname {

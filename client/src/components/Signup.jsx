@@ -20,6 +20,10 @@ export const ModalBackdrop = styled.div`
     width: 38rem;
     height: 45rem;
     text-align: center;
+    position: fixed;
+    left: 50%;
+    top: 40%;
+    transform: translate(-50%, -40%);
   
     .close-btn {
       border-radius: 10px;

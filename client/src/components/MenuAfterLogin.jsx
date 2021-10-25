@@ -49,7 +49,6 @@ const MenuAfterLogin = ({ setIsLogin, setShowLogin }) => {
         <Button onClick={() => [logoutHandler(), showLoginHandler()]}>
           로그아웃
         </Button>
-        <Button>글 올리기</Button>
       </div>
     </Navbar>
   );

@@ -15,18 +15,19 @@ export const ModalBackdrop = styled.div`
   display: grid;
   place-items: center;
 
-  .ModalView {
+  .modalView {
     border-radius: 10px;
     background-color: #ffffff;
     width: 600px;
     height: 600px;
+    text-align: center;
   
     .close-btn {
       border-radius: 10px;
-      margin-top: 5px;
+      top: -3rem;
       cursor: pointer;
       position: relative;
-      left: 17.5em;
+      left: 9rem;
       border: none;
       background-color: ${Color_3};
       font-size: 16px;
@@ -37,6 +38,12 @@ export const ModalBackdrop = styled.div`
       font-family: ${Samlib};
       font-size: 2em;
     }
+
+    .icon {
+      width: 15rem;
+      position: relative;
+      top: 5rem;
+    }
 `;
 
 export const InputSection = styled.div`
@@ -45,10 +52,11 @@ export const InputSection = styled.div`
 
   .id-line {
     text-align: center;
-    margin-top: 10em;
-    height: 5em;
+    position: relative;
+    top: 7rem;
+    height: 5rem;
     #id {
-      font-size: 1.5em;
+      font-size: 1.5rem;
       border-top: none;
       border-left: none;
       border-right: none;
@@ -58,8 +66,10 @@ export const InputSection = styled.div`
 
   .password-line {
     text-align: center;
+    position: relative;
+    top: 7rem;
     #password {
-      font-size: 1.5em;
+      font-size: 1.5rem;
       border-top: none;
       border-left: none;
       border-right: none;
@@ -69,7 +79,6 @@ export const InputSection = styled.div`
 `;
 
 export const LoginButtonContainer = styled.div`
-  margin-top: -10em;
   text-align: center;
   .loginButton {
     font-size: 2em;
@@ -78,7 +87,6 @@ export const LoginButtonContainer = styled.div`
     border-radius: 10px;
     border: none;
     background-color: ${Color_3};
-    margin-top: 1em;
     font-family: ${Samlib};
   }
 `;
@@ -86,21 +94,22 @@ export const LoginButtonContainer = styled.div`
 export const BottomContainer = styled.div`
   display: flex;
   justify-content: center;
-  margin-top: 3em;
 
   .bottomSection {
     display: flex;
     justify-content: space-around;
-    width: 30em;
-
+    width: 30rem;
+    position: relative;
+    top: 4rem;
     .signupButton {
-      font-size: 2em;
-      width: 6em;
-      height: 1.5em;
+      font-size: 2rem;
+      position: relative;
+      top: 0.5rem;
+      width: 12rem;
+      height: 3rem;
       border-radius: 10px;
       border: none;
       background-color: ${Color_3};
-      margin-top: 0.2em;
       font-family: ${Samlib};
     }
   }
@@ -114,18 +123,18 @@ export const ErrorMessage = styled.div`
 
 export const IdError = styled(ErrorMessage)`
   position: relative;
-  top: 0.5em;
-  left: -4em;
+  top: 0.5rem;
+  left: -4rem;
 `;
 
 export const PasswordError = styled(ErrorMessage)`
   position: relative;
-  top: 0.5em;
-  left: -1.3em;
+  top: 0.5rem;
+  left: -1.3rem;
 `;
 
 export const GoogleButton = styled.img`
-  width: 15em;
+  width: 15rem;
   cursor: pointer;
 `;
 
@@ -173,10 +182,6 @@ const Login = ({ setShowLogin, setIsLogin }) => {
     setShowLogin(false);
   };
 
-  const closeSignupModal = () => {
-    setShowSignup(false);
-  };
-
   const emailHandler = (e) => {
     setEmail(e.target.value);
   };
@@ -214,7 +219,11 @@ const Login = ({ setShowLogin, setIsLogin }) => {
   return (
     <>
       <ModalBackdrop onClick={closeLoginModal}>
-        <div className="ModalView" onClick={(e) => e.stopPropagation()}>
+        <div className="modalView" onClick={(e) => e.stopPropagation()}>
+          <img
+            className="icon"
+            src="https://drawit.s3.ap-northeast-2.amazonaws.com/tip-talk/facebook_cover_photo_1.png"
+          />
           <button onClick={closeLoginModal} className="close-btn">
             &times;
           </button>

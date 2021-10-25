@@ -167,7 +167,7 @@ const Signup = ({ setShowLogin, setShowSignup }) => {
   const [rePassword, setRePassword] = useState('');
   const [nickname, setNickname] = useState('');
   const [insufficient, setInsufficient] = useState(false);
-  const [position, setPosition] = useState(null);
+  const [role, setRole] = useState(null);
 
   const closeSignupModal = () => {
     setShowSignup(false);
@@ -193,8 +193,8 @@ const Signup = ({ setShowLogin, setShowSignup }) => {
     setShowLogin(true);
   };
 
-  const positionHandler = (e) => {
-    setPosition(e.target.value);
+  const roleHandler = (e) => {
+    setRole(e.target.value);
   };
 
   const emailValidation = () => {
@@ -298,8 +298,8 @@ const Signup = ({ setShowLogin, setShowSignup }) => {
                   type="radio"
                   id="owner"
                   name="position"
-                  value="owner"
-                  onClick={positionHandler}
+                  value="1"
+                  onClick={roleHandler}
                 />
                 <div className="owner">사업자</div>
               </div>
@@ -308,8 +308,8 @@ const Signup = ({ setShowLogin, setShowSignup }) => {
                   type="radio"
                   id="user"
                   name="position"
-                  value="user"
-                  onClick={positionHandler}
+                  value="2"
+                  onClick={roleHandler}
                 />
                 <div className="user">일반인</div>
               </div>

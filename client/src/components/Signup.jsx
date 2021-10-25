@@ -18,7 +18,7 @@ export const ModalBackdrop = styled.div`
     border-radius: 10px;
     background-color: #ffffff;
     width: 600px;
-    height: 700px;
+    height: 750px;
   
     .close-btn {
       border-radius: 10px;
@@ -139,12 +139,35 @@ export const InsufficientError = styled(ErrorMessage)`
   left: 9.5rem;
 `;
 
+export const RadioSection = styled.div`
+  top: 0rem;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+  font-family: ${Samlib};
+  .radioContainer {
+    width: 20rem;
+    display: flex;
+    justify-content: space-around;
+  }
+  .owner {
+    display: inline;
+    color: black;
+  }
+  .user {
+    display: inline;
+    color: black;
+  }
+`;
+
 const Signup = ({ setShowLogin, setShowSignup }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [rePassword, setRePassword] = useState('');
   const [nickname, setNickname] = useState('');
   const [insufficient, setInsufficient] = useState(false);
+  const [position, setPosition] = useState(null);
 
   const closeSignupModal = () => {
     setShowSignup(false);
@@ -170,6 +193,10 @@ const Signup = ({ setShowLogin, setShowSignup }) => {
     setShowLogin(true);
   };
 
+  const positionHandler = (e) => {
+    setPosition(e.target.value);
+  };
+
   const emailValidation = () => {
     const regex = /^[a-zA-Z0-9]+@(?:[a-zA-Z0-9]+\.)+[A-Za-z]+$/;
     if (email.length === 0) {
@@ -191,7 +218,8 @@ const Signup = ({ setShowLogin, setShowSignup }) => {
       email.length === 0 ||
       nickname.length === 0 ||
       password.length === 0 ||
-      rePassword.length === 0
+      rePassword.length === 0 ||
+      position === null
     ) {
       setInsufficient(true);
     } else {
@@ -206,6 +234,7 @@ const Signup = ({ setShowLogin, setShowSignup }) => {
           email,
           password,
           nickname,
+          position,
         })
         .then((res) => console.log(res));
     }
@@ -262,6 +291,30 @@ const Signup = ({ setShowLogin, setShowSignup }) => {
               <PasswordError>비밀번호가 일치하지 않습니다</PasswordError>
             )}
           </InputSection>
+          <RadioSection>
+            <div className="radioContainer">
+              <div>
+                <input
+                  type="radio"
+                  id="owner"
+                  name="position"
+                  value="owner"
+                  onClick={positionHandler}
+                />
+                <div className="owner">사업자</div>
+              </div>
+              <div>
+                <input
+                  type="radio"
+                  id="user"
+                  name="position"
+                  value="user"
+                  onClick={positionHandler}
+                />
+                <div className="user">일반인</div>
+              </div>
+            </div>
+          </RadioSection>
           <BottomContainer>
             <button
               className="signupSubmitButton"

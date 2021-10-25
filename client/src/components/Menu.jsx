@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Samlib } from '../styles/common';
 import Login from './Login';
+import Signup from './Signup';
 
 const Navbar = styled.nav`
   display: flex;
@@ -30,9 +31,19 @@ export const Button = styled.button`
   }
 `;
 
-const Menu = ({ showLogin, setShowLogin, isLogin, setIsLogin }) => {
+const Menu = ({
+  showLogin,
+  setShowLogin,
+  setIsLogin,
+  showSignup,
+  setShowSignup,
+}) => {
   const showLoginHandler = () => {
     setShowLogin(true);
+  };
+
+  const showSignupHandler = () => {
+    setShowSignup(true);
   };
 
   return (
@@ -43,10 +54,18 @@ const Menu = ({ showLogin, setShowLogin, isLogin, setIsLogin }) => {
       />
       <div>
         <Button onClick={showLoginHandler}>로그인</Button>
-        <Button>회원가입</Button>
+        <Button onClick={showSignupHandler}>회원가입</Button>
       </div>
       {showLogin ? (
-        <Login setShowLogin={setShowLogin} setIsLogin={setIsLogin} />
+        <Login
+          setShowLogin={setShowLogin}
+          setIsLogin={setIsLogin}
+          showSignup={showSignup}
+          setShowSignup={setShowSignup}
+        />
+      ) : null}
+      {showSignup ? (
+        <Signup setShowLogin={setShowLogin} setShowSignup={setShowSignup} />
       ) : null}
     </Navbar>
   );

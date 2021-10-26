@@ -127,13 +127,13 @@ export const ErrorMessage = styled.div`
 export const IdError = styled(ErrorMessage)`
   position: relative;
   top: 0.5rem;
-  left: -4rem;
+  left: 0.5rem;
 `;
 
 export const PasswordError = styled(ErrorMessage)`
   position: relative;
   top: 0.5rem;
-  left: -1.3rem;
+  left: 0.5rem;
 `;
 
 export const GoogleButton = styled.img`

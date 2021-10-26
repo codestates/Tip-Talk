@@ -5,12 +5,19 @@ import MenuAfterLogin from './MenuAfterLogin';
 
 const HeaderContainer = styled.header`
   width: 100%;
-  height: 120px;
+  height: 70px;
   color: ${(props) => props.theme.navColor};
   background-color: ${(props) => props.theme.navBgColor};
 `;
 
-const Header = ({ showLogin, setShowLogin, isLogin, setIsLogin }) => {
+const Header = ({
+  showLogin,
+  setShowLogin,
+  isLogin,
+  setIsLogin,
+  showSignup,
+  setShowSignup,
+}) => {
   return (
     <>
       {isLogin === false ? (
@@ -20,11 +27,13 @@ const Header = ({ showLogin, setShowLogin, isLogin, setIsLogin }) => {
             setShowLogin={setShowLogin}
             isLogin={isLogin}
             setIsLogin={setIsLogin}
+            showSignup={showSignup}
+            setShowSignup={setShowSignup}
           />
         </HeaderContainer>
       ) : (
         <HeaderContainer>
-          <MenuAfterLogin />
+          <MenuAfterLogin setIsLogin={setIsLogin} setShowLogin={setShowLogin} />
         </HeaderContainer>
       )}
     </>

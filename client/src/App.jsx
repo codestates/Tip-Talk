@@ -7,6 +7,8 @@ import Header from './components/Header';
 import Home from './pages/Home';
 import Main from './pages/Main';
 import NotFound from './pages/NotFound';
+import Post from './pages/Post';
+import UploadPost from './pages/UploadPost';
 import { darkTheme, GlobalStyle, lightTheme } from './styles/common';
 
 const Container = styled.div`
@@ -16,47 +18,58 @@ const Container = styled.div`
   flex-direction: column;
 `;
 
+export const { kakao } = window;
+
 function App() {
   const [darkMode, setDarkMode] = useState(localStorage.getItem('darkmode'));
   const [isLogin, setIsLogin] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
+  const [showSignup, setShowSingup] = useState(false);
 
   return (
-    <>
-      <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
-        <GlobalStyle />
-        <Coin
-          mode="light"
-          darkMode={darkMode}
-          setDarkMode={setDarkMode}
-          right="40px"
-          bottom="150px"
-        />
-        <Router>
-          <Container>
-            <Header
+    <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
+      <GlobalStyle />
+      <Coin
+        mode="light"
+        darkMode={darkMode}
+        setDarkMode={setDarkMode}
+        right="40px"
+        bottom="150px"
+      />
+      <Router>
+        <Container>
+          <Header
               showLogin={showLogin}
               setShowLogin={setShowLogin}
               isLogin={isLogin}
               setIsLogin={setIsLogin}
+              showSignup={showSignup}
+              setShowSignup={setShowSingup}
             />
-            <Switch>
-              <Route exact path="/">
-                <Home />
-              </Route>
-              <Route path="/main">
-                <Main />
-                <Coin mode="reply" />
-              </Route>
-              <Route>
-                <NotFound />
-              </Route>
-            </Switch>
-            <Footer />
-          </Container>
-        </Router>
-      </ThemeProvider>
-    </>
+          <Switch>
+            <Route exact path="/">
+              <Home />
+            </Route>
+            <Route path="/main">
+              <Main />
+              <Coin mode="reply" />
+            </Route>
+            <Route path="/post/:postId">
+              <Post />
+              <Coin mode="reply" />
+            </Route>
+            <Route path="/upload">
+              <UploadPost />
+              <Coin mode="reply" />
+            </Route>
+            <Route>
+              <NotFound />
+            </Route>
+          </Switch>
+          <Footer />
+        </Container>
+      </Router>
+    </ThemeProvider>
   );
 }
 

@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { Color_3, Samlib } from '../styles/common';
 import googleButton from '../google-button.png';
 import axios from 'axios';
+import Signup from './Signup';
 
 export const ModalBackdrop = styled.div`
   position: fixed;
@@ -175,11 +176,10 @@ const oauthSignIn = () => {
   form.submit();
 };
 
-const Login = ({ setShowLogin, setIsLogin }) => {
+const Login = ({ setShowLogin, setIsLogin, setShowSignup }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [checkUser, setCheckUser] = useState(null);
-  const [showSignup, setShowSignup] = useState(false);
 
   const closeLoginModal = () => {
     setShowLogin(false);
@@ -213,10 +213,6 @@ const Login = ({ setShowLogin, setIsLogin }) => {
       .then((res) => setCheckUser(true))
       .then(() => setIsLogin(true))
       .catch((err) => setCheckUser(err.response.data.status));
-  };
-
-  const signupHandler = () => {
-    setShowSignup(true);
   };
 
   return (
@@ -270,7 +266,10 @@ const Login = ({ setShowLogin, setIsLogin }) => {
                 alt="google-button"
                 onClick={oauthSignIn}
               ></GoogleButton>
-              <button className="signupButton" onClick={signupHandler}>
+              <button
+                className="signupButton"
+                onClick={() => [signupHandler(), closeLoginModal()]}
+              >
                 회원가입
               </button>
             </div>

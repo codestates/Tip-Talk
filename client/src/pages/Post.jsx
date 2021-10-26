@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
-import { Body, Color_6 } from '../styles/common';
+import { Body } from '../styles/common';
 import { useParams } from 'react-router';
 import { data } from '../dummy/post';
 import Carousel from '../components/Carousel';
@@ -33,7 +33,7 @@ const Label = styled.div`
   margin: 6px 0;
   font-weight: 500;
   padding-bottom: 3px;
-  border-bottom: 1px solid ${Color_6};
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
 `;
 
 const Text = styled.div`
@@ -55,7 +55,7 @@ const Info = styled.h3`
   padding: 10px 3px;
   margin: 30px 15px;
   margin-right: auto;
-  border-bottom: 1px solid ${Color_6};
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
 `;
 
 const Content = styled.div`

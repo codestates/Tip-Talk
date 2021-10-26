@@ -1,18 +1,20 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Samlib } from '../styles/common';
+import Login from './Login';
+import Signup from './Signup';
 
 const Navbar = styled.nav`
   display: flex;
   max-width: 1000px;
-  height: 120px;
+  height: 70px;
   margin: 0 auto;
   align-items: center;
   justify-content: space-between;
 `;
 
 const Logo = styled.img`
-  width: 100px;
+  width: 60px;
 `;
 
 const Button = styled.button`
@@ -29,7 +31,21 @@ const Button = styled.button`
   }
 `;
 
-const Menu = () => {
+const Menu = ({
+  showLogin,
+  setShowLogin,
+  setIsLogin,
+  showSignup,
+  setShowSignup,
+}) => {
+  const showLoginHandler = () => {
+    setShowLogin(true);
+  };
+
+  const showSignupHandler = () => {
+    setShowSignup(true);
+  };
+
   return (
     <Navbar>
       <Logo
@@ -37,9 +53,20 @@ const Menu = () => {
         alt="로고"
       />
       <div>
-        <Button>로그인</Button>
-        <Button>회원가입</Button>
+        <Button onClick={showLoginHandler}>로그인</Button>
+        <Button onClick={showSignupHandler}>회원가입</Button>
       </div>
+      {showLogin ? (
+        <Login
+          setShowLogin={setShowLogin}
+          setIsLogin={setIsLogin}
+          showSignup={showSignup}
+          setShowSignup={setShowSignup}
+        />
+      ) : null}
+      {showSignup ? (
+        <Signup setShowLogin={setShowLogin} setShowSignup={setShowSignup} />
+      ) : null}
     </Navbar>
   );
 };

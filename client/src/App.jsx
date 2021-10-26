@@ -18,6 +18,9 @@ const Container = styled.div`
 
 function App() {
   const [darkMode, setDarkMode] = useState(localStorage.getItem('darkmode'));
+  const [isLogin, setIsLogin] = useState(false);
+  const [showLogin, setShowLogin] = useState(false);
+  const [showSignup, setShowSingup] = useState(false);
   return (
     <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
       <GlobalStyle />
@@ -30,7 +33,14 @@ function App() {
       />
       <Router>
         <Container>
-          <Header />
+          <Header
+            showLogin={showLogin}
+            setShowLogin={setShowLogin}
+            isLogin={isLogin}
+            setIsLogin={setIsLogin}
+            showSignup={showSignup}
+            setShowSignup={setShowSingup}
+          />
           <Switch>
             <Route exact path="/">
               <Home />

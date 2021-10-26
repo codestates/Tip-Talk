@@ -18,7 +18,7 @@ export const lightTheme = {
 
 export const darkTheme = {
   color: Color_6,
-  navColor: '#777',
+  navColor: '#3a3a3a',
   bgColor: Color_5,
   navBgColor: Color_7,
 };
@@ -28,6 +28,7 @@ export const Body = styled.div`
   max-width: 1000px;
   flex: 1 1 0;
   margin: 0 auto;
+  padding: 80px 0;
 `;
 
 export const GlobalStyle = createGlobalStyle`
@@ -40,4 +41,9 @@ export const GlobalStyle = createGlobalStyle`
 export const Scroll = styled.div`
   position: absolute;
   top: 0;
+`;
+
+export const Title = styled.h1`
+  font-size: 26px;
+  color: ${(props) => props.theme.color};
 `;

@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Color_3, Samlib } from '../styles/common';
-import googleButton from '../google-button.png';
 import axios from 'axios';
-import Signup from './Signup';
 
 export const ModalBackdrop = styled.div`
   position: fixed;
@@ -266,7 +264,7 @@ const Login = ({ setShowLogin, setIsLogin, setShowSignup }) => {
           <BottomContainer>
             <div className="bottomSection">
               <GoogleButton
-                src={googleButton}
+                src="google-button.png"
                 alt="google-button"
                 onClick={oauthSignIn}
               ></GoogleButton>

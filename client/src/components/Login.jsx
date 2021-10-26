@@ -185,6 +185,10 @@ const Login = ({ setShowLogin, setIsLogin }) => {
     setShowLogin(false);
   };
 
+  const signupHandler = () => {
+    setShowSignup(true);
+  };
+
   const emailHandler = (e) => {
     setEmail(e.target.value);
   };
@@ -213,10 +217,6 @@ const Login = ({ setShowLogin, setIsLogin }) => {
       .then((res) => setCheckUser(true))
       .then(() => setIsLogin(true))
       .catch((err) => setCheckUser(err.response.data.status));
-  };
-
-  const signupHandler = () => {
-    setShowSignup(true);
   };
 
   return (

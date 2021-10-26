@@ -185,6 +185,10 @@ const Login = ({ setShowLogin, setIsLogin, setShowSignup }) => {
     setShowLogin(false);
   };
 
+  const signupHandler = () => {
+    setShowSignup(true);
+  };
+
   const emailHandler = (e) => {
     setEmail(e.target.value);
   };

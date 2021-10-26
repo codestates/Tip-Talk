@@ -17,18 +17,24 @@ export const ModalBackdrop = styled.div`
   .ModalView {
     border-radius: 10px;
     background-color: #ffffff;
-    width: 600px;
-    height: 700px;
+    width: 38rem;
+    height: 45rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: fixed;
+    left: 50%;
+    top: 40%;
+    transform: translate(-50%, -40%);
   
     .close-btn {
       border-radius: 10px;
-      margin-top: 5px;
       cursor: pointer;
-      position: relative;
-      left: 35rem;
       border: none;
+      position: relative;
+      left: 17rem;
+      top: -5rem;
       background-color: ${Color_3};
-      font-size: 16px;
       :hover {
         box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
       }
@@ -36,16 +42,25 @@ export const ModalBackdrop = styled.div`
       font-family: ${Samlib};
       font-size: 2rem;
     }
+
+    .icon {
+      width: 15rem;
+      position: relative;
+      top: 5rem;
+    }
 `;
 
 export const InputSection = styled.div`
-  width: 600px;
-  height: 300px;
+  width: 38rem;
+  height: 18rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
   .id-line {
-    text-align: center;
-    margin-top: 10rem;
     height: 5rem;
+    position: relative;
+    top: 7rem;
     #id {
       font-size: 1.5rem;
       border-top: none;
@@ -56,8 +71,8 @@ export const InputSection = styled.div`
   }
 
   .password-line {
-    text-align: center;
-    margin-bottom: 2.5rem;
+    position: relative;
+    top: 8rem;
     #password {
       font-size: 1.5rem;
       border-top: none;
@@ -66,6 +81,8 @@ export const InputSection = styled.div`
       outline: none;
     }
     #re-password {
+      position: relative;
+      top: 2rem;
       font-size: 1.5rem;
       border-top: none;
       border-left: none;
@@ -75,8 +92,8 @@ export const InputSection = styled.div`
   }
 
   .nickname-line {
-    text-align: center;
-    margin-bottom: 2.5rem;
+    position: relative;
+    top: 6rem;
     #nickname {
       font-size: 1.5rem;
       border-top: none;
@@ -91,26 +108,27 @@ export const BottomContainer = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
-  margin-top: 3rem;
+  position: relative;
+  top: 10rem;
 
   .signupSubmitButton {
     font-size: 2rem;
-    width: 13rem;
+    width: 12rem;
     height: 3rem;
     border-radius: 10px;
     border: none;
     background-color: ${Color_3};
-    margin-top: 1rem;
     font-family: ${Samlib};
   }
   .toLogin {
+    position: relative;
+    top: 1rem;
     font-size: 2rem;
-    width: 13rem;
+    width: 12rem;
     height: 3rem;
     border-radius: 10px;
     border: none;
     background-color: ${Color_3};
-    margin-top: 1rem;
     font-family: ${Samlib};
   }
 `;
@@ -123,20 +141,42 @@ export const ErrorMessage = styled.div`
 
 export const IdError = styled(ErrorMessage)`
   position: relative;
-  top: 0.5rem;
+  top: -1.5rem;
   left: -4rem;
 `;
 
 export const PasswordError = styled(ErrorMessage)`
   position: relative;
-  top: -1rem;
-  left: 9.5rem;
+  top: 9.5rem;
+  left: -3.5rem;
 `;
 
 export const InsufficientError = styled(ErrorMessage)`
   position: relative;
-  top: -9.3rem;
-  left: 9.5rem;
+  top: 1.5rem;
+  left: -4rem;
+`;
+
+export const RadioSection = styled.div`
+  position: relative;
+  top: 6rem;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  font-family: ${Samlib};
+  .radioContainer {
+    width: 20rem;
+    display: flex;
+    justify-content: space-around;
+  }
+  .owner {
+    display: inline;
+    color: black;
+  }
+  .user {
+    display: inline;
+    color: black;
+  }
 `;
 
 const Signup = ({ setShowLogin, setShowSignup }) => {
@@ -145,6 +185,7 @@ const Signup = ({ setShowLogin, setShowSignup }) => {
   const [rePassword, setRePassword] = useState('');
   const [nickname, setNickname] = useState('');
   const [insufficient, setInsufficient] = useState(false);
+  const [role, setRole] = useState(null);
 
   const closeSignupModal = () => {
     setShowSignup(false);
@@ -170,6 +211,10 @@ const Signup = ({ setShowLogin, setShowSignup }) => {
     setShowLogin(true);
   };
 
+  const roleHandler = (e) => {
+    setRole(e.target.value);
+  };
+
   const emailValidation = () => {
     const regex = /^[a-zA-Z0-9]+@(?:[a-zA-Z0-9]+\.)+[A-Za-z]+$/;
     if (email.length === 0) {
@@ -191,7 +236,8 @@ const Signup = ({ setShowLogin, setShowSignup }) => {
       email.length === 0 ||
       nickname.length === 0 ||
       password.length === 0 ||
-      rePassword.length === 0
+      rePassword.length === 0 ||
+      role === null
     ) {
       setInsufficient(true);
     } else {
@@ -206,6 +252,7 @@ const Signup = ({ setShowLogin, setShowSignup }) => {
           email,
           password,
           nickname,
+          role,
         })
         .then((res) => console.log(res));
     }
@@ -215,6 +262,10 @@ const Signup = ({ setShowLogin, setShowSignup }) => {
     <>
       <ModalBackdrop onClick={closeSignupModal}>
         <div className="ModalView" onClick={(e) => e.stopPropagation()}>
+          <img
+            className="icon"
+            src="https://drawit.s3.ap-northeast-2.amazonaws.com/tip-talk/facebook_cover_photo_1.png"
+          />
           <button onClick={closeSignupModal} className="close-btn">
             &times;
           </button>
@@ -227,9 +278,6 @@ const Signup = ({ setShowLogin, setShowSignup }) => {
                 placeholder="email"
                 onChange={emailHandler}
               />
-              {emailValidation() === false ? (
-                <IdError>이메일 형식을 입력해주세요</IdError>
-              ) : null}
             </div>
             <div className="nickname-line">
               <input
@@ -258,10 +306,37 @@ const Signup = ({ setShowLogin, setShowSignup }) => {
                 onChange={rePasswordHandler}
               />
             </div>
+            {emailValidation() === false ? (
+              <IdError>이메일 형식을 입력해주세요</IdError>
+            ) : null}
             {passwordValidation() === true || rePassword.length === 0 ? null : (
               <PasswordError>비밀번호가 일치하지 않습니다</PasswordError>
             )}
           </InputSection>
+          <RadioSection>
+            <div className="radioContainer">
+              <div>
+                <input
+                  type="radio"
+                  id="owner"
+                  name="role"
+                  value="1"
+                  onClick={roleHandler}
+                />
+                <div className="owner">사업자</div>
+              </div>
+              <div>
+                <input
+                  type="radio"
+                  id="user"
+                  name="role"
+                  value="2"
+                  onClick={roleHandler}
+                />
+                <div className="user">일반인</div>
+              </div>
+            </div>
+          </RadioSection>
           <BottomContainer>
             <button
               className="signupSubmitButton"

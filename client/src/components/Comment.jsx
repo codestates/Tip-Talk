@@ -56,7 +56,7 @@ const Button = styled.button`
   background-color: transparent;
 `;
 
-const Comment = ({ comment, handleEdit }) => {
+const Comment = ({ comment, handleEdit, handleDelete }) => {
   const inputRef = useRef();
   const [isEdit, setIsEdit] = useState(false);
 
@@ -78,8 +78,9 @@ const Comment = ({ comment, handleEdit }) => {
     setIsEdit(false);
   };
 
-  // handleEdit(inputRef.current.value, commentId);
-  // inputRef.current.value = '';
+  const onDelete = () => {
+    handleDelete(comment.id);
+  };
 
   return (
     <CommentContainer>
@@ -96,7 +97,7 @@ const Comment = ({ comment, handleEdit }) => {
               <FontAwesomeIcon onClick={onEditToggle} icon={faPencilAlt} />
             </Button>
             <Button>
-              <FontAwesomeIcon icon={faTrash} />
+              <FontAwesomeIcon onClick={onDelete} icon={faTrash} />
             </Button>
           </>
         )}

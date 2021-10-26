@@ -31,6 +31,7 @@ const Meta = styled.div`
 const Label = styled.div`
   font-size: 14px;
   margin: 6px 0;
+  margin-top: 20px;
   font-weight: 500;
   padding-bottom: 3px;
   border-bottom: 1px solid ${({ theme }) => theme.line};
@@ -131,6 +132,13 @@ const Post = () => {
       });
   };
 
+  const handleDelete = (commentId) => {
+    axios.delete(`http://localhost:8000/comment/${commentId}`).then(() => {
+      const filtered = comments.filter((comment) => comment.id !== commentId);
+      setComments([...filtered]);
+    });
+  };
+
   return (
     <Body>
       <PostContainer>
@@ -160,6 +168,7 @@ const Post = () => {
           comments={comments}
           handleSubmit={handleSubmit}
           handleEdit={handleEdit}
+          handleDelete={handleDelete}
         />
       </PostContainer>
     </Body>

@@ -38,7 +38,7 @@ const CommentSubmit = styled.button`
   background-color: transparent;
 `;
 
-const Comments = ({ comments, handleSubmit, handleEdit }) => {
+const Comments = ({ comments, handleSubmit, handleEdit, handleDelete }) => {
   const inputRef = useRef();
 
   const onHandleSubmit = (e) => {
@@ -50,9 +50,18 @@ const Comments = ({ comments, handleSubmit, handleEdit }) => {
   return (
     <Container>
       <CommentList>
-        {comments?.map((comment) => (
-          <Comment comment={comment} handleEdit={handleEdit} key={comment.id} />
-        ))}
+        {comments.length ? (
+          comments.map((comment) => (
+            <Comment
+              comment={comment}
+              handleEdit={handleEdit}
+              handleDelete={handleDelete}
+              key={comment.id}
+            />
+          ))
+        ) : (
+          <div>아직 보여줄 댓글이 없네요</div>
+        )}
       </CommentList>
       {/* // ToDo 로그인한 사용자만 댓글을 달 수 있도록 변경하기 */}
       <CommentForm>

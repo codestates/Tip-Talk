@@ -16,7 +16,15 @@ const PostContainer = styled.article`
   background-color: ${({ theme }) => theme.navColor};
 `;
 
+const ImageCardForm = styled.ul`
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+`;
+
+const ImageCard = styled.img``;
+
 const Meta = styled.div`
+  margin-top: 20px;
   padding: 0 60px;
   margin-bottom: 20px;
 `;
@@ -30,8 +38,8 @@ const Label = styled.div`
 const Text = styled.div`
   font-size: 24px;
   font-weight: 500;
-  text-align: end;
-  margin-bottom: 10px;
+  padding-left: 20px;
+  margin-bottom: 20px;
 `;
 
 const Post = () => {
@@ -47,8 +55,15 @@ const Post = () => {
     <Body>
       <PostContainer>
         <Carousel images={post?.post.images} />
+        <ImageCardForm>
+          {post?.post.images.map((image, i) => (
+            <li key={i}>
+              <ImageCard src={image} alt="이미지 카드" />
+            </li>
+          ))}
+        </ImageCardForm>
         <Meta>
-          <Label>제목</Label>
+          <Label>장소명</Label>
           <Text>{post?.post.title}</Text>
           <Label>카테고리</Label>
           <Text>여행지</Text> {/* // ToDo 동적 데이터로 변경 */}

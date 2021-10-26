@@ -30,11 +30,7 @@ export const Button = styled.button`
   }
 `;
 
-const Menu = ({ showLogin, setShowLogin, isLogin, setIsLogin }) => {
-  const showLoginHandler = () => {
-    setShowLogin(true);
-  };
-
+const Menu = () => {
   return (
     <Navbar>
       <Logo
@@ -42,12 +38,9 @@ const Menu = ({ showLogin, setShowLogin, isLogin, setIsLogin }) => {
         alt="로고"
       />
       <div>
-        <Button onClick={showLoginHandler}>로그인</Button>
+        <Button>로그인</Button>
         <Button>회원가입</Button>
       </div>
-      {showLogin ? (
-        <Login setShowLogin={setShowLogin} setIsLogin={setIsLogin} />
-      ) : null}
     </Navbar>
   );
 };

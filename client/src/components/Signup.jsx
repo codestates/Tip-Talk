@@ -140,21 +140,21 @@ export const ErrorMessage = styled.div`
 `;
 
 export const IdError = styled(ErrorMessage)`
-  position: relative;
-  top: -1.5rem;
-  left: -4rem;
+  position: fixed;
+  top: 17.5rem;
+  left: 9.5rem;
 `;
 
 export const PasswordError = styled(ErrorMessage)`
-  position: relative;
-  top: 9.5rem;
-  left: -3.5rem;
+  position: fixed;
+  top: 29.5rem;
+  left: 9.5rem;
 `;
 
 export const InsufficientError = styled(ErrorMessage)`
-  position: relative;
-  top: 1.5rem;
-  left: -4rem;
+  position: fixed;
+  top: 35rem;
+  left: 9.5rem;
 `;
 
 export const RadioSection = styled.div`

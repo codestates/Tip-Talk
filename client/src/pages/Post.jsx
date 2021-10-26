@@ -6,6 +6,7 @@ import { useParams } from 'react-router';
 import { data } from '../dummy/post';
 import Carousel from '../components/Carousel';
 import { kakao } from '../App';
+import Comments from '../components/Comments';
 
 const PostContainer = styled.article`
   display: flex;
@@ -51,13 +52,17 @@ const Map = styled.div`
 const Info = styled.h3`
   font-size: 24px;
   font-weight: 500;
-  padding: 10px 0;
+  padding: 10px 3px;
   margin: 30px 15px;
   margin-right: auto;
   border-bottom: 1px solid ${Color_6};
 `;
 
-const Content = styled.div``;
+const Content = styled.div`
+  padding: 10px;
+  border-radius: 6px;
+  background-color: ${({ theme }) => theme.bgColor};
+`;
 
 const Post = () => {
   const [post, setPost] = useState();
@@ -95,7 +100,7 @@ const Post = () => {
       <PostContainer>
         <Meta>
           <div>
-            <Label>장소명</Label>
+            <Label>이름</Label>
             <Text size="24px">{post?.post.title}</Text>
             <Label>조회수</Label>
             <Text>{post?.post.views}</Text>
@@ -109,10 +114,13 @@ const Post = () => {
           </div>
         </Meta>
         <Carousel images={post?.post.images} />
-        <Info>{post?.post.title} 주변엔 어떤 것이 있나요?</Info>
-        <Map id="map"></Map>
+
         <Info>{post?.post.title} 소개</Info>
         <Content>{post?.post.content}</Content>
+        <Info>{post?.post.title} 주변엔 어떤 것이 있나요?</Info>
+        <Map id="map"></Map>
+        <Info>댓글</Info>
+        <Comments />
       </PostContainer>
     </Body>
   );

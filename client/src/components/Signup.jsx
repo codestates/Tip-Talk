@@ -266,6 +266,7 @@ const Signup = ({ setShowLogin, setShowSignup }) => {
           <img
             className="icon"
             src="https://drawit.s3.ap-northeast-2.amazonaws.com/tip-talk/facebook_cover_photo_1.png"
+            alt="logo"
           />
           <button onClick={closeSignupModal} className="close-btn">
             &times;

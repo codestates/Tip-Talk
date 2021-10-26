@@ -106,6 +106,31 @@ const Post = () => {
     });
   }, []);
 
+  const handleSubmit = (text) => {
+    axios
+      .post(`http://localhost:8000/comment/${postId}`, { text })
+      .then(({ data }) => {
+        if (data.status) {
+          setComments([...comments, data.data]);
+        }
+      });
+  };
+
+  const handleEdit = (text, commentId) => {
+    axios
+      .patch(`http://localhost:8000/comment/${commentId}`, { text })
+      .then(({ data }) => {
+        if (data.status) {
+          comments.forEach((comment) => {
+            if (comment.id === commentId) {
+              comment.text = data.data.text;
+            }
+          });
+          setComments([...comments]);
+        }
+      });
+  };
+
   return (
     <Body>
       <PostContainer>
@@ -131,7 +156,11 @@ const Post = () => {
         <Info>{post?.post.title} 주변엔 어떤 것이 있나요?</Info>
         <Map id="map"></Map>
         <Info>댓글</Info>
-        <Comments comments={comments} />
+        <Comments
+          comments={comments}
+          handleSubmit={handleSubmit}
+          handleEdit={handleEdit}
+        />
       </PostContainer>
     </Body>
   );

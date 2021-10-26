@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
 import styled, { ThemeProvider } from 'styled-components';
 import { Coin } from './components/Coin';
@@ -21,6 +21,7 @@ function App() {
   const [isLogin, setIsLogin] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
   const [showSignup, setShowSingup] = useState(false);
+
   return (
     <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
       <GlobalStyle />

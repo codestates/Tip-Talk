@@ -34,6 +34,7 @@ const Button = styled.button`
 const Menu = ({
   showLogin,
   setShowLogin,
+  isLogin,
   setIsLogin,
   showSignup,
   setShowSignup,
@@ -59,6 +60,7 @@ const Menu = ({
       {showLogin ? (
         <Login
           setShowLogin={setShowLogin}
+          isLogin={isLogin}
           setIsLogin={setIsLogin}
           showSignup={showSignup}
           setShowSignup={setShowSignup}

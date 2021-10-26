@@ -31,9 +31,6 @@ export const Button = styled.button`
   }
 `;
 
-<<<<<<< HEAD
-const Menu = () => {
-=======
 const Menu = ({
   showLogin,
   setShowLogin,
@@ -49,7 +46,6 @@ const Menu = ({
     setShowSignup(true);
   };
 
->>>>>>> 35c3c19
   return (
     <Navbar>
       <Logo
@@ -57,11 +53,6 @@ const Menu = ({
         alt="로고"
       />
       <div>
-<<<<<<< HEAD
-        <Button>로그인</Button>
-        <Button>회원가입</Button>
-      </div>
-=======
         <Button onClick={showLoginHandler}>로그인</Button>
         <Button onClick={showSignupHandler}>회원가입</Button>
       </div>
@@ -76,7 +67,6 @@ const Menu = ({
       {showSignup ? (
         <Signup setShowLogin={setShowLogin} setShowSignup={setShowSignup} />
       ) : null}
->>>>>>> 35c3c19
     </Navbar>
   );
 };

@@ -24,6 +24,7 @@ function App() {
   const [darkMode, setDarkMode] = useState(localStorage.getItem('darkmode'));
   const [isLogin, setIsLogin] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
+  const [showSignup, setShowSingup] = useState(false);
 
   return (
     <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
@@ -42,6 +43,8 @@ function App() {
               setShowLogin={setShowLogin}
               isLogin={isLogin}
               setIsLogin={setIsLogin}
+              showSignup={showSignup}
+              setShowSignup={setShowSingup}
             />
           <Switch>
             <Route exact path="/">

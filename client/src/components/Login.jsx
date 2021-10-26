@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { Color_3, Samlib } from '../styles/common';
 import googleButton from '../google-button.png';
 import axios from 'axios';
+import Signup from './Signup';
 
 export const ModalBackdrop = styled.div`
   position: fixed;
@@ -15,40 +16,57 @@ export const ModalBackdrop = styled.div`
   display: grid;
   place-items: center;
 
-  .ModalView {
+  .modalView {
     border-radius: 10px;
     background-color: #ffffff;
-    width: 600px;
-    height: 600px;
-  
-    .close-btn {
-      border-radius: 10px;
-      margin-top: 5px;
-      cursor: pointer;
-      position: relative;
-      left: 17.5em;
-      border: none;
-      background-color: ${Color_3};
-      font-size: 16px;
-      :hover {
-        box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
-      }
-      transition-duration: 0.3s;
-      font-family: ${Samlib};
-      font-size: 2em;
+    width: 38rem;
+    height: 38rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: fixed;
+    left: 50%;
+    top: 40%;
+
+    transform: translate(-50%, -40%);
+  }
+  .close-btn {
+    border-radius: 10px;
+    top: -5rem;
+    cursor: pointer;
+    position: relative;
+    left: 17rem;
+    border: none;
+    background-color: ${Color_3};
+    :hover {
+      box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24),
+        0 17px 50px 0 rgba(0, 0, 0, 0.19);
     }
+    transition-duration: 0.3s;
+    font-family: ${Samlib};
+    font-size: 2rem;
+  }
+
+  .icon {
+    width: 15rem;
+    position: relative;
+    top: 5rem;
+  }
 `;
 
 export const InputSection = styled.div`
-  width: 600px;
-  height: 300px;
+  width: 38rem;
+  height: 18rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
   .id-line {
-    text-align: center;
-    margin-top: 10em;
-    height: 5em;
+    position: relative;
+    top: 7rem;
+    height: 5rem;
     #id {
-      font-size: 1.5em;
+      font-size: 1.5rem;
       border-top: none;
       border-left: none;
       border-right: none;
@@ -57,9 +75,10 @@ export const InputSection = styled.div`
   }
 
   .password-line {
-    text-align: center;
+    position: relative;
+    top: 7rem;
     #password {
-      font-size: 1.5em;
+      font-size: 1.5rem;
       border-top: none;
       border-left: none;
       border-right: none;
@@ -69,38 +88,33 @@ export const InputSection = styled.div`
 `;
 
 export const LoginButtonContainer = styled.div`
-  margin-top: -10em;
-  text-align: center;
   .loginButton {
-    font-size: 2em;
-    width: 8em;
-    height: 1.5em;
+    font-size: 2rem;
+    width: 12rem;
+    height: 3rem;
     border-radius: 10px;
     border: none;
     background-color: ${Color_3};
-    margin-top: 1em;
     font-family: ${Samlib};
   }
 `;
 
 export const BottomContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  margin-top: 3em;
-
   .bottomSection {
     display: flex;
     justify-content: space-around;
-    width: 30em;
-
+    width: 30rem;
+    position: relative;
+    top: 4rem;
     .signupButton {
-      font-size: 2em;
-      width: 6em;
-      height: 1.5em;
+      font-size: 2rem;
+      position: relative;
+      top: 0.5rem;
+      width: 12rem;
+      height: 3rem;
       border-radius: 10px;
       border: none;
       background-color: ${Color_3};
-      margin-top: 0.2em;
       font-family: ${Samlib};
     }
   }
@@ -114,18 +128,18 @@ export const ErrorMessage = styled.div`
 
 export const IdError = styled(ErrorMessage)`
   position: relative;
-  top: 0.5em;
-  left: -4em;
+  top: 0.5rem;
+  left: -4rem;
 `;
 
 export const PasswordError = styled(ErrorMessage)`
   position: relative;
-  top: 0.5em;
-  left: -1.3em;
+  top: 0.5rem;
+  left: -1.3rem;
 `;
 
 export const GoogleButton = styled.img`
-  width: 15em;
+  width: 15rem;
   cursor: pointer;
 `;
 
@@ -142,7 +156,7 @@ const oauthSignIn = () => {
   var params = {
     client_id:
       '529912951931-8sp74vii7gf3nkuslvq4i47d85dcjvd3.apps.googleusercontent.com',
-    redirect_uri: 'http://localhost:3000',
+    redirect_uri: 'http://localhost:3000/main',
     response_type: 'token',
     scope: 'https://www.googleapis.com/auth/drive.metadata.readonly',
     include_granted_scopes: 'true',
@@ -163,18 +177,17 @@ const oauthSignIn = () => {
   form.submit();
 };
 
-const Login = ({ setShowLogin, setIsLogin }) => {
+const Login = ({ setShowLogin, setIsLogin, setShowSignup }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [checkUser, setCheckUser] = useState(null);
-  const [showSignup, setShowSignup] = useState(false);
 
   const closeLoginModal = () => {
     setShowLogin(false);
   };
 
-  const closeSignupModal = () => {
-    setShowSignup(false);
+  const signupHandler = () => {
+    setShowSignup(true);
   };
 
   const emailHandler = (e) => {
@@ -207,14 +220,14 @@ const Login = ({ setShowLogin, setIsLogin }) => {
       .catch((err) => setCheckUser(err.response.data.status));
   };
 
-  const signupHandler = () => {
-    setShowSignup(true);
-  };
-
   return (
     <>
       <ModalBackdrop onClick={closeLoginModal}>
-        <div className="ModalView" onClick={(e) => e.stopPropagation()}>
+        <div className="modalView" onClick={(e) => e.stopPropagation()}>
+          <img
+            className="icon"
+            src="https://drawit.s3.ap-northeast-2.amazonaws.com/tip-talk/facebook_cover_photo_1.png"
+          />
           <button onClick={closeLoginModal} className="close-btn">
             &times;
           </button>
@@ -258,7 +271,10 @@ const Login = ({ setShowLogin, setIsLogin }) => {
                 alt="google-button"
                 onClick={oauthSignIn}
               ></GoogleButton>
-              <button className="signupButton" onClick={signupHandler}>
+              <button
+                className="signupButton"
+                onClick={() => [signupHandler(), closeLoginModal()]}
+              >
                 회원가입
               </button>
             </div>

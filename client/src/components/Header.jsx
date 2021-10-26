@@ -10,7 +10,14 @@ const HeaderContainer = styled.header`
   background-color: ${(props) => props.theme.navBgColor};
 `;
 
-const Header = ({ showLogin, setShowLogin, isLogin, setIsLogin }) => {
+const Header = ({
+  showLogin,
+  setShowLogin,
+  isLogin,
+  setIsLogin,
+  showSignup,
+  setShowSignup,
+}) => {
   return (
     <>
       {isLogin === false ? (
@@ -20,11 +27,13 @@ const Header = ({ showLogin, setShowLogin, isLogin, setIsLogin }) => {
             setShowLogin={setShowLogin}
             isLogin={isLogin}
             setIsLogin={setIsLogin}
+            showSignup={showSignup}
+            setShowSignup={setShowSignup}
           />
         </HeaderContainer>
       ) : (
         <HeaderContainer>
-          <MenuAfterLogin />
+          <MenuAfterLogin setIsLogin={setIsLogin} setShowLogin={setShowLogin} />
         </HeaderContainer>
       )}
     </>

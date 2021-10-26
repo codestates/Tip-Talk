@@ -5,14 +5,14 @@ import { Samlib } from '../styles/common';
 const Navbar = styled.nav`
   display: flex;
   max-width: 1000px;
-  height: 120px;
+  height: 70px;
   margin: 0 auto;
   align-items: center;
   justify-content: space-between;
 `;
 
 const Logo = styled.img`
-  width: 100px;
+  width: 60px;
 `;
 
 export const Button = styled.button`
@@ -29,7 +29,15 @@ export const Button = styled.button`
   }
 `;
 
-const MenuAfterLogin = ({ isLogin }) => {
+const MenuAfterLogin = ({ setIsLogin, setShowLogin }) => {
+  const logoutHandler = () => {
+    setIsLogin(false);
+  };
+
+  const showLoginHandler = () => {
+    setShowLogin(false);
+  };
+
   return (
     <Navbar>
       <Logo
@@ -38,7 +46,9 @@ const MenuAfterLogin = ({ isLogin }) => {
       />
       <div>
         <Button>마이페이지</Button>
-        <Button>로그아웃</Button>
+        <Button onClick={() => [logoutHandler(), showLoginHandler()]}>
+          로그아웃
+        </Button>
       </div>
     </Navbar>
   );

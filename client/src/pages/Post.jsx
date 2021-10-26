@@ -33,7 +33,7 @@ const Label = styled.div`
   margin: 6px 0;
   font-weight: 500;
   padding-bottom: 3px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  border-bottom: 1px solid ${({ theme }) => theme.line};
 `;
 
 const Text = styled.div`
@@ -55,7 +55,7 @@ const Info = styled.h3`
   padding: 10px 3px;
   margin: 30px 15px;
   margin-right: auto;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  border-bottom: 1px solid ${({ theme }) => theme.line};
 `;
 
 const Content = styled.div`
@@ -66,11 +66,14 @@ const Content = styled.div`
 
 const Post = () => {
   const [post, setPost] = useState();
+  const [comments, setComments] = useState();
   const { postId } = useParams();
 
   useEffect(() => {
     // * 서버로부터 데이터 받아오기
     axios.get(`http://localhost:8000/post/${postId}`).then(({ data }) => {
+      // * setPost(data.data.post)
+
       const MapContainer = document.getElementById('map');
       const lat = data.data[0].post.lat;
       const lng = data.data[0].post.lng;
@@ -91,8 +94,16 @@ const Post = () => {
 
       // ToDo 주변위치 정보 받아오기
     });
+
+    // ! 더미데이터는 나중에 삭제하기
     const getPost = data.find((d) => d.post.id === +postId);
     setPost({ ...getPost });
+
+    // * Comment 데이터 받아오기
+
+    axios.get(`http://localhost:8000/comment/${postId}`).then(({ data }) => {
+      setComments(data.data);
+    });
   }, []);
 
   return (
@@ -120,7 +131,7 @@ const Post = () => {
         <Info>{post?.post.title} 주변엔 어떤 것이 있나요?</Info>
         <Map id="map"></Map>
         <Info>댓글</Info>
-        <Comments />
+        <Comments comments={comments} />
       </PostContainer>
     </Body>
   );

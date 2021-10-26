@@ -58,9 +58,9 @@ export const InputSection = styled.div`
   align-items: center;
 
   .id-line {
-    height: 5rem;
+    height: 4rem;
     position: relative;
-    top: 7rem;
+    top: 6rem;
     #id {
       font-size: 1.5rem;
       border-top: none;
@@ -73,6 +73,7 @@ export const InputSection = styled.div`
   .password-line {
     position: relative;
     top: 8rem;
+    height: 2rem;
     #password {
       font-size: 1.5rem;
       border-top: none;
@@ -140,21 +141,21 @@ export const ErrorMessage = styled.div`
 `;
 
 export const IdError = styled(ErrorMessage)`
-  position: relative;
-  top: -1.5rem;
-  left: -4rem;
+  position: fixed;
+  top: 16.5rem;
+  left: 9.5rem;
 `;
 
 export const PasswordError = styled(ErrorMessage)`
-  position: relative;
-  top: 9.5rem;
-  left: -3.5rem;
+  position: fixed;
+  top: 28.5rem;
+  left: 9.5rem;
 `;
 
 export const InsufficientError = styled(ErrorMessage)`
-  position: relative;
-  top: 1.5rem;
-  left: -4rem;
+  position: fixed;
+  top: 34.5rem;
+  left: 9.5rem;
 `;
 
 export const RadioSection = styled.div`
@@ -279,6 +280,9 @@ const Signup = ({ setShowLogin, setShowSignup }) => {
                 onChange={emailHandler}
               />
             </div>
+            {emailValidation() === false ? (
+              <IdError>이메일 형식을 입력해주세요</IdError>
+            ) : null}
             <div className="nickname-line">
               <input
                 type="text"
@@ -306,9 +310,6 @@ const Signup = ({ setShowLogin, setShowSignup }) => {
                 onChange={rePasswordHandler}
               />
             </div>
-            {emailValidation() === false ? (
-              <IdError>이메일 형식을 입력해주세요</IdError>
-            ) : null}
             {passwordValidation() === true || rePassword.length === 0 ? null : (
               <PasswordError>비밀번호가 일치하지 않습니다</PasswordError>
             )}

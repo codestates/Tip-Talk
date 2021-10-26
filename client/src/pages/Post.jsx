@@ -31,6 +31,7 @@ const Meta = styled.div`
 const Label = styled.div`
   font-size: 14px;
   margin: 6px 0;
+  margin-top: 20px;
   font-weight: 500;
   padding-bottom: 3px;
   border-bottom: 1px solid ${({ theme }) => theme.line};
@@ -106,6 +107,38 @@ const Post = () => {
     });
   }, []);
 
+  const handleSubmit = (text) => {
+    axios
+      .post(`http://localhost:8000/comment/${postId}`, { text })
+      .then(({ data }) => {
+        if (data.status) {
+          setComments([...comments, data.data]);
+        }
+      });
+  };
+
+  const handleEdit = (text, commentId) => {
+    axios
+      .patch(`http://localhost:8000/comment/${commentId}`, { text })
+      .then(({ data }) => {
+        if (data.status) {
+          comments.forEach((comment) => {
+            if (comment.id === commentId) {
+              comment.text = data.data.text;
+            }
+          });
+          setComments([...comments]);
+        }
+      });
+  };
+
+  const handleDelete = (commentId) => {
+    axios.delete(`http://localhost:8000/comment/${commentId}`).then(() => {
+      const filtered = comments.filter((comment) => comment.id !== commentId);
+      setComments([...filtered]);
+    });
+  };
+
   return (
     <Body>
       <PostContainer>
@@ -131,7 +164,12 @@ const Post = () => {
         <Info>{post?.post.title} 주변엔 어떤 것이 있나요?</Info>
         <Map id="map"></Map>
         <Info>댓글</Info>
-        <Comments comments={comments} />
+        <Comments
+          comments={comments}
+          handleSubmit={handleSubmit}
+          handleEdit={handleEdit}
+          handleDelete={handleDelete}
+        />
       </PostContainer>
     </Body>
   );

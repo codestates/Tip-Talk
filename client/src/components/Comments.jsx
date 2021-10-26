@@ -1,10 +1,9 @@
-import { faPencilAlt, faTrash } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React from 'react';
+import React, { useRef } from 'react';
 import styled from 'styled-components';
-import { Color_1, Color_4 } from '../styles/common';
+import { Color_1 } from '../styles/common';
+import Comment from './Comment';
 
-const CommentContainer = styled.section`
+const Container = styled.section`
   border-radius: 6px;
   background-color: ${({ theme }) => theme.bgColor};
 `;
@@ -12,34 +11,6 @@ const CommentContainer = styled.section`
 const CommentList = styled.ul`
   padding: 20px;
   margin-bottom: 20px;
-`;
-
-const Comment = styled.li`
-  display: flex;
-  font-size: 15px;
-  align-items: center;
-  justify-content: space-between;
-`;
-
-const Left = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
-const Text = styled.span`
-  font-weight: ${({ weight }) => (weight ? weight : 400)};
-  margin-right: 6px;
-`;
-
-const Right = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
-const Button = styled.button`
-  border: none;
-  color: ${Color_4};
-  background-color: transparent;
 `;
 
 const CommentForm = styled.form`
@@ -67,34 +38,39 @@ const CommentSubmit = styled.button`
   background-color: transparent;
 `;
 
-const Comments = ({ comments }) => {
+const Comments = ({ comments, handleSubmit, handleEdit, handleDelete }) => {
+  const inputRef = useRef();
+
+  const onHandleSubmit = (e) => {
+    e.preventDefault();
+    handleSubmit(inputRef.current.value);
+    inputRef.current.value = '';
+  };
+
   return (
-    <CommentContainer>
+    <Container>
       <CommentList>
-        {comments?.map((comment) => (
-          <Comment key={comment.id}>
-            <Left>
-              <Text weight="bold">{comment.nickname}</Text>
-              <Text>{comment.text}</Text>
-              <Button>
-                <FontAwesomeIcon icon={faTrash} />
-              </Button>
-              <Button>
-                <FontAwesomeIcon icon={faPencilAlt} />
-              </Button>
-            </Left>
-            <Right>
-              <Text>{comment.updatedAt}</Text>
-            </Right>
-          </Comment>
-        ))}
+        {comments.length ? (
+          comments.map((comment) => (
+            <Comment
+              comment={comment}
+              handleEdit={handleEdit}
+              handleDelete={handleDelete}
+              key={comment.id}
+            />
+          ))
+        ) : (
+          <div>아직 보여줄 댓글이 없네요</div>
+        )}
       </CommentList>
       {/* // ToDo 로그인한 사용자만 댓글을 달 수 있도록 변경하기 */}
       <CommentForm>
-        <CommentInput placeholder="댓글을 입력해주세요" />
-        <CommentSubmit>확인</CommentSubmit>
+        <CommentInput ref={inputRef} placeholder="댓글을 입력해주세요" />
+        <CommentSubmit type="submit" onClick={onHandleSubmit}>
+          확인
+        </CommentSubmit>
       </CommentForm>
-    </CommentContainer>
+    </Container>
   );
 };
 

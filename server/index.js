@@ -10,7 +10,7 @@ const { commentRouter } = require('./router/comment');
 const { categoryRouter } = require('./router/category');
 
 const app = express();
-const port = process.env.PORT || 8000;
+const port = process.env.PORT;
 
 app.use(cors({ origin: true, credentials: true }));
 app.use(express.json());

@@ -14,6 +14,7 @@ export const lightTheme = {
   navColor: Color_3,
   bgColor: 'white',
   navBgColor: Color_1,
+  line: 'rgba(0, 0, 0, 0.2)',
 };
 
 export const darkTheme = {
@@ -21,6 +22,7 @@ export const darkTheme = {
   navColor: '#3a3a3a',
   bgColor: Color_5,
   navBgColor: Color_7,
+  line: 'rgba(255, 255, 255, 0.4)',
 };
 
 export const Body = styled.div`

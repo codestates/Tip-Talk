@@ -1,4 +1,5 @@
-import React, { useRef, useState } from 'react';
+import axios from 'axios';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { Coin } from '../components/Coin';
 import KakaoMap from '../components/KakaoMap';
@@ -22,6 +23,11 @@ const Main = () => {
     // ToDo Axios getPosts로 필터된 posts 불러오기
     // setFilteredPosts();
   };
+
+  // ToDo getPost 완성되면 데이터 받아오기
+  // useEffect(()=>{
+  //   axios.get('http://localhost:8000/post')
+  // })
 
   return (
     <>

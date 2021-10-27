@@ -6,25 +6,37 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       userId: {
-        type: Sequelize.INTEGER
+        allowNull: true,
+        type: Sequelize.INTEGER,
+        onDelete: 'cascade',
+        references: {
+          model: 'users',
+          key: 'id',
+        },
       },
       postId: {
-        type: Sequelize.INTEGER
+        allowNull: true,
+        type: Sequelize.INTEGER,
+        onDelete: 'cascade',
+        references: {
+          model: 'posts',
+          key: 'id',
+        },
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
-      }
+        type: Sequelize.DATE,
+      },
     });
   },
   down: async (queryInterface, Sequelize) => {
     await queryInterface.dropTable('user_place_likes');
-  }
+  },
 };

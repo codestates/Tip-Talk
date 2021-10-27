@@ -11,6 +11,7 @@ import NotFound from './pages/NotFound';
 import Post from './pages/Post';
 import UploadPost from './pages/UploadPost';
 import { darkTheme, GlobalStyle, lightTheme } from './styles/common';
+import axios from 'axios';
 
 const Container = styled.div`
   display: flex;
@@ -26,6 +27,40 @@ function App() {
   const [isLogin, setIsLogin] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
   const [showSignup, setShowSingup] = useState(false);
+
+  useEffect(() => {
+    const fragmentString = window.location.hash.substring(1);
+    // Parse query string to see if page request is coming from OAuth 2.0 server.
+    const params = {};
+    let regex = /([^&=]+)=([^&]*)/g,
+      m;
+    while ((m = regex.exec(fragmentString))) {
+      params[decodeURIComponent(m[1])] = decodeURIComponent(m[2]);
+    }
+    if (Object.keys(params).length > 0) {
+      localStorage.setItem('tiptalk-oauth2', JSON.stringify(params));
+      if (params['state'] && params['state'] === 'tiptalk') {
+        const params = JSON.parse(localStorage.getItem('tiptalk-oauth2'));
+        if (params && params['access_token']) {
+          axios
+            .get(
+              `https://www.googleapis.com/oauth2/v2/userinfo?access_token=${params['access_token']}`,
+              {
+                headers: {
+                  authorization: `token ${params['access_token']}`,
+                  accept: 'application/json',
+                },
+              },
+            )
+            .then((res) => {
+              if (res.data) {
+                setIsLogin(true);
+              }
+            });
+        }
+      }
+    }
+  }, []);
 
   return (
     <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>

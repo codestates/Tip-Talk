@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Samlib } from '../styles/common';
+import axios from 'axios';
 
 const Navbar = styled.nav`
   display: flex;
@@ -38,6 +39,13 @@ const MenuAfterLogin = ({ setIsLogin, setShowLogin }) => {
     setShowLogin(false);
   };
 
+  const googleRevoke = () => {
+    const params = JSON.parse(localStorage.getItem('tiptalk-oauth2'));
+    axios.post(
+      `https://oauth2.googleapis.com/revoke?token=${params['access_token']}`,
+    );
+  };
+
   return (
     <Navbar>
       <Logo
@@ -46,7 +54,9 @@ const MenuAfterLogin = ({ setIsLogin, setShowLogin }) => {
       />
       <div>
         <Button>마이페이지</Button>
-        <Button onClick={() => [logoutHandler(), showLoginHandler()]}>
+        <Button
+          onClick={() => [logoutHandler(), showLoginHandler(), googleRevoke()]}
+        >
           로그아웃
         </Button>
       </div>

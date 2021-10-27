@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Color_3, Samlib } from '../styles/common';
 import axios from 'axios';
 
-export const ModalBackdrop = styled.div`
+const ModalBackdrop = styled.div`
   position: fixed;
   z-index: 999;
   top: 0;
@@ -52,7 +52,7 @@ export const ModalBackdrop = styled.div`
   }
 `;
 
-export const InputSection = styled.div`
+const InputSection = styled.div`
   width: 38rem;
   height: 18rem;
   display: flex;
@@ -85,7 +85,7 @@ export const InputSection = styled.div`
   }
 `;
 
-export const LoginButtonContainer = styled.div`
+const LoginButtonContainer = styled.div`
   .loginButton {
     font-size: 2rem;
     width: 12rem;
@@ -97,7 +97,7 @@ export const LoginButtonContainer = styled.div`
   }
 `;
 
-export const BottomContainer = styled.div`
+const BottomContainer = styled.div`
   .bottomSection {
     display: flex;
     justify-content: space-around;
@@ -118,25 +118,25 @@ export const BottomContainer = styled.div`
   }
 `;
 
-export const ErrorMessage = styled.div`
+const ErrorMessage = styled.div`
   color: red;
   font-family: ${Samlib};
   border: black;
 `;
 
-export const IdError = styled(ErrorMessage)`
+const IdError = styled(ErrorMessage)`
   position: relative;
   top: 0.5rem;
   left: 0.5rem;
 `;
 
-export const PasswordError = styled(ErrorMessage)`
+const PasswordError = styled(ErrorMessage)`
   position: relative;
   top: 0.5rem;
   left: 0.5rem;
 `;
 
-export const GoogleButton = styled.img`
+const GoogleButton = styled.img`
   width: 15rem;
   cursor: pointer;
 `;

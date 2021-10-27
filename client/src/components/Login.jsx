@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Color_3, Samlib } from '../styles/common';
-import googleButton from '../google-button.png';
 import axios from 'axios';
-import Signup from './Signup';
 
 export const ModalBackdrop = styled.div`
   position: fixed;
@@ -129,13 +127,13 @@ export const ErrorMessage = styled.div`
 export const IdError = styled(ErrorMessage)`
   position: relative;
   top: 0.5rem;
-  left: -4rem;
+  left: 0.5rem;
 `;
 
 export const PasswordError = styled(ErrorMessage)`
   position: relative;
   top: 0.5rem;
-  left: -1.3rem;
+  left: 0.5rem;
 `;
 
 export const GoogleButton = styled.img`
@@ -267,7 +265,7 @@ const Login = ({ setShowLogin, setIsLogin, setShowSignup }) => {
           <BottomContainer>
             <div className="bottomSection">
               <GoogleButton
-                src={googleButton}
+                src="google-button.png"
                 alt="google-button"
                 onClick={oauthSignIn}
               ></GoogleButton>

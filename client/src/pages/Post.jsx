@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
-import { Body } from '../styles/common';
+import { Body, Info, Label, Meta, Text } from '../styles/common';
 import { useParams } from 'react-router';
 import { data } from '../dummy/post';
 import Carousel from '../components/Carousel';
@@ -18,45 +18,10 @@ const PostContainer = styled.article`
   background-color: ${({ theme }) => theme.navColor};
 `;
 
-const Meta = styled.div`
-  display: flex;
-  margin: 20px 0;
-  margin-bottom: 35px;
-  padding: 10px 45px;
-  background-color: ${({ theme }) => theme.bgColor};
-  border-radius: 6px;
-  justify-content: space-between;
-`;
-
-const Label = styled.div`
-  font-size: 14px;
-  margin: 6px 0;
-  margin-top: 20px;
-  font-weight: 500;
-  padding-bottom: 3px;
-  border-bottom: 1px solid ${({ theme }) => theme.line};
-`;
-
-const Text = styled.div`
-  font-size: ${({ size }) => (size ? size : '18px')};
-  font-weight: 500;
-  margin-left: 20px;
-  margin-bottom: 20px;
-`;
-
 const Map = styled.div`
   width: 100%;
   height: 360px;
   border-radius: 8px;
-`;
-
-const Info = styled.h3`
-  font-size: 24px;
-  font-weight: 500;
-  padding: 10px 3px;
-  margin: 30px 15px;
-  margin-right: auto;
-  border-bottom: 1px solid ${({ theme }) => theme.line};
 `;
 
 const Content = styled.div`
@@ -144,7 +109,7 @@ const Post = () => {
       <PostContainer>
         <Meta>
           <div>
-            <Label>이름</Label>
+            <Label>상호명</Label>
             <Text size="24px">{post?.post.title}</Text>
             <Label>조회수</Label>
             <Text>{post?.post.views}</Text>
@@ -158,7 +123,6 @@ const Post = () => {
           </div>
         </Meta>
         <Carousel images={post?.post.images} />
-
         <Info>{post?.post.title} 소개</Info>
         <Content>{post?.post.content}</Content>
         <Info>{post?.post.title} 주변엔 어떤 것이 있나요?</Info>

@@ -1,9 +1,9 @@
 import styled, { createGlobalStyle } from 'styled-components';
 
 export const Color_1 = '#2C73D2';
-export const Color_2 = '#D5A419';
+export const Color_2 = '#fac125';
 export const Color_3 = '#E5F0FF';
-export const Color_4 = 'orangered';
+export const Color_4 = '#ff6e3a';
 export const Color_5 = '#2a2a2a';
 export const Color_6 = '#888';
 export const Color_7 = '#1a1a1a';
@@ -48,4 +48,40 @@ export const Scroll = styled.div`
 export const Title = styled.h1`
   font-size: 26px;
   color: ${(props) => props.theme.color};
+`;
+
+export const Meta = styled.div`
+  display: flex;
+  width: 100%;
+  margin: 20px 0;
+  margin-bottom: 35px;
+  padding: 10px 45px;
+  background-color: ${({ theme }) => theme.bgColor};
+  border-radius: 6px;
+  justify-content: space-between;
+`;
+
+export const Label = styled.div`
+  font-size: 14px;
+  margin: 6px 0;
+  margin-top: 20px;
+  font-weight: 500;
+  padding-bottom: 3px;
+  border-bottom: 1px solid ${({ theme }) => theme.line};
+`;
+
+export const Text = styled.div`
+  font-size: ${({ size }) => (size ? size : '18px')};
+  font-weight: 500;
+  margin-left: 20px;
+  margin-bottom: 20px;
+`;
+
+export const Info = styled.h3`
+  font-size: 24px;
+  font-weight: 500;
+  padding: 10px 3px;
+  margin: 30px 15px;
+  margin-right: auto;
+  border-bottom: 1px solid ${({ theme }) => theme.line};
 `;

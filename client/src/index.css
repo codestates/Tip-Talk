@@ -139,6 +139,17 @@ table {
   font-style: normal;
 }
 
+@keyframes scale {
+  from {
+    transform: scale(0.3);
+    opacity: 0.3;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
 * {
   box-sizing: border-box;
 }

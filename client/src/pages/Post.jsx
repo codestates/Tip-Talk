@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
-import { Body } from '../styles/common';
+import { Body, Label, Meta, Text } from '../styles/common';
 import { useParams } from 'react-router';
 import { data } from '../dummy/post';
 import Carousel from '../components/Carousel';
@@ -16,32 +16,6 @@ const PostContainer = styled.article`
   padding: 50px 80px;
   border-radius: 8px;
   background-color: ${({ theme }) => theme.navColor};
-`;
-
-const Meta = styled.div`
-  display: flex;
-  margin: 20px 0;
-  margin-bottom: 35px;
-  padding: 10px 45px;
-  background-color: ${({ theme }) => theme.bgColor};
-  border-radius: 6px;
-  justify-content: space-between;
-`;
-
-const Label = styled.div`
-  font-size: 14px;
-  margin: 6px 0;
-  margin-top: 20px;
-  font-weight: 500;
-  padding-bottom: 3px;
-  border-bottom: 1px solid ${({ theme }) => theme.line};
-`;
-
-const Text = styled.div`
-  font-size: ${({ size }) => (size ? size : '18px')};
-  font-weight: 500;
-  margin-left: 20px;
-  margin-bottom: 20px;
 `;
 
 const Map = styled.div`

@@ -49,3 +49,29 @@ export const Title = styled.h1`
   font-size: 26px;
   color: ${(props) => props.theme.color};
 `;
+
+export const Meta = styled.div`
+  display: flex;
+  margin: 20px 0;
+  margin-bottom: 35px;
+  padding: 10px 45px;
+  background-color: ${({ theme }) => theme.bgColor};
+  border-radius: 6px;
+  justify-content: space-between;
+`;
+
+export const Label = styled.div`
+  font-size: 14px;
+  margin: 6px 0;
+  margin-top: 20px;
+  font-weight: 500;
+  padding-bottom: 3px;
+  border-bottom: 1px solid ${({ theme }) => theme.line};
+`;
+
+export const Text = styled.div`
+  font-size: ${({ size }) => (size ? size : '18px')};
+  font-weight: 500;
+  margin-left: 20px;
+  margin-bottom: 20px;
+`;

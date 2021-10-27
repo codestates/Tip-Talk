@@ -30,6 +30,7 @@ const ModalContainer = styled.div`
   -webkit-box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.55);
   -moz-box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.55);
   align-items: center;
+  animation: 0.15s scale;
 `;
 
 const CloseButton = styled.button`

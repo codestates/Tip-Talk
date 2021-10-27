@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 import Menu from './Menu';
-import MenuAfterLogin from './MenuAfterLogin';
 
 const HeaderContainer = styled.header`
   width: 100%;
@@ -13,27 +12,27 @@ const HeaderContainer = styled.header`
 const Header = ({
   showLogin,
   setShowLogin,
-  isLogin,
-  setIsLogin,
+  user,
+  setUser,
   showSignup,
   setShowSignup,
 }) => {
   return (
     <>
-      {isLogin === false ? (
+      {user === null || user === undefined ? (
         <HeaderContainer>
           <Menu
             showLogin={showLogin}
             setShowLogin={setShowLogin}
-            isLogin={isLogin}
-            setIsLogin={setIsLogin}
+            user={user}
+            setUser={setUser}
             showSignup={showSignup}
             setShowSignup={setShowSignup}
           />
         </HeaderContainer>
       ) : (
         <HeaderContainer>
-          <MenuAfterLogin setIsLogin={setIsLogin} setShowLogin={setShowLogin} />
+          <Menu setUser={setUser} setShowLogin={setShowLogin} />
         </HeaderContainer>
       )}
     </>

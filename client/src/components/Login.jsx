@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Color_3, Samlib } from '../styles/common';
 import axios from 'axios';
 
-export const ModalBackdrop = styled.div`
+const ModalBackdrop = styled.div`
   position: fixed;
   z-index: 999;
   top: 0;
@@ -25,7 +25,6 @@ export const ModalBackdrop = styled.div`
     position: fixed;
     left: 50%;
     top: 40%;
-
     transform: translate(-50%, -40%);
 
     .close-btn {
@@ -37,7 +36,8 @@ export const ModalBackdrop = styled.div`
       border: none;
       background-color: ${Color_3};
       :hover {
-        box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+        box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24),
+          0 17px 50px 0 rgba(0, 0, 0, 0.19);
       }
       transition-duration: 0.3s;
       font-family: ${Samlib};
@@ -49,9 +49,10 @@ export const ModalBackdrop = styled.div`
       position: relative;
       top: 5rem;
     }
+  }
 `;
 
-export const InputSection = styled.div`
+const InputSection = styled.div`
   width: 38rem;
   height: 18rem;
   display: flex;
@@ -84,7 +85,7 @@ export const InputSection = styled.div`
   }
 `;
 
-export const LoginButtonContainer = styled.div`
+const LoginButtonContainer = styled.div`
   .loginButton {
     font-size: 2rem;
     width: 12rem;
@@ -96,7 +97,7 @@ export const LoginButtonContainer = styled.div`
   }
 `;
 
-export const BottomContainer = styled.div`
+const BottomContainer = styled.div`
   .bottomSection {
     display: flex;
     justify-content: space-around;
@@ -117,129 +118,46 @@ export const BottomContainer = styled.div`
   }
 `;
 
-export const ErrorMessage = styled.div`
+const ErrorMessage = styled.div`
   color: red;
   font-family: ${Samlib};
   border: black;
 `;
 
-export const IdError = styled(ErrorMessage)`
+const IdError = styled(ErrorMessage)`
   position: relative;
   top: 0.5rem;
   left: 0.5rem;
 `;
 
-export const PasswordError = styled(ErrorMessage)`
+const PasswordError = styled(ErrorMessage)`
   position: relative;
   top: 0.5rem;
   left: 0.5rem;
 `;
 
-export const GoogleButton = styled.img`
+const GoogleButton = styled.img`
   width: 15rem;
   cursor: pointer;
 `;
 
-const Login = ({ setShowLogin, setIsLogin, setShowSignup, isLogin }) => {
+const Login = ({ setShowLogin, setUser, setShowSignup }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [checkUser, setCheckUser] = useState(null);
 
-  useEffect(() => {
-    setIsLogin(JSON.parse(window.localStorage.getItem('isLogin')));
-  }, []);
-
-  useEffect(() => {
-    window.localStorage.setItem('isLogin', isLogin);
-  }, [isLogin]);
-
-  console.log('isLogin = ' + isLogin);
-
-  function oauthValidation() {
-    console.log('oauthValidation');
-    const fragmentString = window.location.hash.substring(1);
-    // Parse query string to see if page request is coming from OAuth 2.0 server.
-    const params = {};
-    let regex = /([^&=]+)=([^&]*)/g,
-      m;
-    while ((m = regex.exec(fragmentString))) {
-      params[decodeURIComponent(m[1])] = decodeURIComponent(m[2]);
-    }
-    if (Object.keys(params).length > 0) {
-      localStorage.setItem('tiptalk-oauth2', JSON.stringify(params));
-      if (params['state'] && params['state'] === 'tiptalk') {
-        console.log('oauthValidation');
-      }
-    }
-  }
-
-  function oauth2SignIn() {
-    console.log('oauth2Signin');
+  const oauth2Handler = () => {
     const CLIENT_ID =
       '529912951931-8sp74vii7gf3nkuslvq4i47d85dcjvd3.apps.googleusercontent.com';
     const REDIRECT_URI = 'http://localhost:3000';
+    const SCOPE = 'https://www.googleapis.com/auth/userinfo.profile';
+    const RESPONSE_TYPE = 'token';
+    const STATE = 'tiptalk';
+    const INCLUDE_GRANTED_SCOPES = true;
+    const oauth2Endpoint = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${CLIENT_ID}&response_type=${RESPONSE_TYPE}&redirect_uri=${REDIRECT_URI}&scope=${SCOPE}&state=${STATE}&include_granted_scopes=${INCLUDE_GRANTED_SCOPES}`;
 
-    oauthValidation();
-
-    // Google's OAuth 2.0 endpoint for requesting an access token
-    const oauth2Endpoint = 'https://accounts.google.com/o/oauth2/v2/auth';
-
-    // Create element to open OAuth 2.0 endpoint in new window.
-    const form = document.createElement('form');
-    form.setAttribute('method', 'GET'); // Send as a GET request.
-    form.setAttribute('action', oauth2Endpoint);
-
-    // Parameters to pass to OAuth 2.0 endpoint.
-    const params = {
-      client_id: CLIENT_ID,
-      redirect_uri: REDIRECT_URI,
-      scope: 'https://www.googleapis.com/auth/userinfo.profile',
-      state: 'tiptalk',
-      include_granted_scopes: 'true',
-      response_type: 'token',
-    };
-
-    // Add form parameters as hidden input values.
-    for (let p in params) {
-      const input = document.createElement('input');
-      input.setAttribute('type', 'hidden');
-      input.setAttribute('name', p);
-      input.setAttribute('value', params[p]);
-      form.appendChild(input);
-    }
-
-    // Add form to page and submit it to open the OAuth 2.0 endpoint.
-    document.body.appendChild(form);
-    form.submit();
-
-    apiRequest();
-  }
-
-  // If there's an access token, try an API request.
-  // Otherwise, start OAuth 2.0 flow.
-  function apiRequest() {
-    console.log('apiRequest');
-    const params = JSON.parse(localStorage.getItem('tiptalk-oauth2'));
-    if (params && params['access_token']) {
-      const xhr = new XMLHttpRequest();
-      xhr.open(
-        'GET',
-        'https://www.googleapis.com/oauth2/v1/userinfo?' +
-          'access_token=' +
-          params['access_token'],
-      );
-      xhr.onreadystatechange = function (e) {
-        if (xhr.readyState === 4 && xhr.status === 200) {
-          console.log(xhr.response);
-          setIsLogin(true);
-        } else if (xhr.readyState === 4 && xhr.status === 401) {
-          console.log('error123');
-        }
-      };
-      xhr.send(null);
-      setIsLogin(true);
-    }
-  }
+    window.location.assign(oauth2Endpoint);
+  };
 
   const closeLoginModal = () => {
     setShowLogin(false);
@@ -275,7 +193,7 @@ const Login = ({ setShowLogin, setIsLogin, setShowSignup, isLogin }) => {
         password,
       })
       .then((res) => setCheckUser(true))
-      .then(() => setIsLogin(true))
+      .then(() => setUser('test'))
       .catch((err) => setCheckUser(err.response.data.status));
   };
 
@@ -329,7 +247,7 @@ const Login = ({ setShowLogin, setIsLogin, setShowSignup, isLogin }) => {
               <GoogleButton
                 src="google-button.png"
                 alt="google-button"
-                onClick={oauth2SignIn}
+                onClick={oauth2Handler}
               ></GoogleButton>
               <button
                 className="signupButton"

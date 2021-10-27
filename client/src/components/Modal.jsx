@@ -2,7 +2,7 @@ import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 import styled from 'styled-components';
-import { Color_2 } from '../styles/common';
+import { Color_4 } from '../styles/common';
 
 const Background = styled.div`
   display: flex;
@@ -11,7 +11,7 @@ const Background = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(0, 0, 0, 0.2);
   justify-content: center;
   align-items: center;
   z-index: 11;
@@ -25,7 +25,7 @@ const ModalContainer = styled.div`
   height: 160px;
   padding: 20px;
   border-radius: 6px;
-  background-color: ${Color_2};
+  background-color: ${({ theme }) => theme.bgColor};
   box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.55);
   -webkit-box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.55);
   -moz-box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.55);
@@ -44,6 +44,22 @@ const CloseButton = styled.button`
 
 const Message = styled.span`
   margin: 20px 0;
+  font-size: 20px;
+`;
+
+const Button = styled.button`
+  width: 64px;
+  height: 36px;
+  margin: 10px 5px 0 5px;
+  border: none;
+  border-radius: 6px;
+  color: ${({ theme }) => theme.navColor};
+  font-size: 18px;
+  font-weight: bold;
+  background-color: ${Color_4};
+  box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.75);
+  -webkit-box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.75);
 `;
 
 const Modal = ({ message, setIsOpen, callback }) => {
@@ -60,13 +76,13 @@ const Modal = ({ message, setIsOpen, callback }) => {
   return (
     <Background>
       <ModalContainer>
-        <CloseButton>
+        <CloseButton onClick={closeModal}>
           <FontAwesomeIcon icon={faTimes} />
         </CloseButton>
         <Message>{message}</Message>
         <div>
-          <button onClick={eventHandler}>확인</button>
-          <button onClick={closeModal}>닫기</button>
+          <Button onClick={eventHandler}>확인</Button>
+          <Button onClick={closeModal}>닫기</Button>
         </div>
       </ModalContainer>
     </Background>

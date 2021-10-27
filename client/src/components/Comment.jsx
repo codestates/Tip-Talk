@@ -92,7 +92,7 @@ const Comment = ({ comment, handleEdit, handleDelete }) => {
     <CommentContainer>
       {isOpen && (
         <Modal
-          message="정말로 댓글을 삭제하시겠습니까?"
+          message="정말 댓글을 삭제하시겠습니까?"
           setIsOpen={setIsOpen}
           callback={onDelete}
         />

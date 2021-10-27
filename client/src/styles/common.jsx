@@ -3,7 +3,7 @@ import styled, { createGlobalStyle } from 'styled-components';
 export const Color_1 = '#2C73D2';
 export const Color_2 = '#fac125';
 export const Color_3 = '#E5F0FF';
-export const Color_4 = 'orangered';
+export const Color_4 = '#ff6e3a';
 export const Color_5 = '#2a2a2a';
 export const Color_6 = '#888';
 export const Color_7 = '#1a1a1a';

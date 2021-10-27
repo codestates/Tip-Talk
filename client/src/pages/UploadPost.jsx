@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { useLocation } from 'react-router';
 import styled from 'styled-components';
-import { Body, Label, Meta, Text } from '../styles/common';
+import { Body, Info, Label, Meta, Text } from '../styles/common';
 
-const UploadContainer = styled.article`
+const UploadContainer = styled.section`
   display: flex;
   flex-direction: column;
+  width: 100%;
   min-height: 600px;
   padding: 50px 30px;
   border-radius: 8px;
@@ -27,6 +28,7 @@ const UploadPost = () => {
   return (
     <Body>
       <UploadContainer>
+        <Info>사업지 등록하기</Info>
         <Meta>
           <div>
             <Label>상호명</Label>
@@ -45,6 +47,8 @@ const UploadPost = () => {
             </select>
           </div>
         </Meta>
+        <Info>소개</Info>
+        <Info>사진 등록하기</Info>
       </UploadContainer>
     </Body>
   );

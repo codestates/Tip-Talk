@@ -52,6 +52,7 @@ export const Title = styled.h1`
 
 export const Meta = styled.div`
   display: flex;
+  width: 100%;
   margin: 20px 0;
   margin-bottom: 35px;
   padding: 10px 45px;
@@ -74,4 +75,13 @@ export const Text = styled.div`
   font-weight: 500;
   margin-left: 20px;
   margin-bottom: 20px;
+`;
+
+export const Info = styled.h3`
+  font-size: 24px;
+  font-weight: 500;
+  padding: 10px 3px;
+  margin: 30px 15px;
+  margin-right: auto;
+  border-bottom: 1px solid ${({ theme }) => theme.line};
 `;

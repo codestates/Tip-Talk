@@ -9,6 +9,14 @@ module.exports = {
     const { postid } = req.params;
 
     try {
+      const foundPost = await post.findOne({ where: { id: postid } });
+
+      if (!foundPost) {
+        return res
+          .status(404)
+          .json({ status: true, message: '존재하지 않는 게시글입니다.' });
+      }
+
       const data = await comments.findAll({ where: { postid } });
       res.status(200).json({ status: true, data });
     } catch (error) {
@@ -80,7 +88,7 @@ module.exports = {
       res.status(500).json({ status: false, message: error.message });
     }
   },
-  deleteOne: (req, res) => {
+  deleteOne: async (req, res) => {
     const { commentid } = req.params;
 
     try {

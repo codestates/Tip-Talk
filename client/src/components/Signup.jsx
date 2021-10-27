@@ -58,9 +58,9 @@ export const InputSection = styled.div`
   align-items: center;
 
   .id-line {
-    height: 5rem;
+    height: 4rem;
     position: relative;
-    top: 7rem;
+    top: 6rem;
     #id {
       font-size: 1.5rem;
       border-top: none;
@@ -73,6 +73,7 @@ export const InputSection = styled.div`
   .password-line {
     position: relative;
     top: 8rem;
+    height: 2rem;
     #password {
       font-size: 1.5rem;
       border-top: none;
@@ -141,19 +142,31 @@ export const ErrorMessage = styled.div`
 
 export const IdError = styled(ErrorMessage)`
   position: fixed;
+<<<<<<< HEAD
   top: 17.5rem;
+=======
+  top: 16.5rem;
+>>>>>>> feature/signup
   left: 9.5rem;
 `;
 
 export const PasswordError = styled(ErrorMessage)`
   position: fixed;
+<<<<<<< HEAD
   top: 29.5rem;
+=======
+  top: 28.5rem;
+>>>>>>> feature/signup
   left: 9.5rem;
 `;
 
 export const InsufficientError = styled(ErrorMessage)`
   position: fixed;
+<<<<<<< HEAD
   top: 35rem;
+=======
+  top: 34.5rem;
+>>>>>>> feature/signup
   left: 9.5rem;
 `;
 
@@ -265,6 +278,7 @@ const Signup = ({ setShowLogin, setShowSignup }) => {
           <img
             className="icon"
             src="https://drawit.s3.ap-northeast-2.amazonaws.com/tip-talk/facebook_cover_photo_1.png"
+            alt="logo"
           />
           <button onClick={closeSignupModal} className="close-btn">
             &times;
@@ -279,6 +293,9 @@ const Signup = ({ setShowLogin, setShowSignup }) => {
                 onChange={emailHandler}
               />
             </div>
+            {emailValidation() === false ? (
+              <IdError>이메일 형식을 입력해주세요</IdError>
+            ) : null}
             <div className="nickname-line">
               <input
                 type="text"
@@ -306,9 +323,6 @@ const Signup = ({ setShowLogin, setShowSignup }) => {
                 onChange={rePasswordHandler}
               />
             </div>
-            {emailValidation() === false ? (
-              <IdError>이메일 형식을 입력해주세요</IdError>
-            ) : null}
             {passwordValidation() === true || rePassword.length === 0 ? null : (
               <PasswordError>비밀번호가 일치하지 않습니다</PasswordError>
             )}

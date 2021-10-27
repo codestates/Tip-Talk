@@ -26,7 +26,7 @@ export const ModalBackdrop = styled.div`
     left: 50%;
     top: 40%;
     transform: translate(-50%, -40%);
-  
+
     .close-btn {
       border-radius: 10px;
       cursor: pointer;
@@ -36,7 +36,8 @@ export const ModalBackdrop = styled.div`
       top: -5rem;
       background-color: ${Color_3};
       :hover {
-        box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+        box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24),
+          0 17px 50px 0 rgba(0, 0, 0, 0.19);
       }
       transition-duration: 0.3s;
       font-family: ${Samlib};
@@ -48,6 +49,7 @@ export const ModalBackdrop = styled.div`
       position: relative;
       top: 5rem;
     }
+  }
 `;
 
 export const InputSection = styled.div`

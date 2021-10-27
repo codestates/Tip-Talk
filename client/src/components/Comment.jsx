@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { Color_4 } from '../styles/common';
+import Modal from './Modal';
 
 const CommentContainer = styled.li`
   display: flex;
@@ -59,6 +60,7 @@ const Button = styled.button`
 const Comment = ({ comment, handleEdit, handleDelete }) => {
   const inputRef = useRef();
   const [isEdit, setIsEdit] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     if (isEdit) {
@@ -82,8 +84,19 @@ const Comment = ({ comment, handleEdit, handleDelete }) => {
     handleDelete(comment.id);
   };
 
+  const modalHandler = () => {
+    setIsOpen(true);
+  };
+
   return (
     <CommentContainer>
+      {isOpen && (
+        <Modal
+          message="정말로 댓글을 삭제하시겠습니까?"
+          setIsOpen={setIsOpen}
+          callback={onDelete}
+        />
+      )}
       <Left>
         <Name weight="bold">{comment.nickname}</Name>
         {isEdit ? <TextInput ref={inputRef} /> : <Text>{comment.text}</Text>}
@@ -97,7 +110,7 @@ const Comment = ({ comment, handleEdit, handleDelete }) => {
               <FontAwesomeIcon onClick={onEditToggle} icon={faPencilAlt} />
             </Button>
             <Button>
-              <FontAwesomeIcon onClick={onDelete} icon={faTrash} />
+              <FontAwesomeIcon onClick={modalHandler} icon={faTrash} />
             </Button>
           </>
         )}

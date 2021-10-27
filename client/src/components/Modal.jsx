@@ -1,27 +1,74 @@
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 import styled from 'styled-components';
+import { Color_2 } from '../styles/common';
 
 const Background = styled.div`
   display: flex;
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.6);
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.3);
   justify-content: center;
   align-items: center;
+  z-index: 11;
 `;
 
 const ModalContainer = styled.div`
-  width: 300px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  width: 380px;
   height: 160px;
+  padding: 20px;
+  border-radius: 6px;
+  background-color: ${Color_2};
+  box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.55);
+  -webkit-box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.55);
+  -moz-box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.55);
+  align-items: center;
 `;
 
-const Modal = () => {
+const CloseButton = styled.button`
+  position: absolute;
+  top: 3px;
+  right: 0;
+  color: ${({ theme }) => theme.color};
+  font-size: 20px;
+  border: none;
+  background-color: transparent;
+`;
+
+const Message = styled.span`
+  margin: 20px 0;
+`;
+
+const Modal = ({ message, setIsOpen, callback }) => {
+  const eventHandler = () => {
+    if (callback) {
+      callback();
+    }
+    closeModal();
+  };
+
+  const closeModal = () => {
+    setIsOpen();
+  };
   return (
     <Background>
-      <ModalContainer></ModalContainer>
+      <ModalContainer>
+        <CloseButton>
+          <FontAwesomeIcon icon={faTimes} />
+        </CloseButton>
+        <Message>{message}</Message>
+        <div>
+          <button onClick={eventHandler}>확인</button>
+          <button onClick={closeModal}>닫기</button>
+        </div>
+      </ModalContainer>
     </Background>
   );
 };

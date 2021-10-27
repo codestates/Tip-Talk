@@ -4,6 +4,7 @@ import styled, { ThemeProvider } from 'styled-components';
 import { Coin } from './components/Coin';
 import Footer from './components/Footer';
 import Header from './components/Header';
+import Modal from './components/Modal';
 import Home from './pages/Home';
 import Main from './pages/Main';
 import NotFound from './pages/NotFound';
@@ -36,16 +37,17 @@ function App() {
         right="40px"
         bottom="150px"
       />
+      <Modal />
       <Router>
         <Container>
           <Header
-              showLogin={showLogin}
-              setShowLogin={setShowLogin}
-              isLogin={isLogin}
-              setIsLogin={setIsLogin}
-              showSignup={showSignup}
-              setShowSignup={setShowSingup}
-            />
+            showLogin={showLogin}
+            setShowLogin={setShowLogin}
+            isLogin={isLogin}
+            setIsLogin={setIsLogin}
+            showSignup={showSignup}
+            setShowSignup={setShowSingup}
+          />
           <Switch>
             <Route exact path="/">
               <Home />

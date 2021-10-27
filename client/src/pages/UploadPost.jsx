@@ -33,10 +33,6 @@ const UploadPost = () => {
           <div>
             <Label>상호명</Label>
             <input placeholder="상호명을 입력해주세요"></input>
-            <Label>주소</Label>
-            <Text>{address?.name}</Text>
-          </div>
-          <div>
             <Label>카테고리 선택</Label>
             <select name="categories">
               <option value="문화시설">문화시설</option>
@@ -45,6 +41,10 @@ const UploadPost = () => {
               <option value="카페">카페</option>
               <option value="숙박">숙박</option>
             </select>
+          </div>
+          <div>
+            <Label>주소</Label>
+            <Text>{address?.name}</Text>
           </div>
         </Meta>
         <Info>소개</Info>

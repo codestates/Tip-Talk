@@ -1,52 +1,23 @@
-let comments = [
-  {
-    id: 1,
-    text: '좋아요',
-    userId: 1,
-    postId: 1,
-    updatedAt: Date.now(),
-    createdAt: Date.now(),
-  },
-  {
-    id: 2,
-    text: '와',
-    userId: 1,
-    postId: 1,
-    updatedAt: Date.now(),
-    createdAt: Date.now(),
-  },
-  {
-    id: 3,
-    text: '감사해요',
-    userId: 1,
-    postId: 2,
-    updatedAt: Date.now(),
-    createdAt: Date.now(),
-  },
-];
+const { comments, post } = require('../models');
 
 async function getOne(id) {
   return await comments.find((comment) => comment.id === +id);
 }
 
 module.exports = {
-  getAll: (req, res) => {
+  getAll: async (req, res) => {
     const { postid } = req.params;
 
-    const filtered = comments.filter((comment) => comment.postId === +postid);
-
-    res.status(200).json({ status: true, data: filtered });
-  },
-  upload: (req, res) => {
-    const { postid } = req.params;
-    const { text } = req.body;
-
-    // ToDo postid로 post를 찾고 없을때 처리
-    /*
-    if (!post) {
-      return res.status(404).json({ status: false, message: '존재하지 않는 게시글입니다.' });
+    try {
+      const data = await comments.findAll({ where: { postid } });
+      res.status(200).json({ status: true, data });
+    } catch (error) {
+      res.status(500).json({ status: false, message: error.message });
     }
-    */
+  },
+  upload: async (req, res) => {
+    const { postId } = req.params;
+    const { text } = req.body;
 
     if (!text) {
       return res
@@ -54,18 +25,29 @@ module.exports = {
         .json({ status: false, message: '댓글을 입력해주세요' });
     }
 
-    const created = {
-      id: +Date.now(),
-      text,
-      userId: 1, // ToDo 유저 아이디로 변경
-      postId: +postid,
-      updatedAt: Date.now(),
-      createdAt: Date.now(),
-    };
+    // ToDo postid로 post를 찾고 없을때 처리
 
-    comments.push(created);
+    try {
+      const found = await post.findOne({ where: { id: postId } });
 
-    res.status(200).json({ status: true, data: created });
+      if (!found) {
+        return res
+          .status(404)
+          .json({ status: false, message: '존재하지 않는 게시글입니다.' });
+      }
+
+      const data = {
+        text,
+        userId: 1, // ToDo 유저 아이디로 변경
+        postId,
+      };
+
+      const created = await comments.create({ data });
+
+      res.status(200).json({ status: true, data: created });
+    } catch (error) {
+      res.status(500).json({ status: false, message: error.message });
+    }
   },
   update: async (req, res) => {
     const { commentid } = req.params;
@@ -78,22 +60,42 @@ module.exports = {
         .json({ status: false, message: '댓글을 입력해주세요' });
     }
 
-    // * commentid를 이용 comment 찾기
-    const comment = await getOne(commentid);
+    try {
+      // * commentid를 이용 comment 찾기
+      const comment = await comments.findOne({ where: { id: commentid } });
 
-    if (!comment) {
-      return res
-        .status(404)
-        .json({ status: false, message: '존재하지 않는 댓글입니다.' });
+      if (!comment) {
+        return res
+          .status(404)
+          .json({ status: false, message: '존재하지 않는 댓글입니다.' });
+      }
+
+      const updated = await comments.update(
+        { text },
+        { where: { id: commentid } },
+      );
+
+      res.status(200).json({ status: true, data: updated });
+    } catch (error) {
+      res.status(500).json({ status: false, message: error.message });
     }
-
-    comment.text = text;
-
-    res.status(200).json({ status: true, data: comment });
   },
   deleteOne: (req, res) => {
     const { commentid } = req.params;
-    comments = comments.filter((comment) => comment.id !== +commentid);
-    res.sendStatus(204);
+
+    try {
+      const found = await comments.findOne({ where: { id: commentid } });
+
+      // ToDo 유저 확인하기
+      /*
+      if(found.userId !== user.id){
+      
+      }
+      */
+      await comments.destroy({ where: { id: commentid } });
+      res.sendStatus(204);
+    } catch (error) {
+      res.status(500).json({ status: false, message: error.message });
+    }
   },
 };

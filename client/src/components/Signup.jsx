@@ -142,19 +142,31 @@ export const ErrorMessage = styled.div`
 
 export const IdError = styled(ErrorMessage)`
   position: fixed;
+<<<<<<< HEAD
+  top: 17.5rem;
+=======
   top: 16.5rem;
+>>>>>>> feature/signup
   left: 9.5rem;
 `;
 
 export const PasswordError = styled(ErrorMessage)`
   position: fixed;
+<<<<<<< HEAD
+  top: 29.5rem;
+=======
   top: 28.5rem;
+>>>>>>> feature/signup
   left: 9.5rem;
 `;
 
 export const InsufficientError = styled(ErrorMessage)`
   position: fixed;
+<<<<<<< HEAD
+  top: 35rem;
+=======
   top: 34.5rem;
+>>>>>>> feature/signup
   left: 9.5rem;
 `;
 

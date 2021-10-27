@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
 import styled, { ThemeProvider } from 'styled-components';
 import { Coin } from './components/Coin';
@@ -39,13 +39,13 @@ function App() {
       <Router>
         <Container>
           <Header
-              showLogin={showLogin}
-              setShowLogin={setShowLogin}
-              isLogin={isLogin}
-              setIsLogin={setIsLogin}
-              showSignup={showSignup}
-              setShowSignup={setShowSingup}
-            />
+            showLogin={showLogin}
+            setShowLogin={setShowLogin}
+            isLogin={isLogin}
+            setIsLogin={setIsLogin}
+            showSignup={showSignup}
+            setShowSignup={setShowSingup}
+          />
           <Switch>
             <Route exact path="/">
               <Home />

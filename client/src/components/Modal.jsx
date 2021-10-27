@@ -82,7 +82,7 @@ const Modal = ({ message, setIsOpen, callback }) => {
         <Message>{message}</Message>
         <div>
           <Button onClick={eventHandler}>확인</Button>
-          <Button onClick={closeModal}>닫기</Button>
+          <Button onClick={closeModal}>아니요</Button>
         </div>
       </ModalContainer>
     </Background>

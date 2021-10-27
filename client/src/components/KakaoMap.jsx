@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import { kakao } from '../App';
 import { Color_1, Color_3 } from '../styles/common';
 import MapModal, { ModalBackground } from './MapModal';
+import Modal from './Modal';
 
 const MapContainer = styled.div`
   position: relative;
@@ -85,6 +86,7 @@ const KakaoMap = ({ posts, handleSearch }) => {
   const [post, setPost] = useState();
   const [address, setAddress] = useState();
   const [isMarked, setMarked] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     const options = {
@@ -199,6 +201,13 @@ const KakaoMap = ({ posts, handleSearch }) => {
 
   return (
     <MapContainer>
+      {isOpen && (
+        <Modal
+          message={`${address?.name}이 맞으신가요?`}
+          setIsOpen={setIsOpen}
+          callback={goToUpload}
+        />
+      )}
       <Map ref={containerRef} id="map">
         <SearchForm>
           <Input ref={inputRef} placeholder="검색어를 입력해주세요" />
@@ -217,7 +226,9 @@ const KakaoMap = ({ posts, handleSearch }) => {
           <UploadModal>
             <Address>{address.name}</Address>
             <Label>이 주소로 사업지</Label>
-            <UploadButton onClick={goToUpload}>등록하기</UploadButton>
+            <UploadButton onClick={() => setIsOpen(true)}>
+              등록하기
+            </UploadButton>
           </UploadModal>
         )}
       </Map>

@@ -32,7 +32,7 @@ let posts = [
     },
   },
 ];
-
+//id title content imagese views likes lat lng region
 //getPosts ??
 
 module.exports = {
@@ -106,3 +106,8 @@ module.exports = {
 };
 
 //미들웨어 추가 !!
+//belongsTo -> one to one / A.belongsTo(B)
+//hasOne -> one to one / B.hasOne(A)
+//hasMany -> one to many /
+
+//lat,lng -> 소수로

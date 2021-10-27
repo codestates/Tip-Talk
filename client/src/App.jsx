@@ -24,7 +24,7 @@ export const { kakao } = window;
 
 function App() {
   const [darkMode, setDarkMode] = useState(localStorage.getItem('darkmode'));
-  const [isLogin, setIsLogin] = useState(false);
+  const [user, setUser] = useState();
   const [showLogin, setShowLogin] = useState(false);
   const [showSignup, setShowSingup] = useState(false);
 
@@ -54,7 +54,7 @@ function App() {
             )
             .then((res) => {
               if (res.data) {
-                setIsLogin(true);
+                setUser(res.data);
               }
             });
         }
@@ -78,8 +78,8 @@ function App() {
           <Header
             showLogin={showLogin}
             setShowLogin={setShowLogin}
-            isLogin={isLogin}
-            setIsLogin={setIsLogin}
+            user={user}
+            setUser={setUser}
             showSignup={showSignup}
             setShowSignup={setShowSingup}
           />

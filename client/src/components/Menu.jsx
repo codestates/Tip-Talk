@@ -35,8 +35,8 @@ export const Button = styled.button`
 const Menu = ({
   showLogin,
   setShowLogin,
-  isLogin,
-  setIsLogin,
+  user,
+  setUser,
   showSignup,
   setShowSignup,
 }) => {
@@ -49,7 +49,7 @@ const Menu = ({
   };
 
   const logoutHandler = () => {
-    setIsLogin(false);
+    setUser(null);
   };
 
   const googleRevoke = () => {
@@ -65,7 +65,7 @@ const Menu = ({
         src="https://drawit.s3.ap-northeast-2.amazonaws.com/tip-talk/logo_transparent.png"
         alt="로고"
       />
-      {isLogin === false ? (
+      {user === null || user === undefined ? (
         <div>
           <Button onClick={showLoginHandler}>로그인</Button>
           <Button onClick={showSignupHandler}>회원가입</Button>
@@ -81,9 +81,7 @@ const Menu = ({
       {showLogin === true ? (
         <Login
           setShowLogin={setShowLogin}
-          isLogin={isLogin}
-          setIsLogin={setIsLogin}
-          showSignup={showSignup}
+          setUser={setUser}
           setShowSignup={setShowSignup}
         />
       ) : null}

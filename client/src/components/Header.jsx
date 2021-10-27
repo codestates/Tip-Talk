@@ -12,27 +12,27 @@ const HeaderContainer = styled.header`
 const Header = ({
   showLogin,
   setShowLogin,
-  isLogin,
-  setIsLogin,
+  user,
+  setUser,
   showSignup,
   setShowSignup,
 }) => {
   return (
     <>
-      {isLogin === false ? (
+      {user === null || user === undefined ? (
         <HeaderContainer>
           <Menu
             showLogin={showLogin}
             setShowLogin={setShowLogin}
-            isLogin={isLogin}
-            setIsLogin={setIsLogin}
+            user={user}
+            setUser={setUser}
             showSignup={showSignup}
             setShowSignup={setShowSignup}
           />
         </HeaderContainer>
       ) : (
         <HeaderContainer>
-          <Menu setIsLogin={setIsLogin} setShowLogin={setShowLogin} />
+          <Menu setUser={setUser} setShowLogin={setShowLogin} />
         </HeaderContainer>
       )}
     </>

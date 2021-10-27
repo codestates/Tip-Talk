@@ -141,7 +141,7 @@ export const GoogleButton = styled.img`
   cursor: pointer;
 `;
 
-const Login = ({ setShowLogin, setIsLogin, setShowSignup, isLogin }) => {
+const Login = ({ setShowLogin, setUser, setShowSignup }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [checkUser, setCheckUser] = useState(null);
@@ -193,7 +193,7 @@ const Login = ({ setShowLogin, setIsLogin, setShowSignup, isLogin }) => {
         password,
       })
       .then((res) => setCheckUser(true))
-      .then(() => setIsLogin(true))
+      .then(() => setUser('test'))
       .catch((err) => setCheckUser(err.response.data.status));
   };
 

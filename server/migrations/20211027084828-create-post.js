@@ -30,7 +30,13 @@ module.exports = {
         type: Sequelize.INTEGER,
       },
       categoryId: {
+        allowNull: true,
         type: Sequelize.INTEGER,
+        onDelete: 'cascade',
+        references: {
+          model: 'categories',
+          key: 'id',
+        },
       },
       lat: {
         type: Sequelize.FLOAT,

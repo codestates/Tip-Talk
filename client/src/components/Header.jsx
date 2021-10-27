@@ -32,7 +32,12 @@ const Header = ({
         </HeaderContainer>
       ) : (
         <HeaderContainer>
-          <Menu setUser={setUser} setShowLogin={setShowLogin} />
+          <Menu
+            user={user}
+            setUser={setUser}
+            showLogin={showLogin}
+            setShowLogin={setShowLogin}
+          />
         </HeaderContainer>
       )}
     </>

@@ -41,7 +41,7 @@ const Menu = ({
   setShowSignup,
 }) => {
   const showLoginHandler = () => {
-    setShowLogin(!showLogin);
+    setShowLogin(true);
   };
 
   const showSignupHandler = () => {

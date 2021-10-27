@@ -50,7 +50,7 @@ const Comments = ({ comments, handleSubmit, handleEdit, handleDelete }) => {
   return (
     <Container>
       <CommentList>
-        {comments.length ? (
+        {comments?.length ? (
           comments.map((comment) => (
             <Comment
               comment={comment}

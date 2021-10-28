@@ -147,14 +147,14 @@ const Login = ({ setShowLogin, user, setUser, setShowSignup }) => {
   const [isUser, setIsUser] = useState(null);
 
   const oauth2Handler = () => {
-    const CLIENT_ID =
-      '529912951931-8sp74vii7gf3nkuslvq4i47d85dcjvd3.apps.googleusercontent.com';
-    const REDIRECT_URI = 'http://localhost:3000';
-    const SCOPE = 'https://www.googleapis.com/auth/userinfo.profile';
-    const RESPONSE_TYPE = 'token';
-    const STATE = 'tiptalk';
+    const CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID;
+    const REDIRECT_URI = process.env.REACT_APP_REDIRECT_URI;
+    const SCOPE =
+      'https://www.googleapis.com/auth/userinfo.email+https://www.googleapis.com/auth/plus.me+https://www.googleapis.com/auth/userinfo.profile';
+    const RESPONSE_TYPE = process.env.REACT_APP_RESPONSE_TYPE;
+    const STATE = 'state_parameter_passthrough_value';
     const INCLUDE_GRANTED_SCOPES = true;
-    const oauth2Endpoint = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${CLIENT_ID}&response_type=${RESPONSE_TYPE}&redirect_uri=${REDIRECT_URI}&scope=${SCOPE}&state=${STATE}&include_granted_scopes=${INCLUDE_GRANTED_SCOPES}`;
+    const oauth2Endpoint = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${CLIENT_ID}&access_type=offline&response_type=${RESPONSE_TYPE}&redirect_uri=${REDIRECT_URI}&scope=${SCOPE}&state=${STATE}&include_granted_scopes=${INCLUDE_GRANTED_SCOPES}`;
 
     window.location.assign(oauth2Endpoint);
   };

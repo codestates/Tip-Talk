@@ -1,9 +1,10 @@
-// const express = require('express');
+const express = require('express');
 
-// const googleController = require('../controller/google');
+const oauthController = require('../controller/oauth');
 
-// const router = express.Router();
+const router = express.Router();
 
-// router.post('google',oauthController.login);
+router.post('/google', oauthController.getToken);
+router.get('/userinfo', oauthController.userInfo);
 
-// exports.module.oauthRouter = router
+module.exports.oauthRouter = router;

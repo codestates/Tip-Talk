@@ -4,7 +4,7 @@ const cookieParser = require('cookie-parser');
 require('dotenv').config();
 
 const { authRouter } = require('./router/auth');
-const { googleRouter } = require('./router/google');
+const { oauthRouter } = require('./router/oauth');
 const { postRouter } = require('./router/post');
 const { userRouter } = require('./router/user');
 const { commentRouter } = require('./router/comment');
@@ -19,7 +19,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 app.use('/auth', authRouter);
-app.use('/oauth', googleRouter);
+app.use('/oauth', oauthRouter);
 app.use('/post', postRouter);
 app.use('/user', userRouter);
 app.use('/comment', commentRouter);

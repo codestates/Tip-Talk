@@ -41,15 +41,12 @@ function App() {
       if (params['state'] && params['state'] === 'tiptalk') {
         const params = JSON.parse(localStorage.getItem('tiptalk-oauth2'));
         if (params && params['access_token']) {
+          const accessToken = params['access_token'];
           axios
-            .get(
-              `https://www.googleapis.com/oauth2/v2/userinfo?access_token=${params['access_token']}`,
-              {
-                headers: {
-                  authorization: `token ${params['access_token']}`,
-                  accept: 'application/json',
-                },
-              },
+            .post(
+              'http://localhost:8080/oauth/google',
+              { accessToken },
+              { withCredentials: true },
             )
             .then((res) => {
               if (res.data) {

@@ -9,10 +9,10 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      post.belongsTo(user, { foreignKey: 'userId' });
-      post.hasMany(categories, { foreignKey: 'categoryId' });
-      post.hasOne(comments, { foreignKey: 'postId' });
-      post.hasOne(user_place_likes, { foreignKey: 'postId' });
+      post.belongsTo(models.user, { foreignKey: 'userId' });
+      post.hasMany(models.categories, { foreignKey: 'categoryId' });
+      post.hasOne(models.comments, { foreignKey: 'postId' });
+      post.hasOne(models.user_place_likes, { foreignKey: 'postId' });
     }
   }
   post.init(
@@ -20,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
       userId: DataTypes.INTEGER,
       title: DataTypes.STRING,
       content: DataTypes.TEXT,
-      imges: DataTypes.STRING,
+      images: DataTypes.STRING,
       views: DataTypes.INTEGER,
       categoryId: DataTypes.INTEGER,
       lat: DataTypes.FLOAT,

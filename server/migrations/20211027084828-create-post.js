@@ -23,7 +23,7 @@ module.exports = {
       content: {
         type: Sequelize.TEXT,
       },
-      imges: {
+      images: {
         type: Sequelize.STRING,
       },
       views: {

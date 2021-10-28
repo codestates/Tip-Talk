@@ -54,9 +54,11 @@ const Menu = ({
 
   const googleRevoke = () => {
     const params = JSON.parse(localStorage.getItem('tiptalk-oauth2'));
-    axios.post(
-      `https://oauth2.googleapis.com/revoke?token=${params['access_token']}`,
-    );
+    if (params) {
+      axios.post(
+        `https://oauth2.googleapis.com/revoke?token=${params['access_token']}`,
+      );
+    }
   };
 
   return (
@@ -81,6 +83,7 @@ const Menu = ({
       {showLogin === true ? (
         <Login
           setShowLogin={setShowLogin}
+          user={user}
           setUser={setUser}
           setShowSignup={setShowSignup}
         />

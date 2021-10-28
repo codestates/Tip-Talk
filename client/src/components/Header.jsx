@@ -19,8 +19,9 @@ const Header = ({
 }) => {
   return (
     <>
-      {user === null || user === undefined ? (
+      {user === false ? (
         <HeaderContainer>
+          {/* {로그인 전} */}
           <Menu
             showLogin={showLogin}
             setShowLogin={setShowLogin}
@@ -32,6 +33,7 @@ const Header = ({
         </HeaderContainer>
       ) : (
         <HeaderContainer>
+          {/* {로그인 후} */}
           <Menu
             user={user}
             setUser={setUser}

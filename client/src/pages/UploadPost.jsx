@@ -19,8 +19,8 @@ const UploadPost = () => {
 
   if (!address.name) {
     console.log('비정상적인 접근입니다');
-    console.log(address);
   }
+  console.log(address);
 
   const handleSubmit = () => {
     // searchRef.current.value = '';

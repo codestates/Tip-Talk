@@ -28,36 +28,19 @@ function App() {
   const [showSignup, setShowSingup] = useState(false);
 
   useEffect(() => {
-    const fragmentString = window.location.hash.substring(1);
-    // Parse query string to see if page request is coming from OAuth 2.0 server.
-    const params = {};
-    let regex = /([^&=]+)=([^&]*)/g,
-      m;
-    while ((m = regex.exec(fragmentString))) {
-      params[decodeURIComponent(m[1])] = decodeURIComponent(m[2]);
-    }
-    if (Object.keys(params).length > 0) {
-      localStorage.setItem('tiptalk-oauth2', JSON.stringify(params));
-      if (params['state'] && params['state'] === 'tiptalk') {
-        const params = JSON.parse(localStorage.getItem('tiptalk-oauth2'));
-        if (params && params['access_token']) {
-          axios
-            .get(
-              `https://www.googleapis.com/oauth2/v2/userinfo?access_token=${params['access_token']}`,
-              {
-                headers: {
-                  authorization: `token ${params['access_token']}`,
-                  accept: 'application/json',
-                },
-              },
-            )
-            .then((res) => {
-              if (res.data) {
-                setUser(res.data);
-              }
-            });
-        }
-      }
+    const url = new URL(window.location.href);
+    const authorizationCode = url.searchParams.get('code');
+
+    if (authorizationCode) {
+      axios
+        .post('http://localhost:8000/oauth/google', {
+          authorizationCode,
+        })
+        .then((result) => {
+          // ToDo 로컬스토리지에 토큰 저장하기
+          console.log(result.data);
+        })
+        .catch(console.log);
     }
   }, []);
 

@@ -16,7 +16,7 @@ module.exports = {
       if (!foundPost) {
         return res
           .status(404)
-          .json({ status: true, message: '존재하지 않는 게시글입니다.' });
+          .json({ status: false, message: '존재하지 않는 게시글입니다.' });
       }
 
       const data = await comments.findAll({

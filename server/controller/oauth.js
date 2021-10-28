@@ -1,9 +1,10 @@
 require('dotenv').config();
 const axios = require('axios');
+const jwt = require('jsonwebtoken');
 const { user } = require('../models');
 
 module.exports = {
-  getToken: (req, res) => {
+  googleLogin: (req, res) => {
     const { authorizationCode } = req.body;
 
     axios
@@ -14,31 +15,61 @@ module.exports = {
         redirect_uri: process.env.REDIRECT_URI,
         grant_type: process.env.GRANT_TYPE,
       })
-      .then((issue) => {
-        console.log(issue.data);
-        res.send(issue.data);
+      .then(({ data }) => {
+        const { access_token } = data;
+
+        const infoUrl = `https://www.googleapis.com/oauth2/v1/userinfo`;
+
+        axios
+          .get(infoUrl, {
+            headers: {
+              authorization: `Bearer ${access_token}`,
+              'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8',
+            },
+          })
+          .then(async ({ data }) => {
+            // * 받아온 데이터로 이미 가입한 유저인지 확인
+            const { email, name, picture } = data;
+            try {
+              const findUser = await user.findOne({ where: { email } });
+
+              if (!findUser) {
+                await user.create({
+                  email,
+                  role: 2,
+                  nickname: name,
+                  img: picture,
+                  password: null,
+                });
+              }
+              const found = await user.findOne({ where: { email } });
+
+              const token = await jwt.sign(
+                {
+                  id: found.id,
+                  role: found.role,
+                },
+                process.env.ACCESS_SECRET,
+              );
+
+              res.status(200).json({ status: true, data: { token } });
+            } catch (err) {
+              console.log(err.message);
+              return res
+                .status(500)
+                .json({ status: false, message: 'Oauth google server error' });
+            }
+          })
+          .catch(() => {
+            return res
+              .status(500)
+              .json({ status: false, message: 'Oauth google server error' });
+          });
       })
       .catch((err) => {
-        console.log(err.message);
+        return res
+          .status(500)
+          .json({ status: false, message: 'Oauth google server error' });
       });
-  },
-  userInfo: (req, res) => {
-    const infoUrl = `https://www.googleapis.com/oauth2/v1/userinfo`;
-
-    const access_token =
-      'ya29.a0ARrdaM9M5LQCh2KoaKBVR7hZXL8Gg8T15pBONIFKmXuEWjnEYaBv7IXFYqneUwl-fx4vYFoz3GPzD3fy6pZwBFXVmHGY8XPzGfVXyAEQt_bVK2uQ3s3BTh3tEfaWyIaxnK0Bc2MiBiPMcu16m6Gcvan1v18S';
-
-    axios
-      .get(infoUrl, {
-        headers: {
-          authorization: `Bearer ${access_token}`,
-          'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8',
-        },
-      })
-      .then((result) => {
-        console.log(result);
-        res.json(result.data);
-      })
-      .catch(console.log);
   },
 };

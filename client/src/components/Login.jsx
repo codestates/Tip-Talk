@@ -151,7 +151,7 @@ const Login = ({ setShowLogin, setUser, setShowSignup }) => {
       '529912951931-8sp74vii7gf3nkuslvq4i47d85dcjvd3.apps.googleusercontent.com';
     const REDIRECT_URI = 'http://localhost:3000';
     const SCOPE = 'https://www.googleapis.com/auth/userinfo.profile';
-    const RESPONSE_TYPE = 'token';
+    const RESPONSE_TYPE = 'code';
     const STATE = 'tiptalk';
     const INCLUDE_GRANTED_SCOPES = true;
     const oauth2Endpoint = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${CLIENT_ID}&response_type=${RESPONSE_TYPE}&redirect_uri=${REDIRECT_URI}&scope=${SCOPE}&state=${STATE}&include_granted_scopes=${INCLUDE_GRANTED_SCOPES}`;

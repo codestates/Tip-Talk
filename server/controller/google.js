@@ -9,8 +9,9 @@ module.exports = {
     const client_secret = process.env.GOOGLE_CLIENT_SECRET;
     const redirect_uri = process.env.REDIRECT_URI;
     const grant_type = process.env.GRANT_TYPE; //grant type = 허가를 받는 방식
-    const url = `https://oauth2.googleapis.com/token?grant_type=${grant_type}&client_id=${GOOGLE_CLIENT_ID}&client_secret=${GOOGLE_CLIENT_SECRET}&redirect_uri=${REDIRECT_URI}&code=${code}`;
+    const url = `https://oauth2.googleapis.com/token`;
 
+    console.log(authorizationCode);
     await axios
       .post(
         url,

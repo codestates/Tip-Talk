@@ -28,6 +28,9 @@ function App() {
   const [showSignup, setShowSingup] = useState(false);
 
   useEffect(() => {
+    const url = new URL(window.location.href);
+    const authorizationCode = url.searchParams.get('code');
+    console.log(authorizationCode);
     const fragmentString = window.location.hash.substring(1);
     // Parse query string to see if page request is coming from OAuth 2.0 server.
     const params = {};

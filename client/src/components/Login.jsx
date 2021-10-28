@@ -149,7 +149,8 @@ const Login = ({ setShowLogin, setUser, setShowSignup }) => {
   const oauth2Handler = () => {
     const CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID;
     const REDIRECT_URI = process.env.REACT_APP_REDIRECT_URI;
-    const SCOPE = 'https://www.googleapis.com/auth/userinfo.profile';
+    const SCOPE =
+      'https://www.googleapis.com/auth/userinfo.email+https://www.googleapis.com/auth/plus.me+https://www.googleapis.com/auth/userinfo.profile';
     const RESPONSE_TYPE = process.env.REACT_APP_RESPONSE_TYPE;
     const STATE = 'state_parameter_passthrough_value';
     const INCLUDE_GRANTED_SCOPES = true;

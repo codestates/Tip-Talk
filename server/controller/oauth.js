@@ -1,5 +1,6 @@
 require('dotenv').config();
 const axios = require('axios');
+const { user } = require('../models');
 
 module.exports = {
   getToken: (req, res) => {
@@ -14,18 +15,20 @@ module.exports = {
         grant_type: process.env.GRANT_TYPE,
       })
       .then((issue) => {
-        console.log(issue);
+        console.log(issue.data);
         res.send(issue.data);
       })
       .catch((err) => {
         console.log(err.message);
       });
   },
-  userInfo: async (req, res) => {
-    const infoUrl = `https://www.googleapis.com/oauth2/v2/userinfo`;
-    const access_token = req.query.accessToken;
+  userInfo: (req, res) => {
+    const infoUrl = `https://www.googleapis.com/oauth2/v1/userinfo`;
 
-    await axios
+    const access_token =
+      'ya29.a0ARrdaM9M5LQCh2KoaKBVR7hZXL8Gg8T15pBONIFKmXuEWjnEYaBv7IXFYqneUwl-fx4vYFoz3GPzD3fy6pZwBFXVmHGY8XPzGfVXyAEQt_bVK2uQ3s3BTh3tEfaWyIaxnK0Bc2MiBiPMcu16m6Gcvan1v18S';
+
+    axios
       .get(infoUrl, {
         headers: {
           authorization: `Bearer ${access_token}`,
@@ -33,7 +36,9 @@ module.exports = {
         },
       })
       .then((result) => {
+        console.log(result);
         res.json(result.data);
-      });
+      })
+      .catch(console.log);
   },
 };

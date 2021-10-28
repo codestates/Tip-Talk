@@ -36,9 +36,10 @@ function App() {
         .post('http://localhost:8000/oauth/google', {
           authorizationCode,
         })
-        .then((result) => {
+        .then(({ data }) => {
           // ToDo 로컬스토리지에 토큰 저장하기
-          console.log(result.data);
+          const { token } = data;
+          localStorage.setItem('token', token);
         })
         .catch(console.log);
     }

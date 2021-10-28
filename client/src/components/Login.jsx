@@ -141,10 +141,10 @@ const GoogleButton = styled.img`
   cursor: pointer;
 `;
 
-const Login = ({ setShowLogin, setUser, setShowSignup }) => {
+const Login = ({ setShowLogin, user, setUser, setShowSignup }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [checkUser, setCheckUser] = useState(null);
+  const [isUser, setIsUser] = useState(null);
 
   const oauth2Handler = () => {
     const CLIENT_ID =
@@ -187,14 +187,17 @@ const Login = ({ setShowLogin, setUser, setShowSignup }) => {
   };
 
   const loginHandler = () => {
-    axios
-      .post('http://localhost:8000/auth/login', {
-        email,
-        password,
-      })
-      .then((res) => setCheckUser(true))
-      .then(() => setUser('test'))
-      .catch((err) => setCheckUser(err.response.data.status));
+    console.log('test');
+    if (user === false) {
+      axios
+        .post('http://localhost:8000/auth/login', {
+          email,
+          password,
+        })
+        .then((res) => setUser(res.data.data.email))
+        .then(() => setIsUser(true))
+        .catch((err) => setIsUser(err.response.data.status));
+    }
   };
 
   return (
@@ -230,7 +233,7 @@ const Login = ({ setShowLogin, setUser, setShowSignup }) => {
                 placeholder="password"
                 onChange={passwordHandler}
               />
-              {checkUser === true || checkUser === null ? null : (
+              {isUser === true || isUser === null ? null : (
                 <PasswordError>
                   이메일이나 비밀번호가 올바르지 않습니다
                 </PasswordError>
@@ -238,7 +241,10 @@ const Login = ({ setShowLogin, setUser, setShowSignup }) => {
             </div>
           </InputSection>
           <LoginButtonContainer>
-            <button className="loginButton" onClick={loginHandler}>
+            <button
+              className="loginButton"
+              onClick={() => [loginHandler(), closeLoginModal()]}
+            >
               로그인
             </button>
           </LoginButtonContainer>

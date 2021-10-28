@@ -23,7 +23,7 @@ export const { kakao } = window;
 
 function App() {
   const [darkMode, setDarkMode] = useState(localStorage.getItem('darkmode'));
-  const [user, setUser] = useState();
+  const [user, setUser] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
   const [showSignup, setShowSingup] = useState(false);
 

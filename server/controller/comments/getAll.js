@@ -18,6 +18,15 @@ module.exports = async (req, res) => {
       where: { postId },
       include: [{ model: user, attributes: ['nickname', 'img'] }],
     });
+
+    if (req.user) {
+      data.forEach((d) => {
+        if (d.dataValues.userId === req.user.id) {
+          d.dataValues['isMine'] = true;
+        }
+      });
+    }
+
     res.status(200).json({ status: true, data });
   } catch (error) {
     res.status(500).json({ status: false, message: error.message });

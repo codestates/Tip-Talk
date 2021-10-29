@@ -22,6 +22,8 @@ const Container = styled.div`
 
 export const { kakao } = window;
 
+axios.defaults.withCredentials = true;
+
 function App() {
   const [darkMode, setDarkMode] = useState(localStorage.getItem('darkmode'));
   const [user, setUser] = useState(null);
@@ -39,8 +41,11 @@ function App() {
         })
         .then(({ data }) => {
           // ToDo 로컬스토리지에 토큰 저장하기
-          const { token } = data;
-          localStorage.setItem('token', token);
+          if (data.status) {
+            const { token } = data.data;
+            setUser(token);
+            localStorage.setItem('token', token);
+          }
         })
         .catch(console.log);
     }

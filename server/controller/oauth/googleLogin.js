@@ -51,6 +51,13 @@ module.exports = (req, res) => {
               process.env.ACCESS_SECRET,
             );
 
+            res.cookie('accessToken', token, {
+              SameSite: 'none',
+              Secure: true,
+              HttpOnly: true,
+              expires: new Date(Date.now() + 1 * 3600000),
+            });
+
             res.status(200).json({ status: true, data: { token } });
           } catch (err) {
             console.log(err.message);

@@ -6,12 +6,12 @@ module.exports = async (req, res) => {
   try {
     const found = await comments.findOne({ where: { id: commentId } });
 
-    // ToDo 유저 확인하기
-    /*
-    if(found.userId !== user.id){
-    
+    if (found.userId !== req.user.id) {
+      return res
+        .status(403)
+        .json({ status: false, message: '권한이 없는 요청입니다.' });
     }
-    */
+
     await comments.destroy({ where: { id: commentId } });
     res.sendStatus(204);
   } catch (error) {

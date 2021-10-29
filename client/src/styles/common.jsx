@@ -8,6 +8,7 @@ export const Color_5 = '#2a2a2a';
 export const Color_6 = '#888';
 export const Color_7 = '#1a1a1a';
 export const Samlib = 'SDSamliphopangche_Outline';
+export const Hangeul = 'HangeulNuri-Bold';
 
 export const lightTheme = {
   color: Color_5,

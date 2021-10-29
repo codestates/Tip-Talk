@@ -216,7 +216,6 @@ const Login = ({ setShowLogin, user, setUser, setShowSignup }) => {
               <input
                 type="text"
                 id="id"
-                name="id"
                 placeholder="email"
                 onChange={emailHandler}
               />
@@ -230,7 +229,6 @@ const Login = ({ setShowLogin, user, setUser, setShowSignup }) => {
               <input
                 type="password"
                 id="password"
-                name="password"
                 placeholder="password"
                 onChange={passwordHandler}
               />

@@ -49,12 +49,12 @@ const Menu = ({
   };
 
   const logoutHandler = () => {
-    localStorage.clear();
+    localStorage.removeItem('token');
     setUser(null);
   };
 
   const googleRevoke = () => {
-    const params = JSON.parse(localStorage.getItem('tiptalk-oauth2'));
+    const params = JSON.parse(localStorage.getItem('token'));
     if (params) {
       axios.post(
         `https://oauth2.googleapis.com/revoke?token=${params['access_token']}`,

@@ -5,14 +5,11 @@ span,
 applet,
 object,
 iframe,
-h1,
 h2,
 h3,
 h4,
 h5,
 h6,
-p,
-blockquote,
 pre,
 a,
 abbr,
@@ -20,10 +17,8 @@ acronym,
 address,
 big,
 cite,
-code,
 del,
 dfn,
-em,
 img,
 ins,
 kbd,
@@ -32,21 +27,15 @@ s,
 samp,
 small,
 strike,
-strong,
 sub,
 sup,
 tt,
 var,
 b,
-u,
 i,
-center,
 dl,
 dt,
 dd,
-ol,
-ul,
-li,
 fieldset,
 form,
 label,
@@ -86,7 +75,23 @@ video {
   font: inherit;
   vertical-align: baseline;
 }
-/* HTML5 display-role reset for older browsers */
+center,
+h1,
+p,
+ul,
+li,
+ol {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+ul {
+  list-style-position: inside;
+}
+ol {
+  list-style-position: inside;
+}
+
 article,
 aside,
 details,
@@ -103,16 +108,9 @@ section {
 body {
   line-height: 1;
 }
-ol,
-ul {
-  list-style: none;
-}
-blockquote,
 q {
   quotes: none;
 }
-blockquote:before,
-blockquote:after,
 q:before,
 q:after {
   content: '';
@@ -122,7 +120,6 @@ table {
   border-collapse: collapse;
   border-spacing: 0;
 }
-
 @font-face {
   font-family: 'SDSamliphopangche_Outline';
   src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts-20-12@1.0/SDSamliphopangche_Outline.woff')

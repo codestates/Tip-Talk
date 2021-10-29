@@ -16,6 +16,8 @@ export const lightTheme = {
   bgColor: 'white',
   navBgColor: Color_1,
   line: 'rgba(0, 0, 0, 0.2)',
+  active: '#555',
+  toolBar: Color_2,
 };
 
 export const darkTheme = {
@@ -24,6 +26,8 @@ export const darkTheme = {
   bgColor: Color_5,
   navBgColor: Color_7,
   line: 'rgba(255, 255, 255, 0.4)',
+  active: Color_6,
+  toolBar: Color_5,
 };
 
 export const Body = styled.div`

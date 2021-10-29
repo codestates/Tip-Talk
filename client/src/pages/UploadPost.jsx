@@ -1,42 +1,29 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState } from 'react';
 import { useLocation } from 'react-router';
 import styled from 'styled-components';
-import { createEditor } from 'slate';
-import { Slate, Editable, withReact } from 'slate-react';
-import {
-  Body,
-  Hangeul,
-  Info,
-  Label,
-  Meta,
-  Samlib,
-  Text,
-} from '../styles/common';
+import TextEditor, { deserialize } from '../components/TextEditor';
 
-const UploadForm = styled.form`
+import { Body, Info, Label, Meta, Samlib, Text } from '../styles/common';
+
+const UploadForm = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
   min-height: 600px;
-  padding: 50px 30px;
+  padding: 50px 80px;
   border-radius: 8px;
   background-color: ${({ theme }) => theme.navColor};
+  justify-content: center;
   align-items: center;
-
-  > .Editor {
-    width: 80%;
-    height: 500px;
-    /* font-family: ${Hangeul}; */
-    font-size: 16px;
-    padding: 18px;
-    border: 1px solid ${({ theme }) => theme.line};
-    border-radius: 6px;
-    background-color: ${({ theme }) => theme.bgColor};
-  }
 `;
 
 const CustomLabel = styled(Label)`
   width: 80px;
+`;
+
+const CustomInfo = styled(Info)`
+  font-size: 38px;
+  margin: 30px 15px;
 `;
 
 const Input = styled.input`
@@ -53,24 +40,13 @@ const Select = styled.select`
   width: 120px;
   height: 38px;
   padding: 8px 12px;
+  margin-bottom: 20px;
   font-size: 18px;
   color: ${({ theme }) => theme.color};
   text-align: center;
   border: 1px solid ${({ theme }) => theme.line};
   border-radius: 6px;
   background-color: transparent;
-`;
-
-const Content = styled.textarea`
-  width: 80%;
-  height: 500px;
-  font-family: ${Hangeul};
-  font-size: 16px;
-  padding: 18px;
-  border: 1px solid ${({ theme }) => theme.line};
-  border-radius: 6px;
-  background-color: ${({ theme }) => theme.bgColor};
-  resize: none;
 `;
 
 const Button = styled.button`
@@ -82,28 +58,21 @@ const Button = styled.button`
 
 const UploadPost = () => {
   const [address, setAddress] = useState({ ...useLocation().state });
-  const [images, setImages] = useState();
-
-  const editor = useMemo(() => withReact(createEditor()), []);
-  const [value, setValue] = useState([
-    {
-      type: 'paragraph',
-      children: [{ text: '' }],
-    },
-  ]);
 
   if (!address.name) {
     console.log('비정상적인 접근입니다');
   }
   console.log(address);
 
-  const changeContent = (data) => {
-    // console.log(data);
+  const handleSubmit = () => {
+    const text = deserialize(localStorage.getItem('content') || '');
+    console.log(text);
   };
+
   return (
     <Body>
       <UploadForm>
-        <Info>사업지 등록하기</Info>
+        <CustomInfo>사업지 등록하기</CustomInfo>
         <Meta>
           <div>
             <CustomLabel>상호명</CustomLabel>
@@ -122,13 +91,11 @@ const UploadPost = () => {
             <Text>{address?.name}</Text>
           </div>
         </Meta>
-        <Info>소개</Info>
-        {/* <Content maxLength="400" required /> */}
-        <Slate editor={editor} value={value} onChange={changeContent}>
-          <Editable className="Editor" />
-        </Slate>
-        <Info>사진 등록하기</Info>
+        <CustomInfo>소개</CustomInfo>
+        <TextEditor />
+        <CustomInfo>사진 등록하기</CustomInfo>
         <Button>사진 업로드</Button>
+        <Button onClick={handleSubmit}>저장하기</Button>
       </UploadForm>
     </Body>
   );

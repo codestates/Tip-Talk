@@ -49,6 +49,7 @@ const Menu = ({
   };
 
   const logoutHandler = () => {
+    localStorage.clear();
     setUser(null);
   };
 

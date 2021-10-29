@@ -19,7 +19,7 @@ const Header = ({
 }) => {
   return (
     <>
-      {user === false ? (
+      {user === null || user === undefined ? (
         <HeaderContainer>
           {/* {로그인 전} */}
           <Menu

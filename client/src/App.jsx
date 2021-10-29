@@ -23,7 +23,7 @@ export const { kakao } = window;
 
 function App() {
   const [darkMode, setDarkMode] = useState(localStorage.getItem('darkmode'));
-  const [user, setUser] = useState(false);
+  const [user, setUser] = useState(null);
   const [showLogin, setShowLogin] = useState(false);
   const [showSignup, setShowSingup] = useState(false);
 
@@ -42,6 +42,13 @@ function App() {
           localStorage.setItem('token', token);
         })
         .catch(console.log);
+    }
+  }, []);
+
+  useEffect(() => {
+    const info = localStorage.getItem('keeplogin');
+    if (info) {
+      setUser(info);
     }
   }, []);
 

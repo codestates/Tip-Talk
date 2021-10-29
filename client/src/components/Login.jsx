@@ -144,7 +144,6 @@ const GoogleButton = styled.img`
 const Login = ({ setShowLogin, user, setUser, setShowSignup }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [isUser, setIsUser] = useState(null);
 
   const oauth2Handler = () => {
     const CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID;
@@ -186,17 +185,20 @@ const Login = ({ setShowLogin, user, setUser, setShowSignup }) => {
     return true;
   };
 
-  const loginHandler = () => {
-    console.log('test');
-    if (user === false) {
-      axios
-        .post('http://localhost:8000/auth/login', {
-          email,
-          password,
-        })
-        .then((res) => setUser(res.data.data.email))
-        .then(() => setIsUser(true))
-        .catch((err) => setIsUser(err.response.data.status));
+  const loginHandler = async () => {
+    try {
+      const data = await axios.post('http://localhost:8000/auth/login', {
+        email,
+        password,
+      });
+
+      if (data.data.data.email) {
+        setUser(data.data.data.email);
+        localStorage.setItem('keeplogin', data.data.data.email);
+        closeLoginModal();
+      }
+    } catch (err) {
+      setUser(undefined);
     }
   };
 
@@ -233,18 +235,15 @@ const Login = ({ setShowLogin, user, setUser, setShowSignup }) => {
                 placeholder="password"
                 onChange={passwordHandler}
               />
-              {isUser === true || isUser === null ? null : (
+              {user === undefined ? (
                 <PasswordError>
                   이메일이나 비밀번호가 올바르지 않습니다
                 </PasswordError>
-              )}
+              ) : null}
             </div>
           </InputSection>
           <LoginButtonContainer>
-            <button
-              className="loginButton"
-              onClick={() => [loginHandler(), closeLoginModal()]}
-            >
+            <button className="loginButton" onClick={loginHandler}>
               로그인
             </button>
           </LoginButtonContainer>
@@ -257,7 +256,7 @@ const Login = ({ setShowLogin, user, setUser, setShowSignup }) => {
               ></GoogleButton>
               <button
                 className="signupButton"
-                onClick={() => [signupHandler(), closeLoginModal()]}
+                onClick={() => [signupHandler()]}
               >
                 회원가입
               </button>

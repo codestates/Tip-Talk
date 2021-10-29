@@ -21,6 +21,8 @@ const Container = styled.div`
 
 export const { kakao } = window;
 
+axios.defaults.withCredentials = true;
+
 function App() {
   const [darkMode, setDarkMode] = useState(localStorage.getItem('darkmode'));
   const [user, setUser] = useState(null);

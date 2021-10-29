@@ -1,18 +1,20 @@
 const express = require('express');
 const { commentController } = require('../controller/index');
+const { isAuth } = require('../middleware/isAuth');
+const { isLoggedIn } = require('../middleware/isLoggedIn');
 
 const router = express.Router();
 
 // * /comment
-router.get('/:postId', commentController.getAll);
+router.get('/:postId', isLoggedIn, commentController.getAll);
 
 // ToDo 유저 미들웨어 추가
-router.post('/:postId', commentController.upload);
+router.post('/:postId', isLoggedIn, isAuth, commentController.upload);
 
 // ToDo 유저 미들웨어 추가
-router.patch('/:commentId', commentController.update);
+router.patch('/:commentId', isLoggedIn, isAuth, commentController.update);
 
 // ToDo 유저 미들웨어 추가
-router.delete('/:commentId', commentController.deleteOne);
+router.delete('/:commentId', isLoggedIn, isAuth, commentController.deleteOne);
 
 module.exports.commentRouter = router;

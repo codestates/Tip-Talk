@@ -3,6 +3,10 @@ const { user } = require('../models');
 const jwt = require('jsonwebtoken');
 
 module.exports = {
+  findId: async (id) => {
+    const found = await user.findOne({ where: id });
+    return found;
+  },
   isValidEmail: async (req, res, next) => {
     const { email } = req.body;
     const regex = email.match(/^[a-zA-Z0-9]+@(?:[a-zA-Z0-9]+\.)+[A-Za-z]+$/);
@@ -62,7 +66,10 @@ module.exports = {
         });
       } else {
         const accessToken = jwt.sign(
-          userInfo.dataValues,
+          {
+            id: userInfo.id,
+            role: userInfo.role,
+          },
           process.env.ACCESS_SECRET,
         );
         res.cookie('accessToken', accessToken, {
@@ -70,9 +77,7 @@ module.exports = {
           Secure: true,
           HttpOnly: true,
         });
-        res
-          .status(200)
-          .json({ status: true, data: { email: email, password: password } });
+        res.status(200).json({ status: true, data: { token: accessToken } });
       }
     } catch (err) {
       console.log(err);
@@ -93,27 +98,23 @@ module.exports = {
         where: {
           email: email,
           nickname: nickname,
-          password: password,
         },
       });
       if (userInfo === null) {
-        const newUserId = await user.create({
+        await user.create({
           email: email,
           nickname: nickname,
           password: password,
         });
-        const accessToken = jwt.sign(
-          newUserId.dataValues,
-          process.env.ACCESS_SECRET,
-        );
-        res.cookie('accessToken', accessToken, {
-          SameSite: 'none',
-          Secure: true,
-          HttpOnly: true,
+        await user.findOne({
+          where: {
+            email: email,
+            nickname: nickname,
+          },
         });
         res.status(201).json({
           status: true,
-          data: { email: email, nickname: nickname, password: password },
+          data: { email, nickname },
         });
       } else {
         res

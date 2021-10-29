@@ -21,12 +21,17 @@ module.exports = async (req, res) => {
         .json({ status: false, message: '존재하지 않는 댓글입니다.' });
     }
 
-    const updated = await comments.update(
-      { text },
-      { where: { id: commentId } },
-    );
+    if (comment.userId !== req.user.id) {
+      return res
+        .status(403)
+        .json({ status: false, message: '권한이 없는 요청입니다.' });
+    }
 
-    res.status(200).json({ status: true, data: updated });
+    await comments.update({ text }, { where: { id: commentId } });
+
+    res
+      .status(200)
+      .json({ status: true, data: { ...comment.dataValues, text } });
   } catch (error) {
     res.status(500).json({ status: false, message: error.message });
   }

@@ -9,6 +9,7 @@ const { postRouter } = require('./router/post');
 const { userRouter } = require('./router/user');
 const { commentRouter } = require('./router/comment');
 const { categoryRouter } = require('./router/category');
+const { logger } = require('./middleware/logger');
 
 const app = express();
 const port = process.env.PORT;
@@ -17,6 +18,7 @@ app.use(cors({ origin: true, credentials: true }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(logger);
 
 app.use('/auth', authRouter);
 app.use('/oauth', oauthRouter);

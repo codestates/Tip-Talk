@@ -23,7 +23,7 @@ module.exports = async (req, res) => {
 
     const data = {
       text,
-      userId: 1, // ToDo 유저 아이디로 변경
+      userId: req.user.id,
       postId,
     };
 

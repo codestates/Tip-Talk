@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useHistory } from 'react-router';
 import styled from 'styled-components';
 import { Samlib } from '../styles/common';
 import Login from './Login';
 import Signup from './Signup';
+import Logout from './Logout';
 import axios from 'axios';
 
 const Navbar = styled.nav`
@@ -41,6 +42,9 @@ const Menu = ({
   showSignup,
   setShowSignup,
 }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [isLogout, setIsLogout] = useState(false);
+
   const showLoginHandler = () => {
     setShowLogin(true);
   };
@@ -97,6 +101,9 @@ const Menu = ({
       ) : null}
       {showSignup === true ? (
         <Signup setShowLogin={setShowLogin} setShowSignup={setShowSignup} />
+      ) : null}
+      {isLogout === true ? (
+        <Logout setUser={setUser} isOpen={isOpen} setIsOpen={setIsOpen} />
       ) : null}
     </Navbar>
   );

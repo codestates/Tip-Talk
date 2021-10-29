@@ -1,4 +1,5 @@
 import React from 'react';
+import { useHistory } from 'react-router';
 import styled from 'styled-components';
 import { Samlib } from '../styles/common';
 import Login from './Login';
@@ -62,6 +63,11 @@ const Menu = ({
     }
   };
 
+  const history = useHistory();
+  const goToMyPage = () => {
+    history.push('/mypage');
+  };
+
   return (
     <Navbar>
       <Logo
@@ -75,7 +81,7 @@ const Menu = ({
         </div>
       ) : (
         <div>
-          <Button>마이페이지</Button>
+          <Button onClick={goToMyPage}>마이페이지</Button>
           <Button onClick={() => [logoutHandler(), googleRevoke()]}>
             로그아웃
           </Button>

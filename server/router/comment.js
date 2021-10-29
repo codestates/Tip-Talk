@@ -1,7 +1,6 @@
 const express = require('express');
 const { commentController } = require('../controller/index');
-const { isAuth } = require('../middleware/isAuth');
-const { isLoggedIn } = require('../middleware/isLoggedIn');
+const { isLoggedIn, isAuth } = require('../middleware');
 
 const router = express.Router();
 

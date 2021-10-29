@@ -9,7 +9,7 @@ const { postRouter } = require('./router/post');
 const { userRouter } = require('./router/user');
 const { commentRouter } = require('./router/comment');
 const { categoryRouter } = require('./router/category');
-const { logger } = require('./middleware/logger');
+const { logger } = require('./middleware');
 
 const app = express();
 const port = process.env.PORT;

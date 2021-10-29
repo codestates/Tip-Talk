@@ -18,7 +18,7 @@ export const ModalBackdrop = styled.div`
     border-radius: 10px;
     background-color: #ffffff;
     width: 38rem;
-    height: 45rem;
+    height: 47rem;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -112,7 +112,7 @@ export const BottomContainer = styled.div`
   align-items: center;
   flex-direction: column;
   position: relative;
-  top: 10rem;
+  top: 11rem;
 
   .signupSubmitButton {
     font-size: 2rem;
@@ -139,30 +139,31 @@ export const BottomContainer = styled.div`
 export const ErrorMessage = styled.div`
   color: red;
   font-family: ${Samlib};
-  border: black;
-`;
-
-export const IdError = styled(ErrorMessage)`
-  position: fixed;
-  top: 16.5rem;
-  left: 9.5rem;
-`;
-
-export const PasswordError = styled(ErrorMessage)`
-  position: fixed;
-  top: 28.5rem;
-  left: 9.5rem;
-`;
-
-export const InsufficientError = styled(ErrorMessage)`
-  position: fixed;
-  top: 35rem;
-  left: 9.5rem;
+  .idError {
+    position: fixed;
+    top: 16.5rem;
+    left: 9.5rem;
+  }
+  .passwordError {
+    position: fixed;
+    top: 28.5rem;
+    left: 9.5rem;
+  }
+  .conflictError {
+    position: fixed;
+    top: 34rem;
+    left: 9.5rem;
+  }
+  .insufficientError {
+    position: fixed;
+    top: 36rem;
+    left: 9.5rem;
+  }
 `;
 
 export const RadioSection = styled.div`
   position: relative;
-  top: 6rem;
+  top: 5rem;
   text-align: center;
   display: flex;
   justify-content: center;
@@ -189,6 +190,7 @@ const Signup = ({ setShowLogin, setShowSignup }) => {
   const [nickname, setNickname] = useState('');
   const [insufficient, setInsufficient] = useState(false);
   const [role, setRole] = useState(null);
+  const [isExist, setIsExist] = useState(false);
 
   const closeSignupModal = () => {
     setShowSignup(false);
@@ -257,7 +259,8 @@ const Signup = ({ setShowLogin, setShowSignup }) => {
           nickname,
           role,
         })
-        .then((res) => console.log(res));
+        .then(() => closeSignupModal())
+        .catch(() => setIsExist(true));
     }
   };
 
@@ -284,7 +287,9 @@ const Signup = ({ setShowLogin, setShowSignup }) => {
               />
             </div>
             {emailValidation() === false ? (
-              <IdError>이메일 형식을 입력해주세요</IdError>
+              <ErrorMessage>
+                <div className="idError">이메일 형식을 입력해주세요</div>
+              </ErrorMessage>
             ) : null}
             <div className="nickname-line">
               <input
@@ -314,7 +319,11 @@ const Signup = ({ setShowLogin, setShowSignup }) => {
               />
             </div>
             {passwordValidation() === true || rePassword.length === 0 ? null : (
-              <PasswordError>비밀번호가 일치하지 않습니다</PasswordError>
+              <ErrorMessage>
+                <div className="passwordError">
+                  비밀번호가 일치하지 않습니다
+                </div>
+              </ErrorMessage>
             )}
           </InputSection>
           <RadioSection>
@@ -355,8 +364,19 @@ const Signup = ({ setShowLogin, setShowSignup }) => {
               로그인
             </button>
           </BottomContainer>
+          {isExist === true ? (
+            <ErrorMessage>
+              <div className="conflictError">
+                이메일이나 닉네임이 사용 중입니다
+              </div>
+            </ErrorMessage>
+          ) : null}
           {insufficient === true ? (
-            <InsufficientError>모든 항목을 입력해야합니다</InsufficientError>
+            <ErrorMessage>
+              <div className="insufficientError">
+                모든 항목을 입력해야합니다
+              </div>
+            </ErrorMessage>
           ) : null}
         </div>
       </ModalBackdrop>

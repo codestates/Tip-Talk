@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useHistory } from 'react-router';
 import styled from 'styled-components';
 import { Samlib } from '../styles/common';
 import Login from './Login';
@@ -53,17 +54,22 @@ const Menu = ({
   };
 
   const logoutHandler = () => {
-    setIsLogout(true);
-    setIsOpen(true);
+    localStorage.removeItem('token');
+    setUser(null);
   };
 
   const googleRevoke = () => {
-    const params = JSON.parse(localStorage.getItem('tiptalk-oauth2'));
+    const params = JSON.parse(localStorage.getItem('token'));
     if (params) {
       axios.post(
         `https://oauth2.googleapis.com/revoke?token=${params['access_token']}`,
       );
     }
+  };
+
+  const history = useHistory();
+  const goToMyPage = () => {
+    history.push('/mypage');
   };
 
   return (
@@ -79,8 +85,10 @@ const Menu = ({
         </div>
       ) : (
         <div>
-          <Button>마이페이지</Button>
-          <Button onClick={() => [logoutHandler()]}>로그아웃</Button>
+          <Button onClick={goToMyPage}>마이페이지</Button>
+          <Button onClick={() => [logoutHandler(), googleRevoke()]}>
+            로그아웃
+          </Button>
         </div>
       )}
       {showLogin === true ? (

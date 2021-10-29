@@ -9,6 +9,7 @@ import Main from './pages/Main';
 import NotFound from './pages/NotFound';
 import Post from './pages/Post';
 import UploadPost from './pages/UploadPost';
+import MyPage from './pages/MyPage';
 import { darkTheme, GlobalStyle, lightTheme } from './styles/common';
 import axios from 'axios';
 
@@ -46,7 +47,7 @@ function App() {
   }, []);
 
   useEffect(() => {
-    const info = localStorage.getItem('keeplogin');
+    const info = localStorage.getItem('token');
     if (info) {
       setUser(info);
     }
@@ -86,6 +87,10 @@ function App() {
             </Route>
             <Route path="/upload">
               <UploadPost />
+              <Coin mode="reply" />
+            </Route>
+            <Route path="/mypage">
+              <MyPage />
               <Coin mode="reply" />
             </Route>
             <Route>

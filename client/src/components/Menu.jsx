@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Samlib } from '../styles/common';
 import Login from './Login';
 import Signup from './Signup';
+import Logout from './Logout';
 import axios from 'axios';
 
 const Navbar = styled.nav`
@@ -40,6 +41,9 @@ const Menu = ({
   showSignup,
   setShowSignup,
 }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [isLogout, setIsLogout] = useState(false);
+
   const showLoginHandler = () => {
     setShowLogin(true);
   };
@@ -49,8 +53,8 @@ const Menu = ({
   };
 
   const logoutHandler = () => {
-    localStorage.clear();
-    setUser(null);
+    setIsLogout(true);
+    setIsOpen(true);
   };
 
   const googleRevoke = () => {
@@ -76,9 +80,7 @@ const Menu = ({
       ) : (
         <div>
           <Button>마이페이지</Button>
-          <Button onClick={() => [logoutHandler(), googleRevoke()]}>
-            로그아웃
-          </Button>
+          <Button onClick={() => [logoutHandler()]}>로그아웃</Button>
         </div>
       )}
       {showLogin === true ? (
@@ -91,6 +93,9 @@ const Menu = ({
       ) : null}
       {showSignup === true ? (
         <Signup setShowLogin={setShowLogin} setShowSignup={setShowSignup} />
+      ) : null}
+      {isLogout === true ? (
+        <Logout setUser={setUser} isOpen={isOpen} setIsOpen={setIsOpen} />
       ) : null}
     </Navbar>
   );

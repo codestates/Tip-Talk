@@ -16,6 +16,8 @@ const Header = ({
   setUser,
   showSignup,
   setShowSignup,
+  isLogout,
+  setIsLogout,
 }) => {
   return (
     <>

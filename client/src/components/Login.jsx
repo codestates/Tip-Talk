@@ -192,9 +192,14 @@ const Login = ({ setShowLogin, user, setUser, setShowSignup }) => {
         password,
       });
 
+      // if (data.data.data.token) {
+      //   setUser(data.data.data.token);
+      //   localStorage.setItem('token', data.data.data.token);
+      //   closeLoginModal();
+      // }
       if (data.data.data.email) {
         setUser(data.data.data.email);
-        localStorage.setItem('keeplogin', data.data.data.email);
+        localStorage.setItem('token', data.data.data.email);
         closeLoginModal();
       }
     } catch (err) {

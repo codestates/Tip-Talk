@@ -46,7 +46,7 @@ function App() {
   }, []);
 
   useEffect(() => {
-    const info = localStorage.getItem('keeplogin');
+    const info = localStorage.getItem('token');
     if (info) {
       setUser(info);
     }

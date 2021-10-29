@@ -121,19 +121,16 @@ const BottomContainer = styled.div`
 const ErrorMessage = styled.div`
   color: red;
   font-family: ${Samlib};
-  border: black;
-`;
-
-const IdError = styled(ErrorMessage)`
-  position: relative;
-  top: 0.5rem;
-  left: 0.5rem;
-`;
-
-const PasswordError = styled(ErrorMessage)`
-  position: relative;
-  top: 0.5rem;
-  left: 0.5rem;
+  .idError {
+    position: relative;
+    top: 0.5rem;
+    left: 0.5rem;
+  }
+  .passwordError {
+    position: relative;
+    top: 0.5rem;
+    left: 0.5rem;
+  }
 `;
 
 const GoogleButton = styled.img`
@@ -192,9 +189,9 @@ const Login = ({ setShowLogin, user, setUser, setShowSignup }) => {
         password,
       });
 
-      if (data.data.data.email) {
-        setUser(data.data.data.email);
-        localStorage.setItem('keeplogin', data.data.data.email);
+      if (data.data.data.token) {
+        setUser(data.data.data.token);
+        localStorage.setItem('token', data.data.data.token);
         closeLoginModal();
       }
     } catch (err) {
@@ -219,26 +216,28 @@ const Login = ({ setShowLogin, user, setUser, setShowSignup }) => {
               <input
                 type="text"
                 id="id"
-                name="id"
                 placeholder="email"
                 onChange={emailHandler}
               />
               {emailValidation() === false ? (
-                <IdError>이메일 형식을 입력해주세요</IdError>
+                <ErrorMessage>
+                  <div className="idError">이메일 형식을 입력해주세요</div>
+                </ErrorMessage>
               ) : null}
             </div>
             <div className="password-line">
               <input
                 type="password"
                 id="password"
-                name="password"
                 placeholder="password"
                 onChange={passwordHandler}
               />
               {user === undefined ? (
-                <PasswordError>
-                  이메일이나 비밀번호가 올바르지 않습니다
-                </PasswordError>
+                <ErrorMessage>
+                  <div className="passwordError">
+                    이메일이나 비밀번호가 올바르지 않습니다
+                  </div>
+                </ErrorMessage>
               ) : null}
             </div>
           </InputSection>

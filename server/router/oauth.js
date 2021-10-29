@@ -1,10 +1,9 @@
 const express = require('express');
 
-const oauthController = require('../controller/oauth');
+const { oauthController } = require('../controller/index');
 
 const router = express.Router();
 
-router.post('/google', oauthController.getToken);
-router.get('/userinfo', oauthController.userInfo);
+router.post('/google', oauthController.googleLogin);
 
 module.exports.oauthRouter = router;

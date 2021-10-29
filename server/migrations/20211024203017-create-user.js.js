@@ -16,12 +16,15 @@ module.exports = {
       },
       password: {
         type: Sequelize.STRING,
+        allowNull: true,
       },
       role: {
         type: Sequelize.INTEGER,
+        defaultValue: 2,
       },
       img: {
         type: Sequelize.STRING,
+        allowNull: true,
       },
       createdAt: {
         allowNull: false,

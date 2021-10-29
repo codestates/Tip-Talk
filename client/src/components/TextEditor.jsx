@@ -21,6 +21,7 @@ import {
   faUnderline,
 } from '@fortawesome/free-solid-svg-icons';
 import { Color_4 } from '../styles/common';
+import Modal from './Modal';
 
 const LIST_TYPES = ['numbered-list', 'bulleted-list'];
 
@@ -55,6 +56,15 @@ const Button = styled.button`
   background-color: transparent;
 `;
 
+const filter = [
+  'ArrowLeft',
+  'ArrowUp',
+  'ArrowDown',
+  'ArrowRight',
+  'Backspace',
+  'Delete',
+];
+
 export function deserialize(string) {
   return string.split('\n').map((line) => {
     return {
@@ -70,6 +80,7 @@ const TextEditor = () => {
       children: [{ text: '' }],
     },
   ]);
+  const [isOpen, setIsOpen] = useState(false);
 
   const renderElement = useCallback((props) => <Element {...props} />, []);
   const renderLeaf = useCallback((props) => <Leaf {...props} />, []);
@@ -89,7 +100,12 @@ const TextEditor = () => {
 
   const keyDown = (e) => {
     if (value?.length > 20) {
-      e.preventDefault();
+      const found = filter.find((key) => key === e.key);
+      if (!found) {
+        e.preventDefault();
+        editor.deleteBackward('block');
+        setIsOpen(true);
+      }
     }
   };
 
@@ -97,6 +113,9 @@ const TextEditor = () => {
     <>
       {editor && (
         <>
+          {isOpen && (
+            <Modal message="20줄을 넘길 수 없습니다!" setIsOpen={setIsOpen} />
+          )}
           <Slate
             editor={editor}
             value={value}

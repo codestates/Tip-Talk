@@ -7,6 +7,7 @@ import TextEditor, { deserialize } from '../components/TextEditor';
 
 import {
   Body,
+  Color_3,
   Color_4,
   Info,
   Label,
@@ -128,12 +129,18 @@ const ImageCard = styled.img`
 const Button = styled.button`
   width: 160px;
   height: 48px;
+  color: ${({ theme }) => theme.navColor};
   font-size: 20px;
   font-family: ${Samlib};
+  font-weight: 600;
+  letter-spacing: 3px;
   margin: 30px 0;
   border: none;
   border-radius: 6px;
   background-color: ${Color_4};
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.3);
+  -webkit-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.3);
+  -moz-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.3);
 `;
 
 const Message = styled.strong`

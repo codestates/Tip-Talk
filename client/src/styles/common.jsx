@@ -63,6 +63,9 @@ export const Meta = styled.div`
   padding: 10px 45px;
   background-color: ${({ theme }) => theme.bgColor};
   border-radius: 6px;
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.3);
+  -webkit-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.3);
+  -moz-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.3);
   justify-content: space-between;
 `;
 

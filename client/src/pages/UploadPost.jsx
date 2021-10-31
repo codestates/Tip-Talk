@@ -106,6 +106,7 @@ const ImageList = styled.ul`
 
 const ImageWrapper = styled.li`
   position: relative;
+  display: flex;
   width: 160px;
   height: 120px;
   margin: 6px;
@@ -114,6 +115,8 @@ const ImageWrapper = styled.li`
   box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.3);
   -webkit-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.3);
   -moz-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.3);
+  justify-content: center;
+  align-items: center;
   overflow: hidden;
 `;
 
@@ -273,18 +276,7 @@ const UploadPost = () => {
             <Text>{address?.name}</Text>
           </div>
         </Meta>
-        <CustomInfo>소개란 입력하기</CustomInfo>
-        <TextEditor />
         <CustomInfo>사진 등록하기</CustomInfo>
-        <ImageInput
-          ref={imageInputRef}
-          type="file"
-          multiple="multiple"
-          accept="image/*"
-          name="image"
-          onChange={handleImage}
-        />
-        <Button onClick={handleUploadImage}>사진 업로드</Button>
         <CurrentImageWrapper>
           {current !== undefined ? (
             <CurrentImage src={images[current]} alt="대표이미지" />
@@ -307,11 +299,24 @@ const UploadPost = () => {
               </ImageWrapper>
             ))
           ) : (
-            <Message>
-              사진을 <br /> 업로드 해주세요
-            </Message>
+            <ImageWrapper>
+              <Message>
+                사진을 <br /> 업로드 해주세요
+              </Message>
+            </ImageWrapper>
           )}
         </ImageList>
+        <ImageInput
+          ref={imageInputRef}
+          type="file"
+          multiple="multiple"
+          accept="image/*"
+          name="image"
+          onChange={handleImage}
+        />
+        <Button onClick={handleUploadImage}>사진 업로드</Button>
+        <CustomInfo>소개란 입력하기</CustomInfo>
+        <TextEditor />
         <Button type="submit">저장하기</Button>
       </UploadForm>
     </Body>

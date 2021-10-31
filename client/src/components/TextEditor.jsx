@@ -139,7 +139,6 @@ const TextEditor = () => {
               <Editable
                 renderElement={renderElement}
                 renderLeaf={renderLeaf}
-                autoFocus
                 placeholder="내용을 입력해주세요"
                 className="Editor"
                 onKeyDown={keyDown}

@@ -97,14 +97,9 @@ const ImageInput = styled.input`
 const ImageList = styled.ul`
   display: flex;
   min-width: 160px;
-  height: 130px;
+  height: 120px;
   text-align: center;
   margin: 20px 0;
-  border-radius: 6px;
-  background-color: ${({ theme }) => theme.bgColor};
-  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.3);
-  -webkit-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.3);
-  -moz-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.3);
   justify-content: center;
   align-items: center;
 `;
@@ -113,18 +108,26 @@ const ImageWrapper = styled.li`
   position: relative;
   width: 160px;
   height: 120px;
-  margin: 3px;
+  margin: 6px;
+  border-radius: 6px;
+  background-color: ${({ theme }) => theme.bgColor};
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.3);
+  -webkit-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.3);
+  -moz-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
 `;
 
 const DeleteButton = styled.button`
   position: absolute;
-  right: 3px;
-  top: 3px;
+  right: 0;
+  top: 0;
+  border: none;
+  background-color: transparent;
 `;
 
 const ImageCard = styled.img`
-  width: 100%;
-  height: 100%;
+  width: 160px;
+  height: 120px;
 `;
 
 const Button = styled.button`
@@ -217,15 +220,15 @@ const UploadPost = () => {
     if (e.target.files.length && images.length < 4) {
       const ImageURL = URL.createObjectURL(e.target.files[0]);
       setImages([...images, ImageURL]);
+      setCurrent(images.length);
     }
   };
 
-  const handleDeleteImage = (index) => {
+  const handleDeleteImage = (index, e) => {
+    e.preventDefault();
     const filtered = images.filter((_, i) => i !== index);
     URL.revokeObjectURL(images[index]);
-    if (current === index && current > 0) {
-      setCurrent(current - 1);
-    }
+    setCurrent(current - 1);
     setImages([...filtered]);
   };
 
@@ -270,7 +273,7 @@ const UploadPost = () => {
             <Text>{address?.name}</Text>
           </div>
         </Meta>
-        <CustomInfo>소개</CustomInfo>
+        <CustomInfo>소개란 입력하기</CustomInfo>
         <TextEditor />
         <CustomInfo>사진 등록하기</CustomInfo>
         <ImageInput
@@ -293,7 +296,7 @@ const UploadPost = () => {
           {images.length ? (
             images?.map((image, i) => (
               <ImageWrapper key={i}>
-                <DeleteButton onClick={() => handleDeleteImage(i)}>
+                <DeleteButton onClick={(e) => handleDeleteImage(i, e)}>
                   <FontAwesomeIcon icon={faTimes} />
                 </DeleteButton>
                 <ImageCard

@@ -1,14 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const Continer = styled.header`
+const Container = styled.footer`
   width: 100%;
   height: 200px;
   color: ${(props) => props.theme.navColor};
   background-color: ${(props) => props.theme.navBgColor};
 `;
 
-const Navbar = styled.nav`
+const Column = styled.div`
   display: flex;
   max-width: 1000px;
   height: inherit;
@@ -19,11 +19,11 @@ const Navbar = styled.nav`
 
 const Footer = () => {
   return (
-    <Continer>
-      <Navbar>
+    <Container>
+      <Column>
         <h1>Footer</h1>
-      </Navbar>
-    </Continer>
+      </Column>
+    </Container>
   );
 };
 

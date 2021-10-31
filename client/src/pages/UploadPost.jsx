@@ -3,11 +3,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router';
 import styled from 'styled-components';
+import axios from 'axios';
+import Modal from '../components/Modal';
 import TextEditor, { deserialize } from '../components/TextEditor';
 
 import {
   Body,
-  Color_3,
   Color_4,
   Info,
   Label,
@@ -152,8 +153,12 @@ const UploadPost = () => {
   const [address, setAddress] = useState({ ...useLocation().state });
   const [images, setImages] = useState([]);
   const [current, setCurrent] = useState();
+  const [isOpen, setIsOpen] = useState(false);
+  const [error, setError] = useState(false);
 
+  const titleInputRef = useRef();
   const imageInputRef = useRef();
+  const categoriesInputRef = useRef();
 
   if (!address.name) {
     console.log('비정상적인 접근입니다');
@@ -168,9 +173,37 @@ const UploadPost = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const category = categoriesInputRef.current.value;
+    const title = titleInputRef.current.value;
+    if (images.length === 0 || !category || !title) {
+      setError(true);
+      return;
+    }
+    setIsOpen(true);
+  };
+
+  const uploadPlace = () => {
     const text = deserialize(localStorage.getItem('content') || '');
+    const category = categoriesInputRef.current.value;
+    const title = titleInputRef.current.value;
+
     console.log(text);
-    console.log(images);
+    console.log(category);
+    console.log(title);
+
+    // ToDo 업로드하기
+    /* 
+    axios.post('http://localhost:8000/post',{
+      title,
+      content:text,
+      images:null,// * 폼데이터로
+      categoryId:0,
+      lat:address.lat,
+      lng:address.lng,
+      region:address.name,
+    })
+    */
+
     // ! url 사용 후에 메모리에서 제거하기
     // URL.revokeObjectURL(url);
   };
@@ -202,18 +235,29 @@ const UploadPost = () => {
 
   return (
     <Body>
+      {error && (
+        <Modal message="모든 항목을 입력해주세요" setIsOpen={setError} />
+      )}
+      {isOpen && (
+        <Modal
+          message="업로드할까요?"
+          setIsOpen={setIsOpen}
+          callback={uploadPlace}
+        />
+      )}
       <UploadForm onSubmit={handleSubmit}>
         <CustomInfo>사업지 등록하기</CustomInfo>
         <Meta>
           <div>
             <CustomLabel>상호명</CustomLabel>
             <Input
+              ref={titleInputRef}
               type="text"
               name="title"
               placeholder="상호명을 입력해주세요"
             />
             <CustomLabel>카테고리 선택</CustomLabel>
-            <Select name="categories">
+            <Select ref={categoriesInputRef} name="categories">
               <option value="문화시설">문화시설</option>
               <option value="관광지">관광지</option>
               <option value="음식점">음식점</option>

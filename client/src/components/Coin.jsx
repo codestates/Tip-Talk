@@ -20,7 +20,7 @@ const CoinForm = styled.div`
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background-color: ${Color_4};
+  background-color: ${({ theme }) => theme.navBgColor};
   justify-content: center;
   align-items: center;
   z-index: 10;

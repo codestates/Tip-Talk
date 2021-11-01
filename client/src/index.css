@@ -129,8 +129,8 @@ table {
 }
 
 @font-face {
-  font-family: 'HangeulNuri-Bold';
-  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_three@1.0/HangeulNuri-Bold.woff')
+  font-family: 'HangeulNuri';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_three@1.0/HangeulNuri.woff')
     format('woff');
   font-weight: normal;
   font-style: normal;

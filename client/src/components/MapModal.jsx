@@ -65,7 +65,7 @@ const Button = styled.button`
   border: none;
   border-radius: 8px;
   font-family: ${Samlib};
-  font-size: 24px;
+  font-size: 18px;
   color: ${Color_3};
   background-color: ${({ theme }) => theme.navBgColor};
   transition: 0.1s;

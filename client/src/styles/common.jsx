@@ -1,13 +1,13 @@
 import styled, { createGlobalStyle } from 'styled-components';
 
-export const Color_1 = '#4e99fa';
+export const Color_1 = '#8cbeff';
 export const Color_2 = '#fac125';
 export const Color_3 = '#E5F0FF';
 export const Color_4 = '#ff6e3a';
 export const Color_5 = '#2a2a2a';
 export const Color_6 = '#888';
 export const Color_7 = '#1a1a1a';
-export const Samlib = 'SDSamliphopangche_Outline';
+export const Samlib = 'HangeulNuri-Bold';
 export const Hangeul = 'HangeulNuri-Bold';
 
 export const lightTheme = {

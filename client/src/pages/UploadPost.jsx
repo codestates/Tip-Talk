@@ -142,7 +142,7 @@ const Button = styled.button`
   margin: 30px 0;
   border: none;
   border-radius: 6px;
-  background-color: ${Color_4};
+  background-color: ${({ theme }) => theme.navBgColor};
   box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.3);
   -webkit-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.3);
   -moz-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.3);

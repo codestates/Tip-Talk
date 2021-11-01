@@ -3,11 +3,10 @@ import styled from 'styled-components';
 import axios from 'axios';
 import { Body, Info, Label, Meta, Text } from '../styles/common';
 import { useParams } from 'react-router';
-import { data } from '../dummy/post';
 import Carousel from '../components/Carousel';
 import { kakao } from '../App';
 import Comments from '../components/Comments';
-import { createEditor, Node } from 'slate';
+import { createEditor } from 'slate';
 import { Slate, Editable, withReact } from 'slate-react';
 
 const PostContainer = styled.article`

@@ -190,24 +190,34 @@ const UploadPost = () => {
     const text = deserialize(localStorage.getItem('content') || '');
     const category = categoriesInputRef.current.value;
     const title = titleInputRef.current.value;
+    const formData = new FormData();
 
-    console.log(text);
-    console.log(category);
-    console.log(title);
+    // console.log(text[0].children[0].text);
+    // console.log(category);
+    // console.log(title);
+    // console.log(images);
+
+    formData.append('title', title);
+    formData.append('content', text[0].children[0].text);
+    formData.append('images', images);
+    formData.append('categoryId', 0);
+    formData.append('lat', address.lat);
+    formData.append('lng', address.lng);
+    formData.append('region', address.name);
 
     // ToDo 업로드하기
-    /* 
-    axios.post('http://localhost:8000/post',{
-      title,
-      content:text,
-      images:null,// * 폼데이터로
-      categoryId:0,
-      lat:address.lat,
-      lng:address.lng,
-      region:address.name,
-    })
-    */
-
+    /*
+    axios
+      .post('http://localhost:8000/post', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      })
+      .then((result) => {
+        console.log(result);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+      */
     // ! url 사용 후에 메모리에서 제거하기
     // URL.revokeObjectURL(url);
   };

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 import { Body, Info, Label, Meta, Text } from '../styles/common';
@@ -34,19 +34,12 @@ const Content = styled.div`
 
 const Post = () => {
   const [post, setPost] = useState();
-  const [value, setValue] = useState([
-    {
-      type: 'paragraph',
-      children: [
-        {
-          text: '',
-        },
-      ],
-    },
-  ]);
+  const [value, setValue] = useState();
   const [comments, setComments] = useState();
   const { postId } = useParams();
 
+  const renderElement = useCallback((props) => <Element {...props} />, []);
+  const renderLeaf = useCallback((props) => <Leaf {...props} />, []);
   const editor = useMemo(() => withReact(createEditor()), []);
 
   useEffect(() => {
@@ -54,7 +47,6 @@ const Post = () => {
     axios.get(`http://localhost:8000/post/${postId}`).then(({ data }) => {
       if (data.status) {
         const { posts } = data;
-        console.log('1 : ', JSON.parse(posts.content));
         setValue(JSON.parse(posts.content));
         setPost({
           ...posts,
@@ -64,6 +56,7 @@ const Post = () => {
         const MapContainer = document.getElementById('map');
         const lat = posts.lat;
         const lng = posts.lng;
+        console.log(posts);
 
         const center = new kakao.maps.LatLng(lat, lng);
 
@@ -82,10 +75,6 @@ const Post = () => {
         // ToDo 주변위치 정보 받아오기
       }
     });
-
-    // ! 더미데이터는 나중에 삭제하기
-    const getPost = data.find((d) => d.post.id === +postId);
-    setPost({ ...getPost });
 
     // * Comment 데이터 받아오기
 
@@ -126,27 +115,6 @@ const Post = () => {
     });
   };
 
-  const parseContent = (line) => {
-    switch (line.type) {
-      case 'block-quote':
-        return <blockquote>{line.children[0].text}</blockquote>;
-      case 'bulleted-list':
-        return <ul>{line.children[0].text}</ul>;
-      case 'heading-one':
-        return <h1>{line.children[0].text}</h1>;
-      case 'heading-two':
-        return <h2>{line.children[0].text}</h2>;
-      case 'list-item':
-        return <li>{line.children[0].text}</li>;
-      case 'numbered-list':
-        return <ol>{line.children[0].text}</ol>;
-      case 'center':
-        return <center>{line.children[0].text}</center>;
-      default:
-        return <p>{line.children[0].text}</p>;
-    }
-  };
-
   return (
     <Body>
       <PostContainer>
@@ -159,7 +127,7 @@ const Post = () => {
           </div>
           <div>
             <Label>주소</Label>
-            <Text>인천광역시</Text>
+            <Text>{post?.region}</Text>
             {/* // ToDo 동적 데이터로 변경 */}
             <Label>카테고리</Label>
             <Text>여행지</Text> {/* // ToDo 동적 데이터로 변경 */}
@@ -167,11 +135,21 @@ const Post = () => {
         </Meta>
         <Carousel images={post?.images} />
         <Info>{post?.title} 소개</Info>
-        {/* <Content>{post?.content}</Content> */}
         <Content>
-          {post?.content?.map((line) => {
-            return parseContent(line);
-          })}
+          {value && (
+            <Slate
+              editor={editor}
+              value={value}
+              onChange={(data) => setValue(data)}
+            >
+              <Editable
+                readOnly
+                renderElement={renderElement}
+                renderLeaf={renderLeaf}
+                className="Editor"
+              />
+            </Slate>
+          )}
         </Content>
         <Info>{post?.title} 주변엔 어떤 것이 있나요?</Info>
         <Map id="map"></Map>
@@ -187,26 +165,45 @@ const Post = () => {
   );
 };
 
-const renderElement = (props) => {
-  switch (props.element.type) {
-    case 'code':
-      return <CodeElement {...props} />;
+const Element = ({ attributes, children, element }) => {
+  switch (element.type) {
+    case 'block-quote':
+      return <blockquote {...attributes}>{children}</blockquote>;
+    case 'bulleted-list':
+      return <ul {...attributes}>{children}</ul>;
+    case 'heading-one':
+      return <h1 {...attributes}>{children}</h1>;
+    case 'heading-two':
+      return <h2 {...attributes}>{children}</h2>;
+    case 'list-item':
+      return <li {...attributes}>{children}</li>;
+    case 'numbered-list':
+      return <ol {...attributes}>{children}</ol>;
+    case 'center':
+      return <center {...attributes}>{children}</center>;
     default:
-      return <DefaultElement {...props} />;
+      return <p {...attributes}>{children}</p>;
   }
 };
 
-const CodeElement = (props) => {
-  return (
-    <pre {...props.attributes}>
-      <code>{props.children}</code>
-    </pre>
-  );
-};
-const DefaultElement = (props) => {
-  console.log(props);
+const Leaf = ({ attributes, children, leaf }) => {
+  if (leaf.bold) {
+    children = <strong>{children}</strong>;
+  }
 
-  return <p {...props.attributes}>{props.children}</p>;
+  if (leaf.code) {
+    children = <code>{children}</code>;
+  }
+
+  if (leaf.italic) {
+    children = <em>{children}</em>;
+  }
+
+  if (leaf.underline) {
+    children = <u>{children}</u>;
+  }
+
+  return <span {...attributes}>{children}</span>;
 };
 
 export default Post;

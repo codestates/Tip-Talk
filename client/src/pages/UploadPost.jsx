@@ -155,6 +155,7 @@ const Message = styled.strong`
 
 const UploadPost = () => {
   const [address, setAddress] = useState({ ...useLocation().state });
+  const [categories, setCategories] = useState();
   const [images, setImages] = useState([]);
   const [current, setCurrent] = useState();
   const [isOpen, setIsOpen] = useState(false);
@@ -168,6 +169,14 @@ const UploadPost = () => {
     console.log('비정상적인 접근입니다');
   }
   // console.log(address);
+
+  useEffect(() => {
+    axios.get('http://localhost:8000/category').then(({ data }) => {
+      if (data.status) {
+        setCategories(data.data);
+      }
+    });
+  }, []);
 
   useEffect(() => {
     if (!images.length) {
@@ -200,13 +209,13 @@ const UploadPost = () => {
     formData.append('title', title);
     formData.append('content', text[0].children[0].text);
     formData.append('images', images);
-    formData.append('categoryId', 0);
+    formData.append('categoryId', category);
     formData.append('lat', address.lat);
     formData.append('lng', address.lng);
     formData.append('region', address.name);
 
     // ToDo 업로드하기
-    /*
+
     axios
       .post('http://localhost:8000/post', formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
@@ -217,7 +226,7 @@ const UploadPost = () => {
       .catch((err) => {
         console.log(err);
       });
-      */
+
     // ! url 사용 후에 메모리에서 제거하기
     // URL.revokeObjectURL(url);
   };
@@ -272,11 +281,9 @@ const UploadPost = () => {
             />
             <CustomLabel>카테고리 선택</CustomLabel>
             <Select ref={categoriesInputRef} name="categories">
-              <option value="문화시설">문화시설</option>
-              <option value="관광지">관광지</option>
-              <option value="음식점">음식점</option>
-              <option value="카페">카페</option>
-              <option value="숙박">숙박</option>
+              {categories?.map((category) => (
+                <option value={category.id}>{category.value}</option>
+              ))}
             </Select>
           </div>
           <div>

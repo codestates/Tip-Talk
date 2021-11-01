@@ -75,7 +75,7 @@ const Menu = ({
   return (
     <Navbar>
       <Logo
-        src="https://drawit.s3.ap-northeast-2.amazonaws.com/tip-talk/logo_transparent.png"
+        src="https://drawit.s3.ap-northeast-2.amazonaws.com/tip-talk/mainimage.png"
         alt="로고"
       />
       {user === null || user === undefined ? (

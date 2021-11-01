@@ -1,4 +1,4 @@
-const { user } = require('../models');
+const { user } = require('../../models');
 const bcrypt = require('bcrypt');
 
 module.exports = async (req, res) => {
@@ -20,7 +20,7 @@ module.exports = async (req, res) => {
       res.status(409).json({ status: false, message: '중복된 이메일입니다.' });
     } else {
       bcrypt.genSalt(10, (err, salt) => {
-        bcrypt.hash(password, salt, (err, hash) => {
+        bcrypt.hash(password, salt, async (err, hash) => {
           if (err) {
             throw err;
           } else {

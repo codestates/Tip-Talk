@@ -1,11 +1,10 @@
 require('dotenv').config();
 const jwt = require('jsonwebtoken');
-const { findId } = require('../controller/auth');
+const findId = require('../controller/auth/findId');
 
 // * 로그인을 했을 경우에만 토큰을 확인
 module.exports = (req, res, next) => {
   const token = req.cookies.accessToken;
-
   if (token) {
     jwt.verify(token, process.env.ACCESS_SECRET, async (err, encoded) => {
       if (err) {

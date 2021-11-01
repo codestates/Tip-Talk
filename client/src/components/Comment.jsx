@@ -48,7 +48,6 @@ const Text = styled.p`
   width: 100%;
   font-weight: ${({ weight }) => (weight ? weight : 400)};
   margin-right: 6px;
-  padding: 7px;
 `;
 
 const Button = styled.button`

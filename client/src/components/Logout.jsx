@@ -1,11 +1,14 @@
-import react, { useState } from 'react';
+import { useHistory } from 'react-router';
 import Modal from './Modal';
 import Portal from './Portal';
 
 const Logout = ({ setUser, isOpen, setIsOpen }) => {
+  const history = useHistory();
+
   const logoutHandler = () => {
     localStorage.removeItem('token');
     setUser(null);
+    history.push('/');
   };
 
   return (

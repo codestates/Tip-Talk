@@ -39,10 +39,10 @@ module.exports = {
         },
       },
       lat: {
-        type: Sequelize.FLOAT(20, 17),
+        type: Sequelize.DECIMAL(20, 17),
       },
       lng: {
-        type: Sequelize.FLOAT(20, 17),
+        type: Sequelize.DECIMAL(20, 17),
       },
       region: {
         type: Sequelize.STRING,

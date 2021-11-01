@@ -7,7 +7,6 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useHistory } from 'react-router';
 import styled from 'styled-components';
-import { Color_4 } from '../styles/common';
 
 const CoinForm = styled.div`
   display: flex;

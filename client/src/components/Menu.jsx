@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router';
 import styled from 'styled-components';
-import { Samlib } from '../styles/common';
+import { Hangeul } from '../styles/common';
 import Login from './Login';
 import Signup from './Signup';
 import Logout from './Logout';
@@ -23,7 +23,7 @@ const Button = styled.button`
   width: 80px;
   font-size: 16px;
   color: ${(props) => props.theme.bgColor};
-  font-family: ${Samlib};
+  font-family: ${Hangeul};
   background-color: transparent;
   padding: 0;
   border: none;

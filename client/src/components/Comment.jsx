@@ -6,7 +6,7 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-import { Color_2, Color_4 } from '../styles/common';
+import { Color_2 } from '../styles/common';
 import Modal from './Modal';
 
 const CommentContainer = styled.li`

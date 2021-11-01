@@ -70,10 +70,8 @@ const Select = styled.select`
 
 const CurrentImageWrapper = styled.div`
   display: flex;
-  min-width: 320px;
-  max-width: 80%;
-  min-height: 240px;
-  max-height: 600px;
+  width: 80%;
+  height: 600px;
   margin: 20px 0;
   border-radius: 6px;
   background-color: ${({ theme }) => theme.bgColor};
@@ -231,7 +229,7 @@ const UploadPost = () => {
     e.preventDefault();
     const filtered = images.filter((_, i) => i !== index);
     URL.revokeObjectURL(images[index]);
-    setCurrent(current - 1);
+    setCurrent(filtered.length - 1);
     setImages([...filtered]);
   };
 
@@ -288,7 +286,10 @@ const UploadPost = () => {
           {images.length ? (
             images?.map((image, i) => (
               <ImageWrapper key={i}>
-                <DeleteButton onClick={(e) => handleDeleteImage(i, e)}>
+                <DeleteButton
+                  type="button"
+                  onClick={(e) => handleDeleteImage(i, e)}
+                >
                   <FontAwesomeIcon icon={faTimes} />
                 </DeleteButton>
                 <ImageCard
@@ -314,7 +315,9 @@ const UploadPost = () => {
           name="image"
           onChange={handleImage}
         />
-        <Button onClick={handleUploadImage}>사진 업로드</Button>
+        <Button type="button" onClick={handleUploadImage}>
+          사진 업로드
+        </Button>
         <CustomInfo>소개란 입력하기</CustomInfo>
         <TextEditor />
         <Button type="submit">저장하기</Button>

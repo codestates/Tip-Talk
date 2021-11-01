@@ -203,7 +203,7 @@ const KakaoMap = ({ posts, handleSearch }) => {
     <MapContainer>
       {isOpen && (
         <Modal
-          message={`${address?.name}이 맞으신가요?`}
+          message={`${address?.name}이(가) 맞으신가요?`}
           setIsOpen={setIsOpen}
           callback={goToUpload}
         />

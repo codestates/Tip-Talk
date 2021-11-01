@@ -129,8 +129,8 @@ table {
 }
 
 @font-face {
-  font-family: 'HangeulNuri';
-  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_three@1.0/HangeulNuri.woff')
+  font-family: 'HangeulNuri-Bold';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_three@1.0/HangeulNuri-Bold.woff')
     format('woff');
   font-weight: normal;
   font-style: normal;
@@ -152,7 +152,7 @@ table {
 }
 
 body {
-  font-family: 'HangeulNuri', -apple-system, BlinkMacSystemFont, 'Segoe UI',
+  font-family: 'HangeulNuri-Bold', -apple-system, BlinkMacSystemFont, 'Segoe UI',
     'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
     'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;

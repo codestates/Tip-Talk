@@ -74,6 +74,10 @@ const UploadButton = styled.button`
   width: 120px;
   height: 32px;
   font-size: 20px;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  background-color: ${({ theme }) => theme.navBgColor};
 `;
 
 const KakaoMap = ({ posts, handleSearch }) => {

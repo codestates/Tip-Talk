@@ -43,37 +43,42 @@ const Post = () => {
 
   useEffect(() => {
     // * 서버로부터 데이터 받아오기
-    axios.get(`http://localhost:8000/post/${postId}`).then(({ data }) => {
-      if (data.status) {
-        const { posts } = data;
-        setValue(JSON.parse(posts.content));
-        setPost({
-          ...posts,
-          images: posts.images.split(' '),
-          content: JSON.parse(posts.content),
-        });
-        const MapContainer = document.getElementById('map');
-        const lat = posts.lat;
-        const lng = posts.lng;
-        console.log(posts);
+    axios
+      .get(`http://localhost:8000/post/${postId}`)
+      .then(({ data }) => {
+        if (data.status) {
+          const { posts } = data;
+          setValue(JSON.parse(posts.content));
+          setPost({
+            ...posts,
+            images: posts.images.split(' '),
+            content: JSON.parse(posts.content),
+          });
+          const MapContainer = document.getElementById('map');
+          const lat = posts.lat;
+          const lng = posts.lng;
+          console.log(posts);
 
-        const center = new kakao.maps.LatLng(lat, lng);
+          const center = new kakao.maps.LatLng(lat, lng);
 
-        const option = {
-          center,
-          level: 3,
-        };
-        const map = new kakao.maps.Map(MapContainer, option);
+          const option = {
+            center,
+            level: 3,
+          };
+          const map = new kakao.maps.Map(MapContainer, option);
 
-        const marker = new kakao.maps.Marker({
-          position: center,
-        });
+          const marker = new kakao.maps.Marker({
+            position: center,
+          });
 
-        marker.setMap(map);
+          marker.setMap(map);
 
-        // ToDo 주변위치 정보 받아오기
-      }
-    });
+          // ToDo 주변위치 정보 받아오기
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
 
     // * Comment 데이터 받아오기
 

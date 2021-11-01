@@ -201,6 +201,7 @@ const MarkButton = ({ format, icon }) => {
   const editor = useSlate();
   return (
     <Button
+      type="button"
       active={isMarkActive(editor, format)}
       onMouseDown={(event) => {
         event.preventDefault();

@@ -16,15 +16,16 @@ const Navbar = styled.nav`
 `;
 
 const Logo = styled.img`
-  width: 60px;
+  height: 70%;
 `;
 
 const Button = styled.button`
-  width: 120px;
-  font-size: 26px;
-  color: ${(props) => props.theme.navColor};
+  width: 80px;
+  font-size: 16px;
+  color: ${(props) => props.theme.bgColor};
   font-family: ${Samlib};
   background-color: transparent;
+  padding: 0;
   border: none;
   transition: 0.25s;
   :hover {
@@ -65,7 +66,7 @@ const Menu = ({
   return (
     <Navbar>
       <Logo
-        src="https://drawit.s3.ap-northeast-2.amazonaws.com/tip-talk/logo_transparent.png"
+        src="https://drawit.s3.ap-northeast-2.amazonaws.com/tip-talk/mainimage.png"
         alt="로고"
       />
       {user === null || user === undefined ? (

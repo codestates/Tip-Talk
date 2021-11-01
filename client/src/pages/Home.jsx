@@ -1,7 +1,7 @@
 import React from 'react';
 import { useHistory } from 'react-router';
 import styled from 'styled-components';
-import { Color_3, Samlib } from '../styles/common';
+import { Color_2, Color_3, Samlib } from '../styles/common';
 
 const HomeContainer = styled.section`
   flex-grow: 1;
@@ -55,23 +55,20 @@ const PreView = styled.article`
 `;
 
 const Button = styled.button`
-  width: 160px;
-  height: 50px;
+  display: flex;
+  width: 100px;
+  height: 40px;
   margin-top: 20px;
   font-family: ${Samlib};
-  font-size: 2rem;
-  color: ${Color_3};
-  background: linear-gradient(
-    90deg,
-    rgba(213, 164, 25, 1) 0%,
-    rgba(213, 201, 25, 1) 100%
-  );
+  font-size: 18px;
+  background-color: ${Color_2};
   box-shadow: 0px 0px 3px 0px rgba(255, 255, 255, 0.45);
   -webkit-box-shadow: 0px 0px 3px 0px rgba(255, 255, 255, 0.45);
   border: none;
   border-radius: 6px;
-  float: right;
   transition: 0.25s;
+  align-items: center;
+  justify-content: center;
   &:hover {
     box-shadow: 0px 0px 10px 0px rgba(255, 255, 255, 0.75);
     -webkit-box-shadow: 0px 0px 10px 0px rgba(255, 255, 255, 0.75);
@@ -116,7 +113,7 @@ const Home = () => {
             <P>TipTalk이 해결해 드리겠습니다!</P>
             <Button onClick={goToMain}>시작하기</Button>
           </PreView>
-          <MainImage src="https://drawit.s3.ap-northeast-2.amazonaws.com/tip-talk/logo_transparent.png" />
+          <MainImage src="https://drawit.s3.ap-northeast-2.amazonaws.com/tip-talk/mainimage.png" />
         </Body>
       </Section>
     </HomeContainer>

@@ -70,10 +70,8 @@ const Select = styled.select`
 
 const CurrentImageWrapper = styled.div`
   display: flex;
-  min-width: 320px;
-  max-width: 80%;
-  min-height: 240px;
-  max-height: 600px;
+  width: 80%;
+  height: 600px;
   margin: 20px 0;
   border-radius: 6px;
   background-color: ${({ theme }) => theme.bgColor};
@@ -144,7 +142,7 @@ const Button = styled.button`
   margin: 30px 0;
   border: none;
   border-radius: 6px;
-  background-color: ${Color_4};
+  background-color: ${({ theme }) => theme.navBgColor};
   box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.3);
   -webkit-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.3);
   -moz-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.3);
@@ -157,6 +155,7 @@ const Message = styled.strong`
 
 const UploadPost = () => {
   const [address, setAddress] = useState({ ...useLocation().state });
+  const [categories, setCategories] = useState();
   const [images, setImages] = useState([]);
   const [current, setCurrent] = useState();
   const [isOpen, setIsOpen] = useState(false);
@@ -170,6 +169,14 @@ const UploadPost = () => {
     console.log('비정상적인 접근입니다');
   }
   // console.log(address);
+
+  useEffect(() => {
+    axios.get('http://localhost:8000/category').then(({ data }) => {
+      if (data.status) {
+        setCategories(data.data);
+      }
+    });
+  }, []);
 
   useEffect(() => {
     if (!images.length) {
@@ -192,23 +199,33 @@ const UploadPost = () => {
     const text = deserialize(localStorage.getItem('content') || '');
     const category = categoriesInputRef.current.value;
     const title = titleInputRef.current.value;
+    const formData = new FormData();
 
-    console.log(text);
-    console.log(category);
-    console.log(title);
+    // console.log(text[0].children[0].text);
+    // console.log(category);
+    // console.log(title);
+    // console.log(images);
+
+    formData.append('title', title);
+    formData.append('content', text[0].children[0].text);
+    formData.append('images', images);
+    formData.append('categoryId', category);
+    formData.append('lat', address.lat);
+    formData.append('lng', address.lng);
+    formData.append('region', address.name);
 
     // ToDo 업로드하기
-    /* 
-    axios.post('http://localhost:8000/post',{
-      title,
-      content:text,
-      images:null,// * 폼데이터로
-      categoryId:0,
-      lat:address.lat,
-      lng:address.lng,
-      region:address.name,
-    })
-    */
+
+    axios
+      .post('http://localhost:8000/post', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      })
+      .then((result) => {
+        console.log(result);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
 
     // ! url 사용 후에 메모리에서 제거하기
     // URL.revokeObjectURL(url);
@@ -231,7 +248,7 @@ const UploadPost = () => {
     e.preventDefault();
     const filtered = images.filter((_, i) => i !== index);
     URL.revokeObjectURL(images[index]);
-    setCurrent(current - 1);
+    setCurrent(filtered.length - 1);
     setImages([...filtered]);
   };
 
@@ -264,11 +281,9 @@ const UploadPost = () => {
             />
             <CustomLabel>카테고리 선택</CustomLabel>
             <Select ref={categoriesInputRef} name="categories">
-              <option value="문화시설">문화시설</option>
-              <option value="관광지">관광지</option>
-              <option value="음식점">음식점</option>
-              <option value="카페">카페</option>
-              <option value="숙박">숙박</option>
+              {categories?.map((category) => (
+                <option value={category.id}>{category.value}</option>
+              ))}
             </Select>
           </div>
           <div>
@@ -288,7 +303,10 @@ const UploadPost = () => {
           {images.length ? (
             images?.map((image, i) => (
               <ImageWrapper key={i}>
-                <DeleteButton onClick={(e) => handleDeleteImage(i, e)}>
+                <DeleteButton
+                  type="button"
+                  onClick={(e) => handleDeleteImage(i, e)}
+                >
                   <FontAwesomeIcon icon={faTimes} />
                 </DeleteButton>
                 <ImageCard
@@ -314,7 +332,9 @@ const UploadPost = () => {
           name="image"
           onChange={handleImage}
         />
-        <Button onClick={handleUploadImage}>사진 업로드</Button>
+        <Button type="button" onClick={handleUploadImage}>
+          사진 업로드
+        </Button>
         <CustomInfo>소개란 입력하기</CustomInfo>
         <TextEditor />
         <Button type="submit">저장하기</Button>

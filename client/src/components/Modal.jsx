@@ -57,7 +57,7 @@ const Button = styled.button`
   color: ${({ theme }) => theme.navColor};
   font-size: 18px;
   font-weight: bold;
-  background-color: ${Color_4};
+  background-color: ${({ theme }) => theme.navBgColor};
   box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.75);
   -webkit-box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.75);
   -moz-box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.75);

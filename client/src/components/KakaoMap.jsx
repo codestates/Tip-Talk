@@ -74,6 +74,10 @@ const UploadButton = styled.button`
   width: 120px;
   height: 32px;
   font-size: 20px;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  background-color: ${({ theme }) => theme.navBgColor};
 `;
 
 const KakaoMap = ({ posts, handleSearch }) => {
@@ -203,7 +207,7 @@ const KakaoMap = ({ posts, handleSearch }) => {
     <MapContainer>
       {isOpen && (
         <Modal
-          message={`${address?.name}이 맞으신가요?`}
+          message={`${address?.name}이(가) 맞으신가요?`}
           setIsOpen={setIsOpen}
           callback={goToUpload}
         />

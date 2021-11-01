@@ -150,7 +150,8 @@ const Login = ({ setShowLogin, user, setUser, setShowSignup }) => {
     const RESPONSE_TYPE = process.env.REACT_APP_RESPONSE_TYPE;
     const STATE = 'state_parameter_passthrough_value';
     const INCLUDE_GRANTED_SCOPES = true;
-    const oauth2Endpoint = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${CLIENT_ID}&access_type=offline&response_type=${RESPONSE_TYPE}&redirect_uri=${REDIRECT_URI}&scope=${SCOPE}&state=${STATE}&include_granted_scopes=${INCLUDE_GRANTED_SCOPES}`;
+    const PROMPT = 'consent';
+    const oauth2Endpoint = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${CLIENT_ID}&access_type=offline&response_type=${RESPONSE_TYPE}&redirect_uri=${REDIRECT_URI}&scope=${SCOPE}&state=${STATE}&include_granted_scopes=${INCLUDE_GRANTED_SCOPES}&prompt=${PROMPT}`;
 
     window.location.assign(oauth2Endpoint);
   };

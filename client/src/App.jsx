@@ -40,14 +40,13 @@ function App() {
           authorizationCode,
         })
         .then(({ data }) => {
-          // ToDo 로컬스토리지에 토큰 저장하기
           if (data.status) {
             const { token } = data.data;
             setUser(token);
             localStorage.setItem('token', token);
           }
         })
-        .catch(console.log);
+        .catch((res) => {});
     }
   }, []);
 

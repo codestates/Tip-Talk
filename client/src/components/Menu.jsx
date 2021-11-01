@@ -5,7 +5,6 @@ import { Samlib } from '../styles/common';
 import Login from './Login';
 import Signup from './Signup';
 import Logout from './Logout';
-import axios from 'axios';
 
 const Navbar = styled.nav`
   display: flex;
@@ -54,17 +53,8 @@ const Menu = ({
   };
 
   const logoutHandler = () => {
-    localStorage.removeItem('token');
-    setUser(null);
-  };
-
-  const googleRevoke = () => {
-    const params = JSON.parse(localStorage.getItem('token'));
-    if (params) {
-      axios.post(
-        `https://oauth2.googleapis.com/revoke?token=${params['access_token']}`,
-      );
-    }
+    setIsLogout(true);
+    setIsOpen(true);
   };
 
   const history = useHistory();
@@ -86,9 +76,7 @@ const Menu = ({
       ) : (
         <div>
           <Button onClick={goToMyPage}>마이페이지</Button>
-          <Button onClick={() => [logoutHandler(), googleRevoke()]}>
-            로그아웃
-          </Button>
+          <Button onClick={logoutHandler}>로그아웃</Button>
         </div>
       )}
       {showLogin === true ? (

@@ -57,9 +57,8 @@ const Post = () => {
           const MapContainer = document.getElementById('map');
           const lat = posts.lat;
           const lng = posts.lng;
-          console.log(lat, lng);
 
-          const center = new kakao.maps.LatLng(lat, lng);
+          const center = new kakao.maps.LatLng(+lat, +lng);
 
           const option = {
             center,

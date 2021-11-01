@@ -20,7 +20,6 @@ const Map = styled.div`
   display: flex;
   width: 100%;
   border-radius: 12px;
-  margin-bottom: 50px;
   justify-content: center;
 `;
 
@@ -155,13 +154,12 @@ const KakaoMap = ({ posts, handleSearch }) => {
     kakao.maps.event.addListener(map.current, 'click', function (mouseEvent) {
       // 클릭한 위도, 경도 정보를 가져옵니다
       const latlng = mouseEvent.latLng;
-
       searchAddrFromCoords(mouseEvent.latLng, function (result, status) {
         if (status === kakao.maps.services.Status.OK) {
           setAddress({
             name: result[0].address_name,
-            lat: result[0].y,
-            lng: result[0].x,
+            lat: latlng.Ma,
+            lng: latlng.La,
           });
         }
       });

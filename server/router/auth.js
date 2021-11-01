@@ -1,11 +1,11 @@
 const express = require('express');
 
-const authController = require('../controller/auth.js');
+const { authController } = require('../controller/index');
 const {
   isValidEmail,
   isValidNickname,
   lengthPassword,
-} = require('../controller/auth.js');
+} = require('../middleware');
 
 const router = express.Router();
 

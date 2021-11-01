@@ -24,7 +24,7 @@ module.exports = {
         type: Sequelize.TEXT,
       },
       images: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT,
       },
       views: {
         type: Sequelize.INTEGER,
@@ -39,10 +39,10 @@ module.exports = {
         },
       },
       lat: {
-        type: Sequelize.FLOAT,
+        type: Sequelize.FLOAT(20, 17),
       },
       lng: {
-        type: Sequelize.FLOAT,
+        type: Sequelize.FLOAT(20, 17),
       },
       region: {
         type: Sequelize.STRING,

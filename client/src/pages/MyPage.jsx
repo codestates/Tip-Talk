@@ -1,7 +1,12 @@
+import axios from 'axios';
 import React, { useState, useRef } from 'react';
+import { useHistory, useParams } from 'react-router';
 import styled from 'styled-components';
 import { Coin } from '../components/Coin';
 import { Scroll } from '../styles/common';
+import Thumbnail from '../components/Thumbnail';
+import { data } from '../dummy/post';
+import Modal from '../components/Modal';
 
 const Container = styled.div`
   width: 100%;
@@ -10,7 +15,6 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   text-align: center;
-  border: solid yellow;
 `;
 
 const Header = styled.div`
@@ -37,125 +41,205 @@ const ProfileSection = styled.div`
   display: flex;
   flex-direction: row;
   .wrapper-1 {
-    width: 280px;
-    height: 400px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
-    .picture {
-      width: 180px;
-      height: 180px;
-      position: relative;
-      top: 2.5rem;
-      border: solid red;
+    .wrapper-1-1 {
+      width: 280px;
+      height: 80%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      .picture {
+        width: 180px;
+        height: 180px;
+        > img {
+          width: 180px;
+          height: 180px;
+        }
+      }
     }
-    .changeImage {
-      position: relative;
-      top: 3rem;
+    .wrapper-1-2 {
+      width: 280px;
+      height: 20%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      > input {
+        display: none;
+      }
     }
   }
 
   .wrapper-2 {
-    width: 300px;
-    height: 400px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
-    .nickname {
-      line-height: 2.5rem;
-      vertical-align: center;
-      border: solid 1px blue;
-      position: relative;
-      top: 5rem;
-      width: 14rem;
-      height: 2.5rem;
-    }
-    #nickname {
-      position: relative;
-      top: 5rem;
-      width: 14rem;
-      height: 2.5rem;
-      font-size: 1.5rem;
-    }
-    .password {
-      line-height: 2.5rem;
-      vertical-align: center;
-      border: solid 1px blue;
-      position: relative;
-      top: 7rem;
-      width: 14rem;
-      height: 2.5rem;
-    }
-    #password {
-      position: relative;
-      top: 7rem;
-      width: 14rem;
-      height: 2.5rem;
-      font-size: 1.5rem;
-    }
-    .edit {
-      position: relative;
-      top: 9.2rem;
-    }
-  }
-
-  .wrapper-3 {
-    width: 220px;
-    height: 400px;
-    .closeAccount {
-      position: relative;
-      top: 14.2rem;
-      left: 2rem;
-    }
-  }
-`;
-
-const ContentSection = styled.div`
-  position: relative;
-  top: 18rem;
-  width: 1000px;
-  height: 320px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  .single-content {
-    width: 240px;
-    height: 240px;
-    border: solid 1px pink;
-    padding: 0.2rem;
-    .button-wrapper {
+    .wrapper-2-1 {
+      width: 280px;
+      height: 80%;
       display: flex;
-      justify-content: right;
+      flex-direction: column;
+      align-items: center;
+      .email {
+        line-height: 2.5rem;
+        border: solid 1px blue;
+        position: relative;
+        top: 1.8rem;
+        width: 14rem;
+        height: 2.5rem;
+      }
+      .nickname {
+        line-height: 2.5rem;
+        border: solid 1px blue;
+        position: relative;
+        top: 2.4rem;
+        width: 14rem;
+        height: 2.5rem;
+      }
+      .password {
+        line-height: 2.5rem;
+        border: solid 1px blue;
+        position: relative;
+        top: 3rem;
+        width: 14rem;
+        height: 2.5rem;
+      }
+      #nickname {
+        position: relative;
+        top: 3rem;
+        width: 14rem;
+        height: 2.5rem;
+        font-size: 1.5rem;
+        border-top: none;
+        border-left: none;
+        border-right: none;
+        outline: none;
+        text-align: center;
+      }
+      #password {
+        position: relative;
+        top: 4rem;
+        width: 14rem;
+        height: 2.5rem;
+        font-size: 1.5rem;
+        border-top: none;
+        border-left: none;
+        border-right: none;
+        outline: none;
+        text-align: center;
+      }
     }
-    .description {
-      position: relative;
+    .wrapper-2-2 {
+      width: 280px;
+      height: 20%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+  .wrapper-3 {
+    .wrapper-3-1 {
       width: 240px;
-      top: 14rem;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      height: 80%;
     }
-    .views {
-      position: relative;
-      top: 15rem;
-      left: 5rem;
-    }
-    .likes {
-      position: relative;
-      top: 15.5rem;
-      left: 5rem;
+    .wrapper-3-2 {
+      width: 240px;
+      height: 20%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
   }
 `;
 
-const MyPage = () => {
+const RadioSection = styled.div`
+  position: relative;
+  top: 5rem;
+  width: 14rem;
+  .owner {
+    display: inline-block;
+    position: relative;
+    right: 1.5rem;
+  }
+  #owner {
+    display: inline-block;
+    position: relative;
+    right: 2rem;
+  }
+  .user {
+    display: inline-block;
+    position: relative;
+    left: 1.5rem;
+  }
+  #user {
+    display: inline-block;
+    position: relative;
+    left: 1rem;
+  }
+`;
+
+const ImageGrid = styled.ul`
+  position: relative;
+  top: 16rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  width: 50%;
+  padding: 10px;
+`;
+
+const MyPage = ({ user, setUser, setToken }) => {
   const [isEdit, setIsEdit] = useState(false);
+  const [imageBase64, setImageBase64] = useState(null);
+  const [posts, setPosts] = useState(data);
+  const [isOpen, setIsOpen] = useState(false);
+  const fileInput = useRef(null);
   const scrollRef = useRef();
-  const arr = [1, 2, 3, 4];
+  const history = useHistory();
+  const { id } = useParams();
 
   const editHandler = () => {
-    setIsEdit(true);
+    setIsEdit(!isEdit);
+  };
+
+  const fileHandler = (e) => {
+    const reader = new FileReader();
+
+    reader.onloadend = () => {
+      const base64 = reader.result;
+      if (base64) {
+        setImageBase64(base64.toString());
+      }
+    };
+
+    if (e.target.files && e.target.files.length > 0) {
+      reader.readAsDataURL(e.target.files[0]);
+
+      const fd = new FormData();
+      fd.append('nickname', 'test');
+      fd.append('password', '12345678');
+      fd.append('img', e.target.files[0]);
+      for (let [key, value] of fd.entries()) {
+        console.log(key, value);
+      }
+      axios
+        .patch(`http://localhost:8000/user/${id}`, fd, {
+          headers: { 'Content-Type': 'multipart/form-data' },
+        })
+        .then((res) => console.log(res))
+        .catch((err) => console.log(err));
+    }
+  };
+
+  const modalHandler = () => {
+    setIsOpen(true);
+  };
+
+  const deleteHandler = () => {
+    axios
+      .delete('http://localhost:8000/auth/deleteUser', {
+        withCredentials: true,
+      })
+      .then((res) => {
+        localStorage.removeItem('token');
+        setToken(null);
+        history.push('/');
+      })
+      .catch((err) => console.log(err));
   };
 
   return (
@@ -168,47 +252,106 @@ const MyPage = () => {
         </Header>
         <ProfileSection>
           <div className="wrapper-1">
-            <div className="picture">사진</div>
-            <button className="changeImage">이미지 변경</button>
+            <div className="wrapper-1-1">
+              <div className="picture">
+                <img src={imageBase64} />
+              </div>
+            </div>
+            <div className="wrapper-1-2">
+              <input
+                type="file"
+                id="fileInput"
+                accept="image/*"
+                ref={fileInput}
+                onChange={fileHandler}
+              />
+              <button
+                className="change-image"
+                onClick={() => fileInput.current.click()}
+              >
+                이미지 변경
+              </button>
+            </div>
           </div>
           <div className="wrapper-2">
-            {isEdit === true ? (
-              <>
-                {/* {placeholder에 표시되고 있던 값 넣기} */}
-                <input type="text" id="nickname" placeholder="nickname" />
-                <input type="password" id="password" placeholder="password" />
-              </>
-            ) : (
-              <>
-                <div className="nickname">닉네임</div>
-                <div className="password">비밀번호</div>
-              </>
-            )}
-            <button className="edit" onClick={editHandler}>
-              수정하기
-            </button>
+            <div className="wrapper-2-1">
+              {isEdit === true ? (
+                <>
+                  {/* {placeholder에 표시되고 있던 값 넣기} */}
+                  <div className="email">email</div>
+                  <input type="text" id="nickname" placeholder="nickname" />
+                  <input type="password" id="password" placeholder="password" />
+                  <RadioSection>
+                    <input type="radio" id="owner" name="role" value="1" />
+                    <div className="owner">사업자</div>
+                    <input
+                      type="radio"
+                      id="user"
+                      name="role"
+                      value="2"
+                      defaultChecked
+                    />
+                    <div className="user">일반인</div>
+                  </RadioSection>
+                </>
+              ) : (
+                <>
+                  <div className="email">email</div>
+                  <div className="nickname">닉네임</div>
+                  <div className="password">비밀번호</div>
+                  <RadioSection>
+                    <div className="radio-container">
+                      <input type="radio" id="owner" name="role" value="1" />
+                      <div className="owner">사업자</div>
+                      <input
+                        type="radio"
+                        id="user"
+                        name="role"
+                        value="2"
+                        defaultChecked
+                      />
+                      <div className="user">일반인</div>
+                    </div>
+                  </RadioSection>
+                </>
+              )}
+            </div>
+            <div className="wrapper-2-2">
+              {isEdit === false ? (
+                <button className="edit" onClick={editHandler}>
+                  수정하기
+                </button>
+              ) : (
+                <button className="edit" onClick={editHandler}>
+                  수정 완료
+                </button>
+              )}
+            </div>
           </div>
           <div className="wrapper-3">
-            <button className="closeAccount">회원탈퇴</button>
+            <div className="wrapper-3-1"></div>
+            <div className="wrapper-3-2">
+              <button className="close-account" onClick={modalHandler}>
+                회원탈퇴
+              </button>
+            </div>
+            {isOpen === true ? (
+              <Modal
+                message={'탈퇴하시겠습니까?'}
+                setIsOpen={setIsOpen}
+                callback={deleteHandler}
+              />
+            ) : null}
           </div>
         </ProfileSection>
         <Header>
           <div className="middle-header">내가 찜한 장소 목록</div>
         </Header>
-        <ContentSection>
-          {arr.map((item, index) => (
-            <div className="single-content" key={index}>
-              <div className="button-wrapper">
-                <button>삭제</button>
-              </div>
-              <div className="description">
-                fdsafdsafdsafdsafdsafdssafdsafdsa
-              </div>
-              <div className="views">view: 1</div>
-              <div className="likes">❤️123</div>
-            </div>
+        <ImageGrid>
+          {posts.map((post) => (
+            <Thumbnail thumbnail={post} key={post.post.id} />
           ))}
-        </ContentSection>
+        </ImageGrid>
       </Container>
     </>
   );

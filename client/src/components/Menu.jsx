@@ -41,9 +41,12 @@ const Menu = ({
   setUser,
   showSignup,
   setShowSignup,
+  token,
+  setToken,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isLogout, setIsLogout] = useState(false);
+  const history = useHistory();
 
   const showLoginHandler = () => {
     setShowLogin(true);
@@ -58,10 +61,11 @@ const Menu = ({
     setIsOpen(true);
   };
 
-  const history = useHistory();
   const goToMyPage = () => {
-    history.push('/mypage');
+    history.push(`/mypage/${user.id}`);
   };
+
+  console.log('user = ', user);
 
   return (
     <Navbar>
@@ -69,7 +73,7 @@ const Menu = ({
         src="https://drawit.s3.ap-northeast-2.amazonaws.com/tip-talk/mainimage.png"
         alt="로고"
       />
-      {user === null || user === undefined ? (
+      {token === null ? (
         <div>
           <Button onClick={showLoginHandler}>로그인</Button>
           <Button onClick={showSignupHandler}>회원가입</Button>
@@ -92,7 +96,7 @@ const Menu = ({
         <Signup setShowLogin={setShowLogin} setShowSignup={setShowSignup} />
       ) : null}
       {isLogout === true ? (
-        <Logout setUser={setUser} isOpen={isOpen} setIsOpen={setIsOpen} />
+        <Logout setToken={setToken} isOpen={isOpen} setIsOpen={setIsOpen} />
       ) : null}
     </Navbar>
   );

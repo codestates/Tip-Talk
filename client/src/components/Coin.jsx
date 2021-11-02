@@ -12,7 +12,7 @@ const CoinForm = styled.div`
   display: flex;
   position: fixed;
   color: white;
-  top: ${({ position }) => (position.bottom ? 'none' : '150px')};
+  top: ${({ position }) => (position.bottom ? 'none' : '100px')};
   bottom: ${({ position }) => (position.bottom ? position.bottom : 'none')};
   left: ${({ position }) => (position.right ? 'none' : '40px')};
   right: ${({ position }) => (position.right ? position.right : 'none')};

@@ -17,6 +17,9 @@ const Navbar = styled.nav`
 
 const LogoImg = styled.img`
   height: 60%;
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 const Button = styled.button`
@@ -62,10 +65,13 @@ const Menu = ({
   const goToMyPage = () => {
     history.push('/mypage');
   };
+  const goToMain = () => {
+    history.push('/main');
+  };
 
   return (
     <Navbar>
-      <LogoImg src={Logo} alt="로고" />
+      <LogoImg src={Logo} alt="로고" onClick={goToMain} />
       {user === null || user === undefined ? (
         <div>
           <Button onClick={showLoginHandler}>로그인</Button>

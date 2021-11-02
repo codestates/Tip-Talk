@@ -66,7 +66,7 @@ function App() {
         darkMode={darkMode}
         setDarkMode={setDarkMode}
         right="40px"
-        bottom="150px"
+        bottom="60px"
       />
       <Router>
         <Container>

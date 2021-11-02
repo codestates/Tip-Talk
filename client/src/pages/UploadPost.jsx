@@ -9,11 +9,11 @@ import TextEditor, { deserialize } from '../components/TextEditor';
 
 import {
   Body,
-  Color_4,
+  Button,
+  Hangeul,
   Info,
   Label,
   Meta,
-  Samlib,
   Text,
 } from '../styles/common';
 
@@ -129,23 +129,6 @@ const DeleteButton = styled.button`
 const ImageCard = styled.img`
   width: 160px;
   height: 120px;
-`;
-
-const Button = styled.button`
-  width: 160px;
-  height: 48px;
-  color: ${({ theme }) => theme.navColor};
-  font-size: 20px;
-  font-family: ${Samlib};
-  font-weight: 600;
-  letter-spacing: 3px;
-  margin: 30px 0;
-  border: none;
-  border-radius: 6px;
-  background-color: ${({ theme }) => theme.navBgColor};
-  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.3);
-  -webkit-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.3);
-  -moz-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.3);
 `;
 
 const Message = styled.strong`
@@ -329,12 +312,14 @@ const UploadPost = () => {
           name="image"
           onChange={handleImage}
         />
-        <Button type="button" onClick={handleUploadImage}>
+        <Button margin="30px 0" type="button" onClick={handleUploadImage}>
           사진 업로드
         </Button>
         <CustomInfo>소개란 입력하기</CustomInfo>
         <TextEditor />
-        <Button type="submit">저장하기</Button>
+        <Button margin="30px 0" type="submit">
+          저장하기
+        </Button>
       </UploadForm>
     </Body>
   );

@@ -7,8 +7,8 @@ export const Color_4 = '#ff6e3a';
 export const Color_5 = '#2a2a2a';
 export const Color_6 = '#888';
 export const Color_7 = '#1a1a1a';
-export const Samlib = 'Cafe24SsurroundAir';
-export const Hangeul = 'Cafe24SsurroundAir';
+export const Samlib = 'Pretendard-Regular';
+export const Hangeul = 'Pretendard-Regular';
 
 export const lightTheme = {
   color: Color_5,
@@ -102,10 +102,15 @@ export const Button = styled.button`
   font-family: ${Hangeul};
   font-size: 18px;
   font-weight: 600;
+  margin: ${({ margin }) => margin};
   color: ${Color_3};
   background-color: ${({ theme }) => theme.navBgColor};
+  box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.3);
+  -webkit-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.3);
+  -moz-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.3);
   transition: 0.1s;
   &:hover {
-    transform: scale(1.03);
+    color: ${({ theme }) => theme.navBgColor};
+    background-color: ${Color_3};
   }
 `;

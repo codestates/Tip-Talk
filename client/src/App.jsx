@@ -12,6 +12,7 @@ import UploadPost from './pages/UploadPost';
 import MyPage from './pages/MyPage';
 import { darkTheme, GlobalStyle, lightTheme } from './styles/common';
 import axios from 'axios';
+import Loading from './components/Loading';
 
 const Container = styled.div`
   display: flex;
@@ -96,6 +97,9 @@ function App() {
             <Route path="/mypage">
               <MyPage />
               <Coin mode="reply" />
+            </Route>
+            <Route path="/loading">
+              <Loading />
             </Route>
             <Route>
               <NotFound />

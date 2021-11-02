@@ -66,7 +66,7 @@ const Comment = ({ comment, handleEdit, handleDelete }) => {
       inputRef.current.value = comment.text;
       inputRef.current.focus();
     }
-  }, [isEdit]);
+  }, [isEdit, comment]);
 
   const onEditToggle = () => {
     if (!isEdit) {
@@ -99,20 +99,22 @@ const Comment = ({ comment, handleEdit, handleDelete }) => {
       <Left>
         <Name weight="bold">{comment.nickname}</Name>
         {isEdit ? <TextInput ref={inputRef} /> : <Text>{comment.text}</Text>}
-        {isEdit ? (
-          <Button>
-            <FontAwesomeIcon onClick={EditSubmit} icon={faCheck} />
-          </Button>
-        ) : (
-          <>
+        {comment.isMine ? (
+          isEdit ? (
             <Button>
-              <FontAwesomeIcon onClick={onEditToggle} icon={faPencilAlt} />
+              <FontAwesomeIcon onClick={EditSubmit} icon={faCheck} />
             </Button>
-            <Button>
-              <FontAwesomeIcon onClick={modalHandler} icon={faTrash} />
-            </Button>
-          </>
-        )}
+          ) : (
+            <>
+              <Button>
+                <FontAwesomeIcon onClick={onEditToggle} icon={faPencilAlt} />
+              </Button>
+              <Button>
+                <FontAwesomeIcon onClick={modalHandler} icon={faTrash} />
+              </Button>
+            </>
+          )
+        ) : null}
       </Left>
       <div>
         <Text>{comment.updatedAt}</Text>

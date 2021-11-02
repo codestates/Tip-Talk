@@ -1,7 +1,7 @@
 import React from 'react';
 import { useHistory } from 'react-router';
 import styled from 'styled-components';
-import { Color_2, Color_3, Samlib } from '../styles/common';
+import { Color_2, Hangeul } from '../styles/common';
 
 const HomeContainer = styled.section`
   flex-grow: 1;
@@ -38,7 +38,7 @@ const Body = styled.div`
   display: flex;
   width: 100%;
   max-width: 1000px;
-  height: 60%;
+  height: 80%;
   margin: 0 auto;
   align-items: center;
   justify-content: center;
@@ -59,7 +59,7 @@ const Button = styled.button`
   width: 100px;
   height: 40px;
   margin-top: 20px;
-  font-family: ${Samlib};
+  font-family: ${Hangeul};
   font-size: 18px;
   background-color: ${Color_2};
   box-shadow: 0px 0px 3px 0px rgba(255, 255, 255, 0.45);
@@ -76,7 +76,7 @@ const Button = styled.button`
 `;
 
 const MainImage = styled.img`
-  width: 500px;
+  width: 400px;
 `;
 
 const Home = () => {

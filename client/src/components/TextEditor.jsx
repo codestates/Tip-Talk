@@ -31,12 +31,11 @@ export const EditorForm = styled.div`
   font-size: 18px;
   line-height: 21px;
   padding: 18px;
-  border: 1px solid ${({ theme }) => theme.line};
   border-radius: 6px;
   background-color: ${({ theme }) => theme.bgColor};
-  box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.3);
-  -webkit-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.3);
-  -moz-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.3);
+  box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.2);
+  -webkit-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.2);
   h1 {
     margin: 12px 0;
   }
@@ -151,7 +150,7 @@ const TextEditor = () => {
   );
 };
 
-const Element = ({ attributes, children, element }) => {
+export const Element = ({ attributes, children, element }) => {
   switch (element.type) {
     case 'block-quote':
       return <blockquote {...attributes}>{children}</blockquote>;
@@ -172,7 +171,7 @@ const Element = ({ attributes, children, element }) => {
   }
 };
 
-const Leaf = ({ attributes, children, leaf }) => {
+export const Leaf = ({ attributes, children, leaf }) => {
   if (leaf.bold) {
     children = <strong>{children}</strong>;
   }

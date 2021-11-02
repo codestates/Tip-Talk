@@ -6,9 +6,9 @@ import Comment from './Comment';
 const Container = styled.section`
   border-radius: 6px;
   background-color: ${({ theme }) => theme.bgColor};
-  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.3);
-  -webkit-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.3);
-  -moz-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.3);
+  box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.2);
+  -webkit-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.2);
 `;
 
 const CommentList = styled.ul`

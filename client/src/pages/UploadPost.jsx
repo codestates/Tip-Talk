@@ -7,15 +7,7 @@ import axios from 'axios';
 import Modal from '../components/Modal';
 import TextEditor, { deserialize } from '../components/TextEditor';
 
-import {
-  Body,
-  Button,
-  Hangeul,
-  Info,
-  Label,
-  Meta,
-  Text,
-} from '../styles/common';
+import { Body, Button, Info, Label, Meta, Text } from '../styles/common';
 import Loading from '../components/Loading';
 
 const UploadForm = styled.form`

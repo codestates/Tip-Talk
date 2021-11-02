@@ -64,9 +64,9 @@ export const Meta = styled.div`
   padding: 10px 45px;
   background-color: ${({ theme }) => theme.bgColor};
   border-radius: 6px;
-  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.3);
-  -webkit-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.3);
-  -moz-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.3);
+  box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.2);
+  -webkit-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.2);
   justify-content: space-between;
 `;
 
@@ -106,9 +106,9 @@ export const Button = styled.button`
   margin: ${({ margin }) => margin};
   color: ${Color_3};
   background-color: ${({ theme }) => theme.navBgColor};
-  box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.3);
-  -webkit-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.3);
-  -moz-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.3);
+  box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.2);
+  -webkit-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.2);
   transition: 0.1s;
   &:hover {
     color: ${({ theme }) => theme.navBgColor};

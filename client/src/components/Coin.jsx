@@ -7,11 +7,12 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useHistory } from 'react-router';
 import styled from 'styled-components';
+import { Color_3 } from '../styles/common';
 
-const CoinForm = styled.div`
+export const CoinForm = styled.div`
   display: flex;
   position: fixed;
-  color: white;
+  color: ${Color_3};
   top: ${({ position }) => (position.bottom ? 'none' : '100px')};
   bottom: ${({ position }) => (position.bottom ? position.bottom : 'none')};
   left: ${({ position }) => (position.right ? 'none' : '40px')};
@@ -20,11 +21,17 @@ const CoinForm = styled.div`
   height: 40px;
   border-radius: 50%;
   background-color: ${({ theme }) => theme.navBgColor};
+  box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.3);
+  -webkit-box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.3);
+  -moz-box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.3);
   justify-content: center;
   align-items: center;
+  transition: 0.2s;
   z-index: 10;
   :hover {
     cursor: pointer;
+    color: ${({ theme }) => theme.navBgColor};
+    background-color: ${Color_3};
   }
 `;
 

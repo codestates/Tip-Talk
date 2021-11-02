@@ -12,6 +12,7 @@ import UploadPost from './pages/UploadPost';
 import MyPage from './pages/MyPage';
 import { darkTheme, GlobalStyle, lightTheme } from './styles/common';
 import axios from 'axios';
+import Loading from './components/Loading';
 
 const Container = styled.div`
   display: flex;

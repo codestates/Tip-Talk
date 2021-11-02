@@ -25,7 +25,7 @@ import Modal from './Modal';
 
 const LIST_TYPES = ['numbered-list', 'bulleted-list'];
 
-const EditorForm = styled.div`
+export const EditorForm = styled.div`
   width: 100%;
   height: 500px;
   font-size: 18px;
@@ -34,9 +34,9 @@ const EditorForm = styled.div`
   border: 1px solid ${({ theme }) => theme.line};
   border-radius: 6px;
   background-color: ${({ theme }) => theme.bgColor};
-  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.3);
-  -webkit-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.3);
-  -moz-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.3);
+  box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.3);
+  -webkit-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.3);
+  -moz-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.3);
   h1 {
     margin: 12px 0;
   }

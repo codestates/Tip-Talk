@@ -8,6 +8,7 @@ import { kakao } from '../App';
 import Comments from '../components/Comments';
 import { createEditor } from 'slate';
 import { Slate, Editable, withReact } from 'slate-react';
+import { EditorForm } from '../components/TextEditor';
 
 const PostContainer = styled.article`
   display: flex;
@@ -82,15 +83,27 @@ const Post = () => {
     // * Comment 데이터 받아오기
 
     axios.get(`http://localhost:8000/comment/${postId}`).then(({ data }) => {
+      data.data.forEach((comment) => {
+        parseDate(comment);
+      });
       setComments(data.data);
     });
   }, []);
+
+  const parseDate = (comment) => {
+    comment.updatedAt = new Date(comment.updatedAt)
+      .toLocaleDateString()
+      .replaceAll('.', '')
+      .split(' ');
+    comment.updatedAt = `${comment.updatedAt[1]}월 ${comment.updatedAt[1]}일`;
+  };
 
   const handleSubmit = (text) => {
     axios
       .post(`http://localhost:8000/comment/${postId}`, { text })
       .then(({ data }) => {
         if (data.status) {
+          parseDate(data.data);
           setComments([...comments, data.data]);
         }
       });
@@ -138,7 +151,7 @@ const Post = () => {
         </Meta>
         <Carousel images={post?.images} />
         <Info>{post?.title} 소개</Info>
-        <Content>
+        <EditorForm>
           {value && (
             <Slate
               editor={editor}
@@ -153,7 +166,7 @@ const Post = () => {
               />
             </Slate>
           )}
-        </Content>
+        </EditorForm>
         <Info>{post?.title} 주변엔 어떤 것이 있나요?</Info>
         <Map id="map"></Map>
         <Info>댓글</Info>

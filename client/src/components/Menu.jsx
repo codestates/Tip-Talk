@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router';
 import styled from 'styled-components';
-import { Hangeul } from '../styles/common';
+import { Color_3, Hangeul } from '../styles/common';
 import Login from './Login';
 import Signup from './Signup';
 import Logout from './Logout';
@@ -22,7 +22,7 @@ const Logo = styled.img`
 const Button = styled.button`
   width: 80px;
   font-size: 16px;
-  color: ${(props) => props.theme.bgColor};
+  color: ${Color_3};
   font-family: ${Hangeul};
   background-color: transparent;
   padding: 0;

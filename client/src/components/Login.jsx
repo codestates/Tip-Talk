@@ -138,6 +138,11 @@ const GoogleButton = styled.img`
   cursor: pointer;
 `;
 
+const KakaoButton = styled.img`
+  width: 15rem;
+  cursor: pointer;
+`;
+
 const Login = ({ setShowLogin, user, setUser, setShowSignup }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -154,6 +159,12 @@ const Login = ({ setShowLogin, user, setUser, setShowSignup }) => {
     const oauth2Endpoint = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${CLIENT_ID}&access_type=offline&response_type=${RESPONSE_TYPE}&redirect_uri=${REDIRECT_URI}&scope=${SCOPE}&state=${STATE}&include_granted_scopes=${INCLUDE_GRANTED_SCOPES}&prompt=${PROMPT}`;
 
     window.location.assign(oauth2Endpoint);
+  };
+  const KakaoLogin = () => {
+    const K_CLIENT_ID = process.env.REACT_APP_KAKAO_CLIENT_ID;
+    const K_REDIRECT_URI = process.env.REACT_APP_REDIRECT_URI;
+    const kakaoLoginUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${K_CLIENT_ID}&redirect_uri=${K_REDIRECT_URI}&response_type=code`;
+    window.location.assign(kakaoLoginUrl);
   };
 
   const closeLoginModal = () => {
@@ -252,6 +263,11 @@ const Login = ({ setShowLogin, user, setUser, setShowSignup }) => {
                 alt="google-button"
                 onClick={oauth2Handler}
               ></GoogleButton>
+              <KakaoButton
+                src="kakao-button.png"
+                alt="kakao-button"
+                onClick={KakaoLogin}
+              ></KakaoButton>
               <button
                 className="signupButton"
                 onClick={() => [signupHandler()]}

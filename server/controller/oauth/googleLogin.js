@@ -58,20 +58,19 @@ module.exports = (req, res) => {
               expires: new Date(Date.now() + 1 * 3600000),
             });
 
-            res
-              .status(200)
-              .json({
-                status: true,
-                data: {
-                  token,
-                  user: {
-                    id: found.id,
-                    role: found.role,
-                    email: found.email,
-                    nickname: found.nickname,
-                  },
+            res.status(200).json({
+              status: true,
+              data: {
+                token,
+                user: {
+                  id: found.id,
+                  role: found.role,
+                  email: found.email,
+                  nickname: found.nickname,
+                  img: found.img,
                 },
-              });
+              },
+            });
           } catch (err) {
             console.log(err.message);
             return res

@@ -9,13 +9,14 @@ import TextEditor, { deserialize } from '../components/TextEditor';
 
 import {
   Body,
-  Color_4,
+  Button,
+  Hangeul,
   Info,
   Label,
   Meta,
-  Samlib,
   Text,
 } from '../styles/common';
+import Loading from '../components/Loading';
 
 const UploadForm = styled.form`
   display: flex;
@@ -131,23 +132,6 @@ const ImageCard = styled.img`
   height: 120px;
 `;
 
-const Button = styled.button`
-  width: 160px;
-  height: 48px;
-  color: ${({ theme }) => theme.navColor};
-  font-size: 20px;
-  font-family: ${Samlib};
-  font-weight: 600;
-  letter-spacing: 3px;
-  margin: 30px 0;
-  border: none;
-  border-radius: 6px;
-  background-color: ${({ theme }) => theme.navBgColor};
-  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.3);
-  -webkit-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.3);
-  -moz-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.3);
-`;
-
 const Message = styled.strong`
   font-size: 19px;
   line-height: 28px;
@@ -160,6 +144,7 @@ const UploadPost = () => {
   const [current, setCurrent] = useState();
   const [isOpen, setIsOpen] = useState(false);
   const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const titleInputRef = useRef();
   const imageInputRef = useRef();
@@ -210,13 +195,15 @@ const UploadPost = () => {
     formData.append('region', address.name);
 
     // ToDo 업로드하기
-
+    setLoading(true);
     axios
       .post('http://localhost:8000/post', formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       })
       .then((result) => {
+        // ToDo 업로드 성공처리
         console.log(result);
+        setLoading(false);
       })
       .catch((err) => {
         console.log(err);
@@ -263,6 +250,7 @@ const UploadPost = () => {
           callback={uploadPlace}
         />
       )}
+      {loading && <Loading />}
       <UploadForm onSubmit={handleSubmit}>
         <CustomInfo>사업지 등록하기</CustomInfo>
         <Meta>
@@ -329,12 +317,14 @@ const UploadPost = () => {
           name="image"
           onChange={handleImage}
         />
-        <Button type="button" onClick={handleUploadImage}>
+        <Button margin="30px 0" type="button" onClick={handleUploadImage}>
           사진 업로드
         </Button>
         <CustomInfo>소개란 입력하기</CustomInfo>
         <TextEditor />
-        <Button type="submit">저장하기</Button>
+        <Button margin="30px 0" type="submit">
+          저장하기
+        </Button>
       </UploadForm>
     </Body>
   );

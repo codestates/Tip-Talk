@@ -2,6 +2,7 @@ import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 import styled from 'styled-components';
+import { Button } from '../styles/common';
 
 const Background = styled.div`
   display: flex;
@@ -47,21 +48,6 @@ const Message = styled.span`
   font-size: 20px;
 `;
 
-const Button = styled.button`
-  width: 64px;
-  height: 36px;
-  margin: 10px 5px 0 5px;
-  border: none;
-  border-radius: 6px;
-  color: ${({ theme }) => theme.navColor};
-  font-size: 18px;
-  font-weight: bold;
-  background-color: ${({ theme }) => theme.navBgColor};
-  box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.75);
-  -webkit-box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.75);
-  -moz-box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.75);
-`;
-
 const Modal = ({ message, setIsOpen, callback }) => {
   const eventHandler = () => {
     if (callback) {
@@ -81,8 +67,12 @@ const Modal = ({ message, setIsOpen, callback }) => {
         </CloseButton>
         <Message>{message}</Message>
         <div>
-          <Button onClick={eventHandler}>확인</Button>
-          <Button onClick={closeModal}>아니요</Button>
+          <Button width="80px" margin="3px" onClick={eventHandler}>
+            확인
+          </Button>
+          <Button width="80px" margin="3px" onClick={closeModal}>
+            아니요
+          </Button>
         </div>
       </ModalContainer>
     </Background>

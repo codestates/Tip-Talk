@@ -49,7 +49,6 @@ const Post = () => {
       .then(({ data }) => {
         if (data.status) {
           const { posts } = data.data;
-          console.log(posts);
           setValue(JSON.parse(posts.content));
           setPost({
             ...posts,
@@ -96,7 +95,7 @@ const Post = () => {
       .toLocaleDateString()
       .replaceAll('.', '')
       .split(' ');
-    comment.updatedAt = `${comment.updatedAt[1]}월 ${comment.updatedAt[1]}일`;
+    comment.updatedAt = `${comment.updatedAt[1]}월 ${comment.updatedAt[2]}일`;
   };
 
   const handleSubmit = (text) => {

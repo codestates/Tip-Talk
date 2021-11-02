@@ -201,11 +201,6 @@ const UploadPost = () => {
     const title = titleInputRef.current.value;
     const formData = new FormData();
 
-    // console.log(text[0].children[0].text);
-    // console.log(category);
-    // console.log(title);
-    // console.log(images);
-
     formData.append('title', title);
     formData.append('content', text[0].children[0].text);
     formData.append('images', images);
@@ -282,7 +277,9 @@ const UploadPost = () => {
             <CustomLabel>카테고리 선택</CustomLabel>
             <Select ref={categoriesInputRef} name="categories">
               {categories?.map((category) => (
-                <option value={category.id}>{category.value}</option>
+                <option value={category.id} key={category.id}>
+                  {category.value}
+                </option>
               ))}
             </Select>
           </div>

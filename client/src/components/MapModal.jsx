@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 import { useHistory } from 'react-router';
 import styled from 'styled-components';
-import { Color_1, Color_3, Samlib } from '../styles/common';
+import { Button, Color_1, Color_3 } from '../styles/common';
 
 export const ModalBackground = styled.div`
   display: flex;
@@ -59,21 +59,6 @@ const Text = styled.h1`
   margin: 4px 0 10px 4px;
 `;
 
-const Button = styled.button`
-  width: 140px;
-  height: 40px;
-  border: none;
-  border-radius: 8px;
-  font-family: ${Samlib};
-  font-size: 18px;
-  color: ${Color_3};
-  background-color: ${({ theme }) => theme.navBgColor};
-  transition: 0.1s;
-  &:hover {
-    transform: scale(1.1);
-  }
-`;
-
 const MapModal = ({ data, backgroundRef, handleClose }) => {
   const { post, user } = data;
   const history = useHistory();
@@ -96,7 +81,9 @@ const MapModal = ({ data, backgroundRef, handleClose }) => {
         <Label>카테고리</Label>
         <Text>문화시설</Text>
       </Info>
-      <Button onClick={goToPost}>자세히 보기</Button>
+      <Button width="140px" height="40px" onClick={goToPost}>
+        자세히 보기
+      </Button>
     </ModalBackground>
   );
 };

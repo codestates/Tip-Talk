@@ -1,4 +1,4 @@
-const { post } = require('../models');
+const { post } = require('../../models');
 
 module.exports = async (req, res) => {
   const { title, content, images, categoryId } = req.body;

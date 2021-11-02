@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useHistory } from 'react-router';
 import styled from 'styled-components';
 import { kakao } from '../App';
-import { Color_1, Color_3 } from '../styles/common';
+import { Button, Color_1, Color_3 } from '../styles/common';
 import MapModal, { ModalBackground } from './MapModal';
 import Modal from './Modal';
 
@@ -19,8 +19,8 @@ const Map = styled.div`
   position: relative;
   display: flex;
   width: 100%;
-  border-radius: 12px;
   margin-bottom: 50px;
+  border-radius: 12px;
   justify-content: center;
 `;
 
@@ -55,29 +55,20 @@ const Search = styled.button`
 
 const UploadModal = styled(ModalBackground)`
   left: 0;
-  height: 150px;
-  padding: 30px;
+  height: 170px;
+  padding: 28px;
   color: ${Color_3};
   z-index: 11;
 `;
 
 const Address = styled.h2`
-  font-size: 24px;
+  font-size: 18px;
+  font-weight: 600;
 `;
 
 const Label = styled.span`
   display: block;
   margin: 10px 0;
-`;
-
-const UploadButton = styled.button`
-  width: 120px;
-  height: 32px;
-  font-size: 20px;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  background-color: ${({ theme }) => theme.navBgColor};
 `;
 
 const KakaoMap = ({ posts, handleSearch }) => {
@@ -155,13 +146,12 @@ const KakaoMap = ({ posts, handleSearch }) => {
     kakao.maps.event.addListener(map.current, 'click', function (mouseEvent) {
       // 클릭한 위도, 경도 정보를 가져옵니다
       const latlng = mouseEvent.latLng;
-
       searchAddrFromCoords(mouseEvent.latLng, function (result, status) {
         if (status === kakao.maps.services.Status.OK) {
           setAddress({
             name: result[0].address_name,
-            lat: result[0].y,
-            lng: result[0].x,
+            lat: latlng.Ma,
+            lng: latlng.La,
           });
         }
       });
@@ -230,9 +220,9 @@ const KakaoMap = ({ posts, handleSearch }) => {
           <UploadModal>
             <Address>{address.name}</Address>
             <Label>이 주소로 사업지</Label>
-            <UploadButton onClick={() => setIsOpen(true)}>
+            <Button width="120px" height="42px" onClick={() => setIsOpen(true)}>
               등록하기
-            </UploadButton>
+            </Button>
           </UploadModal>
         )}
       </Map>

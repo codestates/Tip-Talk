@@ -15,7 +15,7 @@ module.exports = async (req, res) => {
         message: '이메일 혹은 비밀번호가 일치하지 않습니다.',
       });
     } else {
-      bcrypt.compare(password, userInfo.password, function (err, res) {
+      bcrypt.compare(password, userInfo.password, function (err, result) {
         if (err) {
           throw err;
         } else {

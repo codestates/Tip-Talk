@@ -48,7 +48,8 @@ const Post = () => {
       .get(`http://localhost:8000/post/${postId}`)
       .then(({ data }) => {
         if (data.status) {
-          const { posts } = data;
+          const { posts } = data.data;
+          console.log(posts);
           setValue(JSON.parse(posts.content));
           setPost({
             ...posts,

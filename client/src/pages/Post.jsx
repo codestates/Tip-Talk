@@ -83,15 +83,27 @@ const Post = () => {
     // * Comment 데이터 받아오기
 
     axios.get(`http://localhost:8000/comment/${postId}`).then(({ data }) => {
+      data.data.forEach((comment) => {
+        parseDate(comment);
+      });
       setComments(data.data);
     });
   }, []);
+
+  const parseDate = (comment) => {
+    comment.updatedAt = new Date(comment.updatedAt)
+      .toLocaleDateString()
+      .replaceAll('.', '')
+      .split(' ');
+    comment.updatedAt = `${comment.updatedAt[1]}월 ${comment.updatedAt[1]}일`;
+  };
 
   const handleSubmit = (text) => {
     axios
       .post(`http://localhost:8000/comment/${postId}`, { text })
       .then(({ data }) => {
         if (data.status) {
+          parseDate(data.data);
           setComments([...comments, data.data]);
         }
       });

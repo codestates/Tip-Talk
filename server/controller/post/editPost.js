@@ -18,6 +18,11 @@ module.exports = async (req, res) => {
         .status(404)
         .json({ status: false, message: '존재하지 않는 게시글입니다.' });
     }
+    if (posts.userId !== req.user.id) {
+      return res
+        .status(403)
+        .json({ status: false, message: '권한이 없는 요청입니다.' });
+    }
     await post.update(
       { title, content, images, categoryId },
       { where: { id: id } },

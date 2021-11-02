@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Color_3 } from '../styles/common';
+import { Color_1, Color_3 } from '../styles/common';
 
 const Background = styled.div`
   display: flex;
@@ -16,6 +16,7 @@ const Background = styled.div`
 `;
 
 const Message = styled.div`
+  color: ${Color_1};
   font-size: 46px;
   font-weight: bold;
   margin: 0 2px;

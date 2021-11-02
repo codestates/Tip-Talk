@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useHistory, useParams } from 'react-router';
 import styled from 'styled-components';
 import { Coin } from '../components/Coin';
@@ -173,24 +173,124 @@ const RadioSection = styled.div`
   }
 `;
 
-const ImageGrid = styled.ul`
-  position: relative;
-  top: 16rem;
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  width: 50%;
-  padding: 10px;
+const Carousel = styled.div`
+  position: absolute;
+  top: 46rem;
+  display: flex;
+  justify-content: center;
+  .carousel-container {
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+  }
+  .carousel-wrapper {
+    width: 100%;
+    display: flex;
+    position: relative;
+  }
+  .carousel-content-wrapper {
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+  }
+  .carousel-content {
+    display: flex;
+    transition: all 250ms linear;
+  }
+  .carousel-content::-webkit-scrollbar {
+    display: none;
+  }
+  .carousel-content > * {
+    width: 100%;
+    flex-shrink: 0;
+    flex-grow: 1;
+  }
+  .left-arrow {
+    position: absolute;
+    z-index: 1;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 48px;
+    height: 48px;
+    border-radius: 24px;
+    background-color: white;
+    border: 1px solid #ddd;
+    left: 24px;
+  }
+  .right-arrow {
+    position: absolute;
+    z-index: 1;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 48px;
+    height: 48px;
+    border-radius: 24px;
+    background-color: white;
+    border: 1px solid #ddd;
+    right: 24px;
+  }
+  .carousel-content {
+    width: 50%;
+  }
+  .show-2 > * {
+    width: 50%;
+  }
+  .carousel-content {
+    width: clac(100% / 3);
+  }
+  .show-3 > * {
+    width: clac(100% / 3);
+  }
+  .carousel-content {
+    width: calc(93% / 4);
+  }
+  .show-4 > * {
+    width: calc(93% / 4);
+  }
 `;
 
-const MyPage = ({ user, setUser, setToken }) => {
+const MyPage = ({ setToken }) => {
+  const show = 3;
+  const infiniteLoop = true;
   const [isEdit, setIsEdit] = useState(false);
   const [imageBase64, setImageBase64] = useState(null);
   const [posts, setPosts] = useState(data);
   const [isOpen, setIsOpen] = useState(false);
+  const [nickname, setNickname] = useState(null);
+  const [password, setPassword] = useState(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [length, setLength] = useState(posts.length);
+  const [isRepeating, setIsRepeating] = useState(
+    infiniteLoop && posts.length > show,
+  );
+  const [transitionEnabled, setTransitionEnabled] = useState(true);
   const fileInput = useRef(null);
   const scrollRef = useRef();
   const history = useHistory();
   const { id } = useParams();
+
+  useEffect(() => {
+    setLength(posts.length);
+    setIsRepeating(infiniteLoop && posts.length > show);
+  }, [posts, infiniteLoop, show]);
+
+  useEffect(() => {
+    if (isRepeating) {
+      if (currentIndex === show || currentIndex === length) {
+        setTransitionEnabled(true);
+      }
+    }
+  }, [currentIndex, isRepeating, show, length]);
+
+  useEffect(() => {
+    axios
+      .get(`http://localhost:8000/user/${id}`)
+      .then((res) => {
+        console.log('userinfo = ', res);
+        console.log('id = ' + id);
+      })
+      .catch((err) => console.log(err));
+  });
 
   const editHandler = () => {
     setIsEdit(!isEdit);
@@ -242,6 +342,65 @@ const MyPage = ({ user, setUser, setToken }) => {
       .catch((err) => console.log(err));
   };
 
+  const nicknameHandler = (e) => {
+    setNickname(e.target.value);
+  };
+
+  const passwordHandler = (e) => {
+    setPassword(e.target.value);
+  };
+
+  const submitHandler = () => {
+    const role = document.querySelector('input[name=role]:checked').value;
+    axios
+      .patch(`http://localhost:8000/user/${id}`, { nickname, password, role })
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
+
+    document.getElementById('owner').checked = true;
+  };
+
+  const next = () => {
+    if (isRepeating || currentIndex < length - show) {
+      setCurrentIndex((prevState) => prevState + 1);
+    }
+  };
+
+  const prev = () => {
+    if (isRepeating || currentIndex > 0) {
+      setCurrentIndex((prevState) => prevState - 1);
+    }
+  };
+
+  const handleTransitionEnd = () => {
+    if (isRepeating) {
+      if (currentIndex === 0) {
+        setTransitionEnabled(false);
+        setCurrentIndex(length);
+      } else if (currentIndex === length + show) {
+        setTransitionEnabled(false);
+        setCurrentIndex(show);
+      }
+    }
+  };
+
+  const renderExtraPrev = () => {
+    let output = [];
+    for (let index = 0; index < show; index++) {
+      output.push(posts[length - 1 - index]);
+    }
+    output.reverse();
+    return output.post;
+  };
+
+  const renderExtraNext = () => {
+    let output = [];
+    for (let index = 0; index < show; index++) {
+      output.push(posts[index]);
+    }
+    return output.post;
+  };
+
   return (
     <>
       <Scroll ref={scrollRef} />
@@ -279,18 +438,22 @@ const MyPage = ({ user, setUser, setToken }) => {
                 <>
                   {/* {placeholder에 표시되고 있던 값 넣기} */}
                   <div className="email">email</div>
-                  <input type="text" id="nickname" placeholder="nickname" />
-                  <input type="password" id="password" placeholder="password" />
+                  <input
+                    type="text"
+                    id="nickname"
+                    placeholder="nickname"
+                    onChange={nicknameHandler}
+                  />
+                  <input
+                    type="password"
+                    id="password"
+                    placeholder="password"
+                    onChange={passwordHandler}
+                  />
                   <RadioSection>
                     <input type="radio" id="owner" name="role" value="1" />
                     <div className="owner">사업자</div>
-                    <input
-                      type="radio"
-                      id="user"
-                      name="role"
-                      value="2"
-                      defaultChecked
-                    />
+                    <input type="radio" id="user" name="role" value="2" />
                     <div className="user">일반인</div>
                   </RadioSection>
                 </>
@@ -322,7 +485,10 @@ const MyPage = ({ user, setUser, setToken }) => {
                   수정하기
                 </button>
               ) : (
-                <button className="edit" onClick={editHandler}>
+                <button
+                  className="edit"
+                  onClick={() => [editHandler(), submitHandler()]}
+                >
                   수정 완료
                 </button>
               )}
@@ -347,11 +513,39 @@ const MyPage = ({ user, setUser, setToken }) => {
         <Header>
           <div className="middle-header">내가 찜한 장소 목록</div>
         </Header>
-        <ImageGrid>
-          {posts.map((post) => (
-            <Thumbnail thumbnail={post} key={post.post.id} />
-          ))}
-        </ImageGrid>
+        <Carousel>
+          <div className="carousel-container">
+            <div className="carousel-wrapper">
+              {(isRepeating || currentIndex > 0) && (
+                <button className="left-arrow" onClick={prev}>
+                  &lt;
+                </button>
+              )}
+              <div className="carousel-content-wrapper">
+                <div
+                  className={`carousel-content
+                  show-${show}`}
+                  style={{
+                    transform: `translateX(-${currentIndex * (300 / show)}%)`,
+                    transition: !transitionEnabled ? 'none' : undefined,
+                  }}
+                  onTransitionEnd={handleTransitionEnd}
+                >
+                  {length > show && isRepeating && renderExtraPrev()}
+                  {posts.map((post) => (
+                    <Thumbnail thumbnail={post} key={post.post.id} />
+                  ))}
+                  {length > show && isRepeating && renderExtraNext()}
+                </div>
+              </div>
+              {(isRepeating || currentIndex < length - show) && (
+                <button className="right-arrow" onClick={next}>
+                  &gt;
+                </button>
+              )}
+            </div>
+          </div>
+        </Carousel>
       </Container>
     </>
   );

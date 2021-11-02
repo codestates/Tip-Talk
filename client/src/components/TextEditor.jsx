@@ -227,6 +227,7 @@ const BlockButton = ({ format, icon }) => {
   const editor = useSlate();
   return (
     <Button
+      type="button"
       active={isBlockActive(editor, format)}
       onMouseDown={(event) => {
         event.preventDefault();

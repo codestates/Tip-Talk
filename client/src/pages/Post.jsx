@@ -45,7 +45,7 @@ const Post = () => {
   useEffect(() => {
     // * 서버로부터 데이터 받아오기
     axios
-      .get(`http://localhost:8000/post/${postId}`)
+      .get(`${process.env.REACT_APP_SERVER_URL}/post/${postId}`)
       .then(({ data }) => {
         if (data.status) {
           const { posts } = data.data;
@@ -82,12 +82,14 @@ const Post = () => {
 
     // * Comment 데이터 받아오기
 
-    axios.get(`http://localhost:8000/comment/${postId}`).then(({ data }) => {
-      data.data.forEach((comment) => {
-        parseDate(comment);
+    axios
+      .get(`${process.env.REACT_APP_SERVER_URL}/comment/${postId}`)
+      .then(({ data }) => {
+        data.data.forEach((comment) => {
+          parseDate(comment);
+        });
+        setComments(data.data);
       });
-      setComments(data.data);
-    });
   }, []);
 
   const parseDate = (comment) => {
@@ -100,7 +102,7 @@ const Post = () => {
 
   const handleSubmit = (text) => {
     axios
-      .post(`http://localhost:8000/comment/${postId}`, { text })
+      .post(`${process.env.REACT_APP_SERVER_URL}/comment/${postId}`, { text })
       .then(({ data }) => {
         if (data.status) {
           parseDate(data.data);
@@ -111,7 +113,9 @@ const Post = () => {
 
   const handleEdit = (text, commentId) => {
     axios
-      .patch(`http://localhost:8000/comment/${commentId}`, { text })
+      .patch(`${process.env.REACT_APP_SERVER_URL}/comment/${commentId}`, {
+        text,
+      })
       .then(({ data }) => {
         if (data.status) {
           comments.forEach((comment) => {
@@ -125,10 +129,12 @@ const Post = () => {
   };
 
   const handleDelete = (commentId) => {
-    axios.delete(`http://localhost:8000/comment/${commentId}`).then(() => {
-      const filtered = comments.filter((comment) => comment.id !== commentId);
-      setComments([...filtered]);
-    });
+    axios
+      .delete(`${process.env.REACT_APP_SERVER_URL}/comment/${commentId}`)
+      .then(() => {
+        const filtered = comments.filter((comment) => comment.id !== commentId);
+        setComments([...filtered]);
+      });
   };
 
   return (

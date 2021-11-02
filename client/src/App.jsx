@@ -37,7 +37,7 @@ function App() {
 
     if (authorizationCode) {
       axios
-        .post('http://localhost:8000/oauth/google', {
+        .post(`${process.env.REACT_APP_SERVER_URL}/oauth/google`, {
           authorizationCode,
         })
         .then(({ data }) => {

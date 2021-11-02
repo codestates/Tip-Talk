@@ -17,6 +17,7 @@ module.exports = {
     login: require('./auth/login'),
     signout: require('./auth/signout'),
     signup: require('./auth/signup'),
+    me: require('./auth/me'),
   },
   postController: {
     deletePost: require('./post/deletePost'),

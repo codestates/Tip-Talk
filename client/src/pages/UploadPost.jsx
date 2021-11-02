@@ -16,6 +16,7 @@ import {
   Meta,
   Text,
 } from '../styles/common';
+import Loading from '../components/Loading';
 
 const UploadForm = styled.form`
   display: flex;
@@ -143,6 +144,7 @@ const UploadPost = () => {
   const [current, setCurrent] = useState();
   const [isOpen, setIsOpen] = useState(false);
   const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const titleInputRef = useRef();
   const imageInputRef = useRef();
@@ -193,13 +195,15 @@ const UploadPost = () => {
     formData.append('region', address.name);
 
     // ToDo 업로드하기
-
+    setLoading(true);
     axios
       .post('http://localhost:8000/post', formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       })
       .then((result) => {
+        // ToDo 업로드 성공처리
         console.log(result);
+        setLoading(false);
       })
       .catch((err) => {
         console.log(err);
@@ -246,6 +250,7 @@ const UploadPost = () => {
           callback={uploadPlace}
         />
       )}
+      {loading && <Loading />}
       <UploadForm onSubmit={handleSubmit}>
         <CustomInfo>사업지 등록하기</CustomInfo>
         <Meta>

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
 import styled, { ThemeProvider } from 'styled-components';
 import { Coin } from './components/Coin';
@@ -13,6 +13,7 @@ import MyPage from './pages/MyPage';
 import { darkTheme, GlobalStyle, lightTheme } from './styles/common';
 import axios from 'axios';
 import Loading from './components/Loading';
+import UserContext from './context/UserContext';
 
 const Container = styled.div`
   display: flex;
@@ -27,7 +28,7 @@ axios.defaults.withCredentials = true;
 
 function App() {
   const [darkMode, setDarkMode] = useState(localStorage.getItem('darkmode'));
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useContext(UserContext);
   const [showLogin, setShowLogin] = useState(false);
   const [showSignup, setShowSingup] = useState(false);
 

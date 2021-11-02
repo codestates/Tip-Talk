@@ -9,6 +9,7 @@ export const Color_6 = '#888';
 export const Color_7 = '#1a1a1a';
 export const Samlib = 'Pretendard-Regular';
 export const Hangeul = 'Pretendard-Regular';
+export const Logo = 'https://drawit.s3.ap-northeast-2.amazonaws.com/Logo.png';
 
 export const lightTheme = {
   color: Color_5,

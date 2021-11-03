@@ -196,6 +196,9 @@ const Carousel = styled.div`
   .carousel-content {
     display: flex;
     transition: all 250ms linear;
+      transform: translateX(-${(props) =>
+        props.currentIndex * (400 / props.show)}%);
+      transition: !transitionEnabled ? 'none' : undefined;
   }
   .carousel-content::-webkit-scrollbar {
     display: none;
@@ -231,21 +234,21 @@ const Carousel = styled.div`
   }
   .carousel-content {
     width: 50%;
-  }
-  .show-2 > * {
-    width: 50%;
+    &.show-2 > * {
+      width: 50%;
+    }
   }
   .carousel-content {
     width: clac(100% / 3);
-  }
-  .show-3 > * {
-    width: clac(100% / 3);
+    &.show-3 > * {
+      width: clac(100% / 3);
+    }
   }
   .carousel-content {
     width: calc(93% / 4);
-  }
-  .show-4 > * {
-    width: calc(93% / 4);
+    &.show-4 > * {
+      width: calc(93% / 4);
+    }
   }
 `;
 
@@ -284,7 +287,7 @@ const MyPage = ({ setToken }) => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:8000/user/${id}`)
+      .get(`${process.env.REACT_APP_SERVER_URL}/user/${id}`)
       .then((res) => {
         console.log('userinfo = ', res);
         console.log('id = ' + id);
@@ -317,7 +320,7 @@ const MyPage = ({ setToken }) => {
         console.log(key, value);
       }
       axios
-        .patch(`http://localhost:8000/user/${id}`, fd, {
+        .patch(`${process.env.REACT_APP_SERVER_URL}/user/${id}`, fd, {
           headers: { 'Content-Type': 'multipart/form-data' },
         })
         .then((res) => console.log(res))
@@ -331,7 +334,7 @@ const MyPage = ({ setToken }) => {
 
   const deleteHandler = () => {
     axios
-      .delete('http://localhost:8000/auth/deleteUser', {
+      .delete(`${process.env.REACT_APP_SERVER_URL}/auth/deleteUser`, {
         withCredentials: true,
       })
       .then((res) => {
@@ -353,7 +356,11 @@ const MyPage = ({ setToken }) => {
   const submitHandler = () => {
     const role = document.querySelector('input[name=role]:checked').value;
     axios
-      .patch(`http://localhost:8000/user/${id}`, { nickname, password, role })
+      .patch(`${process.env.REACT_APP_SERVER_URL}/user/${id}`, {
+        nickname,
+        password,
+        role,
+      })
       .then((res) => console.log(res))
       .catch((err) => console.log(err));
 
@@ -513,7 +520,7 @@ const MyPage = ({ setToken }) => {
         <Header>
           <div className="middle-header">내가 찜한 장소 목록</div>
         </Header>
-        <Carousel>
+        <Carousel currentIndex={currentIndex} show={show}>
           <div className="carousel-container">
             <div className="carousel-wrapper">
               {(isRepeating || currentIndex > 0) && (
@@ -523,12 +530,7 @@ const MyPage = ({ setToken }) => {
               )}
               <div className="carousel-content-wrapper">
                 <div
-                  className={`carousel-content
-                  show-${show}`}
-                  style={{
-                    transform: `translateX(-${currentIndex * (300 / show)}%)`,
-                    transition: !transitionEnabled ? 'none' : undefined,
-                  }}
+                  className={`carousel-content show-${show}`}
                   onTransitionEnd={handleTransitionEnd}
                 >
                   {length > show && isRepeating && renderExtraPrev()}

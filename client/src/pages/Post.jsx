@@ -197,9 +197,8 @@ const Post = () => {
           <div>
             <Label>주소</Label>
             <Text>{post?.region}</Text>
-            {/* // ToDo 동적 데이터로 변경 */}
             <Label>카테고리</Label>
-            <Text>여행지</Text> {/* // ToDo 동적 데이터로 변경 */}
+            <Text>{post?.categories[0]?.value}</Text>
           </div>
         </Meta>
         <Carousel images={post?.images} />

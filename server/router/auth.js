@@ -21,6 +21,6 @@ router.post(
 );
 router.post('/signout', authController.signout);
 router.delete('/deleteUser', authController.deleteUser);
-router.get('/me', isLoggedIn, isAuth, authController.me);
+router.get('/me', isLoggedIn, authController.me);
 
 module.exports.authRouter = router;

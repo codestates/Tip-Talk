@@ -1,9 +1,10 @@
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { useHistory } from 'react-router';
 import styled from 'styled-components';
 import { kakao } from '../App';
+import UserContext from '../context/UserContext';
 import { Button, Color_1, Color_3 } from '../styles/common';
 import MapModal, { ModalBackground } from './MapModal';
 import Modal from './Modal';
@@ -76,12 +77,16 @@ const KakaoMap = ({ posts, handleSearch }) => {
   const backgroundRef = useRef();
   const inputRef = useRef();
   const map = useRef(null);
+  const geocoder = useRef(null);
+  const blueMarker = useRef();
   const history = useHistory();
 
   const [post, setPost] = useState();
   const [address, setAddress] = useState();
   const [isMarked, setMarked] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [user] = useContext(UserContext);
+  const [marker, setMaker] = useState([]);
 
   useEffect(() => {
     const options = {
@@ -91,9 +96,6 @@ const KakaoMap = ({ posts, handleSearch }) => {
     map.current = new kakao.maps.Map(containerRef.current, options);
     const mapTypeControl = new kakao.maps.MapTypeControl();
 
-    // 주소-좌표 변환 객체를 생성합니다
-    const geocoder = new kakao.maps.services.Geocoder();
-
     // 지도에 컨트롤을 추가해야 지도위에 표시됩니다
     // kakao.maps.ControlPosition은 컨트롤이 표시될 위치를 정의하는데 TOPRIGHT는 오른쪽 위를 의미합니다
     map.current.addControl(mapTypeControl, kakao.maps.ControlPosition.TOPRIGHT);
@@ -102,33 +104,49 @@ const KakaoMap = ({ posts, handleSearch }) => {
     const zoomControl = new kakao.maps.ZoomControl();
     map.current.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
 
-    if (posts) {
-      let bounds = new kakao.maps.LatLngBounds();
+    // 주소-좌표 변환 객체를 생성합니다
+    geocoder.current = new kakao.maps.services.Geocoder();
 
-      for (let i = 0; i < posts.length; i++) {
-        displayMarker(posts[i]);
-        bounds.extend(
-          new kakao.maps.LatLng(posts[i].post.lat, posts[i].post.lng),
-        );
+    blueMarker.current = new kakao.maps.Marker();
+  }, []);
+
+  useEffect(() => {
+    // 지도에 마커를 표시합니다
+    blueMarker.current.setMap(map.current);
+
+    if (posts?.length) {
+      let bounds = new kakao.maps.LatLngBounds();
+      let markers = [];
+      if (marker.length) {
+        setMarkers(null);
+        setMaker([]);
       }
+      for (let i = 0; i < posts.length; i++) {
+        displayMarker(posts[i], markers);
+        bounds.extend(new kakao.maps.LatLng(posts[i].lat, posts[i].lng));
+      }
+      setMaker([...markers]);
       map.current.setBounds(bounds);
     }
 
-    function displayMarker(Post) {
-      const { post, user } = Post;
+    function displayMarker(post, markers) {
+      const { user } = post;
+
       const imageSrc =
         'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png';
       const imageSize = new kakao.maps.Size(24, 35);
       // 마커 이미지를 생성합니다
       const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
-      let marker = new kakao.maps.Marker({
+      const newMarker = new kakao.maps.Marker({
         map: map.current,
         position: new kakao.maps.LatLng(post.lat, post.lng),
         image: markerImage,
       });
 
+      markers.push(newMarker);
+
       // 마커에 클릭이벤트를 등록합니다
-      kakao.maps.event.addListener(marker, 'click', function () {
+      kakao.maps.event.addListener(newMarker, 'click', function () {
         // 마커를 클릭하면 장소명이 인포윈도우에 표출됩니다
         setCenter(post.lat, post.lng);
         setMarked(false);
@@ -137,37 +155,45 @@ const KakaoMap = ({ posts, handleSearch }) => {
     }
 
     // Todo 사업자만 가능하도록 설정 user.role - 여기부터
-    const marker = new kakao.maps.Marker();
-    // 지도에 마커를 표시합니다
-    marker.setMap(map.current);
 
-    // 지도에 클릭 이벤트를 등록합니다
-    // 지도를 클릭하면 마지막 파라미터로 넘어온 함수를 호출합니다
-    kakao.maps.event.addListener(map.current, 'click', function (mouseEvent) {
-      // 클릭한 위도, 경도 정보를 가져옵니다
-      const latlng = mouseEvent.latLng;
-      searchAddrFromCoords(mouseEvent.latLng, function (result, status) {
-        if (status === kakao.maps.services.Status.OK) {
-          setAddress({
-            name: result[0].address_name,
-            lat: latlng.Ma,
-            lng: latlng.La,
-          });
-        }
+    if (user && user?.role !== 2) {
+      // 지도에 클릭 이벤트를 등록합니다
+      // 지도를 클릭하면 마지막 파라미터로 넘어온 함수를 호출합니다
+      kakao.maps.event.addListener(map.current, 'click', function (mouseEvent) {
+        // 클릭한 위도, 경도 정보를 가져옵니다
+        const latlng = mouseEvent.latLng;
+        searchAddrFromCoords(mouseEvent.latLng, function (result, status) {
+          if (status === kakao.maps.services.Status.OK) {
+            setAddress({
+              name: result[0].address_name,
+              lat: latlng.Ma,
+              lng: latlng.La,
+            });
+          }
+        });
+
+        // 마커 위치를 클릭한 위치로 옮깁니다
+        setCenter(latlng.Ma, latlng.La);
+        blueMarker.current.setPosition(latlng);
+        setMarked(true);
       });
-
-      // 마커 위치를 클릭한 위치로 옮깁니다
-      setCenter(latlng.Ma, latlng.La);
-      marker.setPosition(latlng);
-      setMarked(true);
-    });
-    // todo - 여기까지
+    }
 
     function searchAddrFromCoords(coords, callback) {
       // 좌표로 행정동 주소 정보를 요청합니다
-      geocoder.coord2RegionCode(coords.getLng(), coords.getLat(), callback);
+      geocoder.current.coord2RegionCode(
+        coords.getLng(),
+        coords.getLat(),
+        callback,
+      );
     }
-  }, [posts]);
+
+    function setMarkers(map) {
+      for (var i = 0; i < marker.length; i++) {
+        marker[i].setMap(map);
+      }
+    }
+  }, [posts, user]);
 
   useEffect(() => {
     if (backgroundRef.current) {

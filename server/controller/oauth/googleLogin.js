@@ -78,15 +78,12 @@ module.exports = (req, res) => {
               .json({ status: false, message: 'Oauth google server error' });
           }
         })
-        .catch(() => {
+        .catch((err) => {
+          console.log(err);
           return res
             .status(500)
             .json({ status: false, message: 'Oauth google server error' });
         });
     })
-    .catch((err) => {
-      return res
-        .status(500)
-        .json({ status: false, message: 'Oauth google server error' });
-    });
+    .catch(() => {});
 };

@@ -1,6 +1,9 @@
 const { user } = require('../../models');
 
 module.exports = async (req, res) => {
+  if (!req.user) {
+    return res.status(200).json({ status: true, data: null });
+  }
   try {
     const found = await user.findOne({
       where: { id: req.user.id },

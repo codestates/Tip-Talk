@@ -156,7 +156,7 @@ const KakaoMap = ({ posts, handleSearch }) => {
 
     // Todo 사업자만 가능하도록 설정 user.role - 여기부터
 
-    if (user?.role !== 1) {
+    if (user && user?.role !== 2) {
       // 지도에 클릭 이벤트를 등록합니다
       // 지도를 클릭하면 마지막 파라미터로 넘어온 함수를 호출합니다
       kakao.maps.event.addListener(map.current, 'click', function (mouseEvent) {

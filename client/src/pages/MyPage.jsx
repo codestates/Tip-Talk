@@ -355,8 +355,6 @@ const MyPage = ({ setToken }) => {
     }
   }, [user, editStart]);
 
-  console.log('user = ', user);
-
   const editStartHandler = () => {
     setEditStart(true);
   };
@@ -385,7 +383,7 @@ const MyPage = ({ setToken }) => {
       reader.readAsDataURL(e.target.files[0]);
 
       const fd = new FormData();
-      fd.append('img', e.target.files[0]);
+      fd.append('image', e.target.files[0]);
       for (let [key, value] of fd.entries()) {
         console.log(key, value);
       }

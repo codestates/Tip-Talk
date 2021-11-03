@@ -201,14 +201,12 @@ const Login = ({ setShowLogin, user, setUser, setShowSignup }) => {
         password,
       });
 
-      if (data.data.data.token) {
-        setUser(data.data.data.token);
+      if (data.data.data) {
+        setUser(data.data.data.user);
         localStorage.setItem('token', data.data.data.token);
         closeLoginModal();
       }
-    } catch (err) {
-      setUser(undefined);
-    }
+    } catch (err) {}
   };
 
   return (

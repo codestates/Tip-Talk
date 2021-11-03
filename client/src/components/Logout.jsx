@@ -3,7 +3,7 @@ import Modal from './Modal';
 import Portal from './Portal';
 import axios from 'axios';
 
-const Logout = ({ setUser, isOpen, setIsOpen }) => {
+const Logout = ({ setToken, isOpen, setIsOpen }) => {
   const history = useHistory();
 
   const logoutHandler = () => {
@@ -11,7 +11,7 @@ const Logout = ({ setUser, isOpen, setIsOpen }) => {
       .post('http://localhost:8000/auth/signout')
       .then((res) => {
         localStorage.removeItem('token');
-        setUser(null);
+        setToken(null);
         history.push('/');
       })
       .catch((err) => console.log(err));

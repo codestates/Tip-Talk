@@ -28,8 +28,16 @@ axios.defaults.withCredentials = true;
 function App() {
   const [darkMode, setDarkMode] = useState(localStorage.getItem('darkmode'));
   const [user, setUser] = useState(null);
+  const [token, setToken] = useState(null);
   const [showLogin, setShowLogin] = useState(false);
   const [showSignup, setShowSingup] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      setToken(token);
+    }
+  });
 
   useEffect(() => {
     const url = new URL(window.location.href);
@@ -42,8 +50,8 @@ function App() {
         })
         .then(({ data }) => {
           if (data.status) {
-            const { token } = data.data;
-            setUser(token);
+            const { token, user } = data.data;
+            setUser(user);
             localStorage.setItem('token', token);
           }
         })
@@ -51,64 +59,62 @@ function App() {
     }
   }, []);
 
-  useEffect(() => {
-    const info = localStorage.getItem('token');
-    if (info) {
-      setUser(info);
-    }
-  }, []);
-
   return (
-    <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
-      <GlobalStyle />
-      <Coin
-        mode="light"
-        darkMode={darkMode}
-        setDarkMode={setDarkMode}
-        right="40px"
-        bottom="150px"
-      />
-      <Router>
-        <Container>
-          <Header
-            showLogin={showLogin}
-            setShowLogin={setShowLogin}
-            user={user}
-            setUser={setUser}
-            showSignup={showSignup}
-            setShowSignup={setShowSingup}
-          />
-          <Switch>
-            <Route exact path="/">
-              <Home />
-            </Route>
-            <Route path="/main">
-              <Main />
-              <Coin mode="reply" />
-            </Route>
-            <Route path="/post/:postId">
-              <Post />
-              <Coin mode="reply" />
-            </Route>
-            <Route path="/upload">
-              <UploadPost />
-              <Coin mode="reply" />
-            </Route>
-            <Route path="/mypage">
-              <MyPage />
-              <Coin mode="reply" />
-            </Route>
-            <Route path="/loading">
-              <Loading />
-            </Route>
-            <Route>
-              <NotFound />
-            </Route>
-          </Switch>
-          <Footer />
-        </Container>
-      </Router>
-    </ThemeProvider>
+    <>
+      <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
+        <GlobalStyle />
+        <Coin
+          mode="light"
+          darkMode={darkMode}
+          setDarkMode={setDarkMode}
+          right="40px"
+          bottom="150px"
+        />
+        <Router>
+          <Container>
+            <Header
+              showLogin={showLogin}
+              setShowLogin={setShowLogin}
+              user={user}
+              setUser={setUser}
+              showSignup={showSignup}
+              setShowSignup={setShowSingup}
+              token={token}
+              setToken={setToken}
+            />
+            <Switch>
+              <Route exact path="/">
+                <Home />
+              </Route>
+              <Route path="/main">
+                <Main />
+                <Coin mode="reply" />
+              </Route>
+              <Route path="/post/:postId">
+                <Post />
+                <Coin mode="reply" />
+              </Route>
+              <Route path="/upload">
+                <UploadPost />
+                <Coin mode="reply" />
+              </Route>
+              <Route path="/mypage/:id">
+                <MyPage
+                  user={user === null ? null : user}
+                  setUser={setUser}
+                  setToken={setToken}
+                />
+                <Coin mode="reply" />
+              </Route>
+              <Route>
+                <NotFound />
+              </Route>
+            </Switch>
+            <Footer />
+          </Container>
+        </Router>
+      </ThemeProvider>
+    </>
   );
 }
 

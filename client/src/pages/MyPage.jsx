@@ -183,7 +183,7 @@ const Carousel = styled.div`
   display: flex;
   justify-content: center;
   .carousel-container {
-    width: 80%;
+    width: 85%;
     display: flex;
     flex-direction: column;
   }
@@ -200,9 +200,9 @@ const Carousel = styled.div`
   .carousel-content {
     display: flex;
     transition: all 250ms linear;
-      transform: translateX(-${(props) =>
-        props.currentIndex * (400 / props.show)}%);
-      transition: !transitionEnabled ? 'none' : undefined;
+    transform: translateX(
+      -${(props) => props.currentIndex * (540 / props.show)}%
+    );
   }
   .carousel-content::-webkit-scrollbar {
     display: none;
@@ -237,22 +237,7 @@ const Carousel = styled.div`
     right: 24px;
   }
   .carousel-content {
-    width: 50%;
-    &.show-2 > * {
-      width: 50%;
-    }
-  }
-  .carousel-content {
-    width: clac(100% / 3);
-    &.show-3 > * {
-      width: clac(100% / 3);
-    }
-  }
-  .carousel-content {
-    width: calc(93% / 4);
-    &.show-4 > * {
-      width: calc(93% / 4);
-    }
+    width: calc(93.6% / ${(props) => props.show});
   }
 `;
 
@@ -301,8 +286,7 @@ const Message = styled.span`
 `;
 
 const MyPage = ({ setToken }) => {
-  const show = 3;
-  const infiniteLoop = true;
+  const show = 5;
   const [editStart, setEditStart] = useState(false);
   const [editDone, setEditDone] = useState(false);
   const [isClose, setIsClose] = useState(false);
@@ -313,10 +297,6 @@ const MyPage = ({ setToken }) => {
   const [password, setPassword] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [length, setLength] = useState(posts.length);
-  const [isRepeating, setIsRepeating] = useState(
-    infiniteLoop && posts.length > show,
-  );
-  const [transitionEnabled, setTransitionEnabled] = useState(true);
   const fileInput = useRef(null);
   const scrollRef = useRef();
   const history = useHistory();
@@ -325,16 +305,7 @@ const MyPage = ({ setToken }) => {
 
   useEffect(() => {
     setLength(posts.length);
-    setIsRepeating(infiniteLoop && posts.length > show);
-  }, [posts, infiniteLoop, show]);
-
-  useEffect(() => {
-    if (isRepeating === true) {
-      if (currentIndex === show || currentIndex === length) {
-        setTransitionEnabled(true);
-      }
-    }
-  }, [currentIndex, isRepeating, show, length]);
+  }, [posts]);
 
   useEffect(() => {
     if (user) {
@@ -435,44 +406,15 @@ const MyPage = ({ setToken }) => {
   };
 
   const next = () => {
-    if (isRepeating || currentIndex < length - show) {
+    if (currentIndex < length - show) {
       setCurrentIndex((prevState) => prevState + 1);
     }
   };
 
   const prev = () => {
-    if (isRepeating || currentIndex > 0) {
+    if (currentIndex > 0) {
       setCurrentIndex((prevState) => prevState - 1);
     }
-  };
-
-  const handleTransitionEnd = () => {
-    if (isRepeating) {
-      if (currentIndex === 0) {
-        setTransitionEnabled(false);
-        setCurrentIndex(length);
-      } else if (currentIndex === length + show) {
-        setTransitionEnabled(false);
-        setCurrentIndex(show);
-      }
-    }
-  };
-
-  const renderExtraPrev = () => {
-    let output = [];
-    for (let index = 0; index < show; index++) {
-      output.push(posts[length - 1 - index]);
-    }
-    output.reverse();
-    return output.post;
-  };
-
-  const renderExtraNext = () => {
-    let output = [];
-    for (let index = 0; index < show; index++) {
-      output.push(posts[index]);
-    }
-    return output.post;
   };
 
   return (
@@ -602,24 +544,19 @@ const MyPage = ({ setToken }) => {
         <Carousel currentIndex={currentIndex} show={show}>
           <div className="carousel-container">
             <div className="carousel-wrapper">
-              {(isRepeating || currentIndex > 0) && (
+              {currentIndex > 0 && (
                 <button className="left-arrow" onClick={prev}>
                   &lt;
                 </button>
               )}
               <div className="carousel-content-wrapper">
-                <div
-                  className={`carousel-content show-${show}`}
-                  onTransitionEnd={handleTransitionEnd}
-                >
-                  {length > show && isRepeating && renderExtraPrev()}
+                <div className={'carousel-content'}>
                   {posts.map((post) => (
                     <Thumbnail thumbnail={post} key={post.id} />
                   ))}
-                  {length > show && isRepeating && renderExtraNext()}
                 </div>
               </div>
-              {(isRepeating || currentIndex < length - show) && (
+              {currentIndex < length - show && (
                 <button className="right-arrow" onClick={next}>
                   &gt;
                 </button>

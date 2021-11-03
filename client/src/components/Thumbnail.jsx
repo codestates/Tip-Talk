@@ -4,6 +4,7 @@ import styled from 'styled-components';
 
 const Article = styled.li`
   display: flex;
+  height: 320px;
   margin: 10px;
   flex-direction: column;
   &:hover {
@@ -37,22 +38,22 @@ const ImageMeta = styled.span`
 `;
 
 const Thumbnail = ({ thumbnail }) => {
-  const { post, user } = thumbnail;
+  const { user } = thumbnail;
   const history = useHistory();
 
   const goToPost = () => {
-    history.push(`/post/${post.id}`);
+    history.push(`/post/${thumbnail.id}`);
   };
 
   return (
     <Article onClick={goToPost}>
-      <Image src={post.images[0]} alt="thumbnail" />
+      <Image src={thumbnail.images[0]} alt="thumbnail" />
       <ImageInfo>
-        <ImageTitle>{post.title}</ImageTitle>
+        <ImageTitle>{thumbnail.title}</ImageTitle>
       </ImageInfo>
       <ImageInfo align="right">
         <ImageMeta>{user.nickname}</ImageMeta>
-        <ImageMeta>{post.views}</ImageMeta>
+        <ImageMeta>{thumbnail.views}</ImageMeta>
         <ImageMeta>❤️</ImageMeta>
         <ImageMeta>1</ImageMeta>
       </ImageInfo>

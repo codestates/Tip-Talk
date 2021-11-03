@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import { Coin } from '../components/Coin';
 import KakaoMap from '../components/KakaoMap';
 import Thumbnail from '../components/Thumbnail';
-import { data } from '../dummy/post';
 import { Body, Scroll, Title } from '../styles/common';
 
 const ImageGrid = styled.ul`
@@ -21,7 +20,6 @@ const Main = () => {
 
   const handleSearch = (value) => {
     // ToDo Axios getPosts로 필터된 posts 불러오기
-    // setFilteredPosts();
     axios
       .get(`${process.env.REACT_APP_SERVER_URL}/post`, {
         params: { search: value },
@@ -29,19 +27,36 @@ const Main = () => {
       .then(({ data }) => {
         if (data.status) {
           const { post } = data.data;
-          post.forEach((p) => {
-            p.lat = +p.lat;
-            p.lng = +p.lng;
-          });
-          setFilteredPosts(post);
+          parsePost(post);
+          setFilteredPosts([...post]);
         }
       });
   };
 
-  // ToDo getPost 완성되면 데이터 받아오기
-  // useEffect(()=>{
-  //   axios.get(`${process.env.REACT_APP_SERVER_URL}/post`)
-  // })
+  useEffect(() => {
+    axios
+      .get(`${process.env.REACT_APP_SERVER_URL}/post`, {
+        params: {
+          search: '',
+          page: 0,
+        },
+      })
+      .then(({ data }) => {
+        if (data.status) {
+          const { post } = data.data;
+          parsePost(post);
+          setPosts(post);
+        }
+      });
+  }, []);
+
+  const parsePost = (post) => {
+    post.forEach((p) => {
+      p.lat = +p.lat;
+      p.lng = +p.lng;
+      p.images = p.images.split(' ');
+    });
+  };
 
   return (
     <>
@@ -55,7 +70,7 @@ const Main = () => {
         <ImageGrid>
           {posts ? (
             posts.map((post) => (
-              <Thumbnail thumbnail={post} draggable key={post.post.id} />
+              <Thumbnail thumbnail={post} draggable key={post.id} />
             ))
           ) : (
             <div>로딩 페이지</div>

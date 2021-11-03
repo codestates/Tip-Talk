@@ -1,5 +1,6 @@
-import React, { useRef } from 'react';
+import React, { useContext, useRef } from 'react';
 import styled from 'styled-components';
+import UserContext from '../context/UserContext';
 import { Color_1 } from '../styles/common';
 import Comment from './Comment';
 
@@ -43,6 +44,7 @@ const CommentSubmit = styled.button`
 
 const Comments = ({ comments, handleSubmit, handleEdit, handleDelete }) => {
   const inputRef = useRef();
+  const [user] = useContext(UserContext);
 
   const onHandleSubmit = (e) => {
     e.preventDefault();
@@ -68,10 +70,14 @@ const Comments = ({ comments, handleSubmit, handleEdit, handleDelete }) => {
       </CommentList>
       {/* // ToDo 로그인한 사용자만 댓글을 달 수 있도록 변경하기 */}
       <CommentForm>
-        <CommentInput ref={inputRef} placeholder="댓글을 입력해주세요" />
-        <CommentSubmit type="submit" onClick={onHandleSubmit}>
-          확인
-        </CommentSubmit>
+        {user && (
+          <>
+            <CommentInput ref={inputRef} placeholder="댓글을 입력해주세요" />
+            <CommentSubmit type="submit" onClick={onHandleSubmit}>
+              확인
+            </CommentSubmit>
+          </>
+        )}
       </CommentForm>
     </Container>
   );

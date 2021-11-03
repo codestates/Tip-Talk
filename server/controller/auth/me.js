@@ -2,7 +2,7 @@ const { user } = require('../../models');
 
 module.exports = async (req, res) => {
   if (!req.user) {
-    res.status(200).json({ status: true, data: null });
+    return res.status(200).json({ status: true, data: null });
   }
   try {
     const found = await user.findOne({

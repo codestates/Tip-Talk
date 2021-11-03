@@ -47,13 +47,13 @@ const Thumbnail = ({ thumbnail }) => {
 
   return (
     <Article onClick={goToPost}>
-      <Image src={thumbnail.images[0]} alt="thumbnail" />
+      <Image src={thumbnail?.images[0]} alt="thumbnail" />
       <ImageInfo>
-        <ImageTitle>{thumbnail.title}</ImageTitle>
+        <ImageTitle>{thumbnail?.title}</ImageTitle>
       </ImageInfo>
       <ImageInfo align="right">
-        <ImageMeta>{user.nickname}</ImageMeta>
-        <ImageMeta>{thumbnail.views}</ImageMeta>
+        <ImageMeta>{user?.nickname}</ImageMeta>
+        <ImageMeta>{thumbnail?.views}</ImageMeta>
         <ImageMeta>❤️</ImageMeta>
         <ImageMeta>1</ImageMeta>
       </ImageInfo>

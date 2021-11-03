@@ -49,7 +49,7 @@ const Menu = ({
   const [isOpen, setIsOpen] = useState(false);
   const [isLogout, setIsLogout] = useState(false);
   const history = useHistory();
-  const [user, setUser] = useContext(UserContext);
+  const [user] = useContext(UserContext);
 
   const showLoginHandler = () => {
     setShowLogin(true);
@@ -74,7 +74,7 @@ const Menu = ({
   return (
     <Navbar>
       <LogoImg src={Logo} alt="로고" onClick={goToMain} />
-      {token === null ? (
+      {user === null ? (
         <div>
           <Button onClick={showLoginHandler}>로그인</Button>
           <Button onClick={showSignupHandler}>회원가입</Button>

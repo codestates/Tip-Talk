@@ -116,15 +116,20 @@ const KakaoMap = ({ posts, handleSearch }) => {
 
     if (posts?.length) {
       let bounds = new kakao.maps.LatLngBounds();
-
+      let markers = [];
+      if (marker.length) {
+        setMarkers(null);
+        setMaker([]);
+      }
       for (let i = 0; i < posts.length; i++) {
-        displayMarker(posts[i]);
+        displayMarker(posts[i], markers);
         bounds.extend(new kakao.maps.LatLng(posts[i].lat, posts[i].lng));
       }
+      setMaker([...markers]);
       map.current.setBounds(bounds);
     }
 
-    function displayMarker(post) {
+    function displayMarker(post, markers) {
       const { user } = post;
 
       const imageSrc =
@@ -138,9 +143,7 @@ const KakaoMap = ({ posts, handleSearch }) => {
         image: markerImage,
       });
 
-      marker.push(newMarker);
-
-      setMaker([...marker]);
+      markers.push(newMarker);
 
       // 마커에 클릭이벤트를 등록합니다
       kakao.maps.event.addListener(newMarker, 'click', function () {
@@ -190,12 +193,6 @@ const KakaoMap = ({ posts, handleSearch }) => {
         marker[i].setMap(map);
       }
     }
-
-    return () => {
-      if (marker.length) {
-        setMarkers(null);
-      }
-    };
   }, [posts, user]);
 
   useEffect(() => {

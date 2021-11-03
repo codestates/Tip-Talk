@@ -1,6 +1,5 @@
 export const data = [
   {
-    post: {
       id: 1,
       title: 'title',
       content: 'content',
@@ -17,14 +16,12 @@ export const data = [
       categoryId: 1,
       updatedAt: '2021-00-00',
       createdAt: '2021-00-00',
-    },
     user: {
       id: 1,
       nickname: 'test',
     },
   },
   {
-    post: {
       id: 2,
       title: 'title2',
       content: 'content2',
@@ -39,14 +36,12 @@ export const data = [
       categoryId: 1,
       updatedAt: '2021-00-00',
       createdAt: '2021-00-00',
-    },
     user: {
       id: 1,
       nickname: 'test',
     },
   },
   {
-    post: {
       id: 3,
       title: 'title3',
       content: 'content3',
@@ -61,14 +56,12 @@ export const data = [
       categoryId: 1,
       updatedAt: '2021-00-00',
       createdAt: '2021-00-00',
-    },
     user: {
       id: 1,
       nickname: 'test',
     },
   },
   {
-    post: {
       id: 4,
       title: 'title4',
       content: 'content4',
@@ -83,14 +76,12 @@ export const data = [
       categoryId: 1,
       updatedAt: '2021-00-00',
       createdAt: '2021-00-00',
-    },
     user: {
       id: 1,
       nickname: 'test',
     },
   },
   {
-    post: {
       id: 5,
       title: 'title5',
       content: 'content5',
@@ -105,14 +96,12 @@ export const data = [
       categoryId: 1,
       updatedAt: '2021-00-00',
       createdAt: '2021-00-00',
-    },
     user: {
       id: 1,
       nickname: 'test',
     },
   },
   {
-    post: {
       id: 6,
       title: 'title6',
       content: 'content6',
@@ -127,7 +116,6 @@ export const data = [
       categoryId: 1,
       updatedAt: '2021-00-00',
       createdAt: '2021-00-00',
-    },
     user: {
       id: 1,
       nickname: 'test',

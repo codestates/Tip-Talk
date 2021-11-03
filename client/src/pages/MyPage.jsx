@@ -8,6 +8,9 @@ import Thumbnail from '../components/Thumbnail';
 import { data } from '../dummy/post';
 import Modal from '../components/Modal';
 import UserContext from '../context/UserContext';
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Button } from '../styles/common';
 
 const Container = styled.div`
   width: 100%;
@@ -253,10 +256,54 @@ const Carousel = styled.div`
   }
 `;
 
+const Background = styled.div`
+  display: flex;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.2);
+  justify-content: center;
+  align-items: center;
+  z-index: 11;
+`;
+
+const ModalContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  width: 380px;
+  height: 160px;
+  padding: 20px;
+  border-radius: 6px;
+  background-color: ${({ theme }) => theme.bgColor};
+  box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.55);
+  -webkit-box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.55);
+  -moz-box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.55);
+  align-items: center;
+  animation: 0.15s scale;
+`;
+
+const CloseButton = styled.button`
+  position: absolute;
+  top: 3px;
+  right: 0;
+  color: ${({ theme }) => theme.color};
+  font-size: 20px;
+  border: none;
+  background-color: transparent;
+`;
+
+const Message = styled.span`
+  margin: 20px 0;
+  font-size: 20px;
+`;
+
 const MyPage = ({ setToken }) => {
   const show = 3;
   const infiniteLoop = true;
-  const [isEdit, setIsEdit] = useState(false);
+  const [editStart, setEditStart] = useState(false);
   const [editDone, setEditDone] = useState(false);
   const [isClose, setIsClose] = useState(false);
   const [imageBase64, setImageBase64] = useState(null);
@@ -298,7 +345,7 @@ const MyPage = ({ setToken }) => {
       }
     }
 
-    if (isEdit === true) {
+    if (editStart === true) {
       const role = document.querySelector('input[name=role]:checked').value;
       if (role === 1) {
         document.getElementById('owner').checked = true;
@@ -306,15 +353,22 @@ const MyPage = ({ setToken }) => {
         document.getElementById('user').checked = true;
       }
     }
-  }, [user, isEdit]);
+  }, [user, editStart]);
+
+  console.log('user = ', user);
 
   const editStartHandler = () => {
-    setIsEdit(true);
-    setIsOpen(true);
+    setEditStart(true);
   };
 
   const editDoneHandler = () => {
     setEditDone(true);
+    setIsOpen(true);
+  };
+
+  const closeModalHandler = () => {
+    setEditStart(false);
+    setIsOpen(false);
   };
 
   const fileHandler = (e) => {
@@ -456,10 +510,9 @@ const MyPage = ({ setToken }) => {
           </div>
           <div className="wrapper-2">
             <div className="wrapper-2-1">
-              {isEdit === true ? (
+              {editStart === true ? (
                 <>
-                  {/* {placeholder에 표시되고 있던 값 넣기} */}
-                  <div className="email">email</div>
+                  <div className="email">{user?.email}</div>
                   <input
                     type="text"
                     id="nickname"
@@ -481,9 +534,9 @@ const MyPage = ({ setToken }) => {
                 </>
               ) : (
                 <>
-                  <div className="email">email</div>
-                  <div className="nickname">닉네임</div>
-                  <div className="password">비밀번호</div>
+                  <div className="email">{user?.email}</div>
+                  <div className="nickname">{user?.nickname}</div>
+                  {/* <div className="password">비밀번호</div> */}
                   <RadioSection>
                     <div className="radio-container">
                       <input type="radio" id="owner" name="role" value="1" />
@@ -496,21 +549,36 @@ const MyPage = ({ setToken }) => {
               )}
             </div>
             <div className="wrapper-2-2">
-              {isEdit === false ? (
+              {editStart === false ? (
                 <button className="edit" onClick={editStartHandler}>
                   수정하기
                 </button>
               ) : (
-                <button className="edit" onClick={editDoneHandler}>
+                <button
+                  className="edit"
+                  onClick={() => [editDoneHandler(), submitHandler()]}
+                >
                   수정 완료
                 </button>
               )}
-              {isOpen === true && editDone === true ? (
-                <Modal
-                  message={'수정하시겠습니까?'}
-                  setIsOpen={setIsOpen}
-                  callback={submitHandler}
-                />
+              {editDone === true && isOpen === true ? (
+                <Background>
+                  <ModalContainer>
+                    <CloseButton>
+                      <FontAwesomeIcon icon={faTimes} />
+                    </CloseButton>
+                    <Message>정상적으로 수정되었습니다</Message>
+                    <div>
+                      <Button
+                        width="80px"
+                        margin="3px"
+                        onClick={closeModalHandler}
+                      >
+                        확인
+                      </Button>
+                    </div>
+                  </ModalContainer>
+                </Background>
               ) : null}
             </div>
           </div>
@@ -548,7 +616,7 @@ const MyPage = ({ setToken }) => {
                 >
                   {length > show && isRepeating && renderExtraPrev()}
                   {posts.map((post) => (
-                    <Thumbnail thumbnail={post} key={post.post.id} />
+                    <Thumbnail thumbnail={post} key={post.id} />
                   ))}
                   {length > show && isRepeating && renderExtraNext()}
                 </div>

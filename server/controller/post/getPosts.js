@@ -51,7 +51,7 @@ module.exports = async (req, res) => {
           { model: user, attributes: ['nickname', 'email', 'img'] },
           { model: categories, attributes: ['value'] },
         ],
-        offset: page ? +page * 6 : 1,
+        offset: page ? +page * 6 : 0,
         limit: page ? 6 : 100,
       });
       res.status(200).json({ status: true, data: { post: found } });

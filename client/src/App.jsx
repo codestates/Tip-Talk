@@ -29,8 +29,16 @@ axios.defaults.withCredentials = true;
 function App() {
   const [darkMode, setDarkMode] = useState(localStorage.getItem('darkmode'));
   const [user, setUser] = useContext(UserContext);
+  const [token, setToken] = useState(null);
   const [showLogin, setShowLogin] = useState(false);
   const [showSignup, setShowSingup] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      setToken(token);
+    }
+  });
 
   useEffect(() => {
     const url = new URL(window.location.href);
@@ -43,19 +51,12 @@ function App() {
         })
         .then(({ data }) => {
           if (data.status) {
-            const { token } = data.data;
-            setUser(token);
+            const { token, user } = data.data;
+            setUser(user);
             localStorage.setItem('token', token);
           }
         })
         .catch((res) => {});
-    }
-  }, []);
-
-  useEffect(() => {
-    const info = localStorage.getItem('token');
-    if (info) {
-      setUser(info);
     }
   }, []);
 
@@ -71,14 +72,16 @@ function App() {
       />
       <Router>
         <Container>
-          <Header
-            showLogin={showLogin}
-            setShowLogin={setShowLogin}
-            user={user}
-            setUser={setUser}
-            showSignup={showSignup}
-            setShowSignup={setShowSingup}
-          />
+            <Header
+              showLogin={showLogin}
+              setShowLogin={setShowLogin}
+              user={user}
+              setUser={setUser}
+              showSignup={showSignup}
+              setShowSignup={setShowSingup}
+              token={token}
+              setToken={setToken}
+            />
           <Switch>
             <Route exact path="/">
               <Home />
@@ -95,9 +98,12 @@ function App() {
               <UploadPost />
               <Coin mode="reply" />
             </Route>
-            <Route path="/mypage">
-              <MyPage />
-              <Coin mode="reply" />
+              <Route path="/mypage/:id">
+                <MyPage
+                  user={user === null ? null : user}
+                  setUser={setUser}
+                  setToken={setToken}
+                />
             </Route>
             <Route path="/loading">
               <Loading />

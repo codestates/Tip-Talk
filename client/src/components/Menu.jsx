@@ -44,9 +44,12 @@ const Menu = ({
   setUser,
   showSignup,
   setShowSignup,
+  token,
+  setToken,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isLogout, setIsLogout] = useState(false);
+  const history = useHistory();
 
   const showLoginHandler = () => {
     setShowLogin(true);
@@ -61,18 +64,19 @@ const Menu = ({
     setIsOpen(true);
   };
 
-  const history = useHistory();
   const goToMyPage = () => {
-    history.push('/mypage');
+    history.push(`/mypage/${user.id}`);
   };
   const goToMain = () => {
     history.push('/main');
   };
 
+  console.log('user = ', user);
+
   return (
     <Navbar>
       <LogoImg src={Logo} alt="로고" onClick={goToMain} />
-      {user === null || user === undefined ? (
+      {token === null ? (
         <div>
           <Button onClick={showLoginHandler}>로그인</Button>
           <Button onClick={showSignupHandler}>회원가입</Button>
@@ -95,7 +99,7 @@ const Menu = ({
         <Signup setShowLogin={setShowLogin} setShowSignup={setShowSignup} />
       ) : null}
       {isLogout === true ? (
-        <Logout setUser={setUser} isOpen={isOpen} setIsOpen={setIsOpen} />
+        <Logout setToken={setToken} isOpen={isOpen} setIsOpen={setIsOpen} />
       ) : null}
     </Navbar>
   );

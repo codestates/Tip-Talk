@@ -16,12 +16,12 @@ const Header = ({
   setUser,
   showSignup,
   setShowSignup,
-  isLogout,
-  setIsLogout,
+  token,
+  setToken,
 }) => {
   return (
     <>
-      {user === null || user === undefined ? (
+      {token === null ? (
         <HeaderContainer>
           {/* {로그인 전} */}
           <Menu
@@ -31,6 +31,7 @@ const Header = ({
             setUser={setUser}
             showSignup={showSignup}
             setShowSignup={setShowSignup}
+            token={token}
           />
         </HeaderContainer>
       ) : (
@@ -41,6 +42,8 @@ const Header = ({
             setUser={setUser}
             showLogin={showLogin}
             setShowLogin={setShowLogin}
+            token={token}
+            setToken={setToken}
           />
         </HeaderContainer>
       )}

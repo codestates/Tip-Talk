@@ -257,6 +257,8 @@ const MyPage = ({ setToken }) => {
   const show = 3;
   const infiniteLoop = true;
   const [isEdit, setIsEdit] = useState(false);
+  const [editDone, setEditDone] = useState(false);
+  const [isClose, setIsClose] = useState(false);
   const [imageBase64, setImageBase64] = useState(null);
   const [posts, setPosts] = useState(data);
   const [isOpen, setIsOpen] = useState(false);
@@ -306,8 +308,13 @@ const MyPage = ({ setToken }) => {
     }
   }, [user, isEdit]);
 
-  const editHandler = () => {
-    setIsEdit(!isEdit);
+  const editStartHandler = () => {
+    setIsEdit(true);
+    setIsOpen(true);
+  };
+
+  const editDoneHandler = () => {
+    setEditDone(true);
   };
 
   const fileHandler = (e) => {
@@ -339,6 +346,7 @@ const MyPage = ({ setToken }) => {
 
   const modalHandler = () => {
     setIsOpen(true);
+    setIsClose(true);
   };
 
   const deleteHandler = () => {
@@ -489,17 +497,21 @@ const MyPage = ({ setToken }) => {
             </div>
             <div className="wrapper-2-2">
               {isEdit === false ? (
-                <button className="edit" onClick={editHandler}>
+                <button className="edit" onClick={editStartHandler}>
                   수정하기
                 </button>
               ) : (
-                <button
-                  className="edit"
-                  onClick={() => [editHandler(), submitHandler()]}
-                >
+                <button className="edit" onClick={editDoneHandler}>
                   수정 완료
                 </button>
               )}
+              {isOpen === true && editDone === true ? (
+                <Modal
+                  message={'수정하시겠습니까?'}
+                  setIsOpen={setIsOpen}
+                  callback={submitHandler}
+                />
+              ) : null}
             </div>
           </div>
           <div className="wrapper-3">
@@ -509,7 +521,7 @@ const MyPage = ({ setToken }) => {
                 회원탈퇴
               </button>
             </div>
-            {isOpen === true ? (
+            {isOpen === true && isClose === true ? (
               <Modal
                 message={'탈퇴하시겠습니까?'}
                 setIsOpen={setIsOpen}

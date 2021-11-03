@@ -1,5 +1,5 @@
 const { Op } = require('sequelize');
-const { post } = require('../../models');
+const { post, user, categories } = require('../../models');
 
 module.exports = async (req, res) => {
   const { categoryId, page, search } = req.query;
@@ -23,6 +23,10 @@ module.exports = async (req, res) => {
             [Op.eq]: +categoryId,
           },
         },
+        include: [
+          { model: user, attributes: ['nickname', 'email', 'img'] },
+          { model: categories, attributes: ['value'] },
+        ],
         offset: page ? +page * 6 : 0,
         limit: page ? 6 : 100,
       });
@@ -43,10 +47,14 @@ module.exports = async (req, res) => {
             },
           ],
         },
+        include: [
+          { model: user, attributes: ['nickname', 'email', 'img'] },
+          { model: categories, attributes: ['value'] },
+        ],
         offset: page ? +page * 6 : 1,
         limit: page ? 6 : 100,
       });
-      res.status(200).json({ status: true, data: { posts: found } });
+      res.status(200).json({ status: true, data: { post: found } });
     }
   } catch (err) {
     console.log(err.message);

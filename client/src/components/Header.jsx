@@ -12,8 +12,6 @@ const HeaderContainer = styled.header`
 const Header = ({
   showLogin,
   setShowLogin,
-  user,
-  setUser,
   showSignup,
   setShowSignup,
   token,
@@ -27,8 +25,6 @@ const Header = ({
           <Menu
             showLogin={showLogin}
             setShowLogin={setShowLogin}
-            user={user}
-            setUser={setUser}
             showSignup={showSignup}
             setShowSignup={setShowSignup}
             token={token}
@@ -38,8 +34,6 @@ const Header = ({
         <HeaderContainer>
           {/* {로그인 후} */}
           <Menu
-            user={user}
-            setUser={setUser}
             showLogin={showLogin}
             setShowLogin={setShowLogin}
             token={token}

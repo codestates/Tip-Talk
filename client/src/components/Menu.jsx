@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useHistory } from 'react-router';
 import styled from 'styled-components';
 import { Color_3, Hangeul, Logo } from '../styles/common';
 import Login from './Login';
 import Signup from './Signup';
 import Logout from './Logout';
+import UserContext from '../context/UserContext';
 
 const Navbar = styled.nav`
   display: flex;
@@ -40,8 +41,6 @@ const Button = styled.button`
 const Menu = ({
   showLogin,
   setShowLogin,
-  user,
-  setUser,
   showSignup,
   setShowSignup,
   token,
@@ -50,6 +49,7 @@ const Menu = ({
   const [isOpen, setIsOpen] = useState(false);
   const [isLogout, setIsLogout] = useState(false);
   const history = useHistory();
+  const [user, setUser] = useContext(UserContext);
 
   const showLoginHandler = () => {
     setShowLogin(true);
@@ -71,8 +71,6 @@ const Menu = ({
     history.push('/main');
   };
 
-  console.log('user = ', user);
-
   return (
     <Navbar>
       <LogoImg src={Logo} alt="로고" onClick={goToMain} />
@@ -88,12 +86,7 @@ const Menu = ({
         </div>
       )}
       {showLogin === true ? (
-        <Login
-          setShowLogin={setShowLogin}
-          user={user}
-          setUser={setUser}
-          setShowSignup={setShowSignup}
-        />
+        <Login setShowLogin={setShowLogin} setShowSignup={setShowSignup} />
       ) : null}
       {showSignup === true ? (
         <Signup setShowLogin={setShowLogin} setShowSignup={setShowSignup} />

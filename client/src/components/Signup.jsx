@@ -259,8 +259,12 @@ const Signup = ({ setShowLogin, setShowSignup }) => {
           nickname,
           role,
         })
-        .then(() => closeSignupModal())
-        .catch(() => setIsExist(true));
+        .then((res) => {
+          closeSignupModal();
+        })
+        .catch((err) => {
+          setIsExist(true);
+        });
     }
   };
 

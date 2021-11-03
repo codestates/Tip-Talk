@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useContext } from 'react';
 import { useHistory, useParams } from 'react-router';
 import styled from 'styled-components';
 import { Coin } from '../components/Coin';
@@ -7,6 +7,7 @@ import { Scroll } from '../styles/common';
 import Thumbnail from '../components/Thumbnail';
 import { data } from '../dummy/post';
 import Modal from '../components/Modal';
+import UserContext from '../context/UserContext';
 
 const Container = styled.div`
   width: 100%;
@@ -196,6 +197,9 @@ const Carousel = styled.div`
   .carousel-content {
     display: flex;
     transition: all 250ms linear;
+      transform: translateX(-${(props) =>
+        props.currentIndex * (400 / props.show)}%);
+      transition: !transitionEnabled ? 'none' : undefined;
   }
   .carousel-content::-webkit-scrollbar {
     display: none;
@@ -231,21 +235,21 @@ const Carousel = styled.div`
   }
   .carousel-content {
     width: 50%;
-  }
-  .show-2 > * {
-    width: 50%;
+    &.show-2 > * {
+      width: 50%;
+    }
   }
   .carousel-content {
     width: clac(100% / 3);
-  }
-  .show-3 > * {
-    width: clac(100% / 3);
+    &.show-3 > * {
+      width: clac(100% / 3);
+    }
   }
   .carousel-content {
     width: calc(93% / 4);
-  }
-  .show-4 > * {
-    width: calc(93% / 4);
+    &.show-4 > * {
+      width: calc(93% / 4);
+    }
   }
 `;
 
@@ -253,6 +257,8 @@ const MyPage = ({ setToken }) => {
   const show = 3;
   const infiniteLoop = true;
   const [isEdit, setIsEdit] = useState(false);
+  const [editDone, setEditDone] = useState(false);
+  const [isClose, setIsClose] = useState(false);
   const [imageBase64, setImageBase64] = useState(null);
   const [posts, setPosts] = useState(data);
   const [isOpen, setIsOpen] = useState(false);
@@ -268,6 +274,7 @@ const MyPage = ({ setToken }) => {
   const scrollRef = useRef();
   const history = useHistory();
   const { id } = useParams();
+  const [user, setUser] = useContext(UserContext);
 
   useEffect(() => {
     setLength(posts.length);
@@ -275,7 +282,7 @@ const MyPage = ({ setToken }) => {
   }, [posts, infiniteLoop, show]);
 
   useEffect(() => {
-    if (isRepeating) {
+    if (isRepeating === true) {
       if (currentIndex === show || currentIndex === length) {
         setTransitionEnabled(true);
       }
@@ -283,17 +290,31 @@ const MyPage = ({ setToken }) => {
   }, [currentIndex, isRepeating, show, length]);
 
   useEffect(() => {
-    axios
-      .get(`http://localhost:8000/user/${id}`)
-      .then((res) => {
-        console.log('userinfo = ', res);
-        console.log('id = ' + id);
-      })
-      .catch((err) => console.log(err));
-  });
+    if (user) {
+      if (user.role === 1) {
+        document.getElementById('owner').checked = true;
+      } else if (user.role === 2) {
+        document.getElementById('user').checked = true;
+      }
+    }
 
-  const editHandler = () => {
-    setIsEdit(!isEdit);
+    if (isEdit === true) {
+      const role = document.querySelector('input[name=role]:checked').value;
+      if (role === 1) {
+        document.getElementById('owner').checked = true;
+      } else if (role === 2) {
+        document.getElementById('user').checked = true;
+      }
+    }
+  }, [user, isEdit]);
+
+  const editStartHandler = () => {
+    setIsEdit(true);
+    setIsOpen(true);
+  };
+
+  const editDoneHandler = () => {
+    setEditDone(true);
   };
 
   const fileHandler = (e) => {
@@ -310,14 +331,12 @@ const MyPage = ({ setToken }) => {
       reader.readAsDataURL(e.target.files[0]);
 
       const fd = new FormData();
-      fd.append('nickname', 'test');
-      fd.append('password', '12345678');
       fd.append('img', e.target.files[0]);
       for (let [key, value] of fd.entries()) {
         console.log(key, value);
       }
       axios
-        .patch(`http://localhost:8000/user/${id}`, fd, {
+        .patch(`${process.env.REACT_APP_SERVER_URL}/user/${id}`, fd, {
           headers: { 'Content-Type': 'multipart/form-data' },
         })
         .then((res) => console.log(res))
@@ -327,11 +346,12 @@ const MyPage = ({ setToken }) => {
 
   const modalHandler = () => {
     setIsOpen(true);
+    setIsClose(true);
   };
 
   const deleteHandler = () => {
     axios
-      .delete('http://localhost:8000/auth/deleteUser', {
+      .delete(`${process.env.REACT_APP_SERVER_URL}/auth/deleteUser`, {
         withCredentials: true,
       })
       .then((res) => {
@@ -353,11 +373,13 @@ const MyPage = ({ setToken }) => {
   const submitHandler = () => {
     const role = document.querySelector('input[name=role]:checked').value;
     axios
-      .patch(`http://localhost:8000/user/${id}`, { nickname, password, role })
+      .patch(`${process.env.REACT_APP_SERVER_URL}/user/${id}`, {
+        nickname,
+        password,
+        role,
+      })
       .then((res) => console.log(res))
       .catch((err) => console.log(err));
-
-    document.getElementById('owner').checked = true;
   };
 
   const next = () => {
@@ -466,13 +488,7 @@ const MyPage = ({ setToken }) => {
                     <div className="radio-container">
                       <input type="radio" id="owner" name="role" value="1" />
                       <div className="owner">사업자</div>
-                      <input
-                        type="radio"
-                        id="user"
-                        name="role"
-                        value="2"
-                        defaultChecked
-                      />
+                      <input type="radio" id="user" name="role" value="2" />
                       <div className="user">일반인</div>
                     </div>
                   </RadioSection>
@@ -481,17 +497,21 @@ const MyPage = ({ setToken }) => {
             </div>
             <div className="wrapper-2-2">
               {isEdit === false ? (
-                <button className="edit" onClick={editHandler}>
+                <button className="edit" onClick={editStartHandler}>
                   수정하기
                 </button>
               ) : (
-                <button
-                  className="edit"
-                  onClick={() => [editHandler(), submitHandler()]}
-                >
+                <button className="edit" onClick={editDoneHandler}>
                   수정 완료
                 </button>
               )}
+              {isOpen === true && editDone === true ? (
+                <Modal
+                  message={'수정하시겠습니까?'}
+                  setIsOpen={setIsOpen}
+                  callback={submitHandler}
+                />
+              ) : null}
             </div>
           </div>
           <div className="wrapper-3">
@@ -501,7 +521,7 @@ const MyPage = ({ setToken }) => {
                 회원탈퇴
               </button>
             </div>
-            {isOpen === true ? (
+            {isOpen === true && isClose === true ? (
               <Modal
                 message={'탈퇴하시겠습니까?'}
                 setIsOpen={setIsOpen}
@@ -513,7 +533,7 @@ const MyPage = ({ setToken }) => {
         <Header>
           <div className="middle-header">내가 찜한 장소 목록</div>
         </Header>
-        <Carousel>
+        <Carousel currentIndex={currentIndex} show={show}>
           <div className="carousel-container">
             <div className="carousel-wrapper">
               {(isRepeating || currentIndex > 0) && (
@@ -523,12 +543,7 @@ const MyPage = ({ setToken }) => {
               )}
               <div className="carousel-content-wrapper">
                 <div
-                  className={`carousel-content
-                  show-${show}`}
-                  style={{
-                    transform: `translateX(-${currentIndex * (300 / show)}%)`,
-                    transition: !transitionEnabled ? 'none' : undefined,
-                  }}
+                  className={`carousel-content show-${show}`}
                   onTransitionEnd={handleTransitionEnd}
                 >
                   {length > show && isRepeating && renderExtraPrev()}

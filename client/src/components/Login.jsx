@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useContext } from 'react';
 import styled from 'styled-components';
 import { Color_3, Samlib } from '../styles/common';
 import axios from 'axios';
+import UserContext from '../context/UserContext';
 
 const ModalBackdrop = styled.div`
   position: fixed;
@@ -143,9 +144,10 @@ const KakaoButton = styled.img`
   cursor: pointer;
 `;
 
-const Login = ({ setShowLogin, user, setUser, setShowSignup }) => {
+const Login = ({ setShowLogin, setShowSignup }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [user, setUser] = useContext(UserContext);
 
   const oauth2Handler = () => {
     const CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID;

@@ -8,7 +8,7 @@ const Logout = ({ setToken, isOpen, setIsOpen }) => {
 
   const logoutHandler = () => {
     axios
-      .post('http://localhost:8000/auth/signout')
+      .post(`${process.env.REACT_APP_SERVER_URL}/auth/signout`)
       .then((res) => {
         localStorage.removeItem('token');
         setToken(null);

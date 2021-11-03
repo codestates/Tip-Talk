@@ -38,7 +38,7 @@ function App() {
     if (token) {
       setToken(token);
     }
-  });
+  }, []);
 
   useEffect(() => {
     const url = new URL(window.location.href);
@@ -75,8 +75,6 @@ function App() {
           <Header
             showLogin={showLogin}
             setShowLogin={setShowLogin}
-            user={user}
-            setUser={setUser}
             showSignup={showSignup}
             setShowSignup={setShowSingup}
             token={token}

@@ -22,6 +22,7 @@ export const ModalBackground = styled.div`
 
 const Thumbnail = styled.img`
   width: 100%;
+  height: 240px;
   border-radius: 6px;
 `;
 
@@ -77,9 +78,9 @@ const MapModal = ({ data, backgroundRef, handleClose }) => {
         <Label>이름</Label>
         <Text>{post.title}</Text>
         <Label>지역</Label>
-        <Text>인천광역시 강화군 길상면</Text>
+        <Text>{post.region}</Text>
         <Label>카테고리</Label>
-        <Text>문화시설</Text>
+        <Text>여기 수정하기</Text>
       </Info>
       <Button width="140px" height="40px" onClick={goToPost}>
         자세히 보기

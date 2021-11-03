@@ -49,7 +49,7 @@ const Menu = ({
   const [isOpen, setIsOpen] = useState(false);
   const [isLogout, setIsLogout] = useState(false);
   const history = useHistory();
-  const [user] = useContext(UserContext);
+  const [user, setUser] = useContext(UserContext);
 
   const showLoginHandler = () => {
     setShowLogin(true);
@@ -60,6 +60,7 @@ const Menu = ({
   };
 
   const logoutHandler = () => {
+    setUser(null);
     setIsLogout(true);
     setIsOpen(true);
   };

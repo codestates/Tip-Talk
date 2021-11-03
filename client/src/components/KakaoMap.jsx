@@ -33,25 +33,27 @@ const SearchForm = styled.div`
   width: 300px;
   height: 70px;
   background-color: ${Color_1};
-  border-radius: 6px;
+  border-radius: 3px;
   justify-content: center;
   align-items: center;
   z-index: 11;
 `;
 
 const Input = styled.input`
-  width: calc(90% - 38px);
-  height: 38px;
+  position: relative;
+  width: calc(90%);
+  height: 46px;
   border: none;
   padding: 0 8px;
+  border-radius: 3px;
 `;
 
 const Search = styled.button`
-  width: 38px;
-  height: 38px;
+  position: absolute;
+  right: 24px;
   font-size: 16px;
   border: none;
-  background-color: white;
+  background-color: transparent;
 `;
 
 const UploadModal = styled(ModalBackground)`

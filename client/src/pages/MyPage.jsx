@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useContext } from 'react';
 import { useHistory, useParams } from 'react-router';
 import styled from 'styled-components';
 import { Coin } from '../components/Coin';
@@ -7,6 +7,7 @@ import { Scroll } from '../styles/common';
 import Thumbnail from '../components/Thumbnail';
 import { data } from '../dummy/post';
 import Modal from '../components/Modal';
+import UserContext from '../context/UserContext';
 
 const Container = styled.div`
   width: 100%;
@@ -271,6 +272,7 @@ const MyPage = ({ setToken }) => {
   const scrollRef = useRef();
   const history = useHistory();
   const { id } = useParams();
+  const [user, setUser] = useContext(UserContext);
 
   useEffect(() => {
     setLength(posts.length);
@@ -278,7 +280,7 @@ const MyPage = ({ setToken }) => {
   }, [posts, infiniteLoop, show]);
 
   useEffect(() => {
-    if (isRepeating) {
+    if (isRepeating === true) {
       if (currentIndex === show || currentIndex === length) {
         setTransitionEnabled(true);
       }
@@ -286,14 +288,23 @@ const MyPage = ({ setToken }) => {
   }, [currentIndex, isRepeating, show, length]);
 
   useEffect(() => {
-    axios
-      .get(`${process.env.REACT_APP_SERVER_URL}/user/${id}`)
-      .then((res) => {
-        console.log('userinfo = ', res);
-        console.log('id = ' + id);
-      })
-      .catch((err) => console.log(err));
-  });
+    if (user) {
+      if (user.role === 1) {
+        document.getElementById('owner').checked = true;
+      } else if (user.role === 2) {
+        document.getElementById('user').checked = true;
+      }
+    }
+
+    if (isEdit === true) {
+      const role = document.querySelector('input[name=role]:checked').value;
+      if (role === 1) {
+        document.getElementById('owner').checked = true;
+      } else if (role === 2) {
+        document.getElementById('user').checked = true;
+      }
+    }
+  }, [user, isEdit]);
 
   const editHandler = () => {
     setIsEdit(!isEdit);
@@ -313,8 +324,6 @@ const MyPage = ({ setToken }) => {
       reader.readAsDataURL(e.target.files[0]);
 
       const fd = new FormData();
-      fd.append('nickname', 'test');
-      fd.append('password', '12345678');
       fd.append('img', e.target.files[0]);
       for (let [key, value] of fd.entries()) {
         console.log(key, value);
@@ -363,8 +372,6 @@ const MyPage = ({ setToken }) => {
       })
       .then((res) => console.log(res))
       .catch((err) => console.log(err));
-
-    document.getElementById('owner').checked = true;
   };
 
   const next = () => {
@@ -473,13 +480,7 @@ const MyPage = ({ setToken }) => {
                     <div className="radio-container">
                       <input type="radio" id="owner" name="role" value="1" />
                       <div className="owner">사업자</div>
-                      <input
-                        type="radio"
-                        id="user"
-                        name="role"
-                        value="2"
-                        defaultChecked
-                      />
+                      <input type="radio" id="user" name="role" value="2" />
                       <div className="user">일반인</div>
                     </div>
                   </RadioSection>

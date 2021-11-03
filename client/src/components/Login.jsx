@@ -196,10 +196,13 @@ const Login = ({ setShowLogin, user, setUser, setShowSignup }) => {
 
   const loginHandler = async () => {
     try {
-      const data = await axios.post('http://localhost:8000/auth/login', {
-        email,
-        password,
-      });
+      const data = await axios.post(
+        `${process.env.REACT_APP_SERVER_URL}/auth/login`,
+        {
+          email,
+          password,
+        },
+      );
 
       if (data.data.data) {
         setUser(data.data.data.user);

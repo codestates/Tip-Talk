@@ -5,6 +5,8 @@ const {
   isValidEmail,
   isValidNickname,
   lengthPassword,
+  isLoggedIn,
+  isAuth,
 } = require('../middleware');
 
 const router = express.Router();
@@ -19,5 +21,6 @@ router.post(
 );
 router.post('/signout', authController.signout);
 router.delete('/deleteUser', authController.deleteUser);
+router.get('/me', isLoggedIn, isAuth, authController.me);
 
 module.exports.authRouter = router;

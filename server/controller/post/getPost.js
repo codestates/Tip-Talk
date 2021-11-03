@@ -15,9 +15,10 @@ module.exports = async (req, res) => {
         .status(404)
         .json({ status: false, message: '존재하지 않는 게시글입니다.' });
     }
-    await post.update({ where: id }, post.views);
+    await post.update({ views: posts.views + 1 }, { where: { id } });
+    posts.views += 1;
     //post는 다 가져와야하는듯
-    res.status(200).json({ status: true, posts });
+    res.status(200).json({ status: true, data: { posts } });
   } catch (err) {
     console.log(err);
     res.status(500).json({ status: false, message: 'server error' });

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
 import styled, { ThemeProvider } from 'styled-components';
 import { Coin } from './components/Coin';
@@ -13,6 +13,7 @@ import MyPage from './pages/MyPage';
 import { darkTheme, GlobalStyle, lightTheme } from './styles/common';
 import axios from 'axios';
 import Loading from './components/Loading';
+import UserContext from './context/UserContext';
 
 const Container = styled.div`
   display: flex;
@@ -27,7 +28,7 @@ axios.defaults.withCredentials = true;
 
 function App() {
   const [darkMode, setDarkMode] = useState(localStorage.getItem('darkmode'));
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useContext(UserContext);
   const [token, setToken] = useState(null);
   const [showLogin, setShowLogin] = useState(false);
   const [showSignup, setShowSingup] = useState(false);
@@ -45,7 +46,7 @@ function App() {
 
     if (authorizationCode) {
       axios
-        .post('http://localhost:8000/oauth/google', {
+        .post(`${process.env.REACT_APP_SERVER_URL}/oauth/google`, {
           authorizationCode,
         })
         .then(({ data }) => {
@@ -60,18 +61,17 @@ function App() {
   }, []);
 
   return (
-    <>
-      <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
-        <GlobalStyle />
-        <Coin
-          mode="light"
-          darkMode={darkMode}
-          setDarkMode={setDarkMode}
-          right="40px"
-          bottom="150px"
-        />
-        <Router>
-          <Container>
+    <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
+      <GlobalStyle />
+      <Coin
+        mode="light"
+        darkMode={darkMode}
+        setDarkMode={setDarkMode}
+        right="40px"
+        bottom="60px"
+      />
+      <Router>
+        <Container>
             <Header
               showLogin={showLogin}
               setShowLogin={setShowLogin}
@@ -82,39 +82,40 @@ function App() {
               token={token}
               setToken={setToken}
             />
-            <Switch>
-              <Route exact path="/">
-                <Home />
-              </Route>
-              <Route path="/main">
-                <Main />
-                <Coin mode="reply" />
-              </Route>
-              <Route path="/post/:postId">
-                <Post />
-                <Coin mode="reply" />
-              </Route>
-              <Route path="/upload">
-                <UploadPost />
-                <Coin mode="reply" />
-              </Route>
+          <Switch>
+            <Route exact path="/">
+              <Home />
+            </Route>
+            <Route path="/main">
+              <Main />
+              <Coin mode="reply" />
+            </Route>
+            <Route path="/post/:postId">
+              <Post />
+              <Coin mode="reply" />
+            </Route>
+            <Route path="/upload">
+              <UploadPost />
+              <Coin mode="reply" />
+            </Route>
               <Route path="/mypage/:id">
                 <MyPage
                   user={user === null ? null : user}
                   setUser={setUser}
                   setToken={setToken}
                 />
-                <Coin mode="reply" />
-              </Route>
-              <Route>
-                <NotFound />
-              </Route>
-            </Switch>
-            <Footer />
-          </Container>
-        </Router>
-      </ThemeProvider>
-    </>
+            </Route>
+            <Route path="/loading">
+              <Loading />
+            </Route>
+            <Route>
+              <NotFound />
+            </Route>
+          </Switch>
+          <Footer />
+        </Container>
+      </Router>
+    </ThemeProvider>
   );
 }
 

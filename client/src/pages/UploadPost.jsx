@@ -7,15 +7,7 @@ import axios from 'axios';
 import Modal from '../components/Modal';
 import TextEditor, { deserialize } from '../components/TextEditor';
 
-import {
-  Body,
-  Button,
-  Hangeul,
-  Info,
-  Label,
-  Meta,
-  Text,
-} from '../styles/common';
+import { Body, Button, Info, Label, Meta, Text } from '../styles/common';
 import Loading from '../components/Loading';
 
 const UploadForm = styled.form`
@@ -156,11 +148,13 @@ const UploadPost = () => {
   // console.log(address);
 
   useEffect(() => {
-    axios.get('http://localhost:8000/category').then(({ data }) => {
-      if (data.status) {
-        setCategories(data.data);
-      }
-    });
+    axios
+      .get(`${process.env.REACT_APP_SERVER_URL}/category`)
+      .then(({ data }) => {
+        if (data.status) {
+          setCategories(data.data);
+        }
+      });
   }, []);
 
   useEffect(() => {
@@ -197,7 +191,7 @@ const UploadPost = () => {
     // ToDo 업로드하기
     setLoading(true);
     axios
-      .post('http://localhost:8000/post', formData, {
+      .post(`${process.env.REACT_APP_SERVER_URL}/post`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       })
       .then((result) => {

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useHistory } from 'react-router';
 import styled from 'styled-components';
-import { Color_2, Hangeul } from '../styles/common';
+import { Color_2, Hangeul, Logo } from '../styles/common';
 
 const HomeContainer = styled.section`
   flex-grow: 1;
@@ -113,7 +113,7 @@ const Home = () => {
             <P>TipTalk이 해결해 드리겠습니다!</P>
             <Button onClick={goToMain}>시작하기</Button>
           </PreView>
-          <MainImage src="https://drawit.s3.ap-northeast-2.amazonaws.com/tip-talk/mainimage.png" />
+          <MainImage src={Logo} />
         </Body>
       </Section>
     </HomeContainer>

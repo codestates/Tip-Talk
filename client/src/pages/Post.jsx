@@ -1,14 +1,24 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
-import { Body, Info, Label, Meta, Text } from '../styles/common';
+import {
+  Body,
+  Color_3,
+  Color_4,
+  Info,
+  Label,
+  Meta,
+  Text,
+} from '../styles/common';
 import { useParams } from 'react-router';
 import Carousel from '../components/Carousel';
 import { kakao } from '../App';
 import Comments from '../components/Comments';
 import { createEditor } from 'slate';
 import { Slate, Editable, withReact } from 'slate-react';
-import { EditorForm } from '../components/TextEditor';
+import { EditorForm, Element, Leaf } from '../components/TextEditor';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHeart } from '@fortawesome/free-solid-svg-icons';
 
 const PostContainer = styled.article`
   display: flex;
@@ -24,12 +34,39 @@ const Map = styled.div`
   width: 100%;
   height: 360px;
   border-radius: 8px;
+  box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.2);
+  -webkit-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.2);
 `;
 
-const Content = styled.div`
-  padding: 10px;
-  border-radius: 6px;
-  background-color: ${({ theme }) => theme.bgColor};
+const LikeForm = styled.div`
+  display: flex;
+  position: fixed;
+  bottom: 110px;
+  right: 40px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: ${({ theme }) => theme.navBgColor};
+  box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.3);
+  -webkit-box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.3);
+  -moz-box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.3);
+  justify-content: center;
+  align-items: center;
+  transition: 0.2s;
+  z-index: 10;
+  :hover {
+    cursor: pointer;
+  }
+`;
+
+const LikeButton = styled.button`
+  width: 40px;
+  height: 40px;
+  font-size: 22px;
+  border: none;
+  color: ${({ isLike }) => (isLike ? Color_4 : Color_3)};
+  background-color: transparent;
 `;
 
 const Post = () => {
@@ -45,10 +82,10 @@ const Post = () => {
   useEffect(() => {
     // * 서버로부터 데이터 받아오기
     axios
-      .get(`http://localhost:8000/post/${postId}`)
+      .get(`${process.env.REACT_APP_SERVER_URL}/post/${postId}`)
       .then(({ data }) => {
         if (data.status) {
-          const { posts } = data;
+          const { posts } = data.data;
           setValue(JSON.parse(posts.content));
           setPost({
             ...posts,
@@ -82,12 +119,14 @@ const Post = () => {
 
     // * Comment 데이터 받아오기
 
-    axios.get(`http://localhost:8000/comment/${postId}`).then(({ data }) => {
-      data.data.forEach((comment) => {
-        parseDate(comment);
+    axios
+      .get(`${process.env.REACT_APP_SERVER_URL}/comment/${postId}`)
+      .then(({ data }) => {
+        data.data.forEach((comment) => {
+          parseDate(comment);
+        });
+        setComments(data.data);
       });
-      setComments(data.data);
-    });
   }, []);
 
   const parseDate = (comment) => {
@@ -95,12 +134,22 @@ const Post = () => {
       .toLocaleDateString()
       .replaceAll('.', '')
       .split(' ');
-    comment.updatedAt = `${comment.updatedAt[1]}월 ${comment.updatedAt[1]}일`;
+    comment.updatedAt = `${comment.updatedAt[1]}월 ${comment.updatedAt[2]}일`;
+  };
+
+  const handleLike = () => {
+    axios
+      .post(`${process.env.REACT_APP_SERVER_URL}/post/like/${postId}`)
+      .then(({ data }) => {
+        if (data.status) {
+          // 좋아요 성공
+        }
+      });
   };
 
   const handleSubmit = (text) => {
     axios
-      .post(`http://localhost:8000/comment/${postId}`, { text })
+      .post(`${process.env.REACT_APP_SERVER_URL}/comment/${postId}`, { text })
       .then(({ data }) => {
         if (data.status) {
           parseDate(data.data);
@@ -111,7 +160,9 @@ const Post = () => {
 
   const handleEdit = (text, commentId) => {
     axios
-      .patch(`http://localhost:8000/comment/${commentId}`, { text })
+      .patch(`${process.env.REACT_APP_SERVER_URL}/comment/${commentId}`, {
+        text,
+      })
       .then(({ data }) => {
         if (data.status) {
           comments.forEach((comment) => {
@@ -125,10 +176,12 @@ const Post = () => {
   };
 
   const handleDelete = (commentId) => {
-    axios.delete(`http://localhost:8000/comment/${commentId}`).then(() => {
-      const filtered = comments.filter((comment) => comment.id !== commentId);
-      setComments([...filtered]);
-    });
+    axios
+      .delete(`${process.env.REACT_APP_SERVER_URL}/comment/${commentId}`)
+      .then(() => {
+        const filtered = comments.filter((comment) => comment.id !== commentId);
+        setComments([...filtered]);
+      });
   };
 
   return (
@@ -169,6 +222,11 @@ const Post = () => {
         </EditorForm>
         <Info>{post?.title} 주변엔 어떤 것이 있나요?</Info>
         <Map id="map"></Map>
+        <LikeForm>
+          <LikeButton>
+            <FontAwesomeIcon icon={faHeart} />
+          </LikeButton>
+        </LikeForm>
         <Info>댓글</Info>
         <Comments
           comments={comments}
@@ -179,47 +237,6 @@ const Post = () => {
       </PostContainer>
     </Body>
   );
-};
-
-const Element = ({ attributes, children, element }) => {
-  switch (element.type) {
-    case 'block-quote':
-      return <blockquote {...attributes}>{children}</blockquote>;
-    case 'bulleted-list':
-      return <ul {...attributes}>{children}</ul>;
-    case 'heading-one':
-      return <h1 {...attributes}>{children}</h1>;
-    case 'heading-two':
-      return <h2 {...attributes}>{children}</h2>;
-    case 'list-item':
-      return <li {...attributes}>{children}</li>;
-    case 'numbered-list':
-      return <ol {...attributes}>{children}</ol>;
-    case 'center':
-      return <center {...attributes}>{children}</center>;
-    default:
-      return <p {...attributes}>{children}</p>;
-  }
-};
-
-const Leaf = ({ attributes, children, leaf }) => {
-  if (leaf.bold) {
-    children = <strong>{children}</strong>;
-  }
-
-  if (leaf.code) {
-    children = <code>{children}</code>;
-  }
-
-  if (leaf.italic) {
-    children = <em>{children}</em>;
-  }
-
-  if (leaf.underline) {
-    children = <u>{children}</u>;
-  }
-
-  return <span {...attributes}>{children}</span>;
 };
 
 export default Post;

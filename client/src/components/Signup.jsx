@@ -253,7 +253,7 @@ const Signup = ({ setShowLogin, setShowSignup }) => {
   const submitHandler = () => {
     if (passwordValidation() === true) {
       axios
-        .post('http://localhost:8000/auth/signup', {
+        .post(`${process.env.REACT_APP_SERVER_URL}/auth/signup`, {
           email,
           password,
           nickname,

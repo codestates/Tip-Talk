@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router';
 import styled from 'styled-components';
-import { Color_3, Hangeul } from '../styles/common';
+import { Color_3, Hangeul, Logo } from '../styles/common';
 import Login from './Login';
 import Signup from './Signup';
 import Logout from './Logout';
@@ -15,8 +15,11 @@ const Navbar = styled.nav`
   justify-content: space-between;
 `;
 
-const Logo = styled.img`
-  height: 70%;
+const LogoImg = styled.img`
+  height: 60%;
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 const Button = styled.button`
@@ -64,15 +67,15 @@ const Menu = ({
   const goToMyPage = () => {
     history.push(`/mypage/${user.id}`);
   };
+  const goToMain = () => {
+    history.push('/main');
+  };
 
   console.log('user = ', user);
 
   return (
     <Navbar>
-      <Logo
-        src="https://drawit.s3.ap-northeast-2.amazonaws.com/tip-talk/mainimage.png"
-        alt="로고"
-      />
+      <LogoImg src={Logo} alt="로고" onClick={goToMain} />
       {token === null ? (
         <div>
           <Button onClick={showLoginHandler}>로그인</Button>

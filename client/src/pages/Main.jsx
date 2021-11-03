@@ -26,14 +26,14 @@ const Main = () => {
 
   // ToDo getPost 완성되면 데이터 받아오기
   // useEffect(()=>{
-  //   axios.get('http://localhost:8000/post')
+  //   axios.get(`${process.env.REACT_APP_SERVER_URL}/post`)
   // })
 
   return (
     <>
       <Body>
         <Scroll ref={scrollRef} />
-        <Coin scrollRef={scrollRef} mode="up" right="40px" bottom="200px" />
+        <Coin scrollRef={scrollRef} mode="up" right="40px" bottom="110px" />
 
         <KakaoMap posts={filteredPosts} handleSearch={handleSearch} />
 

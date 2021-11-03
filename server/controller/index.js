@@ -24,6 +24,7 @@ module.exports = {
     editPost: require('./post/editPost'),
     getPost: require('./post/getPost'),
     uploadPost: require('./post/uploadPost'),
+    getPosts: require('./post/getPosts'),
   },
   userController: {
     editUserInfo: require('./user/editUserInfo'),

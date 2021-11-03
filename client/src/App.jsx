@@ -72,16 +72,16 @@ function App() {
       />
       <Router>
         <Container>
-            <Header
-              showLogin={showLogin}
-              setShowLogin={setShowLogin}
-              user={user}
-              setUser={setUser}
-              showSignup={showSignup}
-              setShowSignup={setShowSingup}
-              token={token}
-              setToken={setToken}
-            />
+          <Header
+            showLogin={showLogin}
+            setShowLogin={setShowLogin}
+            user={user}
+            setUser={setUser}
+            showSignup={showSignup}
+            setShowSignup={setShowSingup}
+            token={token}
+            setToken={setToken}
+          />
           <Switch>
             <Route exact path="/">
               <Home />
@@ -98,12 +98,12 @@ function App() {
               <UploadPost />
               <Coin mode="reply" />
             </Route>
-              <Route path="/mypage/:id">
-                <MyPage
-                  user={user === null ? null : user}
-                  setUser={setUser}
-                  setToken={setToken}
-                />
+            <Route path="/mypage/:id">
+              <MyPage
+                user={user === null ? null : user}
+                setUser={setUser}
+                setToken={setToken}
+              />
             </Route>
             <Route path="/loading">
               <Loading />

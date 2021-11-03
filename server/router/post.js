@@ -6,6 +6,7 @@ const { postController } = require('../controller/index');
 const router = express.Router();
 const upload = multer();
 
+router.get('/', postController.getPosts);
 router.get('/:id', postController.getPost);
 router.post('/', isLoggedIn, isAuth, upload.array(), postController.uploadPost);
 router.patch('/:id', isLoggedIn, isAuth, postController.editPost);

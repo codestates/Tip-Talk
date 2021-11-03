@@ -15,13 +15,27 @@ const ImageGrid = styled.ul`
 `;
 
 const Main = () => {
-  const [posts, setPosts] = useState(data); // * 모든 posts
-  const [filteredPosts, setFilteredPosts] = useState(data); // * 검색 결과에 따른 posts
+  const [posts, setPosts] = useState(); // * 모든 posts
+  const [filteredPosts, setFilteredPosts] = useState(); // * 검색 결과에 따른 posts
   const scrollRef = useRef();
 
   const handleSearch = (value) => {
     // ToDo Axios getPosts로 필터된 posts 불러오기
     // setFilteredPosts();
+    axios
+      .get(`${process.env.REACT_APP_SERVER_URL}/post`, {
+        params: { search: value },
+      })
+      .then(({ data }) => {
+        if (data.status) {
+          const { post } = data.data;
+          post.forEach((p) => {
+            p.lat = +p.lat;
+            p.lng = +p.lng;
+          });
+          setFilteredPosts(post);
+        }
+      });
   };
 
   // ToDo getPost 완성되면 데이터 받아오기

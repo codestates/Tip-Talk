@@ -1,14 +1,20 @@
 import { useHistory } from 'react-router';
 import Modal from './Modal';
 import Portal from './Portal';
+import axios from 'axios';
 
 const Logout = ({ setUser, isOpen, setIsOpen }) => {
   const history = useHistory();
 
   const logoutHandler = () => {
-    localStorage.removeItem('token');
-    setUser(null);
-    history.push('/');
+    axios
+      .post('http://localhost:8000/auth/signout')
+      .then((res) => {
+        localStorage.removeItem('token');
+        setUser(null);
+        history.push('/');
+      })
+      .catch((err) => console.log(err));
   };
 
   return (

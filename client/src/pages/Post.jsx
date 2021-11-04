@@ -97,10 +97,10 @@ const Post = () => {
   const history = useHistory();
 
   const [post, setPost] = useState();
-  const [around, setAround] = useState();
   const [value, setValue] = useState();
   const [comments, setComments] = useState();
   const [isOpen, setIsOpen] = useState(false);
+  const [isLikeOpen, setIsLikeOpen] = useState(false);
   const { postId } = useParams();
 
   const renderElement = useCallback((props) => <Element {...props} />, []);
@@ -153,7 +153,6 @@ const Post = () => {
             .then(({ data }) => {
               if (data.status && data.data.posts.length) {
                 const { posts } = data.data;
-                setAround(posts);
                 let bounds = new kakao.maps.LatLngBounds();
                 posts.forEach((post) => {
                   post.lat = +post.lat;
@@ -232,10 +231,10 @@ const Post = () => {
 
   const handleLike = () => {
     axios
-      .post(`${process.env.REACT_APP_SERVER_URL}/post/like/${postId}`)
+      .post(`${process.env.REACT_APP_SERVER_URL}/like/${postId}`)
       .then(({ data }) => {
         if (data.status) {
-          // 좋아요 성공
+          setPost({ ...post, isLike: !post.isLike });
         }
       });
   };
@@ -298,6 +297,17 @@ const Post = () => {
           callback={() => goToPost(isOpen.id)}
         />
       )}
+      {isLikeOpen && (
+        <Modal
+          message={`${post.title}${
+            post.isLike
+              ? ' 찜 목록에서 삭제하시겠어요?'
+              : ' 찜 목록에 추가하시겠어요?'
+          }`}
+          setIsOpen={setIsLikeOpen}
+          callback={() => handleLike()}
+        />
+      )}
       <PostContainer>
         <Meta>
           <div>
@@ -334,7 +344,7 @@ const Post = () => {
         <Info>{post?.title} 주변엔 어떤 것이 있나요?</Info>
         <Map id="map"></Map>
         <LikeForm>
-          <LikeButton>
+          <LikeButton isLike={post?.isLike} onClick={() => setIsLikeOpen(true)}>
             <FontAwesomeIcon icon={faHeart} />
           </LikeButton>
         </LikeForm>

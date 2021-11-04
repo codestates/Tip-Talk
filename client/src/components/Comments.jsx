@@ -1,8 +1,9 @@
-import React, { useContext, useRef } from 'react';
+import React, { useContext, useRef, useState } from 'react';
 import styled from 'styled-components';
 import UserContext from '../context/UserContext';
 import { Color_1 } from '../styles/common';
 import Comment from './Comment';
+import Modal from './Modal';
 
 const Container = styled.section`
   border-radius: 6px;
@@ -42,18 +43,32 @@ const CommentSubmit = styled.button`
   background-color: transparent;
 `;
 
+const Empty = styled.p`
+  text-align: center;
+`;
+
 const Comments = ({ comments, handleSubmit, handleEdit, handleDelete }) => {
   const inputRef = useRef();
+  const [message, setMessage] = useState(false);
   const [user] = useContext(UserContext);
 
-  const onHandleSubmit = (e) => {
-    e.preventDefault();
+  const onHandleSubmit = () => {
     handleSubmit(inputRef.current.value);
     inputRef.current.value = '';
   };
 
+  const require = (e) => {
+    e.preventDefault();
+    if (user) {
+      onHandleSubmit();
+    } else {
+      setMessage(true);
+    }
+  };
+
   return (
     <Container>
+      {message && <Modal message="로그인이 필요해요" setIsOpen={setMessage} />}
       <CommentList>
         {comments?.length ? (
           comments.map((comment) => (
@@ -65,19 +80,14 @@ const Comments = ({ comments, handleSubmit, handleEdit, handleDelete }) => {
             />
           ))
         ) : (
-          <div>아직 보여줄 댓글이 없네요</div>
+          <Empty>아직 보여줄 댓글이 없어요</Empty>
         )}
       </CommentList>
-      {/* // ToDo 로그인한 사용자만 댓글을 달 수 있도록 변경하기 */}
       <CommentForm>
-        {user && (
-          <>
-            <CommentInput ref={inputRef} placeholder="댓글을 입력해주세요" />
-            <CommentSubmit type="submit" onClick={onHandleSubmit}>
-              확인
-            </CommentSubmit>
-          </>
-        )}
+        <CommentInput ref={inputRef} placeholder="댓글을 입력해주세요" />
+        <CommentSubmit type="submit" onClick={require}>
+          확인
+        </CommentSubmit>
       </CommentForm>
     </Container>
   );

@@ -248,6 +248,7 @@ const Post = () => {
       .then(({ data }) => {
         if (data.status) {
           parseDate(data.data);
+          data.data['isMine'] = true;
           setComments([...comments, data.data]);
         }
       });

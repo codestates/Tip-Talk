@@ -53,7 +53,7 @@ const Comments = ({ comments, handleSubmit, handleEdit, handleDelete }) => {
   const [user] = useContext(UserContext);
 
   const onHandleSubmit = () => {
-    handleSubmit(inputRef.current.value);
+    handleSubmit(inputRef.current.value, user.nickname);
     inputRef.current.value = '';
   };
 

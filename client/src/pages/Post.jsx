@@ -242,13 +242,14 @@ const Post = () => {
       });
   };
 
-  const handleSubmit = (text) => {
+  const handleSubmit = (text, nickname) => {
     axios
       .post(`${process.env.REACT_APP_SERVER_URL}/comment/${postId}`, { text })
       .then(({ data }) => {
         if (data.status) {
           parseDate(data.data);
           data.data['isMine'] = true;
+          data.data['user'] = { nickname };
           setComments([...comments, data.data]);
         }
       });

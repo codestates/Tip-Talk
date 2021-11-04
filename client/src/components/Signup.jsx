@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Color_3, Samlib } from '../styles/common';
 import axios from 'axios';
+import { Button } from '../styles/common';
 
-export const ModalBackdrop = styled.div`
+const ModalBackdrop = styled.div`
   position: fixed;
   z-index: 999;
   top: 0;
@@ -52,7 +53,7 @@ export const ModalBackdrop = styled.div`
   }
 `;
 
-export const InputSection = styled.div`
+const InputSection = styled.div`
   width: 38rem;
   height: 18rem;
   display: flex;
@@ -107,36 +108,20 @@ export const InputSection = styled.div`
   }
 `;
 
-export const BottomContainer = styled.div`
+const BottomContainer = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
   position: relative;
   top: 11rem;
-
-  .signupSubmitButton {
-    font-size: 2rem;
-    width: 12rem;
-    height: 3rem;
-    border-radius: 10px;
-    border: none;
-    background-color: ${Color_3};
-    font-family: ${Samlib};
-  }
-  .toLogin {
-    position: relative;
-    top: 1rem;
-    font-size: 2rem;
-    width: 12rem;
-    height: 3rem;
-    border-radius: 10px;
-    border: none;
-    background-color: ${Color_3};
-    font-family: ${Samlib};
-  }
 `;
 
-export const ErrorMessage = styled.div`
+const ToLoginButton = styled(Button)`
+  position: relative;
+  top: 1rem;
+`;
+
+const ErrorMessage = styled.div`
   color: red;
   font-family: ${Samlib};
   .idError {
@@ -161,7 +146,7 @@ export const ErrorMessage = styled.div`
   }
 `;
 
-export const RadioSection = styled.div`
+const RadioSection = styled.div`
   position: relative;
   top: 5rem;
   text-align: center;
@@ -355,18 +340,14 @@ const Signup = ({ setShowLogin, setShowSignup }) => {
             </div>
           </RadioSection>
           <BottomContainer>
-            <button
-              className="signupSubmitButton"
-              onClick={() => [submitHandler(), insufficientValidation()]}
-            >
+            <Button onClick={() => [submitHandler(), insufficientValidation()]}>
               확인
-            </button>
-            <button
-              className="toLogin"
+            </Button>
+            <ToLoginButton
               onClick={() => [showLoginHandler(), closeSignupModal()]}
             >
               로그인
-            </button>
+            </ToLoginButton>
           </BottomContainer>
           {isExist === true ? (
             <ErrorMessage>

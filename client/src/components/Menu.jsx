@@ -86,7 +86,11 @@ const Menu = ({
         </div>
       )}
       {showLogin === true ? (
-        <Login setShowLogin={setShowLogin} setShowSignup={setShowSignup} />
+        <Login
+          setShowLogin={setShowLogin}
+          setShowSignup={setShowSignup}
+          setToken={setToken}
+        />
       ) : null}
       {showSignup === true ? (
         <Signup setShowLogin={setShowLogin} setShowSignup={setShowSignup} />

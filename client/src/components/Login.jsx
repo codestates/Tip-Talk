@@ -133,7 +133,7 @@ const KakaoButton = styled.img`
   cursor: pointer;
 `;
 
-const Login = ({ setShowLogin, setShowSignup }) => {
+const Login = ({ setShowLogin, setShowSignup, setToken }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [user, setUser] = useContext(UserContext);
@@ -197,8 +197,10 @@ const Login = ({ setShowLogin, setShowSignup }) => {
       );
 
       if (data.data.data) {
-        setUser(data.data.data.user);
-        localStorage.setItem('token', data.data.data.token);
+        const { user, token } = data.data.data;
+        setUser(user);
+        setToken(token);
+        localStorage.setItem('token', token);
         closeLoginModal();
       }
     } catch (err) {

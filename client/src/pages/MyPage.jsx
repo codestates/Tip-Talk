@@ -467,7 +467,11 @@ const MyPage = ({ setToken }) => {
           <div className="wrapper-1">
             <div className="wrapper-1-1">
               <div className="picture">
-                <img src={imageBase64} />
+                {user?.platform === 1 ? (
+                  <img src={user?.img} />
+                ) : (
+                  <img src={imageBase64} />
+                )}
               </div>
             </div>
             <div className="wrapper-1-2">

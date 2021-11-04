@@ -148,6 +148,7 @@ const Login = ({ setShowLogin, setShowSignup }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [user, setUser] = useContext(UserContext);
+  const [status, setStatus] = useState(null);
 
   const oauth2Handler = () => {
     const CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID;
@@ -211,11 +212,14 @@ const Login = ({ setShowLogin, setShowSignup }) => {
         localStorage.setItem('token', data.data.data.token);
         closeLoginModal();
       }
-    } catch (err) {}
+    } catch (err) {
+      setStatus(false);
+    }
   };
 
   return (
     <>
+      {console.log('user = ' + user)}
       <ModalBackdrop onClick={closeLoginModal}>
         <div className="modalView" onClick={(e) => e.stopPropagation()}>
           <img
@@ -247,7 +251,7 @@ const Login = ({ setShowLogin, setShowSignup }) => {
                 placeholder="password"
                 onChange={passwordHandler}
               />
-              {user === undefined ? (
+              {user === null && status === false ? (
                 <ErrorMessage>
                   <div className="passwordError">
                     이메일이나 비밀번호가 올바르지 않습니다

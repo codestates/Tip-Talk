@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import styled from 'styled-components';
-import { Color_3, Samlib } from '../styles/common';
+import { Color_3, Samlib, Logo } from '../styles/common';
 import axios from 'axios';
 import UserContext from '../context/UserContext';
 import { Button } from '../styles/common';
@@ -20,7 +20,7 @@ const ModalBackdrop = styled.div`
     border-radius: 10px;
     background-color: #ffffff;
     width: 38rem;
-    height: 40rem;
+    height: 42rem;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -212,11 +212,7 @@ const Login = ({ setShowLogin, setShowSignup, setToken }) => {
     <>
       <ModalBackdrop onClick={closeLoginModal}>
         <div className="modalView" onClick={(e) => e.stopPropagation()}>
-          <img
-            className="icon"
-            src="https://drawit.s3.ap-northeast-2.amazonaws.com/tip-talk/facebook_cover_photo_1.png"
-            alt="logo"
-          />
+          <img className="icon" src={Logo} alt="logo" />
           <button onClick={closeLoginModal} className="close-btn">
             &times;
           </button>
@@ -241,7 +237,8 @@ const Login = ({ setShowLogin, setShowSignup, setToken }) => {
                 placeholder="password"
                 onChange={passwordHandler}
               />
-              {user === null && status === false ? (
+              {console.log('user = ' + user)}
+              {(user === null || user === undefined) && status === false ? (
                 <ErrorMessage>
                   <div className="passwordError">
                     이메일이나 비밀번호가 올바르지 않습니다

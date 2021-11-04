@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { Color_3, Samlib } from '../styles/common';
+import { Color_3, Samlib, Logo } from '../styles/common';
 import axios from 'axios';
 import { Button } from '../styles/common';
 
@@ -126,22 +126,27 @@ const ErrorMessage = styled.div`
   font-family: ${Samlib};
   .idError {
     position: fixed;
-    top: 16.5rem;
+    top: 17rem;
     left: 9.5rem;
   }
   .passwordError {
     position: fixed;
-    top: 28.5rem;
+    top: 29rem;
     left: 9.5rem;
   }
   .conflictError {
     position: fixed;
-    top: 34rem;
+    top: 36rem;
     left: 9.5rem;
   }
   .insufficientError {
     position: fixed;
     top: 36rem;
+    left: 9.5rem;
+  }
+  .password-length-error {
+    position: fixed;
+    top: 34rem;
     left: 9.5rem;
   }
 `;
@@ -176,6 +181,7 @@ const Signup = ({ setShowLogin, setShowSignup }) => {
   const [insufficient, setInsufficient] = useState(false);
   const [role, setRole] = useState(null);
   const [isExist, setIsExist] = useState(false);
+  const [passwordLength, setPasswordLength] = useState(true);
 
   const closeSignupModal = () => {
     setShowSignup(false);
@@ -253,15 +259,21 @@ const Signup = ({ setShowLogin, setShowSignup }) => {
     }
   };
 
+  const passwordLengthCheck = () => {
+    if (password) {
+      if (password.length >= 8) {
+        setPasswordLength(true);
+      } else {
+        setPasswordLength(false);
+      }
+    }
+  };
+
   return (
     <>
       <ModalBackdrop onClick={closeSignupModal}>
         <div className="ModalView" onClick={(e) => e.stopPropagation()}>
-          <img
-            className="icon"
-            src="https://drawit.s3.ap-northeast-2.amazonaws.com/tip-talk/facebook_cover_photo_1.png"
-            alt="logo"
-          />
+          <img className="icon" src={Logo} alt="logo" />
           <button onClick={closeSignupModal} className="close-btn">
             &times;
           </button>
@@ -340,7 +352,13 @@ const Signup = ({ setShowLogin, setShowSignup }) => {
             </div>
           </RadioSection>
           <BottomContainer>
-            <Button onClick={() => [submitHandler(), insufficientValidation()]}>
+            <Button
+              onClick={() => [
+                submitHandler(),
+                insufficientValidation(),
+                passwordLengthCheck(),
+              ]}
+            >
               확인
             </Button>
             <ToLoginButton
@@ -349,7 +367,7 @@ const Signup = ({ setShowLogin, setShowSignup }) => {
               로그인
             </ToLoginButton>
           </BottomContainer>
-          {isExist === true ? (
+          {isExist === true && insufficient === false ? (
             <ErrorMessage>
               <div className="conflictError">
                 이메일이나 닉네임이 사용 중입니다
@@ -360,6 +378,13 @@ const Signup = ({ setShowLogin, setShowSignup }) => {
             <ErrorMessage>
               <div className="insufficientError">
                 모든 항목을 입력해야합니다
+              </div>
+            </ErrorMessage>
+          ) : null}
+          {passwordLength === false ? (
+            <ErrorMessage>
+              <div className="password-length-error">
+                비밀번호는 8자리 이상이어야 합니다
               </div>
             </ErrorMessage>
           ) : null}

@@ -8,6 +8,9 @@ import Thumbnail from '../components/Thumbnail';
 import { data } from '../dummy/post';
 import Modal from '../components/Modal';
 import UserContext from '../context/UserContext';
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Button } from '../styles/common';
 
 const Container = styled.div`
   width: 100%;
@@ -180,7 +183,7 @@ const Carousel = styled.div`
   display: flex;
   justify-content: center;
   .carousel-container {
-    width: 80%;
+    width: 85%;
     display: flex;
     flex-direction: column;
   }
@@ -197,9 +200,9 @@ const Carousel = styled.div`
   .carousel-content {
     display: flex;
     transition: all 250ms linear;
-      transform: translateX(-${(props) =>
-        props.currentIndex * (400 / props.show)}%);
-      transition: !transitionEnabled ? 'none' : undefined;
+    transform: translateX(
+      -${(props) => props.currentIndex * (540 / props.show)}%
+    );
   }
   .carousel-content::-webkit-scrollbar {
     display: none;
@@ -234,29 +237,57 @@ const Carousel = styled.div`
     right: 24px;
   }
   .carousel-content {
-    width: 50%;
-    &.show-2 > * {
-      width: 50%;
-    }
-  }
-  .carousel-content {
-    width: clac(100% / 3);
-    &.show-3 > * {
-      width: clac(100% / 3);
-    }
-  }
-  .carousel-content {
-    width: calc(93% / 4);
-    &.show-4 > * {
-      width: calc(93% / 4);
-    }
+    width: calc(93.6% / ${(props) => props.show});
   }
 `;
 
+const Background = styled.div`
+  display: flex;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.2);
+  justify-content: center;
+  align-items: center;
+  z-index: 11;
+`;
+
+const ModalContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  width: 380px;
+  height: 160px;
+  padding: 20px;
+  border-radius: 6px;
+  background-color: ${({ theme }) => theme.bgColor};
+  box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.55);
+  -webkit-box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.55);
+  -moz-box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.55);
+  align-items: center;
+  animation: 0.15s scale;
+`;
+
+const CloseButton = styled.button`
+  position: absolute;
+  top: 3px;
+  right: 0;
+  color: ${({ theme }) => theme.color};
+  font-size: 20px;
+  border: none;
+  background-color: transparent;
+`;
+
+const Message = styled.span`
+  margin: 20px 0;
+  font-size: 20px;
+`;
+
 const MyPage = ({ setToken }) => {
-  const show = 3;
-  const infiniteLoop = true;
-  const [isEdit, setIsEdit] = useState(false);
+  const show = 5;
+  const [editStart, setEditStart] = useState(false);
   const [editDone, setEditDone] = useState(false);
   const [isClose, setIsClose] = useState(false);
   const [imageBase64, setImageBase64] = useState(null);
@@ -266,10 +297,6 @@ const MyPage = ({ setToken }) => {
   const [password, setPassword] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [length, setLength] = useState(posts.length);
-  const [isRepeating, setIsRepeating] = useState(
-    infiniteLoop && posts.length > show,
-  );
-  const [transitionEnabled, setTransitionEnabled] = useState(true);
   const fileInput = useRef(null);
   const scrollRef = useRef();
   const history = useHistory();
@@ -278,16 +305,7 @@ const MyPage = ({ setToken }) => {
 
   useEffect(() => {
     setLength(posts.length);
-    setIsRepeating(infiniteLoop && posts.length > show);
-  }, [posts, infiniteLoop, show]);
-
-  useEffect(() => {
-    if (isRepeating === true) {
-      if (currentIndex === show || currentIndex === length) {
-        setTransitionEnabled(true);
-      }
-    }
-  }, [currentIndex, isRepeating, show, length]);
+  }, [posts]);
 
   useEffect(() => {
     if (user) {
@@ -298,7 +316,7 @@ const MyPage = ({ setToken }) => {
       }
     }
 
-    if (isEdit === true) {
+    if (editStart === true) {
       const role = document.querySelector('input[name=role]:checked').value;
       if (role === 1) {
         document.getElementById('owner').checked = true;
@@ -306,15 +324,20 @@ const MyPage = ({ setToken }) => {
         document.getElementById('user').checked = true;
       }
     }
-  }, [user, isEdit]);
+  }, [user, editStart]);
 
   const editStartHandler = () => {
-    setIsEdit(true);
-    setIsOpen(true);
+    setEditStart(true);
   };
 
   const editDoneHandler = () => {
     setEditDone(true);
+    setIsOpen(true);
+  };
+
+  const closeModalHandler = () => {
+    setEditStart(false);
+    setIsOpen(false);
   };
 
   const fileHandler = (e) => {
@@ -331,7 +354,7 @@ const MyPage = ({ setToken }) => {
       reader.readAsDataURL(e.target.files[0]);
 
       const fd = new FormData();
-      fd.append('img', e.target.files[0]);
+      fd.append('image', e.target.files[0]);
       for (let [key, value] of fd.entries()) {
         console.log(key, value);
       }
@@ -383,44 +406,15 @@ const MyPage = ({ setToken }) => {
   };
 
   const next = () => {
-    if (isRepeating || currentIndex < length - show) {
+    if (currentIndex < length - show) {
       setCurrentIndex((prevState) => prevState + 1);
     }
   };
 
   const prev = () => {
-    if (isRepeating || currentIndex > 0) {
+    if (currentIndex > 0) {
       setCurrentIndex((prevState) => prevState - 1);
     }
-  };
-
-  const handleTransitionEnd = () => {
-    if (isRepeating) {
-      if (currentIndex === 0) {
-        setTransitionEnabled(false);
-        setCurrentIndex(length);
-      } else if (currentIndex === length + show) {
-        setTransitionEnabled(false);
-        setCurrentIndex(show);
-      }
-    }
-  };
-
-  const renderExtraPrev = () => {
-    let output = [];
-    for (let index = 0; index < show; index++) {
-      output.push(posts[length - 1 - index]);
-    }
-    output.reverse();
-    return output.post;
-  };
-
-  const renderExtraNext = () => {
-    let output = [];
-    for (let index = 0; index < show; index++) {
-      output.push(posts[index]);
-    }
-    return output.post;
   };
 
   return (
@@ -456,10 +450,9 @@ const MyPage = ({ setToken }) => {
           </div>
           <div className="wrapper-2">
             <div className="wrapper-2-1">
-              {isEdit === true ? (
+              {editStart === true ? (
                 <>
-                  {/* {placeholder에 표시되고 있던 값 넣기} */}
-                  <div className="email">email</div>
+                  <div className="email">{user?.email}</div>
                   <input
                     type="text"
                     id="nickname"
@@ -481,9 +474,9 @@ const MyPage = ({ setToken }) => {
                 </>
               ) : (
                 <>
-                  <div className="email">email</div>
-                  <div className="nickname">닉네임</div>
-                  <div className="password">비밀번호</div>
+                  <div className="email">{user?.email}</div>
+                  <div className="nickname">{user?.nickname}</div>
+                  {/* <div className="password">비밀번호</div> */}
                   <RadioSection>
                     <div className="radio-container">
                       <input type="radio" id="owner" name="role" value="1" />
@@ -496,21 +489,36 @@ const MyPage = ({ setToken }) => {
               )}
             </div>
             <div className="wrapper-2-2">
-              {isEdit === false ? (
+              {editStart === false ? (
                 <button className="edit" onClick={editStartHandler}>
                   수정하기
                 </button>
               ) : (
-                <button className="edit" onClick={editDoneHandler}>
+                <button
+                  className="edit"
+                  onClick={() => [editDoneHandler(), submitHandler()]}
+                >
                   수정 완료
                 </button>
               )}
-              {isOpen === true && editDone === true ? (
-                <Modal
-                  message={'수정하시겠습니까?'}
-                  setIsOpen={setIsOpen}
-                  callback={submitHandler}
-                />
+              {editDone === true && isOpen === true ? (
+                <Background>
+                  <ModalContainer>
+                    <CloseButton>
+                      <FontAwesomeIcon icon={faTimes} />
+                    </CloseButton>
+                    <Message>정상적으로 수정되었습니다</Message>
+                    <div>
+                      <Button
+                        width="80px"
+                        margin="3px"
+                        onClick={closeModalHandler}
+                      >
+                        확인
+                      </Button>
+                    </div>
+                  </ModalContainer>
+                </Background>
               ) : null}
             </div>
           </div>
@@ -536,24 +544,19 @@ const MyPage = ({ setToken }) => {
         <Carousel currentIndex={currentIndex} show={show}>
           <div className="carousel-container">
             <div className="carousel-wrapper">
-              {(isRepeating || currentIndex > 0) && (
+              {currentIndex > 0 && (
                 <button className="left-arrow" onClick={prev}>
                   &lt;
                 </button>
               )}
               <div className="carousel-content-wrapper">
-                <div
-                  className={`carousel-content show-${show}`}
-                  onTransitionEnd={handleTransitionEnd}
-                >
-                  {length > show && isRepeating && renderExtraPrev()}
+                <div className={'carousel-content'}>
                   {posts.map((post) => (
-                    <Thumbnail thumbnail={post} key={post.post.id} />
+                    <Thumbnail thumbnail={post} key={post.id} />
                   ))}
-                  {length > show && isRepeating && renderExtraNext()}
                 </div>
               </div>
-              {(isRepeating || currentIndex < length - show) && (
+              {currentIndex < length - show && (
                 <button className="right-arrow" onClick={next}>
                   &gt;
                 </button>

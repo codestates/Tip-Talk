@@ -52,6 +52,9 @@ const Map = styled.div`
     font-weight: 600;
     background-color: rgba(0, 0, 0, 0.55);
   }
+  .container:hover {
+    cursor: pointer;
+  }
 `;
 
 const LikeForm = styled.div`

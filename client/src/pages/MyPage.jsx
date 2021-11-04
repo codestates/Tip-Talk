@@ -436,7 +436,7 @@ const MyPage = ({ setToken }) => {
   return (
     <>
       <Scroll ref={scrollRef} />
-      <Coin scrollRef={scrollRef} mode="up" right="40px" bottom="200px" />
+      <Coin scrollRef={scrollRef} mode="up" right="40px" bottom="110px" />
       <Container>
         <Header>
           <div className="top-header">마이페이지</div>

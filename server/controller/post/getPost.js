@@ -1,4 +1,5 @@
 const { post, user, categories } = require('../../models');
+const { findLikeById } = require('../likes/findById');
 
 module.exports = async (req, res) => {
   const { id } = req.params;
@@ -17,7 +18,13 @@ module.exports = async (req, res) => {
     }
     await post.update({ views: posts.views + 1 }, { where: { id } });
     posts.views += 1;
+
+    let isLike;
+    if (req.user) {
+      isLike = await findLikeById(req.user.id, id);
+    }
     //post는 다 가져와야하는듯
+    posts.dataValues['isLike'] = isLike ? true : false;
     res.status(200).json({ status: true, data: { posts } });
   } catch (err) {
     console.log(err);

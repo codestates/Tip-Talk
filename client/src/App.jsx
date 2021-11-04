@@ -53,6 +53,7 @@ function App() {
           if (data.status) {
             const { token, user } = data.data;
             setUser(user);
+            setToken(token);
             localStorage.setItem('token', token);
           }
         })

@@ -91,7 +91,7 @@ const ProfileSection = styled.div`
         line-height: 2.5rem;
         border: solid 1px blue;
         position: relative;
-        top: 2.4rem;
+        top: 3rem;
         width: 14rem;
         height: 2.5rem;
       }
@@ -99,7 +99,7 @@ const ProfileSection = styled.div`
         line-height: 2.5rem;
         border: solid 1px blue;
         position: relative;
-        top: 3rem;
+        top: 4rem;
         width: 14rem;
         height: 2.5rem;
       }
@@ -117,7 +117,19 @@ const ProfileSection = styled.div`
       }
       #password {
         position: relative;
-        top: 4rem;
+        top: 3.5rem;
+        width: 14rem;
+        height: 2.5rem;
+        font-size: 1.5rem;
+        border-top: none;
+        border-left: none;
+        border-right: none;
+        outline: none;
+        text-align: center;
+      }
+      #old-password {
+        position: relative;
+        top: 2.5rem;
         width: 14rem;
         height: 2.5rem;
         font-size: 1.5rem;
@@ -153,7 +165,7 @@ const ProfileSection = styled.div`
 
 const RadioSection = styled.div`
   position: relative;
-  top: 5rem;
+  top: 4rem;
   width: 14rem;
   .owner {
     display: inline-block;
@@ -201,7 +213,7 @@ const Carousel = styled.div`
     display: flex;
     transition: all 250ms linear;
     transform: translateX(
-      -${(props) => props.currentIndex * (540 / props.show)}%
+      -${(props) => props.currentIndex * (430 / props.show)}%
     );
   }
   .carousel-content::-webkit-scrollbar {
@@ -237,7 +249,7 @@ const Carousel = styled.div`
     right: 24px;
   }
   .carousel-content {
-    width: calc(93.6% / ${(props) => props.show});
+    width: calc(92% / ${(props) => props.show});
   }
 `;
 
@@ -286,7 +298,7 @@ const Message = styled.span`
 `;
 
 const MyPage = ({ setToken }) => {
-  const show = 5;
+  const show = 4;
   const [editStart, setEditStart] = useState(false);
   const [editDone, setEditDone] = useState(false);
   const [isClose, setIsClose] = useState(false);
@@ -296,7 +308,9 @@ const MyPage = ({ setToken }) => {
   const [nickname, setNickname] = useState(null);
   const [password, setPassword] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [length, setLength] = useState(posts.length);
+  const [imageLength, setImageLength] = useState(posts.length);
+  const [passwordLength, setPasswordLength] = useState(true);
+  const [stilEdit, setStilEdit] = useState(true);
   const fileInput = useRef(null);
   const scrollRef = useRef();
   const history = useHistory();
@@ -304,7 +318,7 @@ const MyPage = ({ setToken }) => {
   const [user, setUser] = useContext(UserContext);
 
   useEffect(() => {
-    setLength(posts.length);
+    setImageLength(posts.length);
   }, [posts]);
 
   useEffect(() => {
@@ -326,6 +340,10 @@ const MyPage = ({ setToken }) => {
     }
   }, [user, editStart]);
 
+  useEffect(() => {
+    setIsClose(false);
+  }, [editDone]);
+
   const editStartHandler = () => {
     setEditStart(true);
   };
@@ -333,11 +351,6 @@ const MyPage = ({ setToken }) => {
   const editDoneHandler = () => {
     setEditDone(true);
     setIsOpen(true);
-  };
-
-  const closeModalHandler = () => {
-    setEditStart(false);
-    setIsOpen(false);
   };
 
   const fileHandler = (e) => {
@@ -354,7 +367,7 @@ const MyPage = ({ setToken }) => {
       reader.readAsDataURL(e.target.files[0]);
 
       const fd = new FormData();
-      fd.append('image', e.target.files[0]);
+      fd.append('img', e.target.files[0]);
       for (let [key, value] of fd.entries()) {
         console.log(key, value);
       }
@@ -367,9 +380,18 @@ const MyPage = ({ setToken }) => {
     }
   };
 
-  const modalHandler = () => {
+  const modalOpenHandler = () => {
     setIsOpen(true);
     setIsClose(true);
+  };
+
+  const modalCloseHandler = () => {
+    setIsOpen(false);
+    setEditStart(false);
+  };
+
+  const passwordModalCloseHandler = () => {
+    setPasswordLength(true);
   };
 
   const deleteHandler = () => {
@@ -381,6 +403,7 @@ const MyPage = ({ setToken }) => {
         localStorage.removeItem('token');
         setToken(null);
         history.push('/');
+        console.log('res = ', res);
       })
       .catch((err) => console.log(err));
   };
@@ -391,6 +414,10 @@ const MyPage = ({ setToken }) => {
 
   const passwordHandler = (e) => {
     setPassword(e.target.value);
+  };
+
+  const oldPasswordHandler = (e) => {
+    console.log(e.target.value);
   };
 
   const submitHandler = () => {
@@ -406,7 +433,7 @@ const MyPage = ({ setToken }) => {
   };
 
   const next = () => {
-    if (currentIndex < length - show) {
+    if (currentIndex < imageLength - show) {
       setCurrentIndex((prevState) => prevState + 1);
     }
   };
@@ -417,10 +444,21 @@ const MyPage = ({ setToken }) => {
     }
   };
 
+  const passwordLengthCheck = () => {
+    if (password) {
+      if (password.length >= 8) {
+        setPasswordLength(true);
+        editDoneHandler();
+      } else {
+        setPasswordLength(false);
+      }
+    }
+  };
+
   return (
     <>
       <Scroll ref={scrollRef} />
-      <Coin scrollRef={scrollRef} mode="up" right="40px" bottom="200px" />
+      <Coin scrollRef={scrollRef} mode="up" right="40px" bottom="110px" />
       <Container>
         <Header>
           <div className="top-header">마이페이지</div>
@@ -440,29 +478,32 @@ const MyPage = ({ setToken }) => {
                 ref={fileInput}
                 onChange={fileHandler}
               />
-              <button
-                className="change-image"
-                onClick={() => fileInput.current.click()}
-              >
+              <Button onClick={() => fileInput.current.click()}>
                 이미지 변경
-              </button>
+              </Button>
             </div>
           </div>
           <div className="wrapper-2">
             <div className="wrapper-2-1">
-              {editStart === true ? (
+              {editStart === true && stilEdit === true ? (
                 <>
                   <div className="email">{user?.email}</div>
                   <input
                     type="text"
+                    id="old-password"
+                    placeholder="old password"
+                    onChange={oldPasswordHandler}
+                  />
+                  <input
+                    type="text"
                     id="nickname"
-                    placeholder="nickname"
+                    placeholder="new nickname"
                     onChange={nicknameHandler}
                   />
                   <input
                     type="password"
                     id="password"
-                    placeholder="password"
+                    placeholder="new password"
                     onChange={passwordHandler}
                   />
                   <RadioSection>
@@ -490,18 +531,18 @@ const MyPage = ({ setToken }) => {
             </div>
             <div className="wrapper-2-2">
               {editStart === false ? (
-                <button className="edit" onClick={editStartHandler}>
+                <Button className="edit" onClick={editStartHandler}>
                   수정하기
-                </button>
+                </Button>
               ) : (
-                <button
+                <Button
                   className="edit"
-                  onClick={() => [editDoneHandler(), submitHandler()]}
+                  onClick={() => [passwordLengthCheck(), submitHandler()]}
                 >
                   수정 완료
-                </button>
+                </Button>
               )}
-              {editDone === true && isOpen === true ? (
+              {isOpen === true && editDone === true ? (
                 <Background>
                   <ModalContainer>
                     <CloseButton>
@@ -512,7 +553,7 @@ const MyPage = ({ setToken }) => {
                       <Button
                         width="80px"
                         margin="3px"
-                        onClick={closeModalHandler}
+                        onClick={() => [modalCloseHandler(), submitHandler()]}
                       >
                         확인
                       </Button>
@@ -520,14 +561,33 @@ const MyPage = ({ setToken }) => {
                   </ModalContainer>
                 </Background>
               ) : null}
+              {passwordLength === true ? null : (
+                <Background>
+                  <ModalContainer>
+                    <CloseButton>
+                      <FontAwesomeIcon icon={faTimes} />
+                    </CloseButton>
+                    <Message>비밀번호는 8자리 이상이어야 합니다</Message>
+                    <div>
+                      <Button
+                        width="80px"
+                        margin="3px"
+                        onClick={passwordModalCloseHandler}
+                      >
+                        확인
+                      </Button>
+                    </div>
+                  </ModalContainer>
+                </Background>
+              )}
             </div>
           </div>
           <div className="wrapper-3">
             <div className="wrapper-3-1"></div>
             <div className="wrapper-3-2">
-              <button className="close-account" onClick={modalHandler}>
+              <Button className="close-account" onClick={modalOpenHandler}>
                 회원탈퇴
-              </button>
+              </Button>
             </div>
             {isOpen === true && isClose === true ? (
               <Modal
@@ -556,7 +616,7 @@ const MyPage = ({ setToken }) => {
                   ))}
                 </div>
               </div>
-              {currentIndex < length - show && (
+              {currentIndex < imageLength - show && (
                 <button className="right-arrow" onClick={next}>
                   &gt;
                 </button>

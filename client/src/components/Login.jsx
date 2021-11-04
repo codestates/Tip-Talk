@@ -1,8 +1,9 @@
 import React, { useState, useContext } from 'react';
 import styled from 'styled-components';
-import { Color_3, Samlib } from '../styles/common';
+import { Color_3, Samlib, Logo } from '../styles/common';
 import axios from 'axios';
 import UserContext from '../context/UserContext';
+import { Button } from '../styles/common';
 
 const ModalBackdrop = styled.div`
   position: fixed;
@@ -19,7 +20,7 @@ const ModalBackdrop = styled.div`
     border-radius: 10px;
     background-color: #ffffff;
     width: 38rem;
-    height: 38rem;
+    height: 42rem;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -86,36 +87,20 @@ const InputSection = styled.div`
   }
 `;
 
-const LoginButtonContainer = styled.div`
-  .loginButton {
-    font-size: 2rem;
-    width: 12rem;
-    height: 3rem;
-    border-radius: 10px;
-    border: none;
-    background-color: ${Color_3};
-    font-family: ${Samlib};
-  }
+const LoginButton = styled(Button)`
+  position: relative;
+  top: -2rem;
 `;
 
 const BottomContainer = styled.div`
   .bottomSection {
     display: flex;
+    flex-direction: column;
+    align-items: center;
     justify-content: space-around;
     width: 30rem;
     position: relative;
-    top: 4rem;
-    .signupButton {
-      font-size: 2rem;
-      position: relative;
-      top: 0.5rem;
-      width: 12rem;
-      height: 3rem;
-      border-radius: 10px;
-      border: none;
-      background-color: ${Color_3};
-      font-family: ${Samlib};
-    }
+    top: 1rem;
   }
 `;
 
@@ -137,17 +122,22 @@ const ErrorMessage = styled.div`
 const GoogleButton = styled.img`
   width: 15rem;
   cursor: pointer;
+  position: relative;
+  top: -1rem;
 `;
 
 const KakaoButton = styled.img`
+  position: relative;
+  top: -0.6rem;
   width: 15rem;
   cursor: pointer;
 `;
 
-const Login = ({ setShowLogin, setShowSignup }) => {
+const Login = ({ setShowLogin, setShowSignup, setToken }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [user, setUser] = useContext(UserContext);
+  const [status, setStatus] = useState(null);
 
   const oauth2Handler = () => {
     const CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID;
@@ -207,22 +197,22 @@ const Login = ({ setShowLogin, setShowSignup }) => {
       );
 
       if (data.data.data) {
-        setUser(data.data.data.user);
-        localStorage.setItem('token', data.data.data.token);
+        const { user, token } = data.data.data;
+        setUser(user);
+        setToken(token);
+        localStorage.setItem('token', token);
         closeLoginModal();
       }
-    } catch (err) {}
+    } catch (err) {
+      setStatus(false);
+    }
   };
 
   return (
     <>
       <ModalBackdrop onClick={closeLoginModal}>
         <div className="modalView" onClick={(e) => e.stopPropagation()}>
-          <img
-            className="icon"
-            src="https://drawit.s3.ap-northeast-2.amazonaws.com/tip-talk/facebook_cover_photo_1.png"
-            alt="logo"
-          />
+          <img className="icon" src={Logo} alt="logo" />
           <button onClick={closeLoginModal} className="close-btn">
             &times;
           </button>
@@ -247,7 +237,8 @@ const Login = ({ setShowLogin, setShowSignup }) => {
                 placeholder="password"
                 onChange={passwordHandler}
               />
-              {user === undefined ? (
+              {console.log('user = ' + user)}
+              {(user === null || user === undefined) && status === false ? (
                 <ErrorMessage>
                   <div className="passwordError">
                     이메일이나 비밀번호가 올바르지 않습니다
@@ -256,11 +247,7 @@ const Login = ({ setShowLogin, setShowSignup }) => {
               ) : null}
             </div>
           </InputSection>
-          <LoginButtonContainer>
-            <button className="loginButton" onClick={loginHandler}>
-              로그인
-            </button>
-          </LoginButtonContainer>
+          <LoginButton onClick={loginHandler}>로그인</LoginButton>
           <BottomContainer>
             <div className="bottomSection">
               <GoogleButton
@@ -273,12 +260,7 @@ const Login = ({ setShowLogin, setShowSignup }) => {
                 alt="kakao-button"
                 onClick={KakaoLogin}
               ></KakaoButton>
-              <button
-                className="signupButton"
-                onClick={() => [signupHandler()]}
-              >
-                회원가입
-              </button>
+              <Button onClick={signupHandler}>회원가입</Button>
             </div>
           </BottomContainer>
         </div>

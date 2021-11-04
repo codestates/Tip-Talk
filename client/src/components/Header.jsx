@@ -28,6 +28,7 @@ const Header = ({
             showSignup={showSignup}
             setShowSignup={setShowSignup}
             token={token}
+            setToken={setToken}
           />
         </HeaderContainer>
       ) : (

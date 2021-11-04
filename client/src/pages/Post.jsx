@@ -16,7 +16,7 @@ import {
   Meta,
   Text,
 } from '../styles/common';
-import { useParams } from 'react-router';
+import { useParams, useHistory } from 'react-router';
 import Carousel from '../components/Carousel';
 import { kakao } from '../App';
 import Comments from '../components/Comments';
@@ -25,6 +25,7 @@ import { Slate, Editable, withReact } from 'slate-react';
 import { EditorForm, Element, Leaf } from '../components/TextEditor';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart } from '@fortawesome/free-solid-svg-icons';
+import Modal from '../components/Modal';
 
 const PostContainer = styled.article`
   display: flex;
@@ -83,8 +84,14 @@ const LikeButton = styled.button`
   background-color: transparent;
 `;
 
+const TextEditor = styled(EditorForm)`
+  height: 100%;
+`;
+
 const Post = () => {
   const map = useRef();
+  const scrollRef = useRef();
+  const history = useHistory();
 
   const [post, setPost] = useState();
   const [around, setAround] = useState();
@@ -96,6 +103,19 @@ const Post = () => {
   const renderElement = useCallback((props) => <Element {...props} />, []);
   const renderLeaf = useCallback((props) => <Leaf {...props} />, []);
   const editor = useMemo(() => withReact(createEditor()), []);
+
+  useEffect(() => {
+    const MapContainer = document.getElementById('map');
+
+    const center = new kakao.maps.LatLng(0, 0);
+
+    const option = {
+      center,
+      level: 3,
+    };
+
+    map.current = new kakao.maps.Map(MapContainer, option);
+  }, []);
 
   useEffect(() => {
     // * 서버로부터 데이터 받아오기
@@ -110,17 +130,11 @@ const Post = () => {
             images: posts.images.split(' '),
             content: JSON.parse(posts.content),
           });
-          const MapContainer = document.getElementById('map');
+
           const lat = posts.lat;
           const lng = posts.lng;
 
           const center = new kakao.maps.LatLng(+lat, +lng);
-
-          const option = {
-            center,
-            level: 3,
-          };
-          map.current = new kakao.maps.Map(MapContainer, option);
 
           const marker = new kakao.maps.Marker({
             position: center,
@@ -178,10 +192,10 @@ const Post = () => {
       });
 
       const content = `<div class="container">
-        <div class="overlay">
-          <h2 class="title">${post.title}</h2>
-        </div>
-      </div>`;
+      <div class="overlay">
+        <span class="title">${post.title}</span>
+      </div>
+    </div>`;
 
       const overlay = new kakao.maps.CustomOverlay({
         content,
@@ -190,16 +204,18 @@ const Post = () => {
         yAnchor: 0,
       });
 
-      overlay.setVisible(false);
+      overlay.setVisible(null);
 
       // 마커에 클릭이벤트를 등록합니다
       kakao.maps.event.addListener(newMarker, 'click', function () {
         if (overlay.getVisible()) {
-          overlay.setVisible(false);
+          overlay.setVisible(null);
         } else {
-          overlay.setVisible(true);
+          overlay.setVisible(map.current);
         }
       });
+
+      overlay.a.onclick = () => setIsOpen({ id: post.id, title: post.title });
     }
   }, [postId]);
 
@@ -258,8 +274,27 @@ const Post = () => {
       });
   };
 
+  const goToPost = (id) => {
+    scrollRef.current.scrollIntoView({
+      behavior: 'auto',
+      block: 'start',
+      inline: 'nearest',
+    });
+    history.push(`/loading`);
+    setTimeout(() => {
+      history.replace(`/post/${id}`);
+    }, 2000);
+  };
+
   return (
-    <Body>
+    <Body ref={scrollRef}>
+      {isOpen && (
+        <Modal
+          message={`${isOpen.title} 보러 가시겠어요?`}
+          setIsOpen={setIsOpen}
+          callback={() => goToPost(isOpen.id)}
+        />
+      )}
       <PostContainer>
         <Meta>
           <div>
@@ -277,7 +312,7 @@ const Post = () => {
         </Meta>
         <Carousel images={post?.images} />
         <Info>{post?.title} 소개</Info>
-        <EditorForm>
+        <TextEditor>
           {value && (
             <Slate
               editor={editor}
@@ -292,7 +327,7 @@ const Post = () => {
               />
             </Slate>
           )}
-        </EditorForm>
+        </TextEditor>
         <Info>{post?.title} 주변엔 어떤 것이 있나요?</Info>
         <Map id="map"></Map>
         <LikeForm>

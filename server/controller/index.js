@@ -31,4 +31,7 @@ module.exports = {
     editUserInfo: require('./user/editUserInfo'),
     getUserInfo: require('./user/getUserInfo'),
   },
+  likeController: {
+    likePost: require('./likes/likePost'),
+  },
 };

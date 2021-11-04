@@ -213,7 +213,7 @@ const Carousel = styled.div`
     display: flex;
     transition: all 250ms linear;
     transform: translateX(
-      -${(props) => props.currentIndex * (420 / props.show)}%
+      -${(props) => props.currentIndex * (430 / props.show)}%
     );
   }
   .carousel-content::-webkit-scrollbar {
@@ -249,7 +249,7 @@ const Carousel = styled.div`
     right: 24px;
   }
   .carousel-content {
-    width: calc(93.6% / ${(props) => props.show});
+    width: calc(92% / ${(props) => props.show});
   }
 `;
 
@@ -478,12 +478,9 @@ const MyPage = ({ setToken }) => {
                 ref={fileInput}
                 onChange={fileHandler}
               />
-              <button
-                className="change-image"
-                onClick={() => fileInput.current.click()}
-              >
+              <Button onClick={() => fileInput.current.click()}>
                 이미지 변경
-              </button>
+              </Button>
             </div>
           </div>
           <div className="wrapper-2">
@@ -534,16 +531,16 @@ const MyPage = ({ setToken }) => {
             </div>
             <div className="wrapper-2-2">
               {editStart === false ? (
-                <button className="edit" onClick={editStartHandler}>
+                <Button className="edit" onClick={editStartHandler}>
                   수정하기
-                </button>
+                </Button>
               ) : (
-                <button
+                <Button
                   className="edit"
                   onClick={() => [passwordLengthCheck(), submitHandler()]}
                 >
                   수정 완료
-                </button>
+                </Button>
               )}
               {isOpen === true && editDone === true ? (
                 <Background>
@@ -588,9 +585,9 @@ const MyPage = ({ setToken }) => {
           <div className="wrapper-3">
             <div className="wrapper-3-1"></div>
             <div className="wrapper-3-2">
-              <button className="close-account" onClick={modalOpenHandler}>
+              <Button className="close-account" onClick={modalOpenHandler}>
                 회원탈퇴
-              </button>
+              </Button>
             </div>
             {isOpen === true && isClose === true ? (
               <Modal

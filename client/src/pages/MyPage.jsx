@@ -201,7 +201,7 @@ const Carousel = styled.div`
     display: flex;
     transition: all 250ms linear;
     transform: translateX(
-      -${(props) => props.currentIndex * (540 / props.show)}%
+      -${(props) => props.currentIndex * (420 / props.show)}%
     );
   }
   .carousel-content::-webkit-scrollbar {
@@ -286,7 +286,7 @@ const Message = styled.span`
 `;
 
 const MyPage = ({ setToken }) => {
-  const show = 5;
+  const show = 4;
   const [editStart, setEditStart] = useState(false);
   const [editDone, setEditDone] = useState(false);
   const [isClose, setIsClose] = useState(false);

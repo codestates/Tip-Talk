@@ -10,8 +10,6 @@ module.exports = async (req, res) => {
       .json({ status: false, message: '댓글을 입력해주세요' });
   }
 
-  // ToDo postid로 post를 찾고 없을때 처리
-
   try {
     const found = await post.findOne({ where: { id: postId } });
 

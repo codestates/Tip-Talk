@@ -28,6 +28,8 @@ const ModalBackdrop = styled.div`
     left: 50%;
     top: 40%;
     transform: translate(-50%, -40%);
+    box-shadow: 0 0 20px 20px rgba(255, 0, 0, 0.15),
+      0 0 20px 20px rgba(255, 0, 0, 0.15);
 
     .close-btn {
       border-radius: 10px;
@@ -164,6 +166,7 @@ const Login = ({ setShowLogin, setShowSignup, setToken }) => {
   };
 
   const signupHandler = () => {
+    setShowLogin(false);
     setShowSignup(true);
   };
 
@@ -237,7 +240,6 @@ const Login = ({ setShowLogin, setShowSignup, setToken }) => {
                 placeholder="password"
                 onChange={passwordHandler}
               />
-              {console.log('user = ' + user)}
               {(user === null || user === undefined) && status === false ? (
                 <ErrorMessage>
                   <div className="passwordError">

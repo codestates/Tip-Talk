@@ -24,7 +24,7 @@ module.exports = async (req, res) => {
             img = kakao.properties.profile_image,
             email = kakao.kakao_account.email,
             password = null,
-            platform= 1,
+            platform= 2,
         }
     })
     const token = await jwt.sign({

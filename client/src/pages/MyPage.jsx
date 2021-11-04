@@ -326,6 +326,10 @@ const MyPage = ({ setToken }) => {
     }
   }, [user, editStart]);
 
+  useEffect(() => {
+    setIsClose(false);
+  }, [editDone]);
+
   const editStartHandler = () => {
     setEditStart(true);
   };
@@ -354,7 +358,7 @@ const MyPage = ({ setToken }) => {
       reader.readAsDataURL(e.target.files[0]);
 
       const fd = new FormData();
-      fd.append('image', e.target.files[0]);
+      fd.append('img', e.target.files[0]);
       for (let [key, value] of fd.entries()) {
         console.log(key, value);
       }
@@ -419,6 +423,7 @@ const MyPage = ({ setToken }) => {
 
   return (
     <>
+      {console.log('isClose = ' + isClose)}
       <Scroll ref={scrollRef} />
       <Coin scrollRef={scrollRef} mode="up" right="40px" bottom="200px" />
       <Container>

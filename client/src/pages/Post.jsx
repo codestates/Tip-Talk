@@ -1,5 +1,6 @@
 import React, {
   useCallback,
+  useContext,
   useEffect,
   useMemo,
   useRef,
@@ -26,6 +27,7 @@ import { EditorForm, Element, Leaf } from '../components/TextEditor';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart } from '@fortawesome/free-solid-svg-icons';
 import Modal from '../components/Modal';
+import UserContext from '../context/UserContext';
 
 const PostContainer = styled.article`
   display: flex;
@@ -102,6 +104,7 @@ const Post = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isLikeOpen, setIsLikeOpen] = useState(false);
   const { postId } = useParams();
+  const [user] = useContext(UserContext);
 
   const renderElement = useCallback((props) => <Element {...props} />, []);
   const renderLeaf = useCallback((props) => <Leaf {...props} />, []);
@@ -288,6 +291,12 @@ const Post = () => {
     }, 2000);
   };
 
+  const callback = () => {
+    if (user) {
+      handleLike();
+    }
+  };
+
   return (
     <Body ref={scrollRef}>
       {isOpen && (
@@ -299,13 +308,17 @@ const Post = () => {
       )}
       {isLikeOpen && (
         <Modal
-          message={`${post.title}${
-            post.isLike
-              ? ' 찜 목록에서 삭제하시겠어요?'
-              : ' 찜 목록에 추가하시겠어요?'
-          }`}
+          message={
+            user
+              ? `${post.title}${
+                  post.isLike
+                    ? ' 찜 목록에서 삭제하시겠어요?'
+                    : ' 찜 목록에 추가하시겠어요?'
+                }`
+              : '로그인이 필요합니다!'
+          }
           setIsOpen={setIsLikeOpen}
-          callback={() => handleLike()}
+          callback={() => callback()}
         />
       )}
       <PostContainer>

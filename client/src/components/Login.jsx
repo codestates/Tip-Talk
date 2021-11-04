@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { Color_3, Samlib } from '../styles/common';
 import axios from 'axios';
 import UserContext from '../context/UserContext';
+import { Button } from '../styles/common';
 
 const ModalBackdrop = styled.div`
   position: fixed;
@@ -19,7 +20,7 @@ const ModalBackdrop = styled.div`
     border-radius: 10px;
     background-color: #ffffff;
     width: 38rem;
-    height: 38rem;
+    height: 40rem;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -86,36 +87,20 @@ const InputSection = styled.div`
   }
 `;
 
-const LoginButtonContainer = styled.div`
-  .loginButton {
-    font-size: 2rem;
-    width: 12rem;
-    height: 3rem;
-    border-radius: 10px;
-    border: none;
-    background-color: ${Color_3};
-    font-family: ${Samlib};
-  }
+const LoginButton = styled(Button)`
+  position: relative;
+  top: -2rem;
 `;
 
 const BottomContainer = styled.div`
   .bottomSection {
     display: flex;
+    flex-direction: column;
+    align-items: center;
     justify-content: space-around;
     width: 30rem;
     position: relative;
-    top: 4rem;
-    .signupButton {
-      font-size: 2rem;
-      position: relative;
-      top: 0.5rem;
-      width: 12rem;
-      height: 3rem;
-      border-radius: 10px;
-      border: none;
-      background-color: ${Color_3};
-      font-family: ${Samlib};
-    }
+    top: 1rem;
   }
 `;
 
@@ -137,9 +122,13 @@ const ErrorMessage = styled.div`
 const GoogleButton = styled.img`
   width: 15rem;
   cursor: pointer;
+  position: relative;
+  top: -1rem;
 `;
 
 const KakaoButton = styled.img`
+  position: relative;
+  top: -0.6rem;
   width: 15rem;
   cursor: pointer;
 `;
@@ -219,7 +208,6 @@ const Login = ({ setShowLogin, setShowSignup }) => {
 
   return (
     <>
-      {console.log('user = ' + user)}
       <ModalBackdrop onClick={closeLoginModal}>
         <div className="modalView" onClick={(e) => e.stopPropagation()}>
           <img
@@ -260,11 +248,7 @@ const Login = ({ setShowLogin, setShowSignup }) => {
               ) : null}
             </div>
           </InputSection>
-          <LoginButtonContainer>
-            <button className="loginButton" onClick={loginHandler}>
-              로그인
-            </button>
-          </LoginButtonContainer>
+          <LoginButton onClick={loginHandler}>로그인</LoginButton>
           <BottomContainer>
             <div className="bottomSection">
               <GoogleButton
@@ -277,12 +261,7 @@ const Login = ({ setShowLogin, setShowSignup }) => {
                 alt="kakao-button"
                 onClick={KakaoLogin}
               ></KakaoButton>
-              <button
-                className="signupButton"
-                onClick={() => [signupHandler()]}
-              >
-                회원가입
-              </button>
+              <Button onClick={signupHandler}>회원가입</Button>
             </div>
           </BottomContainer>
         </div>

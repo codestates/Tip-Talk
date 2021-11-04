@@ -186,10 +186,10 @@ const UploadPost = () => {
     formData.append('lat', address.lat);
     formData.append('lng', address.lng);
     formData.append('region', address.name);
-    images.forEach((image) => {
-      formData.append('images', image);
-    });
 
+    images.forEach((image) => {
+      formData.append('images', image.file);
+    });
     // ToDo 업로드하기
     setLoading(true);
     axios
@@ -217,7 +217,7 @@ const UploadPost = () => {
   const handleImage = (e) => {
     if (e.target.files.length && images.length < 4) {
       const ImageURL = URL.createObjectURL(e.target.files[0]);
-      setImages([...images, ImageURL]);
+      setImages([...images, { file: e.target.files[0], url: ImageURL }]);
       setCurrent(images.length);
     }
   };
@@ -225,7 +225,7 @@ const UploadPost = () => {
   const handleDeleteImage = (index, e) => {
     e.preventDefault();
     const filtered = images.filter((_, i) => i !== index);
-    URL.revokeObjectURL(images[index]);
+    URL.revokeObjectURL(images.url[index]);
     setCurrent(filtered.length - 1);
     setImages([...filtered]);
   };
@@ -275,7 +275,7 @@ const UploadPost = () => {
         <CustomInfo>사진 등록하기</CustomInfo>
         <CurrentImageWrapper>
           {current !== undefined ? (
-            <CurrentImage src={images[current]} alt="대표이미지" />
+            <CurrentImage src={images[current].url} alt="대표이미지" />
           ) : (
             <Message>미리보기할 사진이 없어요</Message>
           )}
@@ -292,7 +292,7 @@ const UploadPost = () => {
                 </DeleteButton>
                 <ImageCard
                   onClick={() => handleCurrentImage(i)}
-                  src={image}
+                  src={image.url}
                   alt="이미지"
                 />
               </ImageWrapper>

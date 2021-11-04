@@ -182,11 +182,13 @@ const UploadPost = () => {
 
     formData.append('title', title);
     formData.append('content', text[0].children[0].text);
-    formData.append('images', images);
     formData.append('categoryId', category);
     formData.append('lat', address.lat);
     formData.append('lng', address.lng);
     formData.append('region', address.name);
+    images.forEach((image) => {
+      formData.append('images', image);
+    });
 
     // ToDo 업로드하기
     setLoading(true);

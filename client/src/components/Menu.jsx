@@ -60,6 +60,7 @@ const Menu = ({
   };
 
   const logoutHandler = () => {
+    setUser(null);
     setIsLogout(true);
     setIsOpen(true);
   };
@@ -74,7 +75,7 @@ const Menu = ({
   return (
     <Navbar>
       <LogoImg src={Logo} alt="로고" onClick={goToMain} />
-      {token === null ? (
+      {user === null ? (
         <div>
           <Button onClick={showLoginHandler}>로그인</Button>
           <Button onClick={showSignupHandler}>회원가입</Button>

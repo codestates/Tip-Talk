@@ -33,25 +33,27 @@ const SearchForm = styled.div`
   width: 300px;
   height: 70px;
   background-color: ${Color_1};
-  border-radius: 6px;
+  border-radius: 3px;
   justify-content: center;
   align-items: center;
   z-index: 11;
 `;
 
 const Input = styled.input`
-  width: calc(90% - 38px);
-  height: 38px;
+  position: relative;
+  width: calc(90%);
+  height: 46px;
   border: none;
   padding: 0 8px;
+  border-radius: 3px;
 `;
 
 const Search = styled.button`
-  width: 38px;
-  height: 38px;
+  position: absolute;
+  right: 24px;
   font-size: 16px;
   border: none;
-  background-color: white;
+  background-color: transparent;
 `;
 
 const UploadModal = styled(ModalBackground)`
@@ -156,7 +158,7 @@ const KakaoMap = ({ posts, handleSearch }) => {
 
     // Todo 사업자만 가능하도록 설정 user.role - 여기부터
 
-    if (user && user?.role !== 2) {
+    if (user && user?.role !== 1) {
       // 지도에 클릭 이벤트를 등록합니다
       // 지도를 클릭하면 마지막 파라미터로 넘어온 함수를 호출합니다
       kakao.maps.event.addListener(map.current, 'click', function (mouseEvent) {

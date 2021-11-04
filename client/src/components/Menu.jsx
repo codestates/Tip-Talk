@@ -74,7 +74,7 @@ const Menu = ({
   return (
     <Navbar>
       <LogoImg src={Logo} alt="로고" onClick={goToMain} />
-      {user === null || user === undefined ? (
+      {token === null ? (
         <div>
           <Button onClick={showLoginHandler}>로그인</Button>
           <Button onClick={showSignupHandler}>회원가입</Button>

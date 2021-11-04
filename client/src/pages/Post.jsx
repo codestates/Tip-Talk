@@ -1,4 +1,10 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 import {
@@ -37,6 +43,14 @@ const Map = styled.div`
   box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.2);
   -webkit-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.2);
   -moz-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.2);
+
+  .container {
+    padding: 8px 16px;
+    border-radius: 6px;
+    color: ${Color_3};
+    font-weight: 600;
+    background-color: rgba(0, 0, 0, 0.55);
+  }
 `;
 
 const LikeForm = styled.div`
@@ -70,9 +84,13 @@ const LikeButton = styled.button`
 `;
 
 const Post = () => {
+  const map = useRef();
+
   const [post, setPost] = useState();
+  const [around, setAround] = useState();
   const [value, setValue] = useState();
   const [comments, setComments] = useState();
+  const [isOpen, setIsOpen] = useState(false);
   const { postId } = useParams();
 
   const renderElement = useCallback((props) => <Element {...props} />, []);
@@ -102,15 +120,34 @@ const Post = () => {
             center,
             level: 3,
           };
-          const map = new kakao.maps.Map(MapContainer, option);
+          map.current = new kakao.maps.Map(MapContainer, option);
 
           const marker = new kakao.maps.Marker({
             position: center,
           });
 
-          marker.setMap(map);
+          marker.setMap(map.current);
 
           // ToDo 주변위치 정보 받아오기
+          axios
+            .get(`${process.env.REACT_APP_SERVER_URL}/post/around/${postId}`, {
+              params: { lat, lng },
+            })
+            .then(({ data }) => {
+              if (data.status && data.data.posts.length) {
+                const { posts } = data.data;
+                setAround(posts);
+                let bounds = new kakao.maps.LatLngBounds();
+                posts.forEach((post) => {
+                  post.lat = +post.lat;
+                  post.lng = +post.lng;
+                  displayMarker(post);
+                  bounds.extend(new kakao.maps.LatLng(post.lat, post.lng));
+                });
+                bounds.extend(new kakao.maps.LatLng(lat, lng));
+                map.current.setBounds(bounds);
+              }
+            });
         }
       })
       .catch((err) => {
@@ -127,7 +164,44 @@ const Post = () => {
         });
         setComments(data.data);
       });
-  }, []);
+
+    function displayMarker(post) {
+      const imageSrc =
+        'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png';
+      const imageSize = new kakao.maps.Size(24, 35);
+      // 마커 이미지를 생성합니다
+      const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
+      const newMarker = new kakao.maps.Marker({
+        map: map.current,
+        position: new kakao.maps.LatLng(post.lat, post.lng),
+        image: markerImage,
+      });
+
+      const content = `<div class="container">
+        <div class="overlay">
+          <h2 class="title">${post.title}</h2>
+        </div>
+      </div>`;
+
+      const overlay = new kakao.maps.CustomOverlay({
+        content,
+        map: map.current,
+        position: newMarker.getPosition(),
+        yAnchor: 0,
+      });
+
+      overlay.setVisible(false);
+
+      // 마커에 클릭이벤트를 등록합니다
+      kakao.maps.event.addListener(newMarker, 'click', function () {
+        if (overlay.getVisible()) {
+          overlay.setVisible(false);
+        } else {
+          overlay.setVisible(true);
+        }
+      });
+    }
+  }, [postId]);
 
   const parseDate = (comment) => {
     comment.updatedAt = new Date(comment.updatedAt)

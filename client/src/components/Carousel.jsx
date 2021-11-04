@@ -61,9 +61,21 @@ const Button = styled.button`
   padding: 0;
   border: none;
   border-radius: 50%;
-  color: white;
+  color: rgba(0, 0, 0, 0.5);
+  font-size: 16px;
   background-color: transparent;
   z-index: 10;
+`;
+
+const Shadow = styled.div`
+  position: absolute;
+  top: -1px;
+  left: 0px;
+  right: 1px;
+  font-size: 15px;
+  width: 30px;
+  height: 30px;
+  color: white;
 `;
 
 const Carousel = ({ images }) => {
@@ -100,9 +112,15 @@ const Carousel = ({ images }) => {
       </StepForm>
       <Button onClick={handlePrevScroll}>
         <FontAwesomeIcon size="2x" icon={faChevronLeft} />
+        <Shadow>
+          <FontAwesomeIcon size="2x" icon={faChevronLeft} />
+        </Shadow>
       </Button>
       <Button onClick={handleNextScroll} right="0">
         <FontAwesomeIcon size="2x" icon={faChevronRight} />
+        <Shadow>
+          <FontAwesomeIcon size="2x" icon={faChevronRight} />
+        </Shadow>
       </Button>
       <Slide ref={scrollRef}>
         {images?.map((image, i) => (

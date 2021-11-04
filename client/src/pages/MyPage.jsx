@@ -91,7 +91,7 @@ const ProfileSection = styled.div`
         line-height: 2.5rem;
         border: solid 1px blue;
         position: relative;
-        top: 2.4rem;
+        top: 3rem;
         width: 14rem;
         height: 2.5rem;
       }
@@ -99,7 +99,7 @@ const ProfileSection = styled.div`
         line-height: 2.5rem;
         border: solid 1px blue;
         position: relative;
-        top: 3rem;
+        top: 4rem;
         width: 14rem;
         height: 2.5rem;
       }
@@ -117,7 +117,19 @@ const ProfileSection = styled.div`
       }
       #password {
         position: relative;
-        top: 4rem;
+        top: 3.5rem;
+        width: 14rem;
+        height: 2.5rem;
+        font-size: 1.5rem;
+        border-top: none;
+        border-left: none;
+        border-right: none;
+        outline: none;
+        text-align: center;
+      }
+      #old-password {
+        position: relative;
+        top: 2.5rem;
         width: 14rem;
         height: 2.5rem;
         font-size: 1.5rem;
@@ -153,7 +165,7 @@ const ProfileSection = styled.div`
 
 const RadioSection = styled.div`
   position: relative;
-  top: 5rem;
+  top: 4rem;
   width: 14rem;
   .owner {
     display: inline-block;
@@ -423,7 +435,6 @@ const MyPage = ({ setToken }) => {
 
   return (
     <>
-      {console.log('isClose = ' + isClose)}
       <Scroll ref={scrollRef} />
       <Coin scrollRef={scrollRef} mode="up" right="40px" bottom="200px" />
       <Container>
@@ -460,14 +471,19 @@ const MyPage = ({ setToken }) => {
                   <div className="email">{user?.email}</div>
                   <input
                     type="text"
+                    id="old-password"
+                    placeholder="old password"
+                  />
+                  <input
+                    type="text"
                     id="nickname"
-                    placeholder="nickname"
+                    placeholder="new nickname"
                     onChange={nicknameHandler}
                   />
                   <input
                     type="password"
                     id="password"
-                    placeholder="password"
+                    placeholder="new password"
                     onChange={passwordHandler}
                   />
                   <RadioSection>

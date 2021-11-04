@@ -39,6 +39,7 @@ module.exports = (req, res) => {
                 nickname: name,
                 img: picture,
                 password: null,
+                platform: 1,
               });
             }
             const found = await user.findOne({ where: { email } });
@@ -68,6 +69,7 @@ module.exports = (req, res) => {
                   email: found.email,
                   nickname: found.nickname,
                   img: found.img,
+                  platform: found.platform,
                 },
               },
             });

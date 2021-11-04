@@ -7,7 +7,7 @@ module.exports = async (req, res) => {
   try {
     const found = await user.findOne({
       where: { id: req.user.id },
-      attributes: ['id', 'email', 'nickname', 'img', 'role'],
+      attributes: ['id', 'email', 'nickname', 'img', 'role', 'platform'],
     });
 
     res.status(200).json({ status: true, data: { user: found } });

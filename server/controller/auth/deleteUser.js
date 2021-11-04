@@ -7,7 +7,7 @@ module.exports = async (req, res) => {
     const userInfo = await jwt.verify(accessToken, process.env.ACCESS_SECRET);
     if (userInfo) {
       await user
-        .destroy({ where: { email: userInfo.email } })
+        .destroy({ where: { id: userInfo.id } })
         .then(
           res
             .clearCookie('accessToken')

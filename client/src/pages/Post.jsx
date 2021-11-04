@@ -1,4 +1,10 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 import {
@@ -10,7 +16,7 @@ import {
   Meta,
   Text,
 } from '../styles/common';
-import { useParams } from 'react-router';
+import { useParams, useHistory } from 'react-router';
 import Carousel from '../components/Carousel';
 import { kakao } from '../App';
 import Comments from '../components/Comments';
@@ -19,6 +25,7 @@ import { Slate, Editable, withReact } from 'slate-react';
 import { EditorForm, Element, Leaf } from '../components/TextEditor';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart } from '@fortawesome/free-solid-svg-icons';
+import Modal from '../components/Modal';
 
 const PostContainer = styled.article`
   display: flex;
@@ -37,6 +44,17 @@ const Map = styled.div`
   box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.2);
   -webkit-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.2);
   -moz-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.2);
+
+  .container {
+    padding: 8px 16px;
+    border-radius: 6px;
+    color: ${Color_3};
+    font-weight: 600;
+    background-color: rgba(0, 0, 0, 0.55);
+  }
+  .container:hover {
+    cursor: pointer;
+  }
 `;
 
 const LikeForm = styled.div`
@@ -69,15 +87,38 @@ const LikeButton = styled.button`
   background-color: transparent;
 `;
 
+const TextEditor = styled(EditorForm)`
+  height: 100%;
+`;
+
 const Post = () => {
+  const map = useRef();
+  const scrollRef = useRef();
+  const history = useHistory();
+
   const [post, setPost] = useState();
+  const [around, setAround] = useState();
   const [value, setValue] = useState();
   const [comments, setComments] = useState();
+  const [isOpen, setIsOpen] = useState(false);
   const { postId } = useParams();
 
   const renderElement = useCallback((props) => <Element {...props} />, []);
   const renderLeaf = useCallback((props) => <Leaf {...props} />, []);
   const editor = useMemo(() => withReact(createEditor()), []);
+
+  useEffect(() => {
+    const MapContainer = document.getElementById('map');
+
+    const center = new kakao.maps.LatLng(0, 0);
+
+    const option = {
+      center,
+      level: 3,
+    };
+
+    map.current = new kakao.maps.Map(MapContainer, option);
+  }, []);
 
   useEffect(() => {
     // * 서버로부터 데이터 받아오기
@@ -92,25 +133,38 @@ const Post = () => {
             images: posts.images.split(' '),
             content: JSON.parse(posts.content),
           });
-          const MapContainer = document.getElementById('map');
+
           const lat = posts.lat;
           const lng = posts.lng;
 
           const center = new kakao.maps.LatLng(+lat, +lng);
 
-          const option = {
-            center,
-            level: 3,
-          };
-          const map = new kakao.maps.Map(MapContainer, option);
-
           const marker = new kakao.maps.Marker({
             position: center,
           });
 
-          marker.setMap(map);
+          marker.setMap(map.current);
 
           // ToDo 주변위치 정보 받아오기
+          axios
+            .get(`${process.env.REACT_APP_SERVER_URL}/post/around/${postId}`, {
+              params: { lat, lng },
+            })
+            .then(({ data }) => {
+              if (data.status && data.data.posts.length) {
+                const { posts } = data.data;
+                setAround(posts);
+                let bounds = new kakao.maps.LatLngBounds();
+                posts.forEach((post) => {
+                  post.lat = +post.lat;
+                  post.lng = +post.lng;
+                  displayMarker(post);
+                  bounds.extend(new kakao.maps.LatLng(post.lat, post.lng));
+                });
+                bounds.extend(new kakao.maps.LatLng(lat, lng));
+                map.current.setBounds(bounds);
+              }
+            });
         }
       })
       .catch((err) => {
@@ -127,7 +181,46 @@ const Post = () => {
         });
         setComments(data.data);
       });
-  }, []);
+
+    function displayMarker(post) {
+      const imageSrc =
+        'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png';
+      const imageSize = new kakao.maps.Size(24, 35);
+      // 마커 이미지를 생성합니다
+      const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
+      const newMarker = new kakao.maps.Marker({
+        map: map.current,
+        position: new kakao.maps.LatLng(post.lat, post.lng),
+        image: markerImage,
+      });
+
+      const content = `<div class="container">
+      <div class="overlay">
+        <span class="title">${post.title}</span>
+      </div>
+    </div>`;
+
+      const overlay = new kakao.maps.CustomOverlay({
+        content,
+        map: map.current,
+        position: newMarker.getPosition(),
+        yAnchor: 0,
+      });
+
+      overlay.setVisible(null);
+
+      // 마커에 클릭이벤트를 등록합니다
+      kakao.maps.event.addListener(newMarker, 'click', function () {
+        if (overlay.getVisible()) {
+          overlay.setVisible(null);
+        } else {
+          overlay.setVisible(map.current);
+        }
+      });
+
+      overlay.a.onclick = () => setIsOpen({ id: post.id, title: post.title });
+    }
+  }, [postId]);
 
   const parseDate = (comment) => {
     comment.updatedAt = new Date(comment.updatedAt)
@@ -184,8 +277,27 @@ const Post = () => {
       });
   };
 
+  const goToPost = (id) => {
+    scrollRef.current.scrollIntoView({
+      behavior: 'auto',
+      block: 'start',
+      inline: 'nearest',
+    });
+    history.push(`/loading`);
+    setTimeout(() => {
+      history.replace(`/post/${id}`);
+    }, 2000);
+  };
+
   return (
-    <Body>
+    <Body ref={scrollRef}>
+      {isOpen && (
+        <Modal
+          message={`${isOpen.title} 보러 가시겠어요?`}
+          setIsOpen={setIsOpen}
+          callback={() => goToPost(isOpen.id)}
+        />
+      )}
       <PostContainer>
         <Meta>
           <div>
@@ -203,7 +315,7 @@ const Post = () => {
         </Meta>
         <Carousel images={post?.images} />
         <Info>{post?.title} 소개</Info>
-        <EditorForm>
+        <TextEditor>
           {value && (
             <Slate
               editor={editor}
@@ -218,7 +330,7 @@ const Post = () => {
               />
             </Slate>
           )}
-        </EditorForm>
+        </TextEditor>
         <Info>{post?.title} 주변엔 어떤 것이 있나요?</Info>
         <Map id="map"></Map>
         <LikeForm>

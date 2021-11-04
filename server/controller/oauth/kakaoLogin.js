@@ -20,18 +20,16 @@ module.exports = async (req, res) => {
     const [userInfo, created] = await user.findOrCreate({
         where: {email: kakao.kakao_account.email},
         defaults: {
-            nick = kakao.properties.nickname,
-            profile = kakao.properties.profile_image,
+            nickname = kakao.properties.nickname,
+            img = kakao.properties.profile_image,
             email = kakao.kakao_account.email,
-            provider: 'kakao',
+            password = null,
+            platform= 2,
         }
     })
     const token = await jwt.sign({
         id: userInfo.id,
-        nick: userInfo.nick,
-        profile: userInfo.profile,
-        email: userInfo.email,
-        provider: userInfo.provider
+        role: userInfo.role,
       },process.env.ACCESS_SECRET,
     )
     res.cookie('accessToken', token, {
@@ -40,7 +38,10 @@ module.exports = async (req, res) => {
         HttpOnly: true,
         expires: new Date(Date.now() + 1 * 3600000),
       });
-    res.status(200).json({status: true, data: token})
+    res.status(200).json({
+      status: true,
+       data: 
+       {user:{id:userInfo.id,email:userInfo.email,nickname:userInfo.nickname,img:userInfo.img,role:userInfo.role,platform:userInfo.platform}}})
   } catch (err) {
     console.log(err);
     return res.status(500).json({status: false, message: 'kakao server error'})

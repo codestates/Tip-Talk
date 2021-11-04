@@ -8,6 +8,7 @@ import UserContext from '../context/UserContext';
 import { Button, Color_1, Color_3 } from '../styles/common';
 import MapModal, { ModalBackground } from './MapModal';
 import Modal from './Modal';
+import Navigator from './Navigator';
 
 const MapContainer = styled.div`
   position: relative;
@@ -89,6 +90,7 @@ const KakaoMap = ({ posts, handleSearch }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [user] = useContext(UserContext);
   const [marker, setMaker] = useState([]);
+  const [naviIsOpen, setNaviIsOpen] = useState(true);
 
   useEffect(() => {
     const options = {
@@ -231,6 +233,13 @@ const KakaoMap = ({ posts, handleSearch }) => {
         />
       )}
       <Map ref={containerRef} id="map">
+        {naviIsOpen && (
+          <Navigator
+            role={user?.role}
+            isOpen={naviIsOpen}
+            setIsOpen={setNaviIsOpen}
+          />
+        )}
         <SearchForm>
           <Input ref={inputRef} placeholder="검색어를 입력해주세요" />
           <Search onClick={onSearch}>

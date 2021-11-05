@@ -47,7 +47,7 @@ const ProfileSection = styled.div`
   .wrapper-1 {
     .wrapper-1-1 {
       width: 280px;
-      height: 90%;
+      height: 100%;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -75,7 +75,7 @@ const ProfileSection = styled.div`
   .wrapper-2 {
     .wrapper-2-1 {
       width: 280px;
-      height: 90%;
+      height: 100%;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -83,7 +83,7 @@ const ProfileSection = styled.div`
         line-height: 2.5rem;
         border: solid 1px blue;
         position: relative;
-        top: 1.8rem;
+        top: 4rem;
         width: 14rem;
         height: 2.5rem;
       }
@@ -91,7 +91,7 @@ const ProfileSection = styled.div`
         line-height: 2.5rem;
         border: solid 1px blue;
         position: relative;
-        top: 3rem;
+        top: 5rem;
         width: 14rem;
         height: 2.5rem;
       }
@@ -105,7 +105,7 @@ const ProfileSection = styled.div`
       }
       #nickname {
         position: relative;
-        top: 3.5rem;
+        top: 5rem;
         width: 14rem;
         height: 2.5rem;
         font-size: 1.5rem;
@@ -117,7 +117,7 @@ const ProfileSection = styled.div`
       }
       #password {
         position: relative;
-        top: 4.5rem;
+        top: 5.5rem;
         width: 14rem;
         height: 2.5rem;
         font-size: 1.5rem;
@@ -129,7 +129,7 @@ const ProfileSection = styled.div`
       }
       #old-password {
         position: relative;
-        top: 2.5rem;
+        top: 4.5rem;
         width: 14rem;
         height: 2.5rem;
         font-size: 1.5rem;
@@ -151,7 +151,7 @@ const ProfileSection = styled.div`
   .wrapper-3 {
     .wrapper-3-1 {
       width: 240px;
-      height: 90%;
+      height: 100%;
     }
     .wrapper-3-2 {
       width: 240px;
@@ -165,7 +165,7 @@ const ProfileSection = styled.div`
 
 const RadioSection = styled.div`
   position: relative;
-  top: 5.5rem;
+  top: 6.5rem;
   width: 14rem;
   .owner {
     display: inline-block;

@@ -151,7 +151,6 @@ const UploadPost = () => {
   if (!address.name) {
     console.log('비정상적인 접근입니다');
   }
-  // console.log(address);
 
   useEffect(() => {
     axios
@@ -196,7 +195,7 @@ const UploadPost = () => {
     images.forEach((image) => {
       formData.append('images', image.file);
     });
-    // ToDo 업로드하기
+
     setLoading(true);
     axios
       .post(`${process.env.REACT_APP_SERVER_URL}/post`, formData, {
@@ -204,6 +203,9 @@ const UploadPost = () => {
       })
       .then(({ data }) => {
         if (data.status) {
+          images.forEach((image) => {
+            URL.revokeObjectURL(image);
+          });
           setLoading(false);
           setMessage('업로드에 성공하였습니다!');
         }
@@ -211,9 +213,6 @@ const UploadPost = () => {
       .catch(() => {
         history.replace('/main');
       });
-
-    // ! url 사용 후에 메모리에서 제거하기
-    // URL.revokeObjectURL(url);
   };
 
   const handleUploadImage = (e) => {
@@ -232,7 +231,7 @@ const UploadPost = () => {
   const handleDeleteImage = (index, e) => {
     e.preventDefault();
     const filtered = images.filter((_, i) => i !== index);
-    URL.revokeObjectURL(images.url[index]);
+    URL.revokeObjectURL(images[index].url);
     setCurrent(filtered.length - 1);
     setImages([...filtered]);
   };
@@ -242,7 +241,7 @@ const UploadPost = () => {
   };
 
   const afterUpload = () => {
-    if (message.EndsWith === '?') {
+    if (message.includes('!')) {
       history.replace('/main');
     }
   };
@@ -293,7 +292,7 @@ const UploadPost = () => {
         <CustomInfo>사진 등록하기</CustomInfo>
         <CurrentImageWrapper>
           {current !== undefined ? (
-            <CurrentImage src={images[current].url} alt="대표이미지" />
+            <CurrentImage src={images[current]?.url} alt="대표이미지" />
           ) : (
             <Message>미리보기할 사진이 없어요</Message>
           )}

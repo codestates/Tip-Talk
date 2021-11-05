@@ -53,13 +53,14 @@ const Modal = ({ message, setIsOpen, callback, no }) => {
     if (callback) {
       callback();
     }
-    if (no) {
-      no();
-    }
+
     closeModal();
   };
 
   const closeModal = () => {
+    if (no) {
+      no();
+    }
     setIsOpen();
   };
   return (

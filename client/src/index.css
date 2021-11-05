@@ -91,6 +91,9 @@ ul {
 ol {
   list-style-position: inside;
 }
+input {
+  outline: none;
+}
 
 article,
 aside,

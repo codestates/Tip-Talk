@@ -10,7 +10,7 @@ export const ModalBackground = styled.div`
   flex-direction: column;
   position: absolute;
   left: -320px;
-  top: 70px;
+  top: 60px;
   width: 320px;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.6);

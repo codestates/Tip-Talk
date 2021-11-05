@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { useHistory } from 'react-router';
 import styled from 'styled-components';
+import axios from 'axios';
 import { kakao } from '../App';
 import UserContext from '../context/UserContext';
 import { Button, Color_1, Color_3 } from '../styles/common';
@@ -36,18 +37,19 @@ const SearchForm = styled.div`
   top: 0;
   left: 0;
   width: 320px;
-  height: 70px;
+  height: 60px;
+  padding: 0 10px;
   background-color: ${Color_1};
   border-radius: 3px;
-  justify-content: center;
   align-items: center;
   z-index: 11;
 `;
 
 const Input = styled.input`
   position: relative;
-  width: calc(90%);
-  height: 46px;
+  width: calc(70%);
+  height: 38px;
+  margin-right: 10px;
   border: none;
   padding: 0 8px;
   border-radius: 3px;
@@ -55,10 +57,29 @@ const Input = styled.input`
 
 const Search = styled.button`
   position: absolute;
-  right: 24px;
+  right: 100px;
   font-size: 16px;
   border: none;
   background-color: transparent;
+`;
+
+const Categories = styled.div`
+  position: relative;
+  background-color: white;
+  border-radius: 3px;
+  overflow: hidden;
+  z-index: 999;
+`;
+
+const Select = styled.select`
+  width: 80px;
+  height: 38px;
+  border: none;
+  background-color: transparent;
+  padding: 0 6px;
+  text-align: center;
+  z-index: 999;
+  outline: none;
 `;
 
 const UploadModal = styled(ModalBackground)`
@@ -83,12 +104,14 @@ const KakaoMap = ({ posts, handleSearch }) => {
   const containerRef = useRef();
   const backgroundRef = useRef();
   const inputRef = useRef();
+  const selectRef = useRef();
   const map = useRef(null);
   const geocoder = useRef(null);
   const blueMarker = useRef();
   const history = useHistory();
 
   const [post, setPost] = useState();
+  const [categories, setCategories] = useState([]);
   const [address, setAddress] = useState();
   const [isMarked, setMarked] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -116,6 +139,14 @@ const KakaoMap = ({ posts, handleSearch }) => {
     geocoder.current = new kakao.maps.services.Geocoder();
 
     blueMarker.current = new kakao.maps.Marker();
+
+    axios
+      .get(`${process.env.REACT_APP_SERVER_URL}/category`)
+      .then(({ data }) => {
+        if (data.status) {
+          setCategories(data.data);
+        }
+      });
   }, []);
 
   useEffect(() => {
@@ -248,6 +279,16 @@ const KakaoMap = ({ posts, handleSearch }) => {
           <Search onClick={onSearch}>
             <FontAwesomeIcon icon={faSearch} />
           </Search>
+          <Categories>
+            <Select ref={selectRef}>
+              <option value="">전체</option>
+              {categories?.map((category) => (
+                <option value={category.id} key={category.id}>
+                  {category.value}
+                </option>
+              ))}
+            </Select>
+          </Categories>
         </SearchForm>
         {!isMarked && post && (
           <MapModal

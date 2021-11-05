@@ -12,7 +12,7 @@ import Modal from './Modal';
 
 const CommentContainer = styled.li`
   display: flex;
-  font-size: 15px;
+  font-size: 14px;
   margin: 3px 0;
   padding: 4px 0;
   border-bottom: 1px solid rgba(0, 0, 0, 0.07);
@@ -22,7 +22,7 @@ const CommentContainer = styled.li`
 const Name = styled.span`
   min-width: 60px;
   font-weight: 600;
-  margin-right: 10px;
+  margin-right: 3px;
 `;
 
 const TextInput = styled.input`

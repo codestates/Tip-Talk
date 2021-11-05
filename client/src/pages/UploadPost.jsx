@@ -14,7 +14,6 @@ const UploadForm = styled.form`
   display: flex;
   flex-direction: column;
   width: 100%;
-  min-height: 600px;
   padding: 50px 80px;
   border-radius: 8px;
   background-color: ${({ theme }) => theme.navColor};
@@ -26,6 +25,9 @@ const UploadForm = styled.form`
   ul,
   li {
     list-style: none;
+  }
+  @media ${({ theme }) => theme.size.mobile} {
+    padding: 50px 30px;
   }
 `;
 
@@ -63,7 +65,7 @@ const Select = styled.select`
 
 const CurrentImageWrapper = styled.div`
   display: flex;
-  width: 80%;
+  width: 100%;
   height: 600px;
   margin: 20px 0;
   border-radius: 6px;
@@ -74,6 +76,9 @@ const CurrentImageWrapper = styled.div`
   justify-content: center;
   align-items: center;
   overflow: hidden;
+  @media ${({ theme }) => theme.size.mobile} {
+    height: 400px;
+  }
 `;
 
 const CurrentImage = styled.img`

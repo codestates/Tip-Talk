@@ -11,6 +11,13 @@ const ImageGrid = styled.ul`
   grid-template-columns: 1fr 1fr 1fr;
   width: 100%;
   padding: 10px;
+  @media ${({ theme }) => theme.size.mobile} {
+    grid-template-columns: 1fr 1fr;
+  }
+  @media ${({ theme }) => theme.size.mobileS} {
+    grid-template-columns: 1fr;
+    padding: 20px 50px;
+  }
 `;
 
 const Main = () => {

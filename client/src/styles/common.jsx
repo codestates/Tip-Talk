@@ -11,6 +11,12 @@ export const Samlib = 'Pretendard-Regular';
 export const Hangeul = 'Pretendard-Regular';
 export const Logo = 'https://drawit.s3.ap-northeast-2.amazonaws.com/Logo.png';
 
+const size = {
+  mobileS: `(max-width: 500px)`,
+  mobile: `(max-width: 770px)`,
+  desktop: `(max-width: 1700px)`,
+};
+
 export const lightTheme = {
   color: Color_5,
   navColor: Color_3,
@@ -19,6 +25,7 @@ export const lightTheme = {
   line: 'rgba(0, 0, 0, 0.2)',
   active: '#555',
   toolBar: Color_2,
+  size,
 };
 
 export const darkTheme = {
@@ -29,6 +36,7 @@ export const darkTheme = {
   line: 'rgba(255, 255, 255, 0.4)',
   active: Color_6,
   toolBar: Color_5,
+  size,
 };
 
 export const Body = styled.div`

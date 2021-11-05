@@ -14,14 +14,18 @@ const MapContainer = styled.div`
   position: relative;
   display: flex;
   height: 70vh;
-  min-height: 600px;
+  margin-bottom: 50px;
+
+  @media ${({ theme }) => theme.size.mobile} {
+    height: 50vh;
+    padding: 0 10px;
+  }
 `;
 
 const Map = styled.div`
   position: relative;
   display: flex;
   width: 100%;
-  margin-bottom: 50px;
   border-radius: 12px;
   justify-content: center;
 `;

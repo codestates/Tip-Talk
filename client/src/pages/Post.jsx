@@ -37,6 +37,11 @@ const PostContainer = styled.article`
   padding: 50px 80px;
   border-radius: 8px;
   background-color: ${({ theme }) => theme.navColor};
+
+  @media ${({ theme }) => theme.size.mobile} {
+    margin: 0px;
+    padding: 50px 30px;
+  }
 `;
 
 const Map = styled.div`

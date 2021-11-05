@@ -23,6 +23,9 @@ const Slide = styled.div`
   height: 600px;
   white-space: nowrap;
   will-change: transform;
+  @media ${({ theme }) => theme.size.mobile} {
+    height: 400px;
+  }
 `;
 
 const Image = styled.img`
@@ -33,6 +36,9 @@ const Image = styled.img`
   -moz-user-select: none;
   -ms-user-select: none;
   -webkit-user-select: none;
+  @media ${({ theme }) => theme.size.mobile} {
+    height: 400px;
+  }
 `;
 
 const StepForm = styled.div`

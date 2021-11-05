@@ -6,6 +6,9 @@ const Container = styled.footer`
   height: 200px;
   color: ${(props) => props.theme.navColor};
   background-color: ${(props) => props.theme.navBgColor};
+  @media ${({ theme }) => theme.size.mobile} {
+    padding: 0px 16px;
+  }
 `;
 
 const Column = styled.div`

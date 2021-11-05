@@ -467,7 +467,11 @@ const MyPage = ({ setToken }) => {
           <div className="wrapper-1">
             <div className="wrapper-1-1">
               <div className="picture">
-                <img src={imageBase64} />
+                {user?.platform === 1 ? (
+                  <img src={user?.img} />
+                ) : (
+                  <img src={imageBase64} />
+                )}
               </div>
             </div>
             <div className="wrapper-1-2">
@@ -546,7 +550,10 @@ const MyPage = ({ setToken }) => {
                 <Background>
                   <ModalContainer>
                     <CloseButton>
-                      <FontAwesomeIcon icon={faTimes} />
+                      <FontAwesomeIcon
+                        icon={faTimes}
+                        onClick={modalCloseHandler}
+                      />
                     </CloseButton>
                     <Message>정상적으로 수정되었습니다</Message>
                     <div>
@@ -565,7 +572,10 @@ const MyPage = ({ setToken }) => {
                 <Background>
                   <ModalContainer>
                     <CloseButton>
-                      <FontAwesomeIcon icon={faTimes} />
+                      <FontAwesomeIcon
+                        icon={faTimes}
+                        onClick={passwordModalCloseHandler}
+                      />
                     </CloseButton>
                     <Message>비밀번호는 8자리 이상이어야 합니다</Message>
                     <div>

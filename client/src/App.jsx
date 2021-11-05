@@ -98,11 +98,7 @@ function App() {
               <Coin mode="reply" />
             </Route>
             <Route path="/mypage/:id">
-              <MyPage
-                user={user === null ? null : user}
-                setUser={setUser}
-                setToken={setToken}
-              />
+              <MyPage setToken={setToken} />
             </Route>
             <Route path="/loading">
               <Loading />

@@ -29,6 +29,7 @@ module.exports = (req, res) => {
         .then(async ({ data }) => {
           // * 받아온 데이터로 이미 가입한 유저인지 확인
           const { email, name, picture } = data;
+          console.log(picture);
           try {
             const findUser = await user.findOne({ where: { email } });
 

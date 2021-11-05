@@ -31,7 +31,7 @@ const SearchForm = styled.div`
   display: flex;
   top: 0;
   left: 0;
-  width: 300px;
+  width: 320px;
   height: 70px;
   background-color: ${Color_1};
   border-radius: 3px;
@@ -134,8 +134,6 @@ const KakaoMap = ({ posts, handleSearch }) => {
     }
 
     function displayMarker(post, markers) {
-      const { user } = post;
-
       const imageSrc =
         'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png';
       const imageSize = new kakao.maps.Size(24, 35);
@@ -154,7 +152,8 @@ const KakaoMap = ({ posts, handleSearch }) => {
         // 마커를 클릭하면 장소명이 인포윈도우에 표출됩니다
         setCenter(post.lat, post.lng);
         setMarked(false);
-        setPost({ post, user });
+        console.log(post);
+        setPost({ ...post });
       });
     }
 
@@ -248,7 +247,7 @@ const KakaoMap = ({ posts, handleSearch }) => {
         </SearchForm>
         {!isMarked && post && (
           <MapModal
-            data={post}
+            post={post}
             backgroundRef={backgroundRef}
             handleClose={handleClose}
           />

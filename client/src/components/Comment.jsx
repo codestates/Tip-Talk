@@ -2,6 +2,7 @@ import {
   faCheck,
   faPencilAlt,
   faTrash,
+  faUser,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useEffect, useRef, useState } from 'react';
@@ -40,7 +41,7 @@ const TextInput = styled.input`
 const Text = styled.p`
   text-overflow: ellipsis;
   display: -webkit-box;
-  width: 80%;
+  width: 100%;
   margin-right: 6px;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -55,7 +56,23 @@ const Button = styled.button`
 
 const Date = styled.span`
   min-width: 60px;
-  font-weight: 600;
+  font-size: 13px;
+`;
+
+const Profile = styled.div`
+  min-width: 32px;
+  height: 32px;
+  color: ${({ theme }) => theme.navBgColor};
+  font-size: 28px;
+  text-align: center;
+  border-radius: 3px;
+  margin-right: 10px;
+  overflow: hidden;
+`;
+
+const ProfileImg = styled.img`
+  width: 100%;
+  height: 100%;
 `;
 
 const Comment = ({ comment, handleEdit, handleDelete }) => {
@@ -77,9 +94,13 @@ const Comment = ({ comment, handleEdit, handleDelete }) => {
   };
 
   const EditSubmit = () => {
-    handleEdit(inputRef.current.value, comment.id);
-    inputRef.current.value = '';
-    setIsEdit(false);
+    if (inputRef.current.value.length) {
+      handleEdit(inputRef.current.value, comment.id);
+      inputRef.current.value = '';
+      setIsEdit(false);
+    } else {
+      setIsOpen('댓글을 입력해주세요!');
+    }
   };
 
   const onDelete = () => {
@@ -87,18 +108,27 @@ const Comment = ({ comment, handleEdit, handleDelete }) => {
   };
 
   const modalHandler = () => {
-    setIsOpen(true);
+    setIsOpen('정말 댓글을 삭제하시겠습니까?');
+  };
+
+  const imageController = () => {
+    if (comment.user?.img) {
+      return <ProfileImg src={comment.user.img} />;
+    } else {
+      return <FontAwesomeIcon icon={faUser} />;
+    }
   };
 
   return (
     <CommentContainer>
       {isOpen && (
         <Modal
-          message="정말 댓글을 삭제하시겠습니까?"
+          message={isOpen}
           setIsOpen={setIsOpen}
-          callback={onDelete}
+          callback={() => (isEdit === true ? null : onDelete())}
         />
       )}
+      <Profile>{imageController()}</Profile>
       <Name>{comment.user?.nickname}</Name>
       {isEdit ? <TextInput ref={inputRef} /> : <Text>{comment.text}</Text>}
       {comment.isMine ? (

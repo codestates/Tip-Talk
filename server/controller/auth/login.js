@@ -16,8 +16,11 @@ module.exports = async (req, res) => {
       });
     } else {
       bcrypt.compare(password, userInfo.password, function (err, result) {
-        if (err) {
-          throw err;
+        if (!result) {
+          return res.status(400).json({
+            status: false,
+            message: '이메일 혹은 비밀번호가 일치하지 않습니다.',
+          });
         } else {
           const accessToken = jwt.sign(
             {

@@ -1,7 +1,7 @@
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useEffect, useRef, useState } from 'react';
-import { useLocation } from 'react-router';
+import { useLocation, useHistory } from 'react-router';
 import styled from 'styled-components';
 import axios from 'axios';
 import Modal from '../components/Modal';
@@ -140,12 +140,13 @@ const UploadPost = () => {
   const [images, setImages] = useState([]);
   const [current, setCurrent] = useState();
   const [isOpen, setIsOpen] = useState(false);
-  const [error, setError] = useState(false);
+  const [message, setMessage] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const titleInputRef = useRef();
   const imageInputRef = useRef();
   const categoriesInputRef = useRef();
+  const history = useHistory();
 
   if (!address.name) {
     console.log('비정상적인 접근입니다');
@@ -173,7 +174,7 @@ const UploadPost = () => {
     const category = categoriesInputRef.current.value;
     const title = titleInputRef.current.value;
     if (images.length === 0 || !category || !title) {
-      setError(true);
+      setMessage('모든 항목을 입력해주세요');
       return;
     }
     setIsOpen(true);
@@ -201,13 +202,14 @@ const UploadPost = () => {
       .post(`${process.env.REACT_APP_SERVER_URL}/post`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       })
-      .then((result) => {
-        // ToDo 업로드 성공처리
-        console.log(result);
-        setLoading(false);
+      .then(({ data }) => {
+        if (data.status) {
+          setLoading(false);
+          setMessage('업로드에 성공하였습니다!');
+        }
       })
-      .catch((err) => {
-        console.log(err);
+      .catch(() => {
+        history.replace('/main');
       });
 
     // ! url 사용 후에 메모리에서 제거하기
@@ -239,10 +241,21 @@ const UploadPost = () => {
     setCurrent(index);
   };
 
+  const afterUpload = () => {
+    if (message.EndsWith === '?') {
+      history.replace('/main');
+    }
+  };
+
   return (
     <Body>
-      {error && (
-        <Modal message="모든 항목을 입력해주세요" setIsOpen={setError} />
+      {message && (
+        <Modal
+          message={message}
+          setIsOpen={setMessage}
+          callback={afterUpload}
+          no={afterUpload}
+        />
       )}
       {isOpen && (
         <Modal

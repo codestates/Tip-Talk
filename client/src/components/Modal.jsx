@@ -48,10 +48,13 @@ const Message = styled.span`
   font-size: 20px;
 `;
 
-const Modal = ({ message, setIsOpen, callback }) => {
+const Modal = ({ message, setIsOpen, callback, no }) => {
   const eventHandler = () => {
     if (callback) {
       callback();
+    }
+    if (no) {
+      no();
     }
     closeModal();
   };

@@ -419,6 +419,7 @@ const MyPage = ({ setToken }) => {
 
   const passwordMatchModalCloseHandler = () => {
     setPasswordMatch(true);
+    setPasswordLength(true);
   };
 
   const deleteHandler = () => {

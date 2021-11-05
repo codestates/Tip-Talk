@@ -9,6 +9,7 @@ const { postRouter } = require('./router/post');
 const { userRouter } = require('./router/user');
 const { commentRouter } = require('./router/comment');
 const { categoryRouter } = require('./router/category');
+const { likeRouter } = require('./router/like');
 const { logger } = require('./middleware');
 
 const app = express();
@@ -26,6 +27,7 @@ app.use('/post', postRouter);
 app.use('/user', userRouter);
 app.use('/comment', commentRouter);
 app.use('/category', categoryRouter);
+app.use('/like', likeRouter);
 
 app.listen(port, () => {
   console.log(`the server is running http://localhost:${port}`);

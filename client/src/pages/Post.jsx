@@ -1,5 +1,6 @@
 import React, {
   useCallback,
+  useContext,
   useEffect,
   useMemo,
   useRef,
@@ -26,6 +27,7 @@ import { EditorForm, Element, Leaf } from '../components/TextEditor';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart } from '@fortawesome/free-solid-svg-icons';
 import Modal from '../components/Modal';
+import UserContext from '../context/UserContext';
 
 const PostContainer = styled.article`
   display: flex;
@@ -97,11 +99,12 @@ const Post = () => {
   const history = useHistory();
 
   const [post, setPost] = useState();
-  const [around, setAround] = useState();
   const [value, setValue] = useState();
   const [comments, setComments] = useState();
   const [isOpen, setIsOpen] = useState(false);
+  const [isLikeOpen, setIsLikeOpen] = useState(false);
   const { postId } = useParams();
+  const [user] = useContext(UserContext);
 
   const renderElement = useCallback((props) => <Element {...props} />, []);
   const renderLeaf = useCallback((props) => <Leaf {...props} />, []);
@@ -153,7 +156,6 @@ const Post = () => {
             .then(({ data }) => {
               if (data.status && data.data.posts.length) {
                 const { posts } = data.data;
-                setAround(posts);
                 let bounds = new kakao.maps.LatLngBounds();
                 posts.forEach((post) => {
                   post.lat = +post.lat;
@@ -232,20 +234,22 @@ const Post = () => {
 
   const handleLike = () => {
     axios
-      .post(`${process.env.REACT_APP_SERVER_URL}/post/like/${postId}`)
+      .post(`${process.env.REACT_APP_SERVER_URL}/like/${postId}`)
       .then(({ data }) => {
         if (data.status) {
-          // 좋아요 성공
+          setPost({ ...post, isLike: !post.isLike });
         }
       });
   };
 
-  const handleSubmit = (text) => {
+  const handleSubmit = (text, nickname) => {
     axios
       .post(`${process.env.REACT_APP_SERVER_URL}/comment/${postId}`, { text })
       .then(({ data }) => {
         if (data.status) {
           parseDate(data.data);
+          data.data['isMine'] = true;
+          data.data['user'] = { nickname };
           setComments([...comments, data.data]);
         }
       });
@@ -289,6 +293,12 @@ const Post = () => {
     }, 2000);
   };
 
+  const callback = () => {
+    if (user) {
+      handleLike();
+    }
+  };
+
   return (
     <Body ref={scrollRef}>
       {isOpen && (
@@ -296,6 +306,21 @@ const Post = () => {
           message={`${isOpen.title} 보러 가시겠어요?`}
           setIsOpen={setIsOpen}
           callback={() => goToPost(isOpen.id)}
+        />
+      )}
+      {isLikeOpen && (
+        <Modal
+          message={
+            user
+              ? `${post.title}${
+                  post.isLike
+                    ? ' 찜 목록에서 삭제하시겠어요?'
+                    : ' 찜 목록에 추가하시겠어요?'
+                }`
+              : '로그인이 필요합니다!'
+          }
+          setIsOpen={setIsLikeOpen}
+          callback={() => callback()}
         />
       )}
       <PostContainer>
@@ -334,7 +359,7 @@ const Post = () => {
         <Info>{post?.title} 주변엔 어떤 것이 있나요?</Info>
         <Map id="map"></Map>
         <LikeForm>
-          <LikeButton>
+          <LikeButton isLike={post?.isLike} onClick={() => setIsLikeOpen(true)}>
             <FontAwesomeIcon icon={faHeart} />
           </LikeButton>
         </LikeForm>

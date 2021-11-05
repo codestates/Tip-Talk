@@ -1,5 +1,5 @@
-const { Op } = require('sequelize');
-const { post, user, categories } = require('../../models');
+const { Op, fn, col } = require('sequelize');
+const { post, user, categories, user_place_likes } = require('../../models');
 
 module.exports = async (req, res) => {
   const { categoryId, page, search } = req.query;
@@ -23,9 +23,17 @@ module.exports = async (req, res) => {
             [Op.eq]: +categoryId,
           },
         },
+        raw: true,
+        attributes: [],
         include: [
           { model: user, attributes: ['nickname', 'email', 'img'] },
           { model: categories, attributes: ['value'] },
+          {
+            model: user_place_likes,
+            attributes: [[fn('COUNT', 'postId'), 'likes']],
+            group: ['user_place_likes.postId'],
+            separate: true,
+          },
         ],
         offset: page ? +page * 6 : 0,
         limit: page ? 6 : 100,
@@ -50,6 +58,15 @@ module.exports = async (req, res) => {
         include: [
           { model: user, attributes: ['nickname', 'email', 'img'] },
           { model: categories, attributes: ['value'] },
+          {
+            model: user_place_likes,
+            // attributes: {
+            //   include: ['postId', [fn('COUNT', col('id')), 'count']],
+            // },
+            attributes: [[fn('COUNT', 'id'), 'count']],
+            separate: true,
+            group: ['id'],
+          },
         ],
         offset: page ? +page * 6 : 0,
         limit: page ? 6 : 100,

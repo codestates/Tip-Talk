@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { Coin } from '../components/Coin';
 import KakaoMap from '../components/KakaoMap';
@@ -22,6 +22,7 @@ const ImageGrid = styled.ul`
 
 const Main = () => {
   const [page, setPage] = useState(0);
+  const [max, setMax] = useState(1);
   const [posts, setPosts] = useState([]); // * 모든 posts
   const [filteredPosts, setFilteredPosts] = useState(); // * 검색 결과에 따른 posts
   const scrollRef = useRef();
@@ -43,6 +44,29 @@ const Main = () => {
       });
   };
 
+  const infiniteScroll = useCallback(() => {
+    const scrollHeight = Math.max(
+      document.documentElement.scrollHeight,
+      document.body.scrollHeight,
+    );
+    const scrollTop = Math.max(
+      document.documentElement.scrollTop,
+      document.body.scrollTop,
+    );
+    const clientHeight = document.documentElement.clientHeight;
+
+    if (scrollTop + clientHeight > scrollHeight - 300) {
+      if (page <= max) {
+        setPage(page + 1);
+      }
+    }
+  }, [page]);
+
+  useEffect(() => {
+    window.addEventListener('scroll', infiniteScroll, true);
+    return () => window.removeEventListener('scroll', infiniteScroll, true);
+  }, [infiniteScroll]);
+
   useEffect(() => {
     axios
       .get(`${process.env.REACT_APP_SERVER_URL}/post`, {
@@ -53,9 +77,10 @@ const Main = () => {
       })
       .then(({ data }) => {
         if (data.status) {
-          const { post } = data.data;
+          const { post, max } = data.data;
           if (post) {
             parsePost(post);
+            setMax(max);
             setPosts([...posts, ...post]);
           }
         }

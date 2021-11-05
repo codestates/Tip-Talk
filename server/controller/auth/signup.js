@@ -3,9 +3,9 @@ const bcrypt = require('bcrypt');
 
 module.exports = async (req, res) => {
   try {
-    const { email, nickname, password } = req.body;
+    const { email, nickname, password, role } = req.body;
 
-    if (!email || !nickname || !password) {
+    if (!email || !nickname || !password || !role) {
       return res
         .status(400)
         .json({ status: false, message: '모든 항목을 입력해야 합니다.' });
@@ -28,6 +28,7 @@ module.exports = async (req, res) => {
               email: email,
               nickname: nickname,
               password: hash,
+              role,
             });
             await user.findOne({
               where: {

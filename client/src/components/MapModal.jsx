@@ -79,7 +79,7 @@ const MapModal = ({ post, backgroundRef, handleClose }) => {
         <Label>지역</Label>
         <Text>{post?.region}</Text>
         <Label>카테고리</Label>
-        <Text>{post?.categories[0]?.value}</Text>
+        <Text>{post?.category?.value}</Text>
       </Info>
       <Button width="140px" height="40px" onClick={goToPost}>
         자세히 보기

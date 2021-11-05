@@ -187,7 +187,6 @@ const KakaoMap = ({ posts, handleSearch }) => {
         // 마커를 클릭하면 장소명이 인포윈도우에 표출됩니다
         setCenter(post.lat, post.lng);
         setMarked(false);
-        console.log(post);
         setPost({ ...post });
       });
     }
@@ -250,7 +249,9 @@ const KakaoMap = ({ posts, handleSearch }) => {
 
   const onSearch = () => {
     const { value } = inputRef.current;
-    handleSearch(value);
+    const categoryId = selectRef.current.value;
+    handleSearch(value, categoryId);
+    setPost(null);
   };
 
   const goToUpload = () => {

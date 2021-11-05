@@ -340,7 +340,7 @@ const Post = () => {
             <Label>주소</Label>
             <Text>{post?.region}</Text>
             <Label>카테고리</Label>
-            <Text>{post?.categories[0]?.value}</Text>
+            <Text>{post?.category?.value}</Text>
           </div>
         </Meta>
         <Carousel images={post?.images} />

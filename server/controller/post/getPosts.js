@@ -30,6 +30,11 @@ module.exports = async (req, res) => {
       });
       res.status(200).json({ status: true, data: { post: found } });
     } else {
+      let max;
+      if (page !== undefined) {
+        max = await post.count();
+        max = Math.ceil(max / 6);
+      }
       const found = await post.findAll({
         where: {
           [Op.or]: [
@@ -55,10 +60,11 @@ module.exports = async (req, res) => {
             group: ['id'],
           },
         ],
+        order: [['createdAt', 'DESC']],
         offset: page ? +page * 6 : 0,
         limit: page ? 6 : 100,
       });
-      res.status(200).json({ status: true, data: { post: found } });
+      res.status(200).json({ status: true, data: { post: found, max } });
     }
   } catch (err) {
     console.log(err.message);

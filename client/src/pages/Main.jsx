@@ -11,24 +11,34 @@ const ImageGrid = styled.ul`
   grid-template-columns: 1fr 1fr 1fr;
   width: 100%;
   padding: 10px;
+  @media ${({ theme }) => theme.size.mobile} {
+    grid-template-columns: 1fr 1fr;
+  }
+  @media ${({ theme }) => theme.size.mobileS} {
+    grid-template-columns: 1fr;
+    padding: 20px 50px;
+  }
 `;
 
 const Main = () => {
-  const [posts, setPosts] = useState(); // * 모든 posts
+  const [page, setPage] = useState(0);
+  const [posts, setPosts] = useState([]); // * 모든 posts
   const [filteredPosts, setFilteredPosts] = useState(); // * 검색 결과에 따른 posts
   const scrollRef = useRef();
 
-  const handleSearch = (value) => {
+  const handleSearch = (value, categoryId) => {
     // ToDo Axios getPosts로 필터된 posts 불러오기
     axios
       .get(`${process.env.REACT_APP_SERVER_URL}/post`, {
-        params: { search: value },
+        params: { search: value, categoryId },
       })
       .then(({ data }) => {
         if (data.status) {
           const { post } = data.data;
-          parsePost(post);
-          setFilteredPosts([...post]);
+          if (post) {
+            parsePost(post);
+            setFilteredPosts([...post]);
+          }
         }
       });
   };
@@ -38,23 +48,27 @@ const Main = () => {
       .get(`${process.env.REACT_APP_SERVER_URL}/post`, {
         params: {
           search: '',
-          page: 0,
+          page,
         },
       })
       .then(({ data }) => {
         if (data.status) {
           const { post } = data.data;
-          parsePost(post);
-          setPosts(post);
+          if (post) {
+            parsePost(post);
+            setPosts([...posts, ...post]);
+          }
         }
       });
-  }, []);
+  }, [page]);
 
   const parsePost = (post) => {
     post.forEach((p) => {
       p.lat = +p.lat;
       p.lng = +p.lng;
-      p.images = p.images.split(' ');
+      if (p.images) {
+        p.images = p.images.split(' ');
+      }
     });
   };
 

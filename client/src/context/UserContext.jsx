@@ -18,11 +18,16 @@ const UserProvider = ({ children }) => {
       })
       .then(({ data }) => {
         if (data.status) {
+          if (!data.data) {
+            localStorage.removeItem('token');
+            return setUser(null);
+          }
           const { user } = data.data;
           setUser(user);
         }
       })
-      .catch(() => {
+      .catch((err) => {
+        console.log(err);
         // * 에러 처리
       });
   }, []);

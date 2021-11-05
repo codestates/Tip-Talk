@@ -1,7 +1,7 @@
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useEffect, useRef, useState } from 'react';
-import { useLocation } from 'react-router';
+import { useLocation, useHistory } from 'react-router';
 import styled from 'styled-components';
 import axios from 'axios';
 import Modal from '../components/Modal';
@@ -14,7 +14,6 @@ const UploadForm = styled.form`
   display: flex;
   flex-direction: column;
   width: 100%;
-  min-height: 600px;
   padding: 50px 80px;
   border-radius: 8px;
   background-color: ${({ theme }) => theme.navColor};
@@ -26,6 +25,9 @@ const UploadForm = styled.form`
   ul,
   li {
     list-style: none;
+  }
+  @media ${({ theme }) => theme.size.mobile} {
+    padding: 50px 30px;
   }
 `;
 
@@ -63,7 +65,7 @@ const Select = styled.select`
 
 const CurrentImageWrapper = styled.div`
   display: flex;
-  width: 80%;
+  width: 100%;
   height: 600px;
   margin: 20px 0;
   border-radius: 6px;
@@ -74,6 +76,9 @@ const CurrentImageWrapper = styled.div`
   justify-content: center;
   align-items: center;
   overflow: hidden;
+  @media ${({ theme }) => theme.size.mobile} {
+    height: 400px;
+  }
 `;
 
 const CurrentImage = styled.img`
@@ -135,17 +140,17 @@ const UploadPost = () => {
   const [images, setImages] = useState([]);
   const [current, setCurrent] = useState();
   const [isOpen, setIsOpen] = useState(false);
-  const [error, setError] = useState(false);
+  const [message, setMessage] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const titleInputRef = useRef();
   const imageInputRef = useRef();
   const categoriesInputRef = useRef();
+  const history = useHistory();
 
   if (!address.name) {
     console.log('비정상적인 접근입니다');
   }
-  // console.log(address);
 
   useEffect(() => {
     axios
@@ -168,7 +173,7 @@ const UploadPost = () => {
     const category = categoriesInputRef.current.value;
     const title = titleInputRef.current.value;
     if (images.length === 0 || !category || !title) {
-      setError(true);
+      setMessage('모든 항목을 입력해주세요');
       return;
     }
     setIsOpen(true);
@@ -190,23 +195,24 @@ const UploadPost = () => {
     images.forEach((image) => {
       formData.append('images', image.file);
     });
-    // ToDo 업로드하기
+
     setLoading(true);
     axios
       .post(`${process.env.REACT_APP_SERVER_URL}/post`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       })
-      .then((result) => {
-        // ToDo 업로드 성공처리
-        console.log(result);
-        setLoading(false);
+      .then(({ data }) => {
+        if (data.status) {
+          images.forEach((image) => {
+            URL.revokeObjectURL(image);
+          });
+          setLoading(false);
+          setMessage('업로드에 성공하였습니다!');
+        }
       })
-      .catch((err) => {
-        console.log(err);
+      .catch(() => {
+        history.replace('/main');
       });
-
-    // ! url 사용 후에 메모리에서 제거하기
-    // URL.revokeObjectURL(url);
   };
 
   const handleUploadImage = (e) => {
@@ -225,7 +231,7 @@ const UploadPost = () => {
   const handleDeleteImage = (index, e) => {
     e.preventDefault();
     const filtered = images.filter((_, i) => i !== index);
-    URL.revokeObjectURL(images.url[index]);
+    URL.revokeObjectURL(images[index].url);
     setCurrent(filtered.length - 1);
     setImages([...filtered]);
   };
@@ -234,10 +240,21 @@ const UploadPost = () => {
     setCurrent(index);
   };
 
+  const afterUpload = () => {
+    if (message.includes('!')) {
+      history.replace('/main');
+    }
+  };
+
   return (
     <Body>
-      {error && (
-        <Modal message="모든 항목을 입력해주세요" setIsOpen={setError} />
+      {message && (
+        <Modal
+          message={message}
+          setIsOpen={setMessage}
+          callback={afterUpload}
+          no={afterUpload}
+        />
       )}
       {isOpen && (
         <Modal
@@ -275,7 +292,7 @@ const UploadPost = () => {
         <CustomInfo>사진 등록하기</CustomInfo>
         <CurrentImageWrapper>
           {current !== undefined ? (
-            <CurrentImage src={images[current].url} alt="대표이미지" />
+            <CurrentImage src={images[current]?.url} alt="대표이미지" />
           ) : (
             <Message>미리보기할 사진이 없어요</Message>
           )}

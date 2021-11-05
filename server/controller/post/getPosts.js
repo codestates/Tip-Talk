@@ -7,6 +7,7 @@ module.exports = async (req, res) => {
     if (categoryId) {
       const found = await post.findAll({
         where: {
+          categoryId,
           [Op.or]: [
             {
               title: {
@@ -19,26 +20,15 @@ module.exports = async (req, res) => {
               },
             },
           ],
-          categoryId: {
-            [Op.eq]: +categoryId,
-          },
         },
-        raw: true,
-        attributes: [],
         include: [
           { model: user, attributes: ['nickname', 'email', 'img'] },
           { model: categories, attributes: ['value'] },
-          {
-            model: user_place_likes,
-            attributes: [[fn('COUNT', 'postId'), 'likes']],
-            group: ['user_place_likes.postId'],
-            separate: true,
-          },
         ],
         offset: page ? +page * 6 : 0,
         limit: page ? 6 : 100,
       });
-      res.status(200).json({ status: true, data: { posts: found } });
+      res.status(200).json({ status: true, data: { post: found } });
     } else {
       const found = await post.findAll({
         where: {
@@ -60,9 +50,6 @@ module.exports = async (req, res) => {
           { model: categories, attributes: ['value'] },
           {
             model: user_place_likes,
-            // attributes: {
-            //   include: ['postId', [fn('COUNT', col('id')), 'count']],
-            // },
             attributes: [[fn('COUNT', 'id'), 'count']],
             separate: true,
             group: ['id'],

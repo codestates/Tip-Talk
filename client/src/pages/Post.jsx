@@ -37,6 +37,11 @@ const PostContainer = styled.article`
   padding: 50px 80px;
   border-radius: 8px;
   background-color: ${({ theme }) => theme.navColor};
+
+  @media ${({ theme }) => theme.size.mobile} {
+    margin: 0px;
+    padding: 50px 30px;
+  }
 `;
 
 const Map = styled.div`
@@ -335,7 +340,7 @@ const Post = () => {
             <Label>주소</Label>
             <Text>{post?.region}</Text>
             <Label>카테고리</Label>
-            <Text>{post?.categories[0]?.value}</Text>
+            <Text>{post?.category?.value}</Text>
           </div>
         </Meta>
         <Carousel images={post?.images} />

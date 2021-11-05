@@ -53,8 +53,12 @@ const Comments = ({ comments, handleSubmit, handleEdit, handleDelete }) => {
   const [user] = useContext(UserContext);
 
   const onHandleSubmit = () => {
-    handleSubmit(inputRef.current.value, user.nickname);
-    inputRef.current.value = '';
+    if (inputRef.current.value.length) {
+      handleSubmit(inputRef.current.value, user.nickname);
+      inputRef.current.value = '';
+    } else {
+      setMessage('댓글을 입력해주세요!');
+    }
   };
 
   const require = (e) => {
@@ -62,13 +66,13 @@ const Comments = ({ comments, handleSubmit, handleEdit, handleDelete }) => {
     if (user) {
       onHandleSubmit();
     } else {
-      setMessage(true);
+      setMessage('로그인이 필요해요');
     }
   };
 
   return (
     <Container>
-      {message && <Modal message="로그인이 필요해요" setIsOpen={setMessage} />}
+      {message && <Modal message={message} setIsOpen={setMessage} />}
       <CommentList>
         {comments?.length ? (
           comments.map((comment) => (

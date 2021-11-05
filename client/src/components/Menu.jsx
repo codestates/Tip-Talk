@@ -14,6 +14,9 @@ const Navbar = styled.nav`
   margin: 0 auto;
   align-items: center;
   justify-content: space-between;
+  @media ${({ theme }) => theme.size.mobile} {
+    padding: 0px 16px;
+  }
 `;
 
 const LogoImg = styled.img`

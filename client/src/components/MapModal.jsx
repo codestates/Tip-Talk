@@ -9,9 +9,9 @@ export const ModalBackground = styled.div`
   display: flex;
   flex-direction: column;
   position: absolute;
-  left: -300px;
-  top: 70px;
-  width: 300px;
+  left: -320px;
+  top: 60px;
+  width: 320px;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.6);
   border-radius: 6px;
@@ -22,7 +22,7 @@ export const ModalBackground = styled.div`
 
 const Thumbnail = styled.img`
   width: 100%;
-  height: 240px;
+  height: 280px;
   border-radius: 6px;
 `;
 
@@ -60,8 +60,7 @@ const Text = styled.h1`
   margin: 4px 0 10px 4px;
 `;
 
-const MapModal = ({ data, backgroundRef, handleClose }) => {
-  const { post, user } = data;
+const MapModal = ({ post, backgroundRef, handleClose }) => {
   const history = useHistory();
 
   const goToPost = () => {
@@ -73,14 +72,14 @@ const MapModal = ({ data, backgroundRef, handleClose }) => {
         <FontAwesomeIcon size="2x" icon={faChevronLeft} />
       </Close>
 
-      <Thumbnail src={post.images[0]} alt={post.title} />
+      <Thumbnail src={post?.images[0]} alt={post?.title} />
       <Info>
         <Label>이름</Label>
-        <Text>{post.title}</Text>
+        <Text>{post?.title}</Text>
         <Label>지역</Label>
-        <Text>{post.region}</Text>
+        <Text>{post?.region}</Text>
         <Label>카테고리</Label>
-        <Text>여기 수정하기</Text>
+        <Text>{post?.category?.value}</Text>
       </Info>
       <Button width="140px" height="40px" onClick={goToPost}>
         자세히 보기

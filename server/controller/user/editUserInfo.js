@@ -25,6 +25,8 @@ module.exports = async (req, res) => {
       .json({ status: true, data: { img: imageUrl.Location } });
   }
 
+  console.log(oldpassword, findUser.password);
+
   try {
     bcrypt.compare(oldpassword, findUser.password, async (err, result) => {
       if (!result) {

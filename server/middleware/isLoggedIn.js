@@ -8,16 +8,15 @@ module.exports = (req, res, next) => {
   if (token) {
     jwt.verify(token, process.env.ACCESS_SECRET, async (err, encoded) => {
       if (err) {
-        return res.status(401).json({
+        return res.status(500).json({
           status: false,
-          message: '로그인이 되어있지 않은 사용자입니다.',
+          message: err,
         });
       }
-
       const user = await findId(encoded.id);
 
       if (!user) {
-        return res.status(401).json({
+        return res.status(404).json({
           status: false,
           message: '로그인이 되어있지 않은 사용자입니다.',
         });

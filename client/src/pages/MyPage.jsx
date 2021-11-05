@@ -302,6 +302,7 @@ const MyPage = ({ setToken }) => {
   const [editStart, setEditStart] = useState(false);
   const [editDone, setEditDone] = useState(false);
   const [isClose, setIsClose] = useState(false);
+  const [image, setImage] = useState(null);
   const [imageBase64, setImageBase64] = useState(null);
   const [posts, setPosts] = useState(data);
   const [isOpen, setIsOpen] = useState(false);
@@ -344,6 +345,12 @@ const MyPage = ({ setToken }) => {
     setIsClose(false);
   }, [editDone]);
 
+  useEffect(() => {
+    if (user) {
+      setImage(user.img);
+    }
+  }, [user]);
+
   const editStartHandler = () => {
     setEditStart(true);
   };
@@ -375,7 +382,7 @@ const MyPage = ({ setToken }) => {
         .patch(`${process.env.REACT_APP_SERVER_URL}/user/${id}`, fd, {
           headers: { 'Content-Type': 'multipart/form-data' },
         })
-        .then((res) => console.log(res))
+        .then((res) => setImage(res.data.img))
         .catch((err) => console.log(err));
     }
   };
@@ -467,11 +474,7 @@ const MyPage = ({ setToken }) => {
           <div className="wrapper-1">
             <div className="wrapper-1-1">
               <div className="picture">
-                {user?.platform === 1 ? (
-                  <img src={user?.img} />
-                ) : (
-                  <img src={imageBase64} />
-                )}
+                {image ? <img src={image} /> : <img src={imageBase64} />}
               </div>
             </div>
             <div className="wrapper-1-2">

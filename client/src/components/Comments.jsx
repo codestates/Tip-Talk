@@ -14,8 +14,7 @@ const Container = styled.section`
 `;
 
 const CommentList = styled.ul`
-  padding: 20px;
-  margin-bottom: 20px;
+  padding: 20px 20px 10px 20px;
 `;
 
 const CommentForm = styled.form`
@@ -47,7 +46,34 @@ const Empty = styled.p`
   text-align: center;
 `;
 
-const Comments = ({ comments, handleSubmit, handleEdit, handleDelete }) => {
+const PageColumn = styled.ul`
+  display: flex;
+  width: 100%;
+  margin-top: 10px;
+  justify-content: center;
+`;
+
+const PageList = styled.li`
+  list-style: none;
+  margin: 0 3px;
+`;
+
+const PageButton = styled.button`
+  color: ${({ active }) => (active ? '#006eff' : Color_1)};
+  padding: 0 2px;
+  border: none;
+  background-color: transparent;
+`;
+
+const Comments = ({
+  comments,
+  handleSubmit,
+  handleEdit,
+  handleDelete,
+  pages,
+  current,
+  ChangePage,
+}) => {
   const inputRef = useRef();
   const [message, setMessage] = useState(false);
   const [user] = useContext(UserContext);
@@ -70,6 +96,12 @@ const Comments = ({ comments, handleSubmit, handleEdit, handleDelete }) => {
     }
   };
 
+  const handleChangeButton = (page) => {
+    if (page !== current) {
+      ChangePage(page);
+    }
+  };
+
   return (
     <Container>
       {message && <Modal message={message} setIsOpen={setMessage} />}
@@ -86,6 +118,18 @@ const Comments = ({ comments, handleSubmit, handleEdit, handleDelete }) => {
         ) : (
           <Empty>아직 보여줄 댓글이 없어요</Empty>
         )}
+        <PageColumn>
+          {pages?.map((page) => (
+            <PageList key={page}>
+              <PageButton
+                active={current === page - 1}
+                onClick={() => handleChangeButton(page - 1)}
+              >
+                {page}
+              </PageButton>
+            </PageList>
+          ))}
+        </PageColumn>
       </CommentList>
       <CommentForm>
         <CommentInput ref={inputRef} placeholder="댓글을 입력해주세요" />

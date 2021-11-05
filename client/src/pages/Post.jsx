@@ -103,9 +103,11 @@ const Post = () => {
   const scrollRef = useRef();
   const history = useHistory();
 
+  const [current, setCurrent] = useState(0);
+  const [pages, setPages] = useState([1]);
   const [post, setPost] = useState();
   const [value, setValue] = useState();
-  const [comments, setComments] = useState();
+  const [comments, setComments] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const [isLikeOpen, setIsLikeOpen] = useState(false);
   const { postId } = useParams();
@@ -153,7 +155,6 @@ const Post = () => {
 
           marker.setMap(map.current);
 
-          // ToDo 주변위치 정보 받아오기
           axios
             .get(`${process.env.REACT_APP_SERVER_URL}/post/around/${postId}`, {
               params: { lat, lng },
@@ -176,17 +177,6 @@ const Post = () => {
       })
       .catch((err) => {
         console.log(err);
-      });
-
-    // * Comment 데이터 받아오기
-
-    axios
-      .get(`${process.env.REACT_APP_SERVER_URL}/comment/${postId}`)
-      .then(({ data }) => {
-        data.data.forEach((comment) => {
-          parseDate(comment);
-        });
-        setComments(data.data);
       });
 
     function displayMarker(post) {
@@ -229,6 +219,26 @@ const Post = () => {
     }
   }, [postId]);
 
+  useEffect(() => {
+    axios
+      .get(
+        `${process.env.REACT_APP_SERVER_URL}/comment/${postId}?page=${current}`,
+      )
+      .then(({ data }) => {
+        if (data.data) {
+          data.data.forEach((comment) => {
+            parseDate(comment);
+          });
+          setComments(data.data);
+          const page = [];
+          for (let i = 0; i <= data.max; i++) {
+            page.push(i + 1);
+          }
+          setPages(page);
+        }
+      });
+  }, [current, postId]);
+
   const parseDate = (comment) => {
     comment.updatedAt = new Date(comment.updatedAt)
       .toLocaleDateString()
@@ -252,10 +262,12 @@ const Post = () => {
       .post(`${process.env.REACT_APP_SERVER_URL}/comment/${postId}`, { text })
       .then(({ data }) => {
         if (data.status) {
-          parseDate(data.data);
-          data.data['isMine'] = true;
-          data.data['user'] = { nickname };
-          setComments([...comments, data.data]);
+          const comment = data.data;
+          parseDate(comment);
+          comment['isMine'] = true;
+          comment['user'] = { nickname };
+          setCurrent(pages[pages.length - 1] - 1);
+          setComments([...comments, comment]);
         }
       });
   };
@@ -302,6 +314,10 @@ const Post = () => {
     if (user) {
       handleLike();
     }
+  };
+
+  const ChangePage = (page) => {
+    setCurrent(page);
   };
 
   return (
@@ -374,6 +390,9 @@ const Post = () => {
           handleSubmit={handleSubmit}
           handleEdit={handleEdit}
           handleDelete={handleDelete}
+          ChangePage={ChangePage}
+          pages={pages}
+          current={current}
         />
       </PostContainer>
     </Body>

@@ -1,28 +1,63 @@
-const { user } = require('../../models');
 const bcrypt = require('bcrypt');
+const { user } = require('../../models');
+const { uploadImage } = require('../service/uploadImage');
 
 module.exports = async (req, res) => {
-  // const accessToken = req.cookies.accessToken;
   const { id } = req.params;
-  const { nickname, password, img, role } = req.body;
-  //bcrypt 사용, role 추가
-  const userInfo = await user.update(
-    { nickname, password, img, role },
-    {
-      where: { id },
-    },
-  );
-  if (!userInfo) {
+  const { nickname, oldpassword, password, role } = req.body;
+  // bcrypt 사용, role 추가
+
+  const findUser = await user.findOne({ where: { id: req.user.id } });
+
+  if (req.file) {
+    let imageUrl;
+    imageUrl = await uploadImage(req.file, req.user.id);
+    await user.update(
+      {
+        img: imageUrl ? imageUrl.Location : findUser.img,
+      },
+      {
+        where: { id },
+      },
+    );
     return res
-      .status(400)
-      .json({ status: false, message: '존재하지 않는 유저입니다.' });
-  } else {
-    bcrypt.compare(password, userInfo.password, function (err, result) {
-      if (err) {
-        throw err;
+      .status(200)
+      .json({ status: true, data: { img: imageUrl.Location } });
+  }
+
+  try {
+    bcrypt.compare(oldpassword, findUser.password, async (err, result) => {
+      if (!result) {
+        return res
+          .status(400)
+          .json({ status: false, message: '비밀번호를 확인해주세요' });
       } else {
-        return res.status(200).json({ status: true });
+        let hashed;
+        if (password) {
+          hashed = await bcrypt.hash(password, 10);
+        }
+
+        await user.update(
+          {
+            nickname: nickname ? nickname : findUser.nickname,
+            password: hashed ? hashed : findUser.password,
+            role: role ? role : findUser.role,
+          },
+          {
+            where: { id: req.user.id },
+          },
+        );
+
+        const updated = await user.findOne({
+          where: { id: req.user.id },
+          attributes: ['id', 'nickname', 'email', 'img', 'role'],
+        });
+
+        res.status(200).json({ status: true, data: { updated } });
       }
     });
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).json({ status: true, message: err.message });
   }
 };

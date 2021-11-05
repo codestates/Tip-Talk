@@ -15,7 +15,7 @@ AWS.config.update({
 module.exports = {
   uploadImage: async (file, userId) => {
     const fileName = `${Date.now()}-${userId}`;
-    const data = await file;
+    const data = await file.buffer;
 
     const S3 = new AWS.S3();
 

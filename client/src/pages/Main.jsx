@@ -23,6 +23,7 @@ const ImageGrid = styled.ul`
 const Main = () => {
   const [page, setPage] = useState(0);
   const [max, setMax] = useState(1);
+  const [loading, setLoading] = useState(false);
   const [posts, setPosts] = useState([]); // * 모든 posts
   const [filteredPosts, setFilteredPosts] = useState(); // * 검색 결과에 따른 posts
   const scrollRef = useRef();
@@ -55,12 +56,13 @@ const Main = () => {
     );
     const clientHeight = document.documentElement.clientHeight;
 
-    if (scrollTop + clientHeight > scrollHeight - 300) {
-      if (page <= max) {
+    if (scrollTop + clientHeight > scrollHeight - 200) {
+      if (page < max - 1 && !loading) {
+        setLoading(true);
         setPage(page + 1);
       }
     }
-  }, [page]);
+  }, [page, loading, max]);
 
   useEffect(() => {
     window.addEventListener('scroll', infiniteScroll, true);
@@ -79,9 +81,11 @@ const Main = () => {
         if (data.status) {
           const { post, max } = data.data;
           if (post) {
+            console.log(post);
             parsePost(post);
             setMax(max);
             setPosts([...posts, ...post]);
+            setLoading(false);
           }
         }
       });

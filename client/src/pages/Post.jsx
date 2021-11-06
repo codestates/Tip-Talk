@@ -320,6 +320,16 @@ const Post = () => {
     setCurrent(page);
   };
 
+  const getPages = (pages) => {
+    if (current < 3) {
+      return pages.slice(0, 5);
+    } else if (current + 3 > pages.length) {
+      return pages.slice(pages.length - 5, pages.length);
+    } else {
+      return pages.slice(current - 2, current + 3);
+    }
+  };
+
   return (
     <Body ref={scrollRef}>
       {isOpen && (
@@ -391,7 +401,7 @@ const Post = () => {
           handleEdit={handleEdit}
           handleDelete={handleDelete}
           ChangePage={ChangePage}
-          pages={pages}
+          pages={getPages(pages)}
           current={current}
         />
       </PostContainer>

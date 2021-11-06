@@ -15,7 +15,7 @@ module.exports = async (req, res) => {
         .json({ status: false, message: '존재하지 않는 게시글입니다.' });
     }
 
-    let max = await comments.count({ where: { id: postId } });
+    let max = await comments.count({ where: { postId } });
     max = Math.ceil(max / 10) - 1;
 
     const data = await comments.findAll({

@@ -1,4 +1,4 @@
-const { user_place_likes } = require('../../models');
+const { user_place_likes, post } = require('../../models');
 const { findPostById } = require('../post/findById');
 const { findLikeById } = require('./findById');
 
@@ -18,13 +18,20 @@ module.exports = async (req, res) => {
 
     if (isLike) {
       await user_place_likes.destroy({ where: { id: isLike.id } });
+      await post.update(
+        { likes: findPost.likes - 1 },
+        { where: { id: postId } },
+      );
       return res.status(200).json({ status: true, data: null });
     } else {
       const created = await user_place_likes.create({
         userId: req.user.id,
         postId,
       });
-
+      await post.update(
+        { likes: findPost.likes + 1 },
+        { where: { id: postId } },
+      );
       res.status(201).json({ status: true, data: created });
     }
   } catch (err) {

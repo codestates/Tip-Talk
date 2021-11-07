@@ -53,12 +53,6 @@ module.exports = async (req, res) => {
         include: [
           { model: user, attributes: ['nickname', 'email', 'img'] },
           { model: categories, attributes: ['value'] },
-          {
-            model: user_place_likes,
-            attributes: [[fn('COUNT', 'id'), 'count']],
-            separate: true,
-            group: ['id'],
-          },
         ],
         order: [['createdAt', 'DESC']],
         offset: page ? +page * 6 : 0,

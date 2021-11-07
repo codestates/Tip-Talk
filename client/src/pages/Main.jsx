@@ -81,7 +81,6 @@ const Main = () => {
         if (data.status) {
           const { post, max } = data.data;
           if (post) {
-            console.log(post);
             parsePost(post);
             setMax(max);
             setPosts([...posts, ...post]);

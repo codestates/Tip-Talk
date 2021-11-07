@@ -55,7 +55,7 @@ const Thumbnail = ({ thumbnail }) => {
         <ImageMeta>{user?.nickname}</ImageMeta>
         <ImageMeta>{thumbnail?.views}</ImageMeta>
         <ImageMeta>❤️</ImageMeta>
-        <ImageMeta>1</ImageMeta>
+        <ImageMeta>{thumbnail?.likes}</ImageMeta>
       </ImageInfo>
     </Article>
   );

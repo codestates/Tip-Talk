@@ -44,6 +44,14 @@ const PostContainer = styled.article`
   }
 `;
 
+const CarouselContainer = styled.div`
+  width: 100%;
+  height: 600px;
+  @media ${({ theme }) => theme.size.mobile} {
+    height: 400px;
+  }
+`;
+
 const Map = styled.div`
   width: 100%;
   height: 360px;
@@ -262,12 +270,8 @@ const Post = () => {
       .post(`${process.env.REACT_APP_SERVER_URL}/comment/${postId}`, { text })
       .then(({ data }) => {
         if (data.status) {
-          const comment = data.data;
-          parseDate(comment);
-          comment['isMine'] = true;
-          comment['user'] = { nickname };
-          setCurrent(pages[pages.length - 1] - 1);
-          setComments([...comments, comment]);
+          setCurrent(0);
+          setCurrent(pages[pages.length - 1]);
         }
       });
   };
@@ -294,6 +298,10 @@ const Post = () => {
       .delete(`${process.env.REACT_APP_SERVER_URL}/comment/${commentId}`)
       .then(() => {
         const filtered = comments.filter((comment) => comment.id !== commentId);
+        setCurrent(0);
+        if (comments.length === 1 || comments.length === 10) {
+          setCurrent(pages[pages.length - 2] - 1);
+        }
         setComments([...filtered]);
       });
   };
@@ -369,7 +377,9 @@ const Post = () => {
             <Text>{post?.category?.value}</Text>
           </div>
         </Meta>
-        <Carousel images={post?.images} />
+        <CarouselContainer>
+          <Carousel images={post?.images} />
+        </CarouselContainer>
         <Info>{post?.title} 소개</Info>
         <TextEditor>
           {value && (

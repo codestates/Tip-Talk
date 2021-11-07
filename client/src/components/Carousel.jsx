@@ -10,6 +10,7 @@ import { Color_6 } from '../styles/common';
 const CarouselContainer = styled.div`
   position: relative;
   width: 100%;
+  height: inherit;
   border-radius: 8px;
   box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.3);
   -webkit-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.3);
@@ -20,32 +21,26 @@ const CarouselContainer = styled.div`
 const Slide = styled.div`
   display: flex;
   width: 100%;
-  height: 600px;
+  height: inherit;
   white-space: nowrap;
   will-change: transform;
-  @media ${({ theme }) => theme.size.mobile} {
-    height: 400px;
-  }
 `;
 
 const Image = styled.img`
   width: 100%;
-  height: 600px;
+  height: inherit;
   -webkit-user-drag: none;
   user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   -webkit-user-select: none;
-  @media ${({ theme }) => theme.size.mobile} {
-    height: 400px;
-  }
 `;
 
 const StepForm = styled.div`
   position: absolute;
   display: flex;
   width: 100%;
-  bottom: 20px;
+  bottom: 10px;
   justify-content: center;
   z-index: 11;
 `;
@@ -60,28 +55,17 @@ const Step = styled.div`
 
 const Button = styled.button`
   position: absolute;
-  top: 300px;
+  top: 50%;
   right: ${({ right }) => right};
   width: 30px;
   height: 30px;
   padding: 0;
   border: none;
   border-radius: 50%;
-  color: rgba(0, 0, 0, 0.5);
-  font-size: 16px;
+  color: white;
+  font-size: 10px;
   background-color: transparent;
   z-index: 10;
-`;
-
-const Shadow = styled.div`
-  position: absolute;
-  top: -1px;
-  left: 0px;
-  right: 1px;
-  font-size: 15px;
-  width: 30px;
-  height: 30px;
-  color: white;
 `;
 
 const Carousel = ({ images }) => {
@@ -118,15 +102,9 @@ const Carousel = ({ images }) => {
       </StepForm>
       <Button onClick={handlePrevScroll}>
         <FontAwesomeIcon size="2x" icon={faChevronLeft} />
-        <Shadow>
-          <FontAwesomeIcon size="2x" icon={faChevronLeft} />
-        </Shadow>
       </Button>
       <Button onClick={handleNextScroll} right="0">
         <FontAwesomeIcon size="2x" icon={faChevronRight} />
-        <Shadow>
-          <FontAwesomeIcon size="2x" icon={faChevronRight} />
-        </Shadow>
       </Button>
       <Slide ref={scrollRef}>
         {images?.map((image, i) => (

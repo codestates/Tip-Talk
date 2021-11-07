@@ -2,7 +2,9 @@ const { Op } = require('sequelize');
 const { post, user, categories } = require('../../models');
 
 module.exports = async (req, res) => {
-  const { categoryId, page, search, order } = req.query;
+  const { categoryId, page, search, order, offset } = req.query;
+  offset = +offset;
+  page = +page;
   try {
     if (categoryId) {
       const found = await post.findAll({
@@ -25,15 +27,15 @@ module.exports = async (req, res) => {
           { model: user, attributes: ['nickname', 'email', 'img'] },
           { model: categories, attributes: ['value'] },
         ],
-        offset: page ? +page * 6 : 0,
-        limit: page ? 6 : 100,
+        offset: page ? page * offset : 0,
+        limit: page ? offset : 100,
       });
       res.status(200).json({ status: true, data: { post: found } });
     } else {
       let max;
       if (page !== undefined) {
         max = await post.count();
-        max = Math.ceil(max / 6);
+        max = Math.ceil(max / offset);
       }
       let filter = [['createdAt', 'DESC']];
       if (order == 1) {
@@ -61,8 +63,8 @@ module.exports = async (req, res) => {
           { model: categories, attributes: ['value'] },
         ],
         order: filter,
-        offset: page ? +page * 6 : 0,
-        limit: page ? 6 : 100,
+        offset: page ? page * offset : 0,
+        limit: page ? offset : 100,
       });
       res.status(200).json({ status: true, data: { post: found, max } });
     }

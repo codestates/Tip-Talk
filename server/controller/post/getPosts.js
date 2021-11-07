@@ -3,8 +3,6 @@ const { post, user, categories } = require('../../models');
 
 module.exports = async (req, res) => {
   const { categoryId, page, search, order, offset } = req.query;
-  offset = +offset;
-  page = +page;
   try {
     if (categoryId) {
       const found = await post.findAll({
@@ -27,11 +25,12 @@ module.exports = async (req, res) => {
           { model: user, attributes: ['nickname', 'email', 'img'] },
           { model: categories, attributes: ['value'] },
         ],
-        offset: page ? page * offset : 0,
-        limit: page ? offset : 100,
+        offset: page ? +page * +offset : 0,
+        limit: page ? +offset : 100,
       });
       res.status(200).json({ status: true, data: { post: found } });
     } else {
+      console.log(offset);
       let max;
       if (page !== undefined) {
         max = await post.count();
@@ -63,8 +62,8 @@ module.exports = async (req, res) => {
           { model: categories, attributes: ['value'] },
         ],
         order: filter,
-        offset: page ? page * offset : 0,
-        limit: page ? offset : 100,
+        offset: page ? Number(page) * Number(offset) : 0,
+        limit: page ? +offset : 100,
       });
       res.status(200).json({ status: true, data: { post: found, max } });
     }

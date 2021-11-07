@@ -1,5 +1,5 @@
-const { Op, fn, col } = require('sequelize');
-const { post, user, categories, user_place_likes } = require('../../models');
+const { Op } = require('sequelize');
+const { post, user, categories } = require('../../models');
 
 module.exports = async (req, res) => {
   const { categoryId, page, search } = req.query;
@@ -54,7 +54,7 @@ module.exports = async (req, res) => {
           { model: user, attributes: ['nickname', 'email', 'img'] },
           { model: categories, attributes: ['value'] },
         ],
-        order: [['createdAt', 'DESC']],
+        order: [['likes', 'DESC']],
         offset: page ? +page * 6 : 0,
         limit: page ? 6 : 100,
       });

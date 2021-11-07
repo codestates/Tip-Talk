@@ -285,7 +285,7 @@ const Post = () => {
       .then(({ data }) => {
         if (data.status) {
           setCurrent(0);
-          setCurrent(pages[pages.length - 1]);
+          setCurrent(pages[pages.length - 1] - 1);
         }
       });
   };
@@ -312,10 +312,6 @@ const Post = () => {
       .delete(`${process.env.REACT_APP_SERVER_URL}/comment/${commentId}`)
       .then(() => {
         const filtered = comments.filter((comment) => comment.id !== commentId);
-        setCurrent(0);
-        if (comments.length === 1 || comments.length === 10) {
-          setCurrent(pages[pages.length - 2] - 1);
-        }
         setComments([...filtered]);
       });
   };
@@ -343,12 +339,12 @@ const Post = () => {
   };
 
   const getPages = (pages) => {
-    if (current < 3) {
+    if (current < 4) {
       return pages.slice(0, 5);
-    } else if (current + 3 > pages.length) {
+    } else if (current + 5 > pages.length) {
       return pages.slice(pages.length - 5, pages.length);
     } else {
-      return pages.slice(current - 2, current + 3);
+      return pages.slice(current - 3, current + 2);
     }
   };
 

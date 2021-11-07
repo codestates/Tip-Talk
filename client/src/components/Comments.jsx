@@ -1,3 +1,8 @@
+import {
+  faChevronLeft,
+  faChevronRight,
+} from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useContext, useRef, useState } from 'react';
 import styled from 'styled-components';
 import UserContext from '../context/UserContext';
@@ -6,6 +11,7 @@ import Comment from './Comment';
 import Modal from './Modal';
 
 const Container = styled.section`
+  position: relative;
   border-radius: 6px;
   background-color: ${({ theme }) => theme.formColor};
   box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.2);
@@ -14,6 +20,7 @@ const Container = styled.section`
 `;
 
 const CommentList = styled.ul`
+  height: 500px;
   padding: 20px 20px 10px 20px;
 `;
 
@@ -47,10 +54,20 @@ const Empty = styled.p`
 `;
 
 const PageColumn = styled.ul`
+  position: absolute;
   display: flex;
+  bottom: 56px;
   width: 100%;
   margin-top: 10px;
   justify-content: center;
+`;
+
+const ChevronButton = styled.button`
+  padding: 0 2px;
+  font-size: 12px;
+  color: ${Color_1};
+  border: none;
+  background-color: transparent;
 `;
 
 const PageList = styled.li`
@@ -96,9 +113,21 @@ const Comments = ({
     }
   };
 
-  const handleChangeButton = (page) => {
+  const clickChangeButton = (page) => {
     if (page !== current) {
       ChangePage(page);
+    }
+  };
+
+  const handlePrevPage = () => {
+    if (current > 0) {
+      ChangePage(current - 1);
+    }
+  };
+
+  const handleNextPage = () => {
+    if (current < pages[pages.length - 1] - 1) {
+      ChangePage(current + 1);
     }
   };
 
@@ -119,16 +148,22 @@ const Comments = ({
           <Empty>아직 보여줄 댓글이 없어요</Empty>
         )}
         <PageColumn>
+          <ChevronButton onClick={handlePrevPage}>
+            <FontAwesomeIcon icon={faChevronLeft} />
+          </ChevronButton>
           {pages?.map((page) => (
             <PageList key={page}>
               <PageButton
                 active={current === page - 1}
-                onClick={() => handleChangeButton(page - 1)}
+                onClick={() => clickChangeButton(page - 1)}
               >
                 {page}
               </PageButton>
             </PageList>
           ))}
+          <ChevronButton onClick={handleNextPage}>
+            <FontAwesomeIcon icon={faChevronRight} />
+          </ChevronButton>
         </PageColumn>
       </CommentList>
       <CommentForm>

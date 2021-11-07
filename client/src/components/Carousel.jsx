@@ -100,12 +100,16 @@ const Carousel = ({ images }) => {
           <Step current={current === i} key={i} />
         ))}
       </StepForm>
-      <Button onClick={handlePrevScroll}>
-        <FontAwesomeIcon size="2x" icon={faChevronLeft} />
-      </Button>
-      <Button onClick={handleNextScroll} right="0">
-        <FontAwesomeIcon size="2x" icon={faChevronRight} />
-      </Button>
+      {images?.length > 1 && (
+        <>
+          <Button onClick={handlePrevScroll}>
+            <FontAwesomeIcon size="2x" icon={faChevronLeft} />
+          </Button>
+          <Button onClick={handleNextScroll} right="0">
+            <FontAwesomeIcon size="2x" icon={faChevronRight} />
+          </Button>
+        </>
+      )}
       <Slide ref={scrollRef}>
         {images?.map((image, i) => (
           <Image src={image} key={i} alt="Carousel" />

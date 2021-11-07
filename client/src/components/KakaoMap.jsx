@@ -31,7 +31,7 @@ const Map = styled.div`
   justify-content: center;
 `;
 
-const SearchForm = styled.div`
+const SearchForm = styled.form`
   position: absolute;
   display: flex;
   top: 0;
@@ -191,8 +191,6 @@ const KakaoMap = ({ posts, handleSearch }) => {
       });
     }
 
-    // Todo 사업자만 가능하도록 설정 user.role - 여기부터
-
     if (user && user?.role !== 2) {
       // 지도에 클릭 이벤트를 등록합니다
       // 지도를 클릭하면 마지막 파라미터로 넘어온 함수를 호출합니다
@@ -247,7 +245,8 @@ const KakaoMap = ({ posts, handleSearch }) => {
     setPost(null);
   };
 
-  const onSearch = () => {
+  const onSearch = (e) => {
+    e.preventDefault();
     const { value } = inputRef.current;
     const categoryId = selectRef.current.value;
     handleSearch(value, categoryId);
@@ -277,14 +276,14 @@ const KakaoMap = ({ posts, handleSearch }) => {
         )}
         <SearchForm>
           <Input ref={inputRef} placeholder="검색어를 입력해주세요" />
-          <Search onClick={onSearch}>
+          <Search type="submit" onClick={onSearch}>
             <FontAwesomeIcon icon={faSearch} />
           </Search>
           <Categories>
             <Select ref={selectRef}>
               <option value="">전체</option>
-              {categories?.map((category) => (
-                <option value={category.id} key={category.id}>
+              {categories?.map((category, i) => (
+                <option value={category.id} key={i + 1}>
                   {category.value}
                 </option>
               ))}

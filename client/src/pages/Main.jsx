@@ -105,9 +105,7 @@ const Main = () => {
       <Body>
         <Scroll ref={scrollRef} />
         <Coin scrollRef={scrollRef} mode="up" right="40px" bottom="110px" />
-
         <KakaoMap posts={filteredPosts} handleSearch={handleSearch} />
-
         <Title>가장 최근에 올라온 게시물</Title>
         <ImageGrid>
           {posts ? (

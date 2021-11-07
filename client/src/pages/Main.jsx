@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { Coin } from '../components/Coin';
 import KakaoMap from '../components/KakaoMap';
 import Thumbnail from '../components/Thumbnail';
-import { Body, Scroll, Title } from '../styles/common';
+import { Body, Color_1, Color_6, Meta, Scroll, Title } from '../styles/common';
 
 const ImageGrid = styled.ul`
   display: grid;
@@ -20,12 +20,31 @@ const ImageGrid = styled.ul`
   }
 `;
 
+const CategoryList = styled.div`
+  position: absolute;
+  display: flex;
+  top: 36px;
+  right: 100px;
+  margin-bottom: 30px;
+`;
+
+const Category = styled.button`
+  color: ${({ active }) => (active ? Color_1 : Color_6)};
+  border: none;
+  border-right: 1px solid ${({ theme }) => theme.line};
+  background-color: transparent;
+  &:last-child {
+    border: none;
+  }
+`;
+
 const Main = () => {
   const [page, setPage] = useState(0);
   const [max, setMax] = useState(1);
   const [loading, setLoading] = useState(false);
   const [posts, setPosts] = useState([]); // * 모든 posts
   const [filteredPosts, setFilteredPosts] = useState(); // * 검색 결과에 따른 posts
+  const [order, setOrder] = useState(0);
   const scrollRef = useRef();
 
   const handleSearch = (value, categoryId) => {
@@ -75,6 +94,7 @@ const Main = () => {
         params: {
           search: '',
           page,
+          order: order ? order : 0,
         },
       })
       .then(({ data }) => {
@@ -88,7 +108,7 @@ const Main = () => {
           }
         }
       });
-  }, [page]);
+  }, [page, order]);
 
   const parsePost = (post) => {
     post.forEach((p) => {
@@ -100,13 +120,38 @@ const Main = () => {
     });
   };
 
+  const ChangeOrder = (e) => {
+    const { innerText } = e.target;
+    switch (innerText) {
+      case '최신순':
+        setOrder(0);
+        break;
+      case '조회순':
+        setOrder(1);
+        break;
+      case '인기순':
+        setOrder(2);
+        break;
+      default:
+        setOrder(0);
+        break;
+    }
+  };
+
   return (
     <>
       <Body>
         <Scroll ref={scrollRef} />
         <Coin scrollRef={scrollRef} mode="up" right="40px" bottom="110px" />
         <KakaoMap posts={filteredPosts} handleSearch={handleSearch} />
-        <Title>가장 인기있는 장소</Title>
+        <Meta>
+          <Title>가장 인기있는 장소</Title>
+          <CategoryList>
+            <Category onClick={ChangeOrder}>최신순</Category>
+            <Category onClick={ChangeOrder}>조회순</Category>
+            <Category onClick={ChangeOrder}>인기순</Category>
+          </CategoryList>
+        </Meta>
         <ImageGrid>
           {posts ? (
             posts.map((post) => (

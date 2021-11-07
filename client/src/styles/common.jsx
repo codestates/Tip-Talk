@@ -66,6 +66,7 @@ export const Title = styled.h1`
 `;
 
 export const Meta = styled.div`
+  position: relative;
   display: flex;
   width: 100%;
   margin-bottom: 35px;

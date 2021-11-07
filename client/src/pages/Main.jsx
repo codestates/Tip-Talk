@@ -17,9 +17,9 @@ const MainContainer = styled.div`
 const ImageGrid = styled.ul`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
-  width: 70%;
+  width: 100%;
+  max-width: 1400px;
   min-height: 700px;
-  padding: 10px;
   @media ${({ theme }) => theme.size.tablet} {
     grid-template-columns: 1fr 1fr 1fr;
   }
@@ -28,8 +28,13 @@ const ImageGrid = styled.ul`
   }
   @media ${({ theme }) => theme.size.mobileS} {
     grid-template-columns: 1fr;
-    padding: 20px 50px;
+    padding: 20px;
   }
+`;
+
+const CustomMeta = styled(Meta)`
+  width: 90%;
+  max-width: 1400px;
 `;
 
 const Title = styled.h1`
@@ -102,7 +107,7 @@ const Main = () => {
     );
     const clientHeight = document.documentElement.clientHeight;
 
-    if (scrollTop + clientHeight > scrollHeight - 100) {
+    if (scrollTop + clientHeight > scrollHeight - 200) {
       if (page < max - 1 && !loading) {
         setLoading(true);
         setPage(page + 1);
@@ -122,6 +127,7 @@ const Main = () => {
           search: '',
           page,
           order,
+          offset: 8,
         },
       })
       .then(({ data }) => {
@@ -171,7 +177,7 @@ const Main = () => {
         <Scroll ref={scrollRef} />
         <Coin scrollRef={scrollRef} mode="up" right="40px" bottom="110px" />
         <KakaoMap posts={filteredPosts} handleSearch={handleSearch} />
-        <Meta>
+        <CustomMeta>
           <Title>{orders[order]}으로 보기</Title>
           <CategoryList>
             {orders.map((o, i) => (
@@ -180,7 +186,7 @@ const Main = () => {
               </Category>
             ))}
           </CategoryList>
-        </Meta>
+        </CustomMeta>
         <ImageGrid>
           {posts ? (
             posts.map((post) => (

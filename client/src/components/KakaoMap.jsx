@@ -14,19 +14,18 @@ import Navigator from './Navigator';
 const MapContainer = styled.div`
   position: relative;
   display: flex;
-  width: 70vw;
+  width: 100%;
+  max-width: 1400px;
   height: 70vh;
   margin-bottom: 50px;
   justify-content: center;
 
   @media ${({ theme }) => theme.size.tablet} {
-    width: 90vw;
     height: 50vh;
     padding: 0 10px;
   }
 
   @media ${({ theme }) => theme.size.mobile} {
-    width: 100vw;
     height: 50vh;
     padding: 0 10px;
   }

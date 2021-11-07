@@ -44,7 +44,7 @@ export const Body = styled.div`
   max-width: 1000px;
   flex: 1 1 0;
   margin: 0 auto;
-  padding: 35px 0;
+  padding: 35px 0 60px;
 `;
 
 export const GlobalStyle = createGlobalStyle`
@@ -63,6 +63,9 @@ export const Title = styled.h1`
   margin: 15px;
   font-size: 38px;
   color: ${(props) => props.theme.color};
+  @media ${({ theme }) => theme.size.mobile} {
+    font-size: 28px;
+  }
 `;
 
 export const Meta = styled.div`
@@ -77,6 +80,10 @@ export const Meta = styled.div`
   -webkit-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.2);
   -moz-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.2);
   justify-content: space-between;
+
+  @media ${({ theme }) => theme.size.mobile} {
+    padding: 0 15px;
+  }
 `;
 
 export const Label = styled.div`

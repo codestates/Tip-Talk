@@ -10,6 +10,7 @@ const ImageGrid = styled.ul`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   width: 100%;
+  min-height: 700px;
   padding: 10px;
   @media ${({ theme }) => theme.size.mobile} {
     grid-template-columns: 1fr 1fr;
@@ -26,6 +27,10 @@ const CategoryList = styled.div`
   top: 36px;
   right: 100px;
   margin-bottom: 30px;
+  @media ${({ theme }) => theme.size.mobile} {
+    top: 20px;
+    right: 20px;
+  }
 `;
 
 const Category = styled.button`
@@ -48,7 +53,6 @@ const Main = () => {
   const [filteredPosts, setFilteredPosts] = useState(); // * 검색 결과에 따른 posts
   const [order, setOrder] = useState(0);
   const scrollRef = useRef();
-  const titleRef = useRef();
 
   const handleSearch = (value, categoryId) => {
     // ToDo Axios getPosts로 필터된 posts 불러오기
@@ -127,10 +131,6 @@ const Main = () => {
     e.preventDefault();
     const { innerText } = e.target;
     setPage(0);
-    titleRef.current.scrollIntoView({
-      block: 'start',
-      inline: 'nearest',
-    });
     switch (innerText) {
       case '조회순':
         setOrder(1);
@@ -152,10 +152,10 @@ const Main = () => {
         <Coin scrollRef={scrollRef} mode="up" right="40px" bottom="110px" />
         <KakaoMap posts={filteredPosts} handleSearch={handleSearch} />
         <Meta>
-          <Title ref={titleRef}>{orders[order]}</Title>
+          <Title>{orders[order]}으로 보기</Title>
           <CategoryList>
             {orders.map((o, i) => (
-              <Category active={order === i} onClick={ChangeOrder}>
+              <Category active={order === i} onClick={ChangeOrder} key={i}>
                 {o}
               </Category>
             ))}

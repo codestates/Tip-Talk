@@ -38,6 +38,8 @@ const Category = styled.button`
   }
 `;
 
+const orders = ['최신순', '조회순', '인기순'];
+
 const Main = () => {
   const [page, setPage] = useState(0);
   const [max, setMax] = useState(1);
@@ -46,6 +48,7 @@ const Main = () => {
   const [filteredPosts, setFilteredPosts] = useState(); // * 검색 결과에 따른 posts
   const [order, setOrder] = useState(0);
   const scrollRef = useRef();
+  const titleRef = useRef();
 
   const handleSearch = (value, categoryId) => {
     // ToDo Axios getPosts로 필터된 posts 불러오기
@@ -75,7 +78,7 @@ const Main = () => {
     );
     const clientHeight = document.documentElement.clientHeight;
 
-    if (scrollTop + clientHeight > scrollHeight - 200) {
+    if (scrollTop + clientHeight > scrollHeight - 100) {
       if (page < max - 1 && !loading) {
         setLoading(true);
         setPage(page + 1);
@@ -94,7 +97,7 @@ const Main = () => {
         params: {
           search: '',
           page,
-          order: order ? order : 0,
+          order,
         },
       })
       .then(({ data }) => {
@@ -121,11 +124,14 @@ const Main = () => {
   };
 
   const ChangeOrder = (e) => {
+    e.preventDefault();
     const { innerText } = e.target;
+    setPage(0);
+    titleRef.current.scrollIntoView({
+      block: 'start',
+      inline: 'nearest',
+    });
     switch (innerText) {
-      case '최신순':
-        setOrder(0);
-        break;
       case '조회순':
         setOrder(1);
         break;
@@ -136,6 +142,7 @@ const Main = () => {
         setOrder(0);
         break;
     }
+    setPosts([]);
   };
 
   return (
@@ -145,11 +152,13 @@ const Main = () => {
         <Coin scrollRef={scrollRef} mode="up" right="40px" bottom="110px" />
         <KakaoMap posts={filteredPosts} handleSearch={handleSearch} />
         <Meta>
-          <Title>가장 인기있는 장소</Title>
+          <Title ref={titleRef}>{orders[order]}</Title>
           <CategoryList>
-            <Category onClick={ChangeOrder}>최신순</Category>
-            <Category onClick={ChangeOrder}>조회순</Category>
-            <Category onClick={ChangeOrder}>인기순</Category>
+            {orders.map((o, i) => (
+              <Category active={order === i} onClick={ChangeOrder}>
+                {o}
+              </Category>
+            ))}
           </CategoryList>
         </Meta>
         <ImageGrid>

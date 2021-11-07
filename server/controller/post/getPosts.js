@@ -2,7 +2,7 @@ const { Op } = require('sequelize');
 const { post, user, categories } = require('../../models');
 
 module.exports = async (req, res) => {
-  const { categoryId, page, search } = req.query;
+  const { categoryId, page, search, order } = req.query;
   try {
     if (categoryId) {
       const found = await post.findAll({
@@ -35,6 +35,12 @@ module.exports = async (req, res) => {
         max = await post.count();
         max = Math.ceil(max / 6);
       }
+      let filter = [['createdAt', 'DESC']];
+      if (order == 1) {
+        filter = [['views', 'DESC']];
+      } else if (order == 2) {
+        filter = [['likes', 'DESC']];
+      }
       const found = await post.findAll({
         where: {
           [Op.or]: [
@@ -54,7 +60,7 @@ module.exports = async (req, res) => {
           { model: user, attributes: ['nickname', 'email', 'img'] },
           { model: categories, attributes: ['value'] },
         ],
-        order: [['likes', 'DESC']],
+        order: filter,
         offset: page ? +page * 6 : 0,
         limit: page ? 6 : 100,
       });

@@ -31,23 +31,39 @@ import UserContext from '../context/UserContext';
 
 const PostContainer = styled.article`
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  width: 100%;
+  max-width: 1600px;
   min-height: 600px;
-  margin: 0 100px;
   padding: 50px;
-
   @media ${({ theme }) => theme.size.mobile} {
-    margin: 0px;
-    padding: 50px 30px;
+    flex-direction: column;
+    margin: 10px;
+    padding: 50px 0;
+  }
+`;
+
+const Column = styled.div`
+  display: flex;
+  width: 50%;
+  margin: 0 20px;
+  flex-direction: column;
+  @media ${({ theme }) => theme.size.mobile} {
+    width: 100%;
   }
 `;
 
 const CarouselContainer = styled.div`
   width: 100%;
   height: 600px;
+  margin-bottom: 20px;
   @media ${({ theme }) => theme.size.mobile} {
-    height: 400px;
+    height: 380px;
   }
+`;
+
+const CustomMeta = styled(Meta)`
+  width: 100%;
 `;
 
 const Map = styled.div`
@@ -101,7 +117,7 @@ const LikeButton = styled.button`
 `;
 
 const TextEditor = styled(EditorForm)`
-  height: 100%;
+  margin-bottom: 20px;
 `;
 
 const Post = () => {
@@ -361,63 +377,70 @@ const Post = () => {
         />
       )}
       <PostContainer>
-        <Meta>
-          <div>
-            <Label>상호명</Label>
-            <Text size="24px">{post?.title}</Text>
-          </div>
-        </Meta>
-        <Meta>
-          <div>
-            <Label>카테고리</Label>
-            <Text>{post?.category?.value}</Text>
-            <Label>주소</Label>
-            <Text>{post?.region}</Text>
-          </div>
-          <div>
-            <Label>조회수</Label>
-            <Text>{post?.views}</Text>
-            <Label>좋아요</Label>
-            <Text>{post?.likes}</Text>
-          </div>
-        </Meta>
-        <CarouselContainer>
-          <Carousel images={post?.images} />
-        </CarouselContainer>
-        <Info>{post?.title} 소개</Info>
-        <TextEditor>
-          {value && (
-            <Slate
-              editor={editor}
-              value={value}
-              onChange={(data) => setValue(data)}
+        <Column>
+          <CustomMeta>
+            <div>
+              <Label>상호명</Label>
+              <Text size="24px">{post?.title}</Text>
+            </div>
+          </CustomMeta>
+          <CustomMeta>
+            <div>
+              <Label>카테고리</Label>
+              <Text>{post?.category?.value}</Text>
+              <Label>주소</Label>
+              <Text>{post?.region}</Text>
+            </div>
+            <div>
+              <Label>조회수</Label>
+              <Text>{post?.views}</Text>
+              <Label>좋아요</Label>
+              <Text>{post?.likes}</Text>
+            </div>
+          </CustomMeta>
+          <CarouselContainer>
+            <Carousel images={post?.images} />
+          </CarouselContainer>
+          <Info>{post?.title} 주변엔 어떤 것이 있나요?</Info>
+          <Map id="map" />
+          <LikeForm>
+            <LikeButton
+              isLike={post?.isLike}
+              onClick={() => setIsLikeOpen(true)}
             >
-              <Editable
-                readOnly
-                renderElement={renderElement}
-                renderLeaf={renderLeaf}
-                className="Editor"
-              />
-            </Slate>
-          )}
-        </TextEditor>
-        <Info>{post?.title} 주변엔 어떤 것이 있나요?</Info>
-        <Map id="map" />
-        <LikeForm>
-          <LikeButton isLike={post?.isLike} onClick={() => setIsLikeOpen(true)}>
-            <FontAwesomeIcon icon={faHeart} />
-          </LikeButton>
-        </LikeForm>
-        <Info>댓글</Info>
-        <Comments
-          comments={comments}
-          handleSubmit={handleSubmit}
-          handleEdit={handleEdit}
-          handleDelete={handleDelete}
-          ChangePage={ChangePage}
-          pages={getPages(pages)}
-          current={current}
-        />
+              <FontAwesomeIcon icon={faHeart} />
+            </LikeButton>
+          </LikeForm>
+        </Column>
+        <Column>
+          <Info>{post?.title} 소개</Info>
+          <TextEditor>
+            {value && (
+              <Slate
+                editor={editor}
+                value={value}
+                onChange={(data) => setValue(data)}
+              >
+                <Editable
+                  readOnly
+                  renderElement={renderElement}
+                  renderLeaf={renderLeaf}
+                  className="Editor"
+                />
+              </Slate>
+            )}
+          </TextEditor>
+          <Info>댓글</Info>
+          <Comments
+            comments={comments}
+            handleSubmit={handleSubmit}
+            handleEdit={handleEdit}
+            handleDelete={handleDelete}
+            ChangePage={ChangePage}
+            pages={getPages(pages)}
+            current={current}
+          />
+        </Column>
       </PostContainer>
     </Body>
   );

@@ -9,9 +9,10 @@ import UserContext from '../context/UserContext';
 
 const Navbar = styled.nav`
   display: flex;
-  max-width: 1000px;
+  max-width: 1600px;
   height: 70px;
   margin: 0 auto;
+  padding: 0 20px;
   align-items: center;
   justify-content: space-between;
   @media ${({ theme }) => theme.size.mobile} {

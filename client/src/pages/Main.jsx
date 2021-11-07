@@ -4,20 +4,40 @@ import styled from 'styled-components';
 import { Coin } from '../components/Coin';
 import KakaoMap from '../components/KakaoMap';
 import Thumbnail from '../components/Thumbnail';
-import { Body, Color_1, Color_6, Meta, Scroll, Title } from '../styles/common';
+import { Color_1, Color_6, Meta, Scroll } from '../styles/common';
+
+const MainContainer = styled.div`
+  display: flex;
+  width: 100%;
+  padding: 50px 0 80px;
+  flex-direction: column;
+  align-items: center;
+`;
 
 const ImageGrid = styled.ul`
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  width: 100%;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  width: 70%;
   min-height: 700px;
   padding: 10px;
+  @media ${({ theme }) => theme.size.tablet} {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
   @media ${({ theme }) => theme.size.mobile} {
     grid-template-columns: 1fr 1fr;
   }
   @media ${({ theme }) => theme.size.mobileS} {
     grid-template-columns: 1fr;
     padding: 20px 50px;
+  }
+`;
+
+const Title = styled.h1`
+  margin: 15px;
+  font-size: 38px;
+  color: ${(props) => props.theme.color};
+  @media ${({ theme }) => theme.size.mobile} {
+    font-size: 28px;
   }
 `;
 
@@ -147,7 +167,7 @@ const Main = () => {
 
   return (
     <>
-      <Body>
+      <MainContainer>
         <Scroll ref={scrollRef} />
         <Coin scrollRef={scrollRef} mode="up" right="40px" bottom="110px" />
         <KakaoMap posts={filteredPosts} handleSearch={handleSearch} />
@@ -170,7 +190,7 @@ const Main = () => {
             <div>로딩 페이지</div>
           )}
         </ImageGrid>
-      </Body>
+      </MainContainer>
     </>
   );
 };

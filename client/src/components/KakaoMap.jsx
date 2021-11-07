@@ -14,10 +14,19 @@ import Navigator from './Navigator';
 const MapContainer = styled.div`
   position: relative;
   display: flex;
+  width: 70vw;
   height: 70vh;
   margin-bottom: 50px;
+  justify-content: center;
+
+  @media ${({ theme }) => theme.size.tablet} {
+    width: 90vw;
+    height: 50vh;
+    padding: 0 10px;
+  }
 
   @media ${({ theme }) => theme.size.mobile} {
+    width: 100vw;
     height: 50vh;
     padding: 0 10px;
   }
@@ -36,7 +45,7 @@ const SearchForm = styled.form`
   display: flex;
   top: 0;
   left: 0;
-  width: 320px;
+  width: 360px;
   height: 60px;
   padding: 0 10px;
   background-color: ${Color_1};
@@ -57,7 +66,7 @@ const Input = styled.input`
 
 const Search = styled.button`
   position: absolute;
-  right: 100px;
+  right: 115px;
   font-size: 16px;
   border: none;
   background-color: transparent;

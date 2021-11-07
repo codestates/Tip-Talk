@@ -12,14 +12,10 @@ import Loading from '../components/Loading';
 
 const UploadForm = styled.form`
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   width: 100%;
-  padding: 50px 80px;
-  border-radius: 8px;
-  background-color: ${({ theme }) => theme.navColor};
-  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.3);
-  -webkit-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.3);
-  -moz-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.3);
+  max-width: 1600px;
+  padding: 50px;
   justify-content: center;
   align-items: center;
   ul,
@@ -27,7 +23,20 @@ const UploadForm = styled.form`
     list-style: none;
   }
   @media ${({ theme }) => theme.size.mobile} {
+    flex-direction: column;
     padding: 50px 30px;
+  }
+`;
+
+const Column = styled.div`
+  display: flex;
+  width: 50%;
+  margin: 0 20px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  @media ${({ theme }) => theme.size.mobile} {
+    width: 100%;
   }
 `;
 
@@ -36,8 +45,9 @@ const CustomLabel = styled(Label)`
 `;
 
 const CustomInfo = styled(Info)`
-  font-size: 38px;
-  margin: 30px 15px;
+  font-size: 28px;
+  margin-bottom: 20px;
+  padding: 0;
 `;
 
 const Input = styled.input`
@@ -67,12 +77,12 @@ const CurrentImageWrapper = styled.div`
   display: flex;
   width: 100%;
   height: 600px;
-  margin: 20px 0;
+  margin: 5px 0;
   border-radius: 6px;
-  background-color: ${({ theme }) => theme.bgColor};
-  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.3);
-  -webkit-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.3);
-  -moz-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.3);
+  background-color: ${({ theme }) => theme.formColor};
+  box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.3);
+  -webkit-box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.3);
+  -moz-box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.3);
   justify-content: center;
   align-items: center;
   overflow: hidden;
@@ -107,10 +117,10 @@ const ImageWrapper = styled.li`
   height: 120px;
   margin: 6px;
   border-radius: 6px;
-  background-color: ${({ theme }) => theme.bgColor};
-  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.3);
-  -webkit-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.3);
-  -moz-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.3);
+  background-color: ${({ theme }) => theme.formColor};
+  box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.3);
+  -webkit-box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.3);
+  -moz-box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.3);
   justify-content: center;
   align-items: center;
   overflow: hidden;
@@ -265,79 +275,83 @@ const UploadPost = () => {
       )}
       {loading && <Loading />}
       <UploadForm onSubmit={handleSubmit}>
-        <CustomInfo>사업지 등록하기</CustomInfo>
-        <Meta>
-          <div>
-            <CustomLabel>상호명</CustomLabel>
-            <Input
-              ref={titleInputRef}
-              type="text"
-              name="title"
-              placeholder="상호명을 입력해주세요"
-            />
-            <CustomLabel>카테고리 선택</CustomLabel>
-            <Select ref={categoriesInputRef} name="categories">
-              {categories?.map((category) => (
-                <option value={category.id} key={category.id}>
-                  {category.value}
-                </option>
-              ))}
-            </Select>
-          </div>
-          <div>
-            <CustomLabel>주소</CustomLabel>
-            <Text>{address?.name}</Text>
-          </div>
-        </Meta>
-        <CustomInfo>사진 등록하기</CustomInfo>
-        <CurrentImageWrapper>
-          {current !== undefined ? (
-            <CurrentImage src={images[current]?.url} alt="대표이미지" />
-          ) : (
-            <Message>미리보기할 사진이 없어요</Message>
-          )}
-        </CurrentImageWrapper>
-        <ImageList>
-          {images.length ? (
-            images?.map((image, i) => (
-              <ImageWrapper key={i}>
-                <DeleteButton
-                  type="button"
-                  onClick={(e) => handleDeleteImage(i, e)}
-                >
-                  <FontAwesomeIcon icon={faTimes} />
-                </DeleteButton>
-                <ImageCard
-                  onClick={() => handleCurrentImage(i)}
-                  src={image.url}
-                  alt="이미지"
-                />
+        <Column>
+          <CustomInfo>사업지 등록하기</CustomInfo>
+          <Meta>
+            <div>
+              <CustomLabel>상호명</CustomLabel>
+              <Input
+                ref={titleInputRef}
+                type="text"
+                name="title"
+                placeholder="상호명을 입력해주세요"
+              />
+              <CustomLabel>카테고리 선택</CustomLabel>
+              <Select ref={categoriesInputRef} name="categories">
+                {categories?.map((category) => (
+                  <option value={category.id} key={category.id}>
+                    {category.value}
+                  </option>
+                ))}
+              </Select>
+            </div>
+            <div>
+              <CustomLabel>주소</CustomLabel>
+              <Text>{address?.name}</Text>
+            </div>
+          </Meta>
+          <CustomInfo>소개란 입력하기</CustomInfo>
+          <TextEditor />
+          <Button margin="30px 0" type="submit">
+            저장하기
+          </Button>
+        </Column>
+        <Column>
+          <CustomInfo>사진 등록하기</CustomInfo>
+          <CurrentImageWrapper>
+            {current !== undefined ? (
+              <CurrentImage src={images[current]?.url} alt="대표이미지" />
+            ) : (
+              <Message>미리보기할 사진이 없어요</Message>
+            )}
+          </CurrentImageWrapper>
+          <ImageList>
+            {images.length ? (
+              images?.map((image, i) => (
+                <ImageWrapper key={i}>
+                  <DeleteButton
+                    type="button"
+                    onClick={(e) => handleDeleteImage(i, e)}
+                  >
+                    <FontAwesomeIcon icon={faTimes} />
+                  </DeleteButton>
+                  <ImageCard
+                    onClick={() => handleCurrentImage(i)}
+                    src={image.url}
+                    alt="이미지"
+                  />
+                </ImageWrapper>
+              ))
+            ) : (
+              <ImageWrapper>
+                <Message>
+                  사진을 <br /> 업로드 해주세요
+                </Message>
               </ImageWrapper>
-            ))
-          ) : (
-            <ImageWrapper>
-              <Message>
-                사진을 <br /> 업로드 해주세요
-              </Message>
-            </ImageWrapper>
-          )}
-        </ImageList>
-        <ImageInput
-          ref={imageInputRef}
-          type="file"
-          multiple="multiple"
-          accept="image/*"
-          name="image"
-          onChange={handleImage}
-        />
-        <Button margin="30px 0" type="button" onClick={handleUploadImage}>
-          사진 업로드
-        </Button>
-        <CustomInfo>소개란 입력하기</CustomInfo>
-        <TextEditor />
-        <Button margin="30px 0" type="submit">
-          저장하기
-        </Button>
+            )}
+          </ImageList>
+          <ImageInput
+            ref={imageInputRef}
+            type="file"
+            multiple="multiple"
+            accept="image/*"
+            name="image"
+            onChange={handleImage}
+          />
+          <Button margin="30px 0" type="button" onClick={handleUploadImage}>
+            사진 업로드
+          </Button>
+        </Column>
       </UploadForm>
     </Body>
   );

@@ -80,18 +80,16 @@ export const Meta = styled.div`
 `;
 
 export const Label = styled.div`
-  font-size: 14px;
+  font-size: 13px;
   margin: 6px 0;
   margin-top: 20px;
   font-weight: 500;
-  padding-bottom: 3px;
-  border-bottom: 1px solid ${({ theme }) => theme.line};
 `;
 
 export const Text = styled.div`
   font-size: ${({ size }) => (size ? size : '18px')};
   font-weight: 500;
-  margin-left: 20px;
+  margin-left: 5px;
   margin-bottom: 20px;
 `;
 

@@ -34,9 +34,7 @@ const PostContainer = styled.article`
   flex-direction: column;
   min-height: 600px;
   margin: 0 100px;
-  padding: 50px 80px;
-  border-radius: 8px;
-  background-color: ${({ theme }) => theme.navColor};
+  padding: 50px;
 
   @media ${({ theme }) => theme.size.mobile} {
     margin: 0px;
@@ -56,10 +54,10 @@ const Map = styled.div`
   width: 100%;
   height: 360px;
   border-radius: 8px;
+  margin: 20px 0;
   box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.2);
   -webkit-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.2);
   -moz-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.2);
-
   .container {
     padding: 8px 16px;
     border-radius: 6px;
@@ -265,7 +263,7 @@ const Post = () => {
       });
   };
 
-  const handleSubmit = (text, nickname) => {
+  const handleSubmit = (text) => {
     axios
       .post(`${process.env.REACT_APP_SERVER_URL}/comment/${postId}`, { text })
       .then(({ data }) => {
@@ -367,14 +365,16 @@ const Post = () => {
           <div>
             <Label>상호명</Label>
             <Text size="24px">{post?.title}</Text>
-            <Label>조회수</Label>
-            <Text>{post?.views}</Text>
-          </div>
-          <div>
-            <Label>주소</Label>
-            <Text>{post?.region}</Text>
             <Label>카테고리</Label>
             <Text>{post?.category?.value}</Text>
+            <Label>주소</Label>
+            <Text>{post?.region}</Text>
+          </div>
+          <div>
+            <Label>조회수</Label>
+            <Text>{post?.views}</Text>
+            <Label>좋아요</Label>
+            <Text>{post?.likes}</Text>
           </div>
         </Meta>
         <CarouselContainer>
@@ -398,7 +398,7 @@ const Post = () => {
           )}
         </TextEditor>
         <Info>{post?.title} 주변엔 어떤 것이 있나요?</Info>
-        <Map id="map"></Map>
+        <Map id="map" />
         <LikeForm>
           <LikeButton isLike={post?.isLike} onClick={() => setIsLikeOpen(true)}>
             <FontAwesomeIcon icon={faHeart} />

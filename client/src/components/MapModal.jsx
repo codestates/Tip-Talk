@@ -1,4 +1,4 @@
-import { faChevronLeft, faHeart } from '@fortawesome/free-solid-svg-icons';
+import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 import { useHistory } from 'react-router';
@@ -76,16 +76,14 @@ const MapModal = ({ post, backgroundRef, handleClose }) => {
         <Carousel images={post?.images} />
       </CarouselContainer>
       <Info>
-        <Label>이름</Label>
+        <Label>상호명</Label>
         <Text>{post?.title}</Text>
         <Label>지역</Label>
         <Text>{post?.region}</Text>
         <Label>카테고리</Label>
         <Text>{post?.category?.value}</Text>
-        <Label>
-          <FontAwesomeIcon className="icon" icon={faHeart} />
-        </Label>
-        <Text>{post?.likes}</Text>
+        <Label>조회수</Label>
+        <Text>{post?.views}</Text>
       </Info>
       <Button width="140px" height="40px" margin="10px 0 0" onClick={goToPost}>
         자세히 보기

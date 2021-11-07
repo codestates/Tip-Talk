@@ -80,7 +80,7 @@ const Comments = ({
 
   const onHandleSubmit = () => {
     if (inputRef.current.value.length) {
-      handleSubmit(inputRef.current.value, user.nickname);
+      handleSubmit(inputRef.current.value);
       inputRef.current.value = '';
     } else {
       setMessage('댓글을 입력해주세요!');

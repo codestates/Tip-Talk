@@ -38,7 +38,7 @@ function App() {
     if (token) {
       setToken(token);
     }
-  }, []);
+  });
 
   useEffect(() => {
     const url = new URL(window.location.href);
@@ -88,26 +88,30 @@ function App() {
             <Route path="/main">
               <Main />
               <Coin mode="reply" />
+              <Footer />
             </Route>
             <Route path="/post/:postId">
               <Post />
               <Coin mode="reply" />
+              <Footer />
             </Route>
             <Route path="/upload">
               <UploadPost />
               <Coin mode="reply" />
+              <Footer />
             </Route>
             <Route path="/mypage/:id">
               <MyPage setToken={setToken} />
+              <Footer />
             </Route>
             <Route path="/loading">
               <Loading />
             </Route>
             <Route>
               <NotFound />
+              <Footer />
             </Route>
           </Switch>
-          <Footer />
         </Container>
       </Router>
     </ThemeProvider>

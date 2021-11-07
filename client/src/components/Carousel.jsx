@@ -49,8 +49,11 @@ const Step = styled.div`
   width: 8px;
   height: 8px;
   margin: 0 5px;
-  background-color: ${({ current }) => (current ? 'white' : Color_6)};
+  background-color: ${({ current }) => (current ? Color_6 : 'white')};
   border-radius: 50%;
+  box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.6);
+  -webkit-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.6);
+  -moz-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.6);
 `;
 
 const Button = styled.button`
@@ -62,8 +65,9 @@ const Button = styled.button`
   padding: 0;
   border: none;
   border-radius: 50%;
-  color: white;
-  font-size: 10px;
+  color: rgba(0, 0, 0, 0.6);
+  filter: drop-shadow(1px 1px 1px #ffffffa0);
+  font-size: 14px;
   background-color: transparent;
   z-index: 10;
 `;

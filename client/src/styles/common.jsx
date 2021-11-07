@@ -44,7 +44,7 @@ export const Body = styled.div`
   max-width: 1000px;
   flex: 1 1 0;
   margin: 0 auto;
-  padding: 80px 0;
+  padding: 35px 0;
 `;
 
 export const GlobalStyle = createGlobalStyle`
@@ -68,7 +68,6 @@ export const Title = styled.h1`
 export const Meta = styled.div`
   display: flex;
   width: 100%;
-  margin: 20px 0;
   margin-bottom: 35px;
   padding: 10px 45px;
   background-color: ${({ theme }) => theme.bgColor};

@@ -365,6 +365,10 @@ const Post = () => {
           <div>
             <Label>상호명</Label>
             <Text size="24px">{post?.title}</Text>
+          </div>
+        </Meta>
+        <Meta>
+          <div>
             <Label>카테고리</Label>
             <Text>{post?.category?.value}</Text>
             <Label>주소</Label>

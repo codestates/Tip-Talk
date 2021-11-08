@@ -140,8 +140,14 @@ const Login = ({ setShowLogin, setShowSignup, setToken }) => {
   const [password, setPassword] = useState('');
   const [user, setUser] = useContext(UserContext);
   const [status, setStatus] = useState(null);
+  const [googleButton, setGoogleButton] = useState(
+    'https://tiptalk-client.s3.us-east-2.amazonaws.com/btn_google_signin_light_normal_web.png',
+  );
 
   const oauth2Handler = () => {
+    setGoogleButton(
+      'https://tiptalk-client.s3.us-east-2.amazonaws.com/btn_google_signin_light_pressed_web.png',
+    );
     const CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID;
     const REDIRECT_URI = process.env.REACT_APP_REDIRECT_URI;
     const SCOPE =
@@ -211,6 +217,18 @@ const Login = ({ setShowLogin, setShowSignup, setToken }) => {
     }
   };
 
+  const googleButtonHandler = (e) => {
+    if (e.type === 'mouseenter') {
+      setGoogleButton(
+        'https://tiptalk-client.s3.us-east-2.amazonaws.com/btn_google_signin_light_focus_web.png',
+      );
+    } else if (e.type === 'mouseleave') {
+      setGoogleButton(
+        'https://tiptalk-client.s3.us-east-2.amazonaws.com/btn_google_signin_light_normal_web.png',
+      );
+    }
+  };
+
   return (
     <>
       <ModalBackdrop onClick={closeLoginModal}>
@@ -253,12 +271,14 @@ const Login = ({ setShowLogin, setShowSignup, setToken }) => {
           <BottomContainer>
             <div className="bottomSection">
               <GoogleButton
-                src="google-button.png"
+                src={googleButton}
                 alt="google-button"
                 onClick={oauth2Handler}
+                onMouseEnter={googleButtonHandler}
+                onMouseLeave={googleButtonHandler}
               ></GoogleButton>
               <KakaoButton
-                src="kakao-button.png"
+                src="https://tiptalk-client.s3.us-east-2.amazonaws.com/kakao_login_medium_narrow.png"
                 alt="kakao-button"
                 onClick={KakaoLogin}
               ></KakaoButton>

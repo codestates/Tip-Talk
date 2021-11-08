@@ -75,13 +75,17 @@ export function deserialize(string) {
   });
 }
 
-const TextEditor = () => {
-  const [value, setValue] = useState([
-    {
-      type: 'paragraph',
-      children: [{ text: '' }],
-    },
-  ]);
+const TextEditor = ({ content }) => {
+  const [value, setValue] = useState(
+    content.length
+      ? content
+      : [
+          {
+            type: 'paragraph',
+            children: [{ text: '' }],
+          },
+        ],
+  );
   const [isOpen, setIsOpen] = useState(false);
 
   const renderElement = useCallback((props) => <Element {...props} />, []);

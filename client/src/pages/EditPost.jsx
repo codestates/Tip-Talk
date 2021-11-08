@@ -1,7 +1,7 @@
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useEffect, useRef, useState } from 'react';
-import { useLocation, useHistory } from 'react-router';
+import { useHistory, useParams } from 'react-router';
 import styled from 'styled-components';
 import axios from 'axios';
 import Modal from '../components/Modal';
@@ -11,7 +11,7 @@ import { Body, Button, Info, Label, Meta, Text } from '../styles/common';
 import Loading from '../components/Loading';
 import { Column } from './Post';
 
-export const UploadForm = styled.form`
+const EditForm = styled.form`
   display: flex;
   flex-direction: row;
   width: 100%;
@@ -133,25 +133,45 @@ const Message = styled.strong`
   line-height: 28px;
 `;
 
-const UploadPost = () => {
-  const [address, setAddress] = useState({ ...useLocation().state });
+const EditPost = () => {
+  const [address, setAddress] = useState();
   const [categories, setCategories] = useState();
   const [images, setImages] = useState([]);
   const [current, setCurrent] = useState();
+  const [content, setContent] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const [message, setMessage] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  const { postId } = useParams();
 
   const titleInputRef = useRef();
   const imageInputRef = useRef();
   const categoriesInputRef = useRef();
   const history = useHistory();
 
-  if (!address.name) {
-    console.log('비정상적인 접근입니다');
-  }
-
   useEffect(() => {
+    axios
+      .get(`${process.env.REACT_APP_SERVER_URL}/post/${postId}`)
+      .then(({ data }) => {
+        if (data.status) {
+          const { posts } = data.data;
+          setAddress({ name: posts.region });
+          const text = JSON.parse(posts.content);
+          setContent([...text]);
+          const imgs = posts.images.split(' ');
+          imgs.forEach((img) => {
+            images.push({ url: img });
+          });
+          setImages([...images]);
+          titleInputRef.current.value = posts.title;
+          categoriesInputRef.current.value = posts.categoryId;
+        }
+      })
+      .catch(() => {
+        history.push('/main');
+      });
+
     axios
       .get(`${process.env.REACT_APP_SERVER_URL}/category`)
       .then(({ data }) => {
@@ -159,7 +179,7 @@ const UploadPost = () => {
           setCategories(data.data);
         }
       });
-  }, []);
+  }, [postId, history]);
 
   useEffect(() => {
     if (!images.length) {
@@ -187,8 +207,6 @@ const UploadPost = () => {
     formData.append('title', title);
     formData.append('content', text[0].children[0].text);
     formData.append('categoryId', category);
-    formData.append('lat', address.lat);
-    formData.append('lng', address.lng);
     formData.append('region', address.name);
 
     images.forEach((image) => {
@@ -197,7 +215,7 @@ const UploadPost = () => {
 
     setLoading(true);
     axios
-      .post(`${process.env.REACT_APP_SERVER_URL}/post`, formData, {
+      .patch(`${process.env.REACT_APP_SERVER_URL}/post/${postId}`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       })
       .then(({ data }) => {
@@ -206,7 +224,7 @@ const UploadPost = () => {
             URL.revokeObjectURL(image);
           });
           setLoading(false);
-          setMessage('업로드에 성공하였습니다!');
+          setMessage('수정 완료되었습니다!');
         }
       })
       .catch(() => {
@@ -239,7 +257,7 @@ const UploadPost = () => {
     setCurrent(index);
   };
 
-  const afterUpload = () => {
+  const afterEdit = () => {
     if (message.includes('!')) {
       history.replace('/main');
     }
@@ -251,8 +269,8 @@ const UploadPost = () => {
         <Modal
           message={message}
           setIsOpen={setMessage}
-          callback={afterUpload}
-          no={afterUpload}
+          callback={afterEdit}
+          no={afterEdit}
         />
       )}
       {isOpen && (
@@ -263,9 +281,9 @@ const UploadPost = () => {
         />
       )}
       {loading && <Loading />}
-      <UploadForm onSubmit={handleSubmit}>
+      <EditForm onSubmit={handleSubmit}>
         <Column>
-          <CustomInfo>사업지 등록하기</CustomInfo>
+          <CustomInfo>사업지 변경하기</CustomInfo>
           <Meta>
             <div>
               <CustomLabel>상호명</CustomLabel>
@@ -289,14 +307,14 @@ const UploadPost = () => {
               <Text>{address?.name}</Text>
             </div>
           </Meta>
-          <CustomInfo>소개란 입력하기</CustomInfo>
-          <TextEditor />
+          <CustomInfo>소개란 변경하기</CustomInfo>
+          {content.length && <TextEditor content={content} />}
           <Button margin="30px 0" type="submit">
             저장하기
           </Button>
         </Column>
         <Column>
-          <CustomInfo>사진 등록하기</CustomInfo>
+          <CustomInfo>사진 변경하기</CustomInfo>
           <CurrentImageWrapper>
             {current !== undefined ? (
               <CurrentImage src={images[current]?.url} alt="대표이미지" />
@@ -341,9 +359,9 @@ const UploadPost = () => {
             사진 업로드
           </Button>
         </Column>
-      </UploadForm>
+      </EditForm>
     </Body>
   );
 };
 
-export default UploadPost;
+export default EditPost;

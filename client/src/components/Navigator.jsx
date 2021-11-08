@@ -15,6 +15,8 @@ const Background = styled.div`
   border-radius: 3px;
   background-color: rgba(0, 0, 0, 0.55);
   z-index: 2;
+  transition: 0.2s;
+  animation: 0.15s scale;
 `;
 
 const Close = styled.button`

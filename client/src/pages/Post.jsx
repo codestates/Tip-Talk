@@ -43,17 +43,19 @@ const PostContainer = styled.article`
   }
 `;
 
-const Column = styled.div`
+export const Column = styled.div`
   display: flex;
   width: 50%;
   margin: 0 20px;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
   @media ${({ theme }) => theme.size.mobile} {
     width: 100%;
   }
 `;
 
-const CarouselContainer = styled.div`
+export const CarouselContainer = styled.div`
   width: 100%;
   height: 600px;
   margin-bottom: 20px;

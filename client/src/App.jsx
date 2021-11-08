@@ -14,6 +14,7 @@ import { darkTheme, GlobalStyle, lightTheme } from './styles/common';
 import axios from 'axios';
 import Loading from './components/Loading';
 import UserContext from './context/UserContext';
+import EditPost from './pages/EditPost';
 
 const Container = styled.div`
   display: flex;
@@ -85,6 +86,11 @@ function App() {
             </Route>
             <Route path="/upload">
               <UploadPost />
+              <Coin mode="reply" />
+              <Footer />
+            </Route>
+            <Route path="/edit/:postId">
+              <EditPost />
               <Coin mode="reply" />
               <Footer />
             </Route>

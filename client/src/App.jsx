@@ -33,6 +33,15 @@ function App() {
   const [showSignup, setShowSingup] = useState(false);
 
   useEffect(() => {
+
+    const token = localStorage.getItem('token');
+    if (token) {
+      setToken(token);
+    }
+  }, []);
+
+  useEffect(() => {
+
     const url = new URL(window.location.href);
     const authorizationCode = url.searchParams.get('code');
 

@@ -261,26 +261,24 @@ const Carousel = styled.div`
 
 const MyPage = () => {
   const show = 4;
-  const [editStart, setEditStart] = useState(false);
-  const [editDone, setEditDone] = useState(false);
-  const [isClose, setIsClose] = useState(false);
+  const [isEditing, setIsEditing] = useState(null);
+  const [isClose, setIsClose] = useState(null);
   const [image, setImage] = useState(null);
   const [imageBase64, setImageBase64] = useState(null);
   const [posts, setPosts] = useState(data);
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(null);
   const [nickname, setNickname] = useState(null);
   const [password, setPassword] = useState(null);
   const [oldpassword, setOldpassword] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [imageLength, setImageLength] = useState(posts.length);
-  const [passwordLength, setPasswordLength] = useState(true);
-  const [stilEdit, setStilEdit] = useState(true);
+  const [is8Digit, setIs8Digit] = useState(null);
   const fileInput = useRef(null);
   const scrollRef = useRef();
   const history = useHistory();
   const { id } = useParams();
   const [user, setUser] = useContext(UserContext);
-  const [passwordMatch, setPasswordMatch] = useState(true);
+  const [isPasswordMatch, setIsPasswordMatch] = useState(null);
 
   useEffect(() => {
     setImageLength(posts.length);
@@ -296,19 +294,18 @@ const MyPage = () => {
       }
     }
 
-    if (editStart === true) {
-      const role = document.querySelector('input[name=role2]:checked').value;
-      if (role === 1) {
-        document.getElementById('owner-radio').checked = true;
-      } else if (role === 2) {
-        document.getElementById('user-radio').checked = true;
+    if (isEditing === true) {
+      const el = document.querySelector('input[name=role2]:checked');
+      if (el !== null) {
+        const role = el.value;
+        if (role === 1) {
+          document.getElementById('owner-radio').checked = true;
+        } else if (role === 2) {
+          document.getElementById('user-radio').checked = true;
+        }
       }
     }
-  }, [user, editStart]);
-
-  useEffect(() => {
-    setIsClose(false);
-  }, [editDone]);
+  }, [user, isEditing]);
 
   useEffect(() => {
     if (user) {
@@ -328,13 +325,8 @@ const MyPage = () => {
       .catch((err) => console.log(err));
   }, []);
 
-  const editStartHandler = () => {
-    setEditStart(true);
-  };
-
-  const editDoneHandler = () => {
-    setEditDone(true);
-    setIsOpen(true);
+  const editHandler = () => {
+    setIsEditing(true);
   };
 
   const fileHandler = (e) => {
@@ -372,16 +364,8 @@ const MyPage = () => {
 
   const modalCloseHandler = () => {
     setIsOpen(false);
-    setEditStart(false);
-  };
-
-  const passwordModalCloseHandler = () => {
-    setPasswordLength(true);
-  };
-
-  const passwordMatchModalCloseHandler = () => {
-    setPasswordMatch(true);
-    setPasswordLength(true);
+    setIsPasswordMatch(true);
+    setIs8Digit(true);
   };
 
   const deleteHandler = () => {
@@ -409,22 +393,23 @@ const MyPage = () => {
   };
 
   const submitHandler = () => {
-    const role = document.querySelector('input[name=role2]:checked').value;
-    axios
-      .patch(`${process.env.REACT_APP_SERVER_URL}/user/${id}`, {
-        nickname,
-        oldpassword,
-        password,
-        role,
-      })
-      .then((res) => console.log(res))
-      .catch((err) => {
-        if (err.response.data.message === '비밀번호를 확인해주세요') {
-          setPasswordMatch(false);
-          setEditDone(false);
-          setIsOpen(false);
-        }
-      });
+    const el = document.querySelector('input[name=role2]:checked');
+    if (el !== null) {
+      const role = el.value;
+      axios
+        .patch(`${process.env.REACT_APP_SERVER_URL}/user/${id}`, {
+          nickname,
+          oldpassword,
+          password,
+          role,
+        })
+        .then((res) => console.log(res))
+        .catch((err) => {
+          if (err.response.data.message === '비밀번호를 확인해주세요') {
+            setIsPasswordMatch(false);
+          }
+        });
+    }
   };
 
   const next = () => {
@@ -439,13 +424,12 @@ const MyPage = () => {
     }
   };
 
-  const passwordLengthCheck = () => {
+  const checkPasswordLength = () => {
     if (password) {
       if (password.length >= 8) {
-        setPasswordLength(true);
-        editDoneHandler();
+        setIs8Digit(true);
       } else {
-        setPasswordLength(false);
+        setIs8Digit(false);
       }
     }
   };
@@ -484,7 +468,7 @@ const MyPage = () => {
           </div>
           <div className="wrapper-2">
             <div className="wrapper-2-1">
-              {editStart === true && stilEdit === true ? (
+              {isEditing === true ? (
                 user?.platform === 0 ? (
                   <>
                     <div className="email-div">{user?.email}</div>
@@ -576,39 +560,43 @@ const MyPage = () => {
               )}
             </div>
             <div className="wrapper-2-2">
-              {editStart === false ? (
-                <Button className="edit" onClick={editStartHandler}>
+              {isEditing === false || isEditing === null ? (
+                <Button className="edit" onClick={editHandler}>
                   수정하기
                 </Button>
               ) : (
                 <Button
                   className="edit"
-                  onClick={() => [passwordLengthCheck(), submitHandler()]}
+                  onClick={() => [submitHandler(), checkPasswordLength()]}
                 >
                   수정 완료
                 </Button>
               )}
-              {console.log('isOpen = ' + isOpen)}
-              {console.log('editDone = ' + editDone)}
-              {isOpen === true && editDone === true ? (
+              {isOpen === true ? (
                 <Modal
                   message={'정상적으로 수정되었습니다'}
                   setIsOpen={setIsOpen}
                   withoutNo={true}
+                  callback={modalCloseHandler}
                 />
               ) : null}
-              {passwordLength === true ? null : (
+              {(isOpen === false || isOpen === null || isOpen === undefined) &&
+              (is8Digit === true || is8Digit === null) ? null : (
                 <Modal
                   message={'비밀번호는 8자리 이상이어야 합니다'}
                   setIsOpen={setIsOpen}
                   withoutNo={true}
+                  callback={modalCloseHandler}
                 />
               )}
-              {passwordMatch === true ? null : (
+              {(isOpen === false || isOpen === null || isOpen === undefined) &&
+              (isPasswordMatch === true || isPasswordMatch === null) &&
+              (is8Digit === true || is8Digit === null) ? null : (
                 <Modal
                   message={'예전 비밀번호가 일치하지 않습니다'}
                   setIsOpen={setIsOpen}
                   withoutNo={true}
+                  callback={modalCloseHandler}
                 />
               )}
             </div>
@@ -620,7 +608,7 @@ const MyPage = () => {
                 회원탈퇴
               </Button>
             </div>
-            {isOpen === true && isClose === true ? (
+            {(isOpen === true || isOpen === null) && isClose === true ? (
               <Modal
                 message={'탈퇴하시겠습니까?'}
                 setIsOpen={setIsOpen}

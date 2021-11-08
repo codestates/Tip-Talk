@@ -19,8 +19,8 @@ const ModalBackdrop = styled.div`
   .modalView {
     border-radius: 10px;
     background-color: #ffffff;
-    width: 38rem;
-    height: 42rem;
+    width: 610px;
+    height: 680px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -38,13 +38,13 @@ const ModalBackdrop = styled.div`
       position: relative;
       left: 17rem;
       border: none;
-      background-color: ${Color_3};
-      :hover {
-        box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24),
-          0 17px 50px 0 rgba(0, 0, 0, 0.19);
+      background-color: ${({ theme }) => theme.navBgColor};
+      color: ${Color_3};
+      &:hover {
+        color: ${({ theme }) => theme.navBgColor};
+        background-color: ${Color_3};
       }
       transition-duration: 0.3s;
-      font-family: ${Samlib};
       font-size: 2rem;
     }
 
@@ -135,13 +135,22 @@ const KakaoButton = styled.img`
   cursor: pointer;
 `;
 
-const Login = ({ setShowLogin, setShowSignup, setToken }) => {
+const Login = ({ setShowLogin, setShowSignup }) => {
+  const googleNormal =
+    'https://tiptalk-client.s3.us-east-2.amazonaws.com/btn_google_signin_light_normal_web.png';
+  const googleFocus =
+    'https://tiptalk-client.s3.us-east-2.amazonaws.com/btn_google_signin_light_focus_web.png';
+  const googlePressed =
+    'https://tiptalk-client.s3.us-east-2.amazonaws.com/btn_google_signin_light_pressed_web.png';
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [user, setUser] = useContext(UserContext);
   const [status, setStatus] = useState(null);
+  const [googleButton, setGoogleButton] = useState(googleNormal);
 
   const oauth2Handler = () => {
+    setGoogleButton(googlePressed);
     const CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID;
     const REDIRECT_URI = process.env.REACT_APP_REDIRECT_URI;
     const SCOPE =
@@ -189,25 +198,25 @@ const Login = ({ setShowLogin, setShowSignup, setToken }) => {
     return true;
   };
 
-  const loginHandler = async () => {
-    try {
-      const data = await axios.post(
-        `${process.env.REACT_APP_SERVER_URL}/auth/login`,
-        {
-          email,
-          password,
-        },
-      );
-
-      if (data.data.data) {
-        const { user, token } = data.data.data;
-        setUser(user);
-        setToken(token);
-        localStorage.setItem('token', token);
+  const loginHandler = () => {
+    axios
+      .post(`${process.env.REACT_APP_SERVER_URL}/auth/login`, {
+        email,
+        password,
+      })
+      .then((res) => {
+        const { data } = res.data;
+        setUser(data.user);
         closeLoginModal();
-      }
-    } catch (err) {
-      setStatus(false);
+      })
+      .catch((err) => setStatus(false));
+  };
+
+  const googleButtonHandler = (e) => {
+    if (e.type === 'mouseenter') {
+      setGoogleButton(googleFocus);
+    } else if (e.type === 'mouseleave') {
+      setGoogleButton(googleNormal);
     }
   };
 
@@ -253,12 +262,14 @@ const Login = ({ setShowLogin, setShowSignup, setToken }) => {
           <BottomContainer>
             <div className="bottomSection">
               <GoogleButton
-                src="google-button.png"
+                src={googleButton}
                 alt="google-button"
                 onClick={oauth2Handler}
+                onMouseEnter={googleButtonHandler}
+                onMouseLeave={googleButtonHandler}
               ></GoogleButton>
               <KakaoButton
-                src="kakao-button.png"
+                src="https://tiptalk-client.s3.us-east-2.amazonaws.com/kakao_login_medium_narrow.png"
                 alt="kakao-button"
                 onClick={KakaoLogin}
               ></KakaoButton>

@@ -21,6 +21,10 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(logger);
 
+app.get('/', (req, res) => {
+  res.status(200).send('hello');
+});
+
 app.use('/auth', authRouter);
 app.use('/oauth', oauthRouter);
 app.use('/post', postRouter);

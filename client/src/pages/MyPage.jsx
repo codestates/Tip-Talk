@@ -277,7 +277,7 @@ const MyPage = () => {
   const scrollRef = useRef();
   const history = useHistory();
   const { id } = useParams();
-  const [user, setUser] = useContext(UserContext);
+  const [user, setUser] = useState(null);
   const [isPasswordMatch, setIsPasswordMatch] = useState(null);
 
   useEffect(() => {

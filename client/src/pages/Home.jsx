@@ -129,7 +129,7 @@ const Home = () => {
   };
 
   const Scroll = useCallback(() => {
-    console.log(window.scrollY);
+    // console.log(window.scrollY);
   }, []);
 
   useEffect(() => {

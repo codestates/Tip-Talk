@@ -37,13 +37,13 @@ const ModalBackdrop = styled.div`
       position: relative;
       left: 17rem;
       top: -5rem;
-      background-color: ${Color_3};
-      :hover {
-        box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24),
-          0 17px 50px 0 rgba(0, 0, 0, 0.19);
+      background-color: ${({ theme }) => theme.navBgColor};
+      color: ${Color_3};
+      &:hover {
+        color: ${({ theme }) => theme.navBgColor};
+        background-color: ${Color_3};
       }
       transition-duration: 0.3s;
-      font-family: ${Samlib};
       font-size: 2rem;
     }
 

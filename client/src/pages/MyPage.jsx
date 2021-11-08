@@ -190,20 +190,25 @@ const Carousel = styled.div`
   top: 46rem;
   display: flex;
   justify-content: center;
+  align-items: center;
+  height: 40%;
   .carousel-container {
     width: 85%;
+    height: 100%;
     display: flex;
     flex-direction: column;
   }
   .carousel-wrapper {
     width: 100%;
+    height: 100%;
     display: flex;
-    position: relative;
   }
   .carousel-content-wrapper {
     overflow: hidden;
     width: 100%;
     height: 100%;
+    display: flex;
+    align-items: center;
   }
   .carousel-content {
     display: flex;

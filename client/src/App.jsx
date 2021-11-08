@@ -102,6 +102,7 @@ function App() {
             </Route>
             <Route path="/mypage/:id">
               <MyPage setToken={setToken} />
+              <Coin mode="reply" />
               <Footer />
             </Route>
             <Route path="/loading">

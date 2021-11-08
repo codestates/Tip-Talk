@@ -8,7 +8,7 @@ import Thumbnail from '../components/Thumbnail';
 import { data } from '../dummy/post';
 import Modal from '../components/Modal';
 import UserContext from '../context/UserContext';
-import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faTimes, faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button } from '../styles/common';
 
@@ -51,13 +51,9 @@ const ProfileSection = styled.div`
       display: flex;
       align-items: center;
       justify-content: center;
-      .picture {
+      > img {
         width: 180px;
         height: 180px;
-        > img {
-          width: 180px;
-          height: 180px;
-        }
       }
     }
     .wrapper-1-2 {
@@ -79,7 +75,7 @@ const ProfileSection = styled.div`
       display: flex;
       flex-direction: column;
       align-items: center;
-      .email {
+      .email-div {
         line-height: 2.5rem;
         border: solid 1px blue;
         position: relative;
@@ -87,7 +83,7 @@ const ProfileSection = styled.div`
         width: 14rem;
         height: 2.5rem;
       }
-      .nickname {
+      .nickname-div {
         line-height: 2.5rem;
         border: solid 1px blue;
         position: relative;
@@ -95,7 +91,7 @@ const ProfileSection = styled.div`
         width: 14rem;
         height: 2.5rem;
       }
-      .password {
+      .password-div {
         line-height: 2.5rem;
         border: solid 1px blue;
         position: relative;
@@ -103,7 +99,7 @@ const ProfileSection = styled.div`
         width: 14rem;
         height: 2.5rem;
       }
-      #nickname {
+      #nickname-input {
         position: relative;
         top: 5rem;
         width: 14rem;
@@ -115,7 +111,7 @@ const ProfileSection = styled.div`
         outline: none;
         text-align: center;
       }
-      #password {
+      #password-input {
         position: relative;
         top: 5.5rem;
         width: 14rem;
@@ -127,7 +123,7 @@ const ProfileSection = styled.div`
         outline: none;
         text-align: center;
       }
-      #old-password {
+      #old-password-input {
         position: relative;
         top: 4.5rem;
         width: 14rem;
@@ -167,22 +163,22 @@ const RadioSection = styled.div`
   position: relative;
   top: 6.5rem;
   width: 14rem;
-  .owner {
+  .owner-div {
     display: inline-block;
     position: relative;
     right: 1.5rem;
   }
-  #owner {
+  #owner-radio {
     display: inline-block;
     position: relative;
     right: 2rem;
   }
-  .user {
+  .user-div {
     display: inline-block;
     position: relative;
     left: 1.5rem;
   }
-  #user {
+  #user-radio {
     display: inline-block;
     position: relative;
     left: 1rem;
@@ -364,7 +360,7 @@ const MyPage = ({ setToken }) => {
         setUserInfo(data);
       })
       .catch((err) => console.log(err));
-  });
+  }, []);
 
   const editStartHandler = () => {
     setEditStart(true);
@@ -503,9 +499,15 @@ const MyPage = ({ setToken }) => {
         <ProfileSection>
           <div className="wrapper-1">
             <div className="wrapper-1-1">
-              <div className="picture">
-                {image ? <img src={image} /> : <img src={imageBase64} />}
-              </div>
+              {user?.img ? (
+                image ? (
+                  <img src={image} />
+                ) : (
+                  <img src={imageBase64} />
+                )
+              ) : (
+                <FontAwesomeIcon icon={faUser} size="10x" />
+              )}
             </div>
             <div className="wrapper-1-2">
               <input
@@ -528,57 +530,87 @@ const MyPage = ({ setToken }) => {
                     <div className="email">{userInfo?.email}</div>
                     <input
                       type="password"
-                      id="old-password"
+                      id="old-password-input"
                       placeholder="old password"
                       onChange={oldPasswordHandler}
                     />
                     <input
                       type="text"
-                      id="nickname"
+                      id="nickname-input"
                       placeholder="new nickname"
                       onChange={nicknameHandler}
                     />
                     <input
                       type="password"
-                      id="password"
+                      id="password-input"
                       placeholder="new password"
                       onChange={passwordHandler}
                     />
                     <RadioSection>
-                      <input type="radio" id="owner" name="role2" value="1" />
-                      <div className="owner">사업자</div>
-                      <input type="radio" id="user" name="role2" value="2" />
-                      <div className="user">일반인</div>
+                      <input
+                        type="radio"
+                        id="owner-radio"
+                        name="role2"
+                        value="1"
+                      />
+                      <div className="owner-div">사업자</div>
+                      <input
+                        type="radio"
+                        id="user-radio"
+                        name="role2"
+                        value="2"
+                      />
+                      <div className="user-div">일반인</div>
                     </RadioSection>
                   </>
                 ) : (
                   <>
-                    <div className="email">{userInfo?.email}</div>
+                    <div className="email-div">{userInfo?.email}</div>
                     <input
                       type="text"
-                      id="nickname"
+                      id="nickname-input"
                       placeholder="new nickname"
                       onChange={nicknameHandler}
                     />
                     <RadioSection>
-                      <input type="radio" id="owner" name="role2" value="1" />
-                      <div className="owner">사업자</div>
-                      <input type="radio" id="user" name="role2" value="2" />
-                      <div className="user">일반인</div>
+                      <input
+                        type="radio"
+                        id="owner-radio"
+                        name="role2"
+                        value="1"
+                      />
+                      <div className="owner-div">사업자</div>
+                      <input
+                        type="radio"
+                        id="user-radio"
+                        name="role2"
+                        value="2"
+                      />
+                      <div className="user-div">일반인</div>
                     </RadioSection>
                   </>
                 )
               ) : (
                 <>
-                  <div className="email">{userInfo?.email}</div>
-                  <div className="nickname">{userInfo?.nickname}</div>
+                  <div className="email-div">{userInfo?.email}</div>
+                  <div className="nickname-div">{userInfo?.nickname}</div>
                   {/* <div className="password">비밀번호</div> */}
                   <RadioSection>
                     <div className="radio-container">
-                      <input type="radio" id="owner" name="role1" value="1" />
-                      <div className="owner">사업자</div>
-                      <input type="radio" id="user" name="role1" value="2" />
-                      <div className="user">일반인</div>
+                      <input
+                        type="radio"
+                        id="owner-radio"
+                        name="role1"
+                        value="1"
+                      />
+                      <div className="owner-div">사업자</div>
+                      <input
+                        type="radio"
+                        id="user-radio"
+                        name="role1"
+                        value="2"
+                      />
+                      <div className="user-div">일반인</div>
                     </div>
                   </RadioSection>
                 </>

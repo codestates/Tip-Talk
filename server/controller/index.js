@@ -12,6 +12,7 @@ module.exports = {
     googleLogin: require('./oauth/googleLogin'),
   },
   authController: {
+    sendEmail: require('./auth/sendEmail'),
     deleteUser: require('./auth/deleteUser'),
     findId: require('./auth/findId'),
     login: require('./auth/login'),
@@ -26,6 +27,7 @@ module.exports = {
     uploadPost: require('./post/uploadPost'),
     getPosts: require('./post/getPosts'),
     getAround: require('./post/around/getAround'),
+    getMyPost: require('./post/mypost/getMyPost'),
   },
   userController: {
     editUserInfo: require('./user/editUserInfo'),

@@ -1,10 +1,11 @@
 const { user } = require('../../models');
 
 module.exports = async (req, res) => {
-  // const accessToken = req.cookies.accessToken;
   const { id } = req.params;
-  const { nickname, password, img } = req.body;
-  const userInfo = await user.findOne({ where: { id } });
+  const userInfo = await user.findOne({
+    where: { id },
+    attributes: ['id', 'nickname', 'email', 'img', 'role', 'platform'],
+  });
   if (!userInfo) {
     return res
       .status(400)
@@ -12,6 +13,6 @@ module.exports = async (req, res) => {
   }
   return res.status(200).json({
     status: true,
-    data: { nickname: nickname, password: password, img: img },
+    data: { user: userInfo },
   });
 };

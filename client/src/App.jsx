@@ -33,12 +33,14 @@ function App() {
   const [showLogin, setShowLogin] = useState(false);
   const [showSignup, setShowSingup] = useState(false);
 
+  console.log(process.env.REACT_APP_SERVER_URL);
+
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
       setToken(token);
     }
-  });
+  }, []);
 
   useEffect(() => {
     const url = new URL(window.location.href);

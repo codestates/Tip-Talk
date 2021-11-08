@@ -17,6 +17,9 @@ const Background = styled.div`
   z-index: 2;
   transition: 0.2s;
   animation: 0.15s scale;
+  @media ${({ theme }) => theme.size.mobile} {
+    display: none;
+  }
 `;
 
 const Close = styled.button`

@@ -33,6 +33,9 @@ export const CoinForm = styled.div`
     color: ${({ theme }) => theme.navBgColor};
     background-color: ${Color_3};
   }
+  @media ${({ theme }) => theme.size.mobile} {
+    display: none;
+  }
 `;
 
 export const Coin = ({

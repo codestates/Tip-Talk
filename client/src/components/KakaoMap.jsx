@@ -19,7 +19,6 @@ const MapContainer = styled.div`
   height: 70vh;
   margin-bottom: 50px;
   justify-content: center;
-
   @media ${({ theme }) => theme.size.tablet} {
     height: 50vh;
     padding: 0 10px;
@@ -32,10 +31,9 @@ const MapContainer = styled.div`
 `;
 
 const Map = styled.div`
-  position: relative;
   display: flex;
   width: 100%;
-  border-radius: 12px;
+  border-radius: 6px;
   justify-content: center;
 `;
 
@@ -50,7 +48,13 @@ const SearchForm = styled.form`
   background-color: ${Color_1};
   border-radius: 3px;
   align-items: center;
-  z-index: 11;
+  z-index: 12;
+  @media ${({ theme }) => theme.size.mobile} {
+    top: -70px;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+  }
 `;
 
 const Input = styled.input`
@@ -61,6 +65,9 @@ const Input = styled.input`
   border: none;
   padding: 0 8px;
   border-radius: 3px;
+  @media ${({ theme }) => theme.size.mobile} {
+    margin-right: 10px;
+  }
 `;
 
 const Search = styled.button`
@@ -274,6 +281,22 @@ const KakaoMap = ({ posts, handleSearch }) => {
           callback={goToUpload}
         />
       )}
+      <SearchForm>
+        <Input ref={inputRef} placeholder="검색어를 입력해주세요" />
+        <Search type="submit" onClick={onSearch}>
+          <FontAwesomeIcon icon={faSearch} />
+        </Search>
+        <Categories>
+          <Select ref={selectRef}>
+            <option value="">전체</option>
+            {categories?.map((category, i) => (
+              <option value={category.id} key={i + 1}>
+                {category.value}
+              </option>
+            ))}
+          </Select>
+        </Categories>
+      </SearchForm>
       <Map ref={containerRef} id="map">
         {naviIsOpen && (
           <Navigator
@@ -282,22 +305,7 @@ const KakaoMap = ({ posts, handleSearch }) => {
             setIsOpen={setNaviIsOpen}
           />
         )}
-        <SearchForm>
-          <Input ref={inputRef} placeholder="검색어를 입력해주세요" />
-          <Search type="submit" onClick={onSearch}>
-            <FontAwesomeIcon icon={faSearch} />
-          </Search>
-          <Categories>
-            <Select ref={selectRef}>
-              <option value="">전체</option>
-              {categories?.map((category, i) => (
-                <option value={category.id} key={i + 1}>
-                  {category.value}
-                </option>
-              ))}
-            </Select>
-          </Categories>
-        </SearchForm>
+
         {!isMarked && post && (
           <MapModal
             post={post}

@@ -25,7 +25,7 @@ import { createEditor } from 'slate';
 import { Slate, Editable, withReact } from 'slate-react';
 import { EditorForm, Element, Leaf } from '../components/TextEditor';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHeart } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faHeart } from '@fortawesome/free-solid-svg-icons';
 import Modal from '../components/Modal';
 import UserContext from '../context/UserContext';
 
@@ -36,10 +36,11 @@ const PostContainer = styled.article`
   max-width: 1600px;
   min-height: 600px;
   padding: 50px;
-  @media ${({ theme }) => theme.size.mobile} {
+  @media ${({ theme }) => theme.size.tablet} {
     flex-direction: column;
-    margin: 10px;
-    padding: 50px 0;
+    padding: 50px 10px;
+    justify-content: center;
+    align-items: center;
   }
 `;
 
@@ -50,7 +51,13 @@ export const Column = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  @media ${({ theme }) => theme.size.tablet} {
+    width: 70%;
+  }
   @media ${({ theme }) => theme.size.mobile} {
+    width: 90%;
+  }
+  @media ${({ theme }) => theme.size.mobileS} {
     width: 100%;
   }
 `;
@@ -59,13 +66,30 @@ export const CarouselContainer = styled.div`
   width: 100%;
   height: 600px;
   margin-bottom: 20px;
+  @media ${({ theme }) => theme.size.tablet} {
+    height: 620px;
+  }
   @media ${({ theme }) => theme.size.mobile} {
+    height: 540px;
+  }
+  @media ${({ theme }) => theme.size.mobileS} {
     height: 380px;
   }
 `;
 
 const CustomMeta = styled(Meta)`
   width: 100%;
+`;
+
+const EditButton = styled.button`
+  position: absolute;
+  right: 10px;
+  width: 30px;
+  height: 30px;
+  font-size: 20px;
+  color: ${Color_4};
+  border: none;
+  background-color: transparent;
 `;
 
 const Map = styled.div`
@@ -354,6 +378,10 @@ const Post = () => {
     }
   };
 
+  const goToEdit = () => {
+    history.push(`/edit/${post.id}`);
+  };
+
   return (
     <Body ref={scrollRef}>
       {isOpen && (
@@ -381,6 +409,11 @@ const Post = () => {
       <PostContainer>
         <Column>
           <CustomMeta>
+            {user?.id === post?.userId && (
+              <EditButton onClick={goToEdit}>
+                <FontAwesomeIcon className="icon" icon={faEdit} />
+              </EditButton>
+            )}
             <div>
               <Label>상호명</Label>
               <Text size="24px">{post?.title}</Text>

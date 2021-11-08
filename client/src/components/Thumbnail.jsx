@@ -28,20 +28,19 @@ const Image = styled.img`
 
 const ImageInfo = styled.span`
   height: 28px;
-  padding: 3px 7px 0;
+  padding: 5px 12px 0;
   overflow: hidden;
   background-color: ${({ theme }) => theme.formColor};
   text-align: ${({ align }) => (align ? align : 'left')};
 `;
 
 const ImageTitle = styled.h1`
-  margin-top: 3px;
   font-size: 18px;
   font-weight: 600;
 `;
 
 const ImageMeta = styled.span`
-  font-size: 14px;
+  font-size: 13px;
   margin-left: 8px;
 `;
 

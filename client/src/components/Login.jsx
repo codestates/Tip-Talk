@@ -135,7 +135,7 @@ const KakaoButton = styled.img`
   cursor: pointer;
 `;
 
-const Login = ({ setShowLogin, setShowSignup, setToken }) => {
+const Login = ({ setShowLogin, setShowSignup }) => {
   const googleNormal =
     'https://tiptalk-client.s3.us-east-2.amazonaws.com/btn_google_signin_light_normal_web.png';
   const googleFocus =
@@ -198,26 +198,18 @@ const Login = ({ setShowLogin, setShowSignup, setToken }) => {
     return true;
   };
 
-  const loginHandler = async () => {
-    try {
-      const data = await axios.post(
-        `${process.env.REACT_APP_SERVER_URL}/auth/login`,
-        {
-          email,
-          password,
-        },
-      );
-
-      if (data.data.data) {
-        const { user, token } = data.data.data;
-        setUser(user);
-        setToken(token);
-        localStorage.setItem('token', token);
+  const loginHandler = () => {
+    axios
+      .post(`${process.env.REACT_APP_SERVER_URL}/auth/login`, {
+        email,
+        password,
+      })
+      .then((res) => {
+        const { data } = res.data;
+        setUser(data.user);
         closeLoginModal();
-      }
-    } catch (err) {
-      setStatus(false);
-    }
+      })
+      .catch((err) => setStatus(false));
   };
 
   const googleButtonHandler = (e) => {

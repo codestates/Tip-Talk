@@ -298,7 +298,7 @@ const Message = styled.span`
   font-size: 20px;
 `;
 
-const MyPage = ({ setToken }) => {
+const MyPage = () => {
   const show = 4;
   const [editStart, setEditStart] = useState(false);
   const [editDone, setEditDone] = useState(false);
@@ -319,7 +319,6 @@ const MyPage = ({ setToken }) => {
   const history = useHistory();
   const { id } = useParams();
   const [user, setUser] = useContext(UserContext);
-  const [userInfo, setUserInfo] = useState(null);
   const [passwordMatch, setPasswordMatch] = useState(true);
 
   useEffect(() => {
@@ -327,21 +326,21 @@ const MyPage = ({ setToken }) => {
   }, [posts]);
 
   useEffect(() => {
-    if (userInfo) {
-      const { role } = userInfo;
+    if (user) {
+      const { role } = user;
       if (role === 1) {
-        document.getElementById('owner').checked = true;
+        document.getElementById('owner-radio').checked = true;
       } else if (role === 2) {
-        document.getElementById('user').checked = true;
+        document.getElementById('user-radio').checked = true;
       }
     }
 
     if (editStart === true) {
       const role = document.querySelector('input[name=role2]:checked').value;
       if (role === 1) {
-        document.getElementById('owner').checked = true;
+        document.getElementById('owner-radio').checked = true;
       } else if (role === 2) {
-        document.getElementById('user').checked = true;
+        document.getElementById('user-radio').checked = true;
       }
     }
   }, [user, editStart]);
@@ -362,7 +361,8 @@ const MyPage = ({ setToken }) => {
       .get(`http://localhost:8000/user/${id}`)
       .then((res) => {
         const { data } = res.data;
-        setUserInfo(data);
+        setUser(data);
+        setImage(data.img);
       })
       .catch((err) => console.log(err));
   }, []);
@@ -429,10 +429,8 @@ const MyPage = ({ setToken }) => {
         withCredentials: true,
       })
       .then((res) => {
-        localStorage.removeItem('token');
-        setToken(null);
         history.push('/');
-        console.log('res = ', res);
+        setUser(null);
       })
       .catch((err) => console.log(err));
   };
@@ -450,7 +448,7 @@ const MyPage = ({ setToken }) => {
   };
 
   const passwordMatchHandler = () => {
-    const { password } = userInfo;
+    const { password } = user;
     if (password === oldPassword) {
       setPasswordMatch(true);
     } else {
@@ -504,12 +502,10 @@ const MyPage = ({ setToken }) => {
         <ProfileSection>
           <div className="wrapper-1">
             <div className="wrapper-1-1">
-              {user?.img ? (
-                image ? (
-                  <img src={image} />
-                ) : (
-                  <img src={imageBase64} />
-                )
+              {image ? (
+                <img src={image} />
+              ) : imageBase64 ? (
+                <img src={imageBase64} />
               ) : (
                 <FontAwesomeIcon icon={faUser} size="10x" />
               )}
@@ -532,7 +528,7 @@ const MyPage = ({ setToken }) => {
               {editStart === true && stilEdit === true ? (
                 user?.platform === 0 ? (
                   <>
-                    <div className="email">{userInfo?.email}</div>
+                    <div className="email">{user?.email}</div>
                     <input
                       type="password"
                       id="old-password-input"
@@ -570,7 +566,7 @@ const MyPage = ({ setToken }) => {
                   </>
                 ) : (
                   <>
-                    <div className="email-div">{userInfo?.email}</div>
+                    <div className="email-div">{user?.email}</div>
                     <input
                       type="text"
                       id="nickname-input"
@@ -597,8 +593,8 @@ const MyPage = ({ setToken }) => {
                 )
               ) : (
                 <>
-                  <div className="email-div">{userInfo?.email}</div>
-                  <div className="nickname-div">{userInfo?.nickname}</div>
+                  <div className="email-div">{user?.email}</div>
+                  <div className="nickname-div">{user?.nickname}</div>
                   {/* <div className="password">비밀번호</div> */}
                   <RadioSection>
                     <div className="radio-container">

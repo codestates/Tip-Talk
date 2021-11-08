@@ -7,8 +7,10 @@ const Article = styled.li`
   height: 320px;
   margin: 10px;
   flex-direction: column;
+  transition: 0.2s;
   &:hover {
     cursor: pointer;
+    transform: translateY(-10px);
   }
 `;
 
@@ -16,6 +18,9 @@ const Image = styled.img`
   width: 100%;
   height: 100%;
   border-radius: 10px;
+  box-shadow: 0px 0px 6px 0px rgba(0, 0, 0, 0.4);
+  -webkit-box-shadow: 0px 0px 6px 0px rgba(0, 0, 0, 0.4);
+  -moz-box-shadow: 0px 0px 6px 0px rgba(0, 0, 0, 0.4);
   overflow: hidden;
 `;
 
@@ -38,7 +43,6 @@ const ImageMeta = styled.span`
 `;
 
 const Thumbnail = ({ thumbnail }) => {
-  const { user } = thumbnail;
   const history = useHistory();
 
   const goToPost = () => {
@@ -52,10 +56,10 @@ const Thumbnail = ({ thumbnail }) => {
         <ImageTitle>{thumbnail?.title}</ImageTitle>
       </ImageInfo>
       <ImageInfo align="right">
-        <ImageMeta>{user?.nickname}</ImageMeta>
+        <ImageMeta>조회수</ImageMeta>
         <ImageMeta>{thumbnail?.views}</ImageMeta>
         <ImageMeta>❤️</ImageMeta>
-        <ImageMeta>1</ImageMeta>
+        <ImageMeta>{thumbnail?.likes}</ImageMeta>
       </ImageInfo>
     </Article>
   );

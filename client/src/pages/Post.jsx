@@ -31,27 +31,49 @@ import UserContext from '../context/UserContext';
 
 const PostContainer = styled.article`
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  width: 100%;
+  max-width: 1600px;
   min-height: 600px;
-  margin: 0 100px;
-  padding: 50px 80px;
-  border-radius: 8px;
-  background-color: ${({ theme }) => theme.navColor};
-
+  padding: 50px;
   @media ${({ theme }) => theme.size.mobile} {
-    margin: 0px;
-    padding: 50px 30px;
+    flex-direction: column;
+    margin: 10px;
+    padding: 50px 0;
   }
+`;
+
+const Column = styled.div`
+  display: flex;
+  width: 50%;
+  margin: 0 20px;
+  flex-direction: column;
+  @media ${({ theme }) => theme.size.mobile} {
+    width: 100%;
+  }
+`;
+
+const CarouselContainer = styled.div`
+  width: 100%;
+  height: 600px;
+  margin-bottom: 20px;
+  @media ${({ theme }) => theme.size.mobile} {
+    height: 380px;
+  }
+`;
+
+const CustomMeta = styled(Meta)`
+  width: 100%;
 `;
 
 const Map = styled.div`
   width: 100%;
   height: 360px;
   border-radius: 8px;
+  margin: 20px 0;
   box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.2);
   -webkit-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.2);
   -moz-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.2);
-
   .container {
     padding: 8px 16px;
     border-radius: 6px;
@@ -95,7 +117,7 @@ const LikeButton = styled.button`
 `;
 
 const TextEditor = styled(EditorForm)`
-  height: 100%;
+  margin-bottom: 20px;
 `;
 
 const Post = () => {
@@ -103,9 +125,11 @@ const Post = () => {
   const scrollRef = useRef();
   const history = useHistory();
 
+  const [current, setCurrent] = useState(0);
+  const [pages, setPages] = useState([1]);
   const [post, setPost] = useState();
   const [value, setValue] = useState();
-  const [comments, setComments] = useState();
+  const [comments, setComments] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const [isLikeOpen, setIsLikeOpen] = useState(false);
   const { postId } = useParams();
@@ -153,7 +177,6 @@ const Post = () => {
 
           marker.setMap(map.current);
 
-          // ToDo 주변위치 정보 받아오기
           axios
             .get(`${process.env.REACT_APP_SERVER_URL}/post/around/${postId}`, {
               params: { lat, lng },
@@ -176,17 +199,6 @@ const Post = () => {
       })
       .catch((err) => {
         console.log(err);
-      });
-
-    // * Comment 데이터 받아오기
-
-    axios
-      .get(`${process.env.REACT_APP_SERVER_URL}/comment/${postId}`)
-      .then(({ data }) => {
-        data.data.forEach((comment) => {
-          parseDate(comment);
-        });
-        setComments(data.data);
       });
 
     function displayMarker(post) {
@@ -229,6 +241,26 @@ const Post = () => {
     }
   }, [postId]);
 
+  useEffect(() => {
+    axios
+      .get(
+        `${process.env.REACT_APP_SERVER_URL}/comment/${postId}?page=${current}`,
+      )
+      .then(({ data }) => {
+        if (data.data) {
+          data.data.forEach((comment) => {
+            parseDate(comment);
+          });
+          setComments(data.data);
+          const page = [];
+          for (let i = 0; i <= data.max; i++) {
+            page.push(i + 1);
+          }
+          setPages(page);
+        }
+      });
+  }, [current, postId]);
+
   const parseDate = (comment) => {
     comment.updatedAt = new Date(comment.updatedAt)
       .toLocaleDateString()
@@ -247,15 +279,13 @@ const Post = () => {
       });
   };
 
-  const handleSubmit = (text, nickname) => {
+  const handleSubmit = (text) => {
     axios
       .post(`${process.env.REACT_APP_SERVER_URL}/comment/${postId}`, { text })
       .then(({ data }) => {
         if (data.status) {
-          parseDate(data.data);
-          data.data['isMine'] = true;
-          data.data['user'] = { nickname };
-          setComments([...comments, data.data]);
+          setCurrent(0);
+          setCurrent(pages[pages.length - 1] - 1);
         }
       });
   };
@@ -304,6 +334,20 @@ const Post = () => {
     }
   };
 
+  const ChangePage = (page) => {
+    setCurrent(page);
+  };
+
+  const getPages = (pages) => {
+    if (current < 4) {
+      return pages.slice(0, 5);
+    } else if (current + 5 > pages.length) {
+      return pages.slice(pages.length - 5, pages.length);
+    } else {
+      return pages.slice(current - 3, current + 2);
+    }
+  };
+
   return (
     <Body ref={scrollRef}>
       {isOpen && (
@@ -329,52 +373,70 @@ const Post = () => {
         />
       )}
       <PostContainer>
-        <Meta>
-          <div>
-            <Label>상호명</Label>
-            <Text size="24px">{post?.title}</Text>
-            <Label>조회수</Label>
-            <Text>{post?.views}</Text>
-          </div>
-          <div>
-            <Label>주소</Label>
-            <Text>{post?.region}</Text>
-            <Label>카테고리</Label>
-            <Text>{post?.category?.value}</Text>
-          </div>
-        </Meta>
-        <Carousel images={post?.images} />
-        <Info>{post?.title} 소개</Info>
-        <TextEditor>
-          {value && (
-            <Slate
-              editor={editor}
-              value={value}
-              onChange={(data) => setValue(data)}
+        <Column>
+          <CustomMeta>
+            <div>
+              <Label>상호명</Label>
+              <Text size="24px">{post?.title}</Text>
+            </div>
+          </CustomMeta>
+          <CustomMeta>
+            <div>
+              <Label>카테고리</Label>
+              <Text>{post?.category?.value}</Text>
+              <Label>주소</Label>
+              <Text>{post?.region}</Text>
+            </div>
+            <div>
+              <Label>조회수</Label>
+              <Text>{post?.views}</Text>
+              <Label>좋아요</Label>
+              <Text>{post?.likes}</Text>
+            </div>
+          </CustomMeta>
+          <CarouselContainer>
+            <Carousel images={post?.images} />
+          </CarouselContainer>
+          <Info>{post?.title} 주변엔 어떤 것이 있나요?</Info>
+          <Map id="map" />
+          <LikeForm>
+            <LikeButton
+              isLike={post?.isLike}
+              onClick={() => setIsLikeOpen(true)}
             >
-              <Editable
-                readOnly
-                renderElement={renderElement}
-                renderLeaf={renderLeaf}
-                className="Editor"
-              />
-            </Slate>
-          )}
-        </TextEditor>
-        <Info>{post?.title} 주변엔 어떤 것이 있나요?</Info>
-        <Map id="map"></Map>
-        <LikeForm>
-          <LikeButton isLike={post?.isLike} onClick={() => setIsLikeOpen(true)}>
-            <FontAwesomeIcon icon={faHeart} />
-          </LikeButton>
-        </LikeForm>
-        <Info>댓글</Info>
-        <Comments
-          comments={comments}
-          handleSubmit={handleSubmit}
-          handleEdit={handleEdit}
-          handleDelete={handleDelete}
-        />
+              <FontAwesomeIcon icon={faHeart} />
+            </LikeButton>
+          </LikeForm>
+        </Column>
+        <Column>
+          <Info>{post?.title} 소개</Info>
+          <TextEditor>
+            {value && (
+              <Slate
+                editor={editor}
+                value={value}
+                onChange={(data) => setValue(data)}
+              >
+                <Editable
+                  readOnly
+                  renderElement={renderElement}
+                  renderLeaf={renderLeaf}
+                  className="Editor"
+                />
+              </Slate>
+            )}
+          </TextEditor>
+          <Info>댓글</Info>
+          <Comments
+            comments={comments}
+            handleSubmit={handleSubmit}
+            handleEdit={handleEdit}
+            handleDelete={handleDelete}
+            ChangePage={ChangePage}
+            pages={getPages(pages)}
+            current={current}
+          />
+        </Column>
       </PostContainer>
     </Body>
   );

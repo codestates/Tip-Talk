@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 const Background = styled.div`
   position: absolute;
-  left: 360px;
+  left: 40%;
   top: 16px;
   padding: 16px;
   color: white;

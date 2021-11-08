@@ -13,7 +13,7 @@ const Container = styled.footer`
 
 const Column = styled.div`
   display: flex;
-  max-width: 1000px;
+  max-width: 1600px;
   height: inherit;
   margin: 0 auto;
   align-items: center;

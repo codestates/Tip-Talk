@@ -22,6 +22,10 @@ module.exports = (sequelize, DataTypes) => {
       content: DataTypes.TEXT,
       images: DataTypes.TEXT,
       views: DataTypes.INTEGER,
+      likes: {
+        type: DataTypes.INTEGER,
+        defaultValue: 0,
+      },
       categoryId: DataTypes.INTEGER,
       lat: DataTypes.FLOAT,
       lng: DataTypes.FLOAT,

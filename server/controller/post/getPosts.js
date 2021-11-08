@@ -1,8 +1,8 @@
-const { Op, fn, col } = require('sequelize');
-const { post, user, categories, user_place_likes } = require('../../models');
+const { Op } = require('sequelize');
+const { post, user, categories } = require('../../models');
 
 module.exports = async (req, res) => {
-  const { categoryId, page, search } = req.query;
+  const { categoryId, page, search, order, offset } = req.query;
   try {
     if (categoryId) {
       const found = await post.findAll({
@@ -25,11 +25,23 @@ module.exports = async (req, res) => {
           { model: user, attributes: ['nickname', 'email', 'img'] },
           { model: categories, attributes: ['value'] },
         ],
-        offset: page ? +page * 6 : 0,
-        limit: page ? 6 : 100,
+        offset: page ? +page * +offset : 0,
+        limit: page ? +offset : 100,
       });
       res.status(200).json({ status: true, data: { post: found } });
     } else {
+      console.log(offset);
+      let max;
+      if (page !== undefined) {
+        max = await post.count();
+        max = Math.ceil(max / offset);
+      }
+      let filter = [['createdAt', 'DESC']];
+      if (order == 1) {
+        filter = [['views', 'DESC']];
+      } else if (order == 2) {
+        filter = [['likes', 'DESC']];
+      }
       const found = await post.findAll({
         where: {
           [Op.or]: [
@@ -48,17 +60,12 @@ module.exports = async (req, res) => {
         include: [
           { model: user, attributes: ['nickname', 'email', 'img'] },
           { model: categories, attributes: ['value'] },
-          {
-            model: user_place_likes,
-            attributes: [[fn('COUNT', 'id'), 'count']],
-            separate: true,
-            group: ['id'],
-          },
         ],
-        offset: page ? +page * 6 : 0,
-        limit: page ? 6 : 100,
+        order: filter,
+        offset: page ? Number(page) * Number(offset) : 0,
+        limit: page ? +offset : 100,
       });
-      res.status(200).json({ status: true, data: { post: found } });
+      res.status(200).json({ status: true, data: { post: found, max } });
     }
   } catch (err) {
     console.log(err.message);

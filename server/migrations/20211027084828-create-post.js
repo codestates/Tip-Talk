@@ -29,6 +29,10 @@ module.exports = {
       views: {
         type: Sequelize.INTEGER,
       },
+      likes: {
+        type: Sequelize.INTEGER,
+        defaultValue: 0,
+      },
       categoryId: {
         allowNull: true,
         type: Sequelize.INTEGER,

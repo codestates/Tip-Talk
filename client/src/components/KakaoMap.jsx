@@ -14,8 +14,16 @@ import Navigator from './Navigator';
 const MapContainer = styled.div`
   position: relative;
   display: flex;
+  width: 100%;
+  max-width: 1400px;
   height: 70vh;
   margin-bottom: 50px;
+  justify-content: center;
+
+  @media ${({ theme }) => theme.size.tablet} {
+    height: 50vh;
+    padding: 0 10px;
+  }
 
   @media ${({ theme }) => theme.size.mobile} {
     height: 50vh;
@@ -31,12 +39,12 @@ const Map = styled.div`
   justify-content: center;
 `;
 
-const SearchForm = styled.div`
+const SearchForm = styled.form`
   position: absolute;
   display: flex;
   top: 0;
   left: 0;
-  width: 320px;
+  width: 360px;
   height: 60px;
   padding: 0 10px;
   background-color: ${Color_1};
@@ -57,7 +65,7 @@ const Input = styled.input`
 
 const Search = styled.button`
   position: absolute;
-  right: 100px;
+  right: 115px;
   font-size: 16px;
   border: none;
   background-color: transparent;
@@ -191,8 +199,6 @@ const KakaoMap = ({ posts, handleSearch }) => {
       });
     }
 
-    // Todo 사업자만 가능하도록 설정 user.role - 여기부터
-
     if (user && user?.role !== 2) {
       // 지도에 클릭 이벤트를 등록합니다
       // 지도를 클릭하면 마지막 파라미터로 넘어온 함수를 호출합니다
@@ -247,7 +253,8 @@ const KakaoMap = ({ posts, handleSearch }) => {
     setPost(null);
   };
 
-  const onSearch = () => {
+  const onSearch = (e) => {
+    e.preventDefault();
     const { value } = inputRef.current;
     const categoryId = selectRef.current.value;
     handleSearch(value, categoryId);
@@ -277,14 +284,14 @@ const KakaoMap = ({ posts, handleSearch }) => {
         )}
         <SearchForm>
           <Input ref={inputRef} placeholder="검색어를 입력해주세요" />
-          <Search onClick={onSearch}>
+          <Search type="submit" onClick={onSearch}>
             <FontAwesomeIcon icon={faSearch} />
           </Search>
           <Categories>
             <Select ref={selectRef}>
               <option value="">전체</option>
-              {categories?.map((category) => (
-                <option value={category.id} key={category.id}>
+              {categories?.map((category, i) => (
+                <option value={category.id} key={i + 1}>
                   {category.value}
                 </option>
               ))}

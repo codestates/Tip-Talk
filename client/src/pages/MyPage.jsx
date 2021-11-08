@@ -8,13 +8,13 @@ import Thumbnail from '../components/Thumbnail';
 import { data } from '../dummy/post';
 import Modal from '../components/Modal';
 import UserContext from '../context/UserContext';
-import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button } from '../styles/common';
 
 const Container = styled.div`
   width: 100%;
-  height: 1200px;
+  height: ${(props) => (props.role === 1 ? 1600 + 'px' : 1100 + 'px')};
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -35,6 +35,11 @@ const Header = styled.div`
     position: relative;
     top: 15rem;
   }
+  .bottom-header {
+    font-size: 3rem;
+    position: relative;
+    top: 43rem;
+  }
 `;
 
 const ProfileSection = styled.div`
@@ -51,13 +56,9 @@ const ProfileSection = styled.div`
       display: flex;
       align-items: center;
       justify-content: center;
-      .picture {
+      > img {
         width: 180px;
         height: 180px;
-        > img {
-          width: 180px;
-          height: 180px;
-        }
       }
     }
     .wrapper-1-2 {
@@ -79,7 +80,7 @@ const ProfileSection = styled.div`
       display: flex;
       flex-direction: column;
       align-items: center;
-      .email {
+      .email-div {
         line-height: 2.5rem;
         border: solid 1px blue;
         position: relative;
@@ -87,7 +88,7 @@ const ProfileSection = styled.div`
         width: 14rem;
         height: 2.5rem;
       }
-      .nickname {
+      .nickname-div {
         line-height: 2.5rem;
         border: solid 1px blue;
         position: relative;
@@ -95,7 +96,7 @@ const ProfileSection = styled.div`
         width: 14rem;
         height: 2.5rem;
       }
-      .password {
+      .password-div {
         line-height: 2.5rem;
         border: solid 1px blue;
         position: relative;
@@ -103,7 +104,7 @@ const ProfileSection = styled.div`
         width: 14rem;
         height: 2.5rem;
       }
-      #nickname {
+      #nickname-input {
         position: relative;
         top: 5rem;
         width: 14rem;
@@ -115,7 +116,7 @@ const ProfileSection = styled.div`
         outline: none;
         text-align: center;
       }
-      #password {
+      #password-input {
         position: relative;
         top: 5.5rem;
         width: 14rem;
@@ -127,7 +128,7 @@ const ProfileSection = styled.div`
         outline: none;
         text-align: center;
       }
-      #old-password {
+      #old-password-input {
         position: relative;
         top: 4.5rem;
         width: 14rem;
@@ -167,22 +168,22 @@ const RadioSection = styled.div`
   position: relative;
   top: 6.5rem;
   width: 14rem;
-  .owner {
+  .owner-div {
     display: inline-block;
     position: relative;
     right: 1.5rem;
   }
-  #owner {
+  #owner-radio {
     display: inline-block;
     position: relative;
     right: 2rem;
   }
-  .user {
+  .user-div {
     display: inline-block;
     position: relative;
     left: 1.5rem;
   }
-  #user {
+  #user-radio {
     display: inline-block;
     position: relative;
     left: 1rem;
@@ -194,20 +195,25 @@ const Carousel = styled.div`
   top: 46rem;
   display: flex;
   justify-content: center;
+  align-items: center;
+  height: 40%;
   .carousel-container {
     width: 85%;
+    height: 100%;
     display: flex;
     flex-direction: column;
   }
   .carousel-wrapper {
     width: 100%;
+    height: 100%;
     display: flex;
-    position: relative;
   }
   .carousel-content-wrapper {
     overflow: hidden;
     width: 100%;
     height: 100%;
+    display: flex;
+    align-items: center;
   }
   .carousel-content {
     display: flex;
@@ -253,51 +259,7 @@ const Carousel = styled.div`
   }
 `;
 
-const Background = styled.div`
-  display: flex;
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.2);
-  justify-content: center;
-  align-items: center;
-  z-index: 11;
-`;
-
-const ModalContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  width: 380px;
-  height: 160px;
-  padding: 20px;
-  border-radius: 6px;
-  background-color: ${({ theme }) => theme.bgColor};
-  box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.55);
-  -webkit-box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.55);
-  -moz-box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.55);
-  align-items: center;
-  animation: 0.15s scale;
-`;
-
-const CloseButton = styled.button`
-  position: absolute;
-  top: 3px;
-  right: 0;
-  color: ${({ theme }) => theme.color};
-  font-size: 20px;
-  border: none;
-  background-color: transparent;
-`;
-
-const Message = styled.span`
-  margin: 20px 0;
-  font-size: 20px;
-`;
-
-const MyPage = ({ setToken }) => {
+const MyPage = () => {
   const show = 4;
   const [editStart, setEditStart] = useState(false);
   const [editDone, setEditDone] = useState(false);
@@ -308,7 +270,7 @@ const MyPage = ({ setToken }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [nickname, setNickname] = useState(null);
   const [password, setPassword] = useState(null);
-  const [oldPassword, setOldPassword] = useState(null);
+  const [oldpassword, setOldpassword] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [imageLength, setImageLength] = useState(posts.length);
   const [passwordLength, setPasswordLength] = useState(true);
@@ -318,7 +280,6 @@ const MyPage = ({ setToken }) => {
   const history = useHistory();
   const { id } = useParams();
   const [user, setUser] = useContext(UserContext);
-  const [userInfo, setUserInfo] = useState(null);
   const [passwordMatch, setPasswordMatch] = useState(true);
 
   useEffect(() => {
@@ -326,21 +287,21 @@ const MyPage = ({ setToken }) => {
   }, [posts]);
 
   useEffect(() => {
-    if (userInfo) {
-      const { role } = userInfo;
+    if (user) {
+      const { role } = user;
       if (role === 1) {
-        document.getElementById('owner').checked = true;
+        document.getElementById('owner-radio').checked = true;
       } else if (role === 2) {
-        document.getElementById('user').checked = true;
+        document.getElementById('user-radio').checked = true;
       }
     }
 
     if (editStart === true) {
       const role = document.querySelector('input[name=role2]:checked').value;
       if (role === 1) {
-        document.getElementById('owner').checked = true;
+        document.getElementById('owner-radio').checked = true;
       } else if (role === 2) {
-        document.getElementById('user').checked = true;
+        document.getElementById('user-radio').checked = true;
       }
     }
   }, [user, editStart]);
@@ -361,10 +322,11 @@ const MyPage = ({ setToken }) => {
       .get(`http://localhost:8000/user/${id}`)
       .then((res) => {
         const { data } = res.data;
-        setUserInfo(data);
+        setUser(data);
+        setImage(data.img);
       })
       .catch((err) => console.log(err));
-  });
+  }, []);
 
   const editStartHandler = () => {
     setEditStart(true);
@@ -428,10 +390,8 @@ const MyPage = ({ setToken }) => {
         withCredentials: true,
       })
       .then((res) => {
-        localStorage.removeItem('token');
-        setToken(null);
         history.push('/');
-        console.log('res = ', res);
+        setUser(null);
       })
       .catch((err) => console.log(err));
   };
@@ -445,16 +405,7 @@ const MyPage = ({ setToken }) => {
   };
 
   const oldPasswordHandler = (e) => {
-    setOldPassword(e.target.value);
-  };
-
-  const passwordMatchHandler = () => {
-    const { password } = userInfo;
-    if (password === oldPassword) {
-      setPasswordMatch(true);
-    } else {
-      setPasswordMatch(false);
-    }
+    setOldpassword(e.target.value);
   };
 
   const submitHandler = () => {
@@ -462,11 +413,18 @@ const MyPage = ({ setToken }) => {
     axios
       .patch(`${process.env.REACT_APP_SERVER_URL}/user/${id}`, {
         nickname,
+        oldpassword,
         password,
         role,
       })
       .then((res) => console.log(res))
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        if (err.response.data.message === '비밀번호를 확인해주세요') {
+          setPasswordMatch(false);
+          setEditDone(false);
+          setIsOpen(false);
+        }
+      });
   };
 
   const next = () => {
@@ -503,9 +461,13 @@ const MyPage = ({ setToken }) => {
         <ProfileSection>
           <div className="wrapper-1">
             <div className="wrapper-1-1">
-              <div className="picture">
-                {image ? <img src={image} /> : <img src={imageBase64} />}
-              </div>
+              {image ? (
+                <img src={image} />
+              ) : imageBase64 ? (
+                <img src={imageBase64} />
+              ) : (
+                <FontAwesomeIcon icon={faUser} size="10x" />
+              )}
             </div>
             <div className="wrapper-1-2">
               <input
@@ -525,60 +487,89 @@ const MyPage = ({ setToken }) => {
               {editStart === true && stilEdit === true ? (
                 user?.platform === 0 ? (
                   <>
-                    <div className="email">{userInfo?.email}</div>
+                    <div className="email-div">{user?.email}</div>
                     <input
                       type="password"
-                      id="old-password"
+                      id="old-password-input"
                       placeholder="old password"
                       onChange={oldPasswordHandler}
                     />
                     <input
                       type="text"
-                      id="nickname"
+                      id="nickname-input"
                       placeholder="new nickname"
                       onChange={nicknameHandler}
                     />
                     <input
                       type="password"
-                      id="password"
+                      id="password-input"
                       placeholder="new password"
                       onChange={passwordHandler}
                     />
                     <RadioSection>
-                      <input type="radio" id="owner" name="role2" value="1" />
-                      <div className="owner">사업자</div>
-                      <input type="radio" id="user" name="role2" value="2" />
-                      <div className="user">일반인</div>
+                      <input
+                        type="radio"
+                        id="owner-radio"
+                        name="role2"
+                        value="1"
+                      />
+                      <div className="owner-div">사업자</div>
+                      <input
+                        type="radio"
+                        id="user-radio"
+                        name="role2"
+                        value="2"
+                      />
+                      <div className="user-div">일반인</div>
                     </RadioSection>
                   </>
                 ) : (
                   <>
-                    <div className="email">{userInfo?.email}</div>
+                    <div className="email-div">{user?.email}</div>
                     <input
                       type="text"
-                      id="nickname"
+                      id="nickname-input"
                       placeholder="new nickname"
                       onChange={nicknameHandler}
                     />
                     <RadioSection>
-                      <input type="radio" id="owner" name="role2" value="1" />
-                      <div className="owner">사업자</div>
-                      <input type="radio" id="user" name="role2" value="2" />
-                      <div className="user">일반인</div>
+                      <input
+                        type="radio"
+                        id="owner-radio"
+                        name="role2"
+                        value="1"
+                      />
+                      <div className="owner-div">사업자</div>
+                      <input
+                        type="radio"
+                        id="user-radio"
+                        name="role2"
+                        value="2"
+                      />
+                      <div className="user-div">일반인</div>
                     </RadioSection>
                   </>
                 )
               ) : (
                 <>
-                  <div className="email">{userInfo?.email}</div>
-                  <div className="nickname">{userInfo?.nickname}</div>
-                  {/* <div className="password">비밀번호</div> */}
+                  <div className="email-div">{user?.email}</div>
+                  <div className="nickname-div">{user?.nickname}</div>
                   <RadioSection>
                     <div className="radio-container">
-                      <input type="radio" id="owner" name="role1" value="1" />
-                      <div className="owner">사업자</div>
-                      <input type="radio" id="user" name="role1" value="2" />
-                      <div className="user">일반인</div>
+                      <input
+                        type="radio"
+                        id="owner-radio"
+                        name="role1"
+                        value="1"
+                      />
+                      <div className="owner-div">사업자</div>
+                      <input
+                        type="radio"
+                        id="user-radio"
+                        name="role1"
+                        value="2"
+                      />
+                      <div className="user-div">일반인</div>
                     </div>
                   </RadioSection>
                 </>
@@ -592,80 +583,33 @@ const MyPage = ({ setToken }) => {
               ) : (
                 <Button
                   className="edit"
-                  onClick={() => [
-                    passwordLengthCheck(),
-                    submitHandler(),
-                    passwordMatchHandler(),
-                  ]}
+                  onClick={() => [passwordLengthCheck(), submitHandler()]}
                 >
                   수정 완료
                 </Button>
               )}
+              {console.log('isOpen = ' + isOpen)}
+              {console.log('editDone = ' + editDone)}
               {isOpen === true && editDone === true ? (
-                <Background>
-                  <ModalContainer>
-                    <CloseButton>
-                      <FontAwesomeIcon
-                        icon={faTimes}
-                        onClick={modalCloseHandler}
-                      />
-                    </CloseButton>
-                    <Message>정상적으로 수정되었습니다</Message>
-                    <div>
-                      <Button
-                        width="80px"
-                        margin="3px"
-                        onClick={() => [modalCloseHandler(), submitHandler()]}
-                      >
-                        확인
-                      </Button>
-                    </div>
-                  </ModalContainer>
-                </Background>
+                <Modal
+                  message={'정상적으로 수정되었습니다'}
+                  setIsOpen={setIsOpen}
+                  withoutNo={true}
+                />
               ) : null}
               {passwordLength === true ? null : (
-                <Background>
-                  <ModalContainer>
-                    <CloseButton>
-                      <FontAwesomeIcon
-                        icon={faTimes}
-                        onClick={passwordModalCloseHandler}
-                      />
-                    </CloseButton>
-                    <Message>비밀번호는 8자리 이상이어야 합니다</Message>
-                    <div>
-                      <Button
-                        width="80px"
-                        margin="3px"
-                        onClick={passwordModalCloseHandler}
-                      >
-                        확인
-                      </Button>
-                    </div>
-                  </ModalContainer>
-                </Background>
+                <Modal
+                  message={'비밀번호는 8자리 이상이어야 합니다'}
+                  setIsOpen={setIsOpen}
+                  withoutNo={true}
+                />
               )}
               {passwordMatch === true ? null : (
-                <Background>
-                  <ModalContainer>
-                    <CloseButton>
-                      <FontAwesomeIcon
-                        icon={faTimes}
-                        onClick={passwordMatchModalCloseHandler}
-                      />
-                    </CloseButton>
-                    <Message>예전 비밀번호가 일치하지 않습니다</Message>
-                    <div>
-                      <Button
-                        width="80px"
-                        margin="3px"
-                        onClick={passwordMatchModalCloseHandler}
-                      >
-                        확인
-                      </Button>
-                    </div>
-                  </ModalContainer>
-                </Background>
+                <Modal
+                  message={'예전 비밀번호가 일치하지 않습니다'}
+                  setIsOpen={setIsOpen}
+                  withoutNo={true}
+                />
               )}
             </div>
           </div>
@@ -711,6 +655,11 @@ const MyPage = ({ setToken }) => {
             </div>
           </div>
         </Carousel>
+        {user?.role === 1 ? (
+          <Header role={1}>
+            <div className="bottom-header">내가 등록한 장소</div>
+          </Header>
+        ) : null}
       </Container>
     </>
   );

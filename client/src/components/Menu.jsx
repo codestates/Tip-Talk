@@ -42,14 +42,7 @@ const Button = styled.button`
   }
 `;
 
-const Menu = ({
-  showLogin,
-  setShowLogin,
-  showSignup,
-  setShowSignup,
-  token,
-  setToken,
-}) => {
+const Menu = ({ showLogin, setShowLogin, showSignup, setShowSignup }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isLogout, setIsLogout] = useState(false);
   const history = useHistory();
@@ -76,38 +69,31 @@ const Menu = ({
   };
 
   return (
-    <Navbar>
-      <LogoImg src={Logo} alt="로고" onClick={goToMain} />
-      {user === null ? (
-        <div>
-          <Button onClick={showLoginHandler}>로그인</Button>
-          <Button onClick={showSignupHandler}>회원가입</Button>
-        </div>
-      ) : (
-        <div>
-          <Button onClick={goToMyPage}>마이페이지</Button>
-          <Button onClick={logoutHandler}>로그아웃</Button>
-        </div>
-      )}
-      {showLogin === true ? (
-        <Login
-          setShowLogin={setShowLogin}
-          setShowSignup={setShowSignup}
-          setToken={setToken}
-        />
-      ) : null}
-      {showSignup === true ? (
-        <Signup setShowLogin={setShowLogin} setShowSignup={setShowSignup} />
-      ) : null}
-      {isLogout === true ? (
-        <Logout
-          setToken={setToken}
-          isOpen={isOpen}
-          setIsOpen={setIsOpen}
-          setUser={setUser}
-        />
-      ) : null}
-    </Navbar>
+    <>
+      <Navbar>
+        <LogoImg src={Logo} alt="로고" onClick={goToMain} />
+        {user === null ? (
+          <div>
+            <Button onClick={showLoginHandler}>로그인</Button>
+            <Button onClick={showSignupHandler}>회원가입</Button>
+          </div>
+        ) : (
+          <div>
+            <Button onClick={goToMyPage}>마이페이지</Button>
+            <Button onClick={logoutHandler}>로그아웃</Button>
+          </div>
+        )}
+        {showLogin === true ? (
+          <Login setShowLogin={setShowLogin} setShowSignup={setShowSignup} />
+        ) : null}
+        {showSignup === true ? (
+          <Signup setShowLogin={setShowLogin} setShowSignup={setShowSignup} />
+        ) : null}
+        {isLogout === true ? (
+          <Logout isOpen={isOpen} setIsOpen={setIsOpen} setUser={setUser} />
+        ) : null}
+      </Navbar>
+    </>
   );
 };
 

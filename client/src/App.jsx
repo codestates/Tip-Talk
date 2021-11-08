@@ -29,11 +29,11 @@ axios.defaults.withCredentials = true;
 function App() {
   const [darkMode, setDarkMode] = useState(localStorage.getItem('darkmode'));
   const [user, setUser] = useContext(UserContext);
-  const [token, setToken] = useState(null);
   const [showLogin, setShowLogin] = useState(false);
   const [showSignup, setShowSingup] = useState(false);
 
   useEffect(() => {
+
     const token = localStorage.getItem('token');
     if (token) {
       setToken(token);
@@ -41,6 +41,7 @@ function App() {
   }, []);
 
   useEffect(() => {
+
     const url = new URL(window.location.href);
     const authorizationCode = url.searchParams.get('code');
 
@@ -49,12 +50,10 @@ function App() {
         .post(`${process.env.REACT_APP_SERVER_URL}/oauth/google`, {
           authorizationCode,
         })
-        .then(({ data }) => {
-          if (data.status) {
-            const { token, user } = data.data;
-            setUser(user);
-            setToken(token);
-            localStorage.setItem('token', token);
+        .then((res) => {
+          const { status, data } = res.data;
+          if (status) {
+            setUser(data.user);
           }
         })
         .catch((res) => {});
@@ -78,8 +77,6 @@ function App() {
             setShowLogin={setShowLogin}
             showSignup={showSignup}
             setShowSignup={setShowSingup}
-            token={token}
-            setToken={setToken}
           />
           <Switch>
             <Route exact path="/">
@@ -101,7 +98,8 @@ function App() {
               <Footer />
             </Route>
             <Route path="/mypage/:id">
-              <MyPage setToken={setToken} />
+              <MyPage />
+              <Coin mode="reply" />
               <Footer />
             </Route>
             <Route path="/loading">

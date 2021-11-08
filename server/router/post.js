@@ -6,6 +6,7 @@ const { upload } = require('../controller/service/uploadImage');
 const router = express.Router();
 
 router.get('/', postController.getPosts);
+router.get('/mypost', isLoggedIn, postController.getMyPost);
 router.get('/:id', isLoggedIn, postController.getPost);
 router.get('/around/:id', postController.getAround);
 router.post(

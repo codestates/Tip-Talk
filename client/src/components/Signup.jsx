@@ -37,13 +37,13 @@ const ModalBackdrop = styled.div`
       position: relative;
       left: 17rem;
       top: -5rem;
-      background-color: ${Color_3};
-      :hover {
-        box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24),
-          0 17px 50px 0 rgba(0, 0, 0, 0.19);
+      background-color: ${({ theme }) => theme.navBgColor};
+      color: ${Color_3};
+      &:hover {
+        color: ${({ theme }) => theme.navBgColor};
+        background-color: ${Color_3};
       }
       transition-duration: 0.3s;
-      font-family: ${Samlib};
       font-size: 2rem;
     }
 
@@ -75,9 +75,25 @@ const InputSection = styled.div`
     }
   }
 
+  #verification {
+    position: relative;
+    top: 4.5rem;
+    font-size: 1.5rem;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    outline: none;
+  }
+
+  .verification-button {
+    position: relative;
+    top: 2rem;
+    left: 13rem;
+  }
+
   .password-line {
     position: relative;
-    top: 8rem;
+    top: 6.5rem;
     height: 2rem;
     #password {
       font-size: 1.5rem;
@@ -88,7 +104,7 @@ const InputSection = styled.div`
     }
     #re-password {
       position: relative;
-      top: 2rem;
+      top: 1rem;
       font-size: 1.5rem;
       border-top: none;
       border-left: none;
@@ -99,7 +115,7 @@ const InputSection = styled.div`
 
   .nickname-line {
     position: relative;
-    top: 6rem;
+    top: 5.5rem;
     #nickname {
       font-size: 1.5rem;
       border-top: none;
@@ -133,7 +149,7 @@ const ErrorMessage = styled.div`
   }
   .passwordError {
     position: fixed;
-    top: 29rem;
+    top: 30rem;
     left: 9.5rem;
   }
   .conflictError {
@@ -155,7 +171,7 @@ const ErrorMessage = styled.div`
 
 const RadioSection = styled.div`
   position: relative;
-  top: 5rem;
+  top: 5.5rem;
   text-align: center;
   display: flex;
   justify-content: center;
@@ -284,11 +300,16 @@ const Signup = ({ setShowLogin, setShowSignup }) => {
               <input
                 type="text"
                 id="id"
-                name="id"
                 placeholder="email"
                 onChange={emailHandler}
               />
             </div>
+            <button className="verification-button">인증하기</button>
+            <input
+              type="text"
+              id="verification"
+              placeholder="verification code"
+            />
             {emailValidation() === false ? (
               <ErrorMessage>
                 <div className="idError">이메일 형식을 입력해주세요</div>
@@ -298,7 +319,6 @@ const Signup = ({ setShowLogin, setShowSignup }) => {
               <input
                 type="text"
                 id="nickname"
-                name="nickname"
                 placeholder="nickname"
                 onChange={nicknameHandler}
               />
@@ -307,7 +327,6 @@ const Signup = ({ setShowLogin, setShowSignup }) => {
               <input
                 type="password"
                 id="password"
-                name="password"
                 placeholder="password"
                 onChange={passwordHandler}
               />
@@ -316,7 +335,6 @@ const Signup = ({ setShowLogin, setShowSignup }) => {
               <input
                 type="password"
                 id="re-password"
-                name="re-password"
                 placeholder="confirm password"
                 onChange={rePasswordHandler}
               />

@@ -3,15 +3,13 @@ import Modal from './Modal';
 import Portal from './Portal';
 import axios from 'axios';
 
-const Logout = ({ setToken, isOpen, setIsOpen, setUser }) => {
+const Logout = ({ isOpen, setIsOpen, setUser }) => {
   const history = useHistory();
 
   const logoutHandler = () => {
     axios
       .post(`${process.env.REACT_APP_SERVER_URL}/auth/signout`)
       .then((res) => {
-        localStorage.removeItem('token');
-        setToken(null);
         setUser(null);
         history.push('/');
       })

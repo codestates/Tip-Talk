@@ -10,7 +10,7 @@ module.exports = async (req, res) => {
       where: { email: email }, // password: password },
     });
     if (!userInfo) {
-      res.status(403).json({
+      res.status(400).json({
         status: false,
         message: '이메일 혹은 비밀번호가 일치하지 않습니다.',
       });

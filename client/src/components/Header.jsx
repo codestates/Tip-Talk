@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
+import UserContext from '../context/UserContext';
 import Menu from './Menu';
 
 const HeaderContainer = styled.header`
@@ -9,39 +10,18 @@ const HeaderContainer = styled.header`
   background-color: ${(props) => props.theme.navBgColor};
 `;
 
-const Header = ({
-  showLogin,
-  setShowLogin,
-  showSignup,
-  setShowSignup,
-  token,
-  setToken,
-}) => {
+const Header = ({ showLogin, setShowLogin, showSignup, setShowSignup }) => {
+  const [user, setUser] = useContext(UserContext);
   return (
     <>
-      {token === null ? (
-        <HeaderContainer>
-          {/* {로그인 전} */}
-          <Menu
-            showLogin={showLogin}
-            setShowLogin={setShowLogin}
-            showSignup={showSignup}
-            setShowSignup={setShowSignup}
-            token={token}
-            setToken={setToken}
-          />
-        </HeaderContainer>
-      ) : (
-        <HeaderContainer>
-          {/* {로그인 후} */}
-          <Menu
-            showLogin={showLogin}
-            setShowLogin={setShowLogin}
-            token={token}
-            setToken={setToken}
-          />
-        </HeaderContainer>
-      )}
+      <HeaderContainer>
+        <Menu
+          showLogin={showLogin}
+          setShowLogin={setShowLogin}
+          showSignup={showSignup}
+          setShowSignup={setShowSignup}
+        />
+      </HeaderContainer>
     </>
   );
 };

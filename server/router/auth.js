@@ -11,6 +11,7 @@ const {
 
 const router = express.Router();
 
+router.post('/sendEmail', authController.sendEmail);
 router.post('/login', lengthPassword, authController.login);
 router.post(
   '/signup',

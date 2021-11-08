@@ -14,7 +14,7 @@ import { Button } from '../styles/common';
 
 const Container = styled.div`
   width: 100%;
-  height: 1200px;
+  height: ${(props) => (props.role === 1 ? 1600 + 'px' : 1100 + 'px')};
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -34,6 +34,11 @@ const Header = styled.div`
     font-size: 3rem;
     position: relative;
     top: 15rem;
+  }
+  .bottom-header {
+    font-size: 3rem;
+    position: relative;
+    top: 43rem;
   }
 `;
 
@@ -309,7 +314,7 @@ const MyPage = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [nickname, setNickname] = useState(null);
   const [password, setPassword] = useState(null);
-  const [oldPassword, setOldPassword] = useState(null);
+  const [oldpassword, setOldpassword] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [imageLength, setImageLength] = useState(posts.length);
   const [passwordLength, setPasswordLength] = useState(true);
@@ -444,16 +449,7 @@ const MyPage = () => {
   };
 
   const oldPasswordHandler = (e) => {
-    setOldPassword(e.target.value);
-  };
-
-  const passwordMatchHandler = () => {
-    const { password } = user;
-    if (password === oldPassword) {
-      setPasswordMatch(true);
-    } else {
-      setPasswordMatch(false);
-    }
+    setOldpassword(e.target.value);
   };
 
   const submitHandler = () => {
@@ -461,11 +457,16 @@ const MyPage = () => {
     axios
       .patch(`${process.env.REACT_APP_SERVER_URL}/user/${id}`, {
         nickname,
+        oldpassword,
         password,
         role,
       })
       .then((res) => console.log(res))
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        if (err.response.data.message === '비밀번호를 확인해주세요') {
+          setPasswordMatch(false);
+        }
+      });
   };
 
   const next = () => {
@@ -528,7 +529,7 @@ const MyPage = () => {
               {editStart === true && stilEdit === true ? (
                 user?.platform === 0 ? (
                   <>
-                    <div className="email">{user?.email}</div>
+                    <div className="email-div">{user?.email}</div>
                     <input
                       type="password"
                       id="old-password-input"
@@ -595,7 +596,6 @@ const MyPage = () => {
                 <>
                   <div className="email-div">{user?.email}</div>
                   <div className="nickname-div">{user?.nickname}</div>
-                  {/* <div className="password">비밀번호</div> */}
                   <RadioSection>
                     <div className="radio-container">
                       <input
@@ -628,7 +628,7 @@ const MyPage = () => {
                   onClick={() => [
                     passwordLengthCheck(),
                     submitHandler(),
-                    passwordMatchHandler(),
+                    // passwordMatchHandler(),
                   ]}
                 >
                   수정 완료
@@ -744,6 +744,11 @@ const MyPage = () => {
             </div>
           </div>
         </Carousel>
+        {user?.role === 1 ? (
+          <Header role={1}>
+            <div className="bottom-header">내가 등록한 장소</div>
+          </Header>
+        ) : null}
       </Container>
     </>
   );

@@ -242,23 +242,25 @@ const Post = () => {
   }, [postId]);
 
   useEffect(() => {
-    axios
-      .get(
-        `${process.env.REACT_APP_SERVER_URL}/comment/${postId}?page=${current}`,
-      )
-      .then(({ data }) => {
-        if (data.data) {
-          data.data.forEach((comment) => {
-            parseDate(comment);
-          });
-          setComments(data.data);
-          const page = [];
-          for (let i = 0; i <= data.max; i++) {
-            page.push(i + 1);
+    if (current !== null) {
+      axios
+        .get(
+          `${process.env.REACT_APP_SERVER_URL}/comment/${postId}?page=${current}`,
+        )
+        .then(({ data }) => {
+          if (data.data) {
+            data.data.forEach((comment) => {
+              parseDate(comment);
+            });
+            setComments(data.data);
+            const page = [];
+            for (let i = 0; i <= data.max; i++) {
+              page.push(i + 1);
+            }
+            setPages(page);
           }
-          setPages(page);
-        }
-      });
+        });
+    }
   }, [current, postId]);
 
   const parseDate = (comment) => {
@@ -284,8 +286,8 @@ const Post = () => {
       .post(`${process.env.REACT_APP_SERVER_URL}/comment/${postId}`, { text })
       .then(({ data }) => {
         if (data.status) {
+          setCurrent(null);
           setCurrent(0);
-          setCurrent(pages[pages.length - 1] - 1);
         }
       });
   };
@@ -312,6 +314,8 @@ const Post = () => {
       .delete(`${process.env.REACT_APP_SERVER_URL}/comment/${commentId}`)
       .then(() => {
         const filtered = comments.filter((comment) => comment.id !== commentId);
+        setCurrent(null);
+        setCurrent(0);
         setComments([...filtered]);
       });
   };

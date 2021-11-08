@@ -7,7 +7,7 @@ import styled from 'styled-components';
 const Article = styled.li`
   display: flex;
   height: 320px;
-  margin: 10px;
+  margin: 10px 10px 30px 10px;
   flex-direction: column;
   transition: 0.2s;
   border-radius: 10px;

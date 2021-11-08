@@ -136,18 +136,21 @@ const KakaoButton = styled.img`
 `;
 
 const Login = ({ setShowLogin, setShowSignup, setToken }) => {
+  const googleNormal =
+    'https://tiptalk-client.s3.us-east-2.amazonaws.com/btn_google_signin_light_normal_web.png';
+  const googleFocus =
+    'https://tiptalk-client.s3.us-east-2.amazonaws.com/btn_google_signin_light_focus_web.png';
+  const googlePressed =
+    'https://tiptalk-client.s3.us-east-2.amazonaws.com/btn_google_signin_light_pressed_web.png';
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [user, setUser] = useContext(UserContext);
   const [status, setStatus] = useState(null);
-  const [googleButton, setGoogleButton] = useState(
-    'https://tiptalk-client.s3.us-east-2.amazonaws.com/btn_google_signin_light_normal_web.png',
-  );
+  const [googleButton, setGoogleButton] = useState(googleNormal);
 
   const oauth2Handler = () => {
-    setGoogleButton(
-      'https://tiptalk-client.s3.us-east-2.amazonaws.com/btn_google_signin_light_pressed_web.png',
-    );
+    setGoogleButton(googlePressed);
     const CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID;
     const REDIRECT_URI = process.env.REACT_APP_REDIRECT_URI;
     const SCOPE =
@@ -219,13 +222,9 @@ const Login = ({ setShowLogin, setShowSignup, setToken }) => {
 
   const googleButtonHandler = (e) => {
     if (e.type === 'mouseenter') {
-      setGoogleButton(
-        'https://tiptalk-client.s3.us-east-2.amazonaws.com/btn_google_signin_light_focus_web.png',
-      );
+      setGoogleButton(googleFocus);
     } else if (e.type === 'mouseleave') {
-      setGoogleButton(
-        'https://tiptalk-client.s3.us-east-2.amazonaws.com/btn_google_signin_light_normal_web.png',
-      );
+      setGoogleButton(googleNormal);
     }
   };
 

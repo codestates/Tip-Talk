@@ -19,8 +19,8 @@ const ModalBackdrop = styled.div`
   .modalView {
     border-radius: 10px;
     background-color: #ffffff;
-    width: 38rem;
-    height: 42rem;
+    width: 610px;
+    height: 680px;
     display: flex;
     flex-direction: column;
     align-items: center;

@@ -8,7 +8,7 @@ import Thumbnail from '../components/Thumbnail';
 import { data } from '../dummy/post';
 import Modal from '../components/Modal';
 import UserContext from '../context/UserContext';
-import { faTimes, faUser } from '@fortawesome/free-solid-svg-icons';
+import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button } from '../styles/common';
 
@@ -259,50 +259,6 @@ const Carousel = styled.div`
   }
 `;
 
-const Background = styled.div`
-  display: flex;
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.2);
-  justify-content: center;
-  align-items: center;
-  z-index: 11;
-`;
-
-const ModalContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  width: 380px;
-  height: 160px;
-  padding: 20px;
-  border-radius: 6px;
-  background-color: ${({ theme }) => theme.bgColor};
-  box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.55);
-  -webkit-box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.55);
-  -moz-box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.55);
-  align-items: center;
-  animation: 0.15s scale;
-`;
-
-const CloseButton = styled.button`
-  position: absolute;
-  top: 3px;
-  right: 0;
-  color: ${({ theme }) => theme.color};
-  font-size: 20px;
-  border: none;
-  background-color: transparent;
-`;
-
-const Message = styled.span`
-  margin: 20px 0;
-  font-size: 20px;
-`;
-
 const MyPage = () => {
   const show = 4;
   const [editStart, setEditStart] = useState(false);
@@ -465,6 +421,8 @@ const MyPage = () => {
       .catch((err) => {
         if (err.response.data.message === '비밀번호를 확인해주세요') {
           setPasswordMatch(false);
+          setEditDone(false);
+          setIsOpen(false);
         }
       });
   };
@@ -625,80 +583,33 @@ const MyPage = () => {
               ) : (
                 <Button
                   className="edit"
-                  onClick={() => [
-                    passwordLengthCheck(),
-                    submitHandler(),
-                    // passwordMatchHandler(),
-                  ]}
+                  onClick={() => [passwordLengthCheck(), submitHandler()]}
                 >
                   수정 완료
                 </Button>
               )}
+              {console.log('isOpen = ' + isOpen)}
+              {console.log('editDone = ' + editDone)}
               {isOpen === true && editDone === true ? (
-                <Background>
-                  <ModalContainer>
-                    <CloseButton>
-                      <FontAwesomeIcon
-                        icon={faTimes}
-                        onClick={modalCloseHandler}
-                      />
-                    </CloseButton>
-                    <Message>정상적으로 수정되었습니다</Message>
-                    <div>
-                      <Button
-                        width="80px"
-                        margin="3px"
-                        onClick={() => [modalCloseHandler(), submitHandler()]}
-                      >
-                        확인
-                      </Button>
-                    </div>
-                  </ModalContainer>
-                </Background>
+                <Modal
+                  message={'정상적으로 수정되었습니다'}
+                  setIsOpen={setIsOpen}
+                  withoutNo={true}
+                />
               ) : null}
               {passwordLength === true ? null : (
-                <Background>
-                  <ModalContainer>
-                    <CloseButton>
-                      <FontAwesomeIcon
-                        icon={faTimes}
-                        onClick={passwordModalCloseHandler}
-                      />
-                    </CloseButton>
-                    <Message>비밀번호는 8자리 이상이어야 합니다</Message>
-                    <div>
-                      <Button
-                        width="80px"
-                        margin="3px"
-                        onClick={passwordModalCloseHandler}
-                      >
-                        확인
-                      </Button>
-                    </div>
-                  </ModalContainer>
-                </Background>
+                <Modal
+                  message={'비밀번호는 8자리 이상이어야 합니다'}
+                  setIsOpen={setIsOpen}
+                  withoutNo={true}
+                />
               )}
               {passwordMatch === true ? null : (
-                <Background>
-                  <ModalContainer>
-                    <CloseButton>
-                      <FontAwesomeIcon
-                        icon={faTimes}
-                        onClick={passwordMatchModalCloseHandler}
-                      />
-                    </CloseButton>
-                    <Message>예전 비밀번호가 일치하지 않습니다</Message>
-                    <div>
-                      <Button
-                        width="80px"
-                        margin="3px"
-                        onClick={passwordMatchModalCloseHandler}
-                      >
-                        확인
-                      </Button>
-                    </div>
-                  </ModalContainer>
-                </Background>
+                <Modal
+                  message={'예전 비밀번호가 일치하지 않습니다'}
+                  setIsOpen={setIsOpen}
+                  withoutNo={true}
+                />
               )}
             </div>
           </div>

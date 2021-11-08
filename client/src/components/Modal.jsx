@@ -48,7 +48,7 @@ const Message = styled.span`
   font-size: 20px;
 `;
 
-const Modal = ({ message, setIsOpen, callback, no }) => {
+const Modal = ({ message, setIsOpen, callback, no, withoutNo }) => {
   const eventHandler = () => {
     if (callback) {
       callback();
@@ -74,9 +74,11 @@ const Modal = ({ message, setIsOpen, callback, no }) => {
           <Button width="80px" margin="3px" onClick={eventHandler}>
             확인
           </Button>
-          <Button width="80px" margin="3px" onClick={closeModal}>
-            아니요
-          </Button>
+          {withoutNo === true ? null : (
+            <Button width="80px" margin="3px" onClick={closeModal}>
+              아니요
+            </Button>
+          )}
         </div>
       </ModalContainer>
     </Background>

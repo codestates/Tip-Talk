@@ -28,8 +28,7 @@ const ModalBackdrop = styled.div`
     left: 50%;
     top: 40%;
     transform: translate(-50%, -40%);
-    box-shadow: 0 0 20px 20px rgba(255, 0, 0, 0.15),
-      0 0 20px 20px rgba(255, 0, 0, 0.15);
+    box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.3), 0 0 5px 5px rgba(0, 0, 0, 0.3);
 
     .close-btn {
       border-radius: 10px;

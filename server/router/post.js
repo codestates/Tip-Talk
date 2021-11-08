@@ -16,7 +16,13 @@ router.post(
   upload.array('images'),
   postController.uploadPost,
 );
-router.patch('/:id', isLoggedIn, isAuth, postController.editPost);
+router.patch(
+  '/:id',
+  isLoggedIn,
+  isAuth,
+  upload.array('images'),
+  postController.editPost,
+);
 router.delete('/:id', isLoggedIn, isAuth, postController.deletePost);
 
 module.exports.postRouter = router;

@@ -10,7 +10,7 @@ module.exports = {
   },
   oauthController: {
     googleLogin: require('./oauth/googleLogin'),
-    kakaoLogin: require('./oauth/kakaoLogin')
+    kakaoLogin: require('./oauth/kakaoLogin'),
   },
   authController: {
     sendEmail: require('./auth/sendEmail'),
@@ -29,6 +29,7 @@ module.exports = {
     getPosts: require('./post/getPosts'),
     getAround: require('./post/around/getAround'),
     getMyPost: require('./post/mypost/getMyPost'),
+    autoComplete: require('./post/autocomplete'),
   },
   userController: {
     editUserInfo: require('./user/editUserInfo'),

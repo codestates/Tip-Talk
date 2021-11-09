@@ -9,7 +9,7 @@ import UserContext from '../context/UserContext';
 
 const Navbar = styled.nav`
   display: flex;
-  max-width: 1600px;
+  max-width: 1500px;
   height: 70px;
   margin: 0 auto;
   padding: 0 20px;

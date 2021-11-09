@@ -10,10 +10,6 @@ const Article = styled.li`
   margin: 10px 10px 30px 10px;
   flex-direction: column;
   transition: 0.2s;
-  border-radius: 10px;
-  box-shadow: 0px 0px 6px 0px rgba(0, 0, 0, 0.4);
-  -webkit-box-shadow: 0px 0px 6px 0px rgba(0, 0, 0, 0.4);
-  -moz-box-shadow: 0px 0px 6px 0px rgba(0, 0, 0, 0.4);
   overflow: hidden;
   &:hover {
     cursor: pointer;
@@ -27,10 +23,9 @@ const Image = styled.img`
 `;
 
 const ImageInfo = styled.span`
-  height: 28px;
-  padding: 5px 12px 0;
+  height: 32px;
+  padding: 12px 12px 0;
   overflow: hidden;
-  background-color: ${({ theme }) => theme.formColor};
   text-align: ${({ align }) => (align ? align : 'left')};
 `;
 

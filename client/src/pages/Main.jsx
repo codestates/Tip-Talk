@@ -35,24 +35,23 @@ const ImageGrid = styled.ul`
 
 const CustomMeta = styled(Meta)`
   width: 90%;
+  height: 32px;
   max-width: 1400px;
-`;
-
-const Title = styled.h1`
-  margin: 15px;
-  font-size: 38px;
-  color: ${(props) => props.theme.color};
-  @media ${({ theme }) => theme.size.mobile} {
-    font-size: 28px;
-  }
+  box-shadow: none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  background-color: transparent;
+  border: none;
 `;
 
 const CategoryList = styled.div`
   position: absolute;
   display: flex;
-  top: 36px;
-  right: 100px;
-  margin-bottom: 30px;
+  top: 8px;
+  right: 20px;
+  font-size: 20px;
+  padding: 10px 20px;
+  border-bottom: 1px solid ${({ theme }) => theme.line};
   @media ${({ theme }) => theme.size.mobile} {
     top: 20px;
     right: 20px;
@@ -183,7 +182,6 @@ const Main = () => {
         <Coin scrollRef={scrollRef} mode="up" right="40px" bottom="110px" />
         <KakaoMap posts={filteredPosts} handleSearch={handleSearch} />
         <CustomMeta>
-          <Title>{orders[order]}으로 보기</Title>
           <CategoryList>
             {orders.map((o, i) => (
               <Category active={order === i} onClick={ChangeOrder} key={i}>

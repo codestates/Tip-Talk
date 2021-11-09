@@ -49,8 +49,8 @@ export const Column = styled.div`
   width: 50%;
   margin: 0 20px;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
+  justify-content: space-between;
   @media ${({ theme }) => theme.size.tablet} {
     width: 70%;
   }
@@ -79,17 +79,21 @@ export const CarouselContainer = styled.div`
 
 const CustomMeta = styled(Meta)`
   width: 100%;
+  margin-bottom: 0px;
+  padding: 10px 25px;
+  box-shadow: none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  background-color: transparent;
+  .title {
+    display: flex;
+    align-items: center;
+  }
 `;
 
-const EditButton = styled.button`
-  position: absolute;
-  right: 10px;
-  width: 30px;
-  height: 30px;
-  font-size: 20px;
-  color: ${Color_4};
-  border: none;
-  background-color: transparent;
+const Row = styled.div`
+  display: flex;
+  justify-content: space-between;
 `;
 
 const Map = styled.div`
@@ -97,9 +101,9 @@ const Map = styled.div`
   height: 360px;
   border-radius: 8px;
   margin: 20px 0;
-  box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.2);
-  -webkit-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.2);
-  -moz-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.2);
+  -webkit-box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.2);
   .container {
     padding: 8px 16px;
     border-radius: 6px;
@@ -112,10 +116,10 @@ const Map = styled.div`
   }
 `;
 
-const LikeForm = styled.div`
+const CoinForm = styled.div`
   display: flex;
   position: fixed;
-  bottom: 110px;
+  bottom: ${({ bottom }) => bottom};
   right: 40px;
   width: 40px;
   height: 40px;
@@ -130,21 +134,28 @@ const LikeForm = styled.div`
   z-index: 10;
   :hover {
     cursor: pointer;
+    color: ${({ theme }) => theme.navBgColor};
+    background-color: ${Color_3};
   }
 `;
 
-const LikeButton = styled.button`
+const CoinButton = styled.button`
   width: 40px;
   height: 40px;
   font-size: 22px;
   border: none;
   color: ${({ isLike }) => (isLike ? Color_4 : Color_3)};
   background-color: transparent;
+  :hover {
+    color: ${({ isLike, theme }) => (isLike ? Color_4 : theme.navBgColor)};
+  }
 `;
 
-const TextEditor = styled(EditorForm)`
-  margin-bottom: 20px;
+const Wrapper = styled.div`
+  width: 100%;
 `;
+
+const TextEditor = styled(EditorForm)``;
 
 const Post = () => {
   const map = useRef();
@@ -409,30 +420,36 @@ const Post = () => {
         />
       )}
       <PostContainer>
+        <CoinForm bottom="110px">
+          <CoinButton isLike={post?.isLike} onClick={() => setIsLikeOpen(true)}>
+            <FontAwesomeIcon icon={faHeart} />
+          </CoinButton>
+        </CoinForm>
+        {user?.id === post?.userId && (
+          <CoinForm bottom="160px">
+            <CoinButton onClick={goToEdit}>
+              <FontAwesomeIcon icon={faEdit} />
+            </CoinButton>
+          </CoinForm>
+        )}
         <Column>
           <CustomMeta>
-            {user?.id === post?.userId && (
-              <EditButton onClick={goToEdit}>
-                <FontAwesomeIcon className="icon" icon={faEdit} />
-              </EditButton>
-            )}
-            <div>
-              <Label>상호명</Label>
-              <Text size="24px">{post?.title}</Text>
-            </div>
-          </CustomMeta>
-          <CustomMeta>
-            <div>
-              <Label>카테고리</Label>
-              <Text>{post?.category?.value}</Text>
-              <Label>주소</Label>
-              <Text>{post?.region}</Text>
+            <div className="title">
+              <Text size="48px">{post?.title}</Text>
             </div>
             <div>
-              <Label>조회수</Label>
-              <Text>{post?.views}</Text>
-              <Label>좋아요</Label>
-              <Text>{post?.likes}</Text>
+              <Label top="0">주소</Label>
+              <Text size="14px">{post?.region}</Text>
+              <Row>
+                <div>
+                  <Label top="0">조회수</Label>
+                  <Text size="14px">{post?.views}</Text>
+                </div>
+                <div>
+                  <Label top="0">좋아요</Label>
+                  <Text size="14px">{post?.likes}</Text>
+                </div>
+              </Row>
             </div>
           </CustomMeta>
           <CarouselContainer>
@@ -440,43 +457,39 @@ const Post = () => {
           </CarouselContainer>
           <Info>{post?.title} 주변엔 어떤 것이 있나요?</Info>
           <Map id="map" />
-          <LikeForm>
-            <LikeButton
-              isLike={post?.isLike}
-              onClick={() => setIsLikeOpen(true)}
-            >
-              <FontAwesomeIcon icon={faHeart} />
-            </LikeButton>
-          </LikeForm>
         </Column>
         <Column>
-          <Info>{post?.title} 소개</Info>
-          <TextEditor>
-            {value && (
-              <Slate
-                editor={editor}
-                value={value}
-                onChange={(data) => setValue(data)}
-              >
-                <Editable
-                  readOnly
-                  renderElement={renderElement}
-                  renderLeaf={renderLeaf}
-                  className="Editor"
-                />
-              </Slate>
-            )}
-          </TextEditor>
-          <Info>댓글</Info>
-          <Comments
-            comments={comments}
-            handleSubmit={handleSubmit}
-            handleEdit={handleEdit}
-            handleDelete={handleDelete}
-            ChangePage={ChangePage}
-            pages={getPages(pages)}
-            current={current}
-          />
+          <Wrapper>
+            <Info>{post?.title} 소개</Info>
+            <TextEditor>
+              {value && (
+                <Slate
+                  editor={editor}
+                  value={value}
+                  onChange={(data) => setValue(data)}
+                >
+                  <Editable
+                    readOnly
+                    renderElement={renderElement}
+                    renderLeaf={renderLeaf}
+                    className="Editor"
+                  />
+                </Slate>
+              )}
+            </TextEditor>
+          </Wrapper>
+          <Wrapper>
+            <Info>댓글</Info>
+            <Comments
+              comments={comments}
+              handleSubmit={handleSubmit}
+              handleEdit={handleEdit}
+              handleDelete={handleDelete}
+              ChangePage={ChangePage}
+              pages={getPages(pages)}
+              current={current}
+            />
+          </Wrapper>
         </Column>
       </PostContainer>
     </Body>

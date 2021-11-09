@@ -50,8 +50,8 @@ const CategoryList = styled.div`
   top: 8px;
   right: 20px;
   font-size: 20px;
-  padding: 10px 20px;
-  border-bottom: 1px solid ${({ theme }) => theme.line};
+  padding: 10px 5px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
   @media ${({ theme }) => theme.size.mobile} {
     top: 20px;
     right: 20px;
@@ -61,7 +61,7 @@ const CategoryList = styled.div`
 const Category = styled.button`
   color: ${({ active }) => (active ? Color_1 : Color_6)};
   border: none;
-  border-right: 1px solid ${({ theme }) => theme.line};
+  border-right: 1px solid rgba(0, 0, 0, 0.1);
   background-color: transparent;
   &:last-child {
     border: none;

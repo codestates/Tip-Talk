@@ -31,7 +31,9 @@ module.exports = (req, res) => {
           const { email, name, picture } = data;
 
           try {
-            const findUser = await user.findOne({ where: { email } });
+            const findUser = await user.findOne({
+              where: { email, platform: 1 },
+            });
 
             if (!findUser) {
               await user.create({
@@ -43,7 +45,7 @@ module.exports = (req, res) => {
                 platform: 1,
               });
             }
-            const found = await user.findOne({ where: { email } });
+            const found = await user.findOne({ where: { email, platform: 1 } });
 
             const token = await jwt.sign(
               {

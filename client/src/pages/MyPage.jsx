@@ -49,7 +49,7 @@ const Header = styled.div`
 
 const ProfileSection = styled.div`
   width: 800px;
-  height: 300px;
+  height: 330px;
   position: relative;
   top: 8rem;
   display: flex;
@@ -85,11 +85,12 @@ const ProfileSection = styled.div`
       display: flex;
       flex-direction: column;
       align-items: center;
+      justify-content: space-between;
       .email-div {
+        top: 1.5rem;
         line-height: 2.5rem;
         border: solid 1px blue;
         position: relative;
-        top: 4rem;
         width: 14rem;
         height: 2.5rem;
       }
@@ -111,7 +112,6 @@ const ProfileSection = styled.div`
       }
       #nickname-input {
         position: relative;
-        top: 5rem;
         width: 14rem;
         height: 2.5rem;
         font-size: 1.5rem;
@@ -123,7 +123,6 @@ const ProfileSection = styled.div`
       }
       #password-input {
         position: relative;
-        top: 5.5rem;
         width: 14rem;
         height: 2.5rem;
         font-size: 1.5rem;
@@ -135,7 +134,6 @@ const ProfileSection = styled.div`
       }
       #old-password-input {
         position: relative;
-        top: 4.5rem;
         width: 14rem;
         height: 2.5rem;
         font-size: 1.5rem;
@@ -167,11 +165,35 @@ const ProfileSection = styled.div`
       align-items: center;
     }
   }
+  .wrapper-before-edit {
+    display: flex;
+    flex-direction: column;
+    width: 240px;
+    height: 100%;
+    align-items: center;
+
+    .before-edit-email-div {
+      top: 6rem;
+      line-height: 2.5rem;
+      border: solid 1px blue;
+      position: relative;
+      width: 14rem;
+      height: 2.5rem;
+    }
+
+    .before-edit-nickname-div {
+      line-height: 2.5rem;
+      border: solid 1px blue;
+      position: relative;
+      top: 8rem;
+      width: 14rem;
+      height: 2.5rem;
+    }
+  }
 `;
 
 const RadioSection = styled.div`
   position: relative;
-  top: 6.5rem;
   width: 14rem;
   .owner-div {
     display: inline-block;
@@ -192,6 +214,32 @@ const RadioSection = styled.div`
     display: inline-block;
     position: relative;
     left: 1rem;
+  }
+
+  .before-edit-radio-container {
+    position: relative;
+    top: 10.5rem;
+
+    .before-edit-owner-div {
+      display: inline-block;
+      position: relative;
+      right: 1.5rem;
+    }
+    #before-edit-owner-radio {
+      display: inline-block;
+      position: relative;
+      right: 2rem;
+    }
+    .before-edit-user-div {
+      display: inline-block;
+      position: relative;
+      left: 1.5rem;
+    }
+    #before-edit-user-radio {
+      display: inline-block;
+      position: relative;
+      left: 1rem;
+    }
   }
 `;
 
@@ -264,6 +312,20 @@ const Carousel = styled.div`
   }
 `;
 
+const ErrorMessage = styled.div`
+  color: red;
+
+  .password-length-over-8 {
+    position: relative;
+    bottom: 7rem;
+  }
+
+  .password-not-match {
+    position: relative;
+    bottom: 18rem;
+  }
+`;
+
 const MyPage = () => {
   const show = 4;
   const [isEditing, setIsEditing] = useState(false);
@@ -273,18 +335,18 @@ const MyPage = () => {
   const [posts, setPosts] = useState(data);
   const [isOpen, setIsOpen] = useState(false);
   const [nickname, setNickname] = useState(null);
-  const [password, setPassword] = useState(null);
+  const [password, setPassword] = useState('');
   const [oldpassword, setOldpassword] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [imageLength, setImageLength] = useState(posts.length);
-  const [is8Digit, setIs8Digit] = useState(null);
+  const [is8Digit, setIs8Digit] = useState(true);
   const fileInput = useRef(null);
   const scrollRef = useRef();
   const history = useHistory();
   const { id } = useParams();
   const [userInfo, setUserInfo] = useState(null);
   const [user, setUser] = useContext(UserContext);
-  const [isPasswordMatch, setIsPasswordMatch] = useState(null);
+  const [isPasswordMatch, setIsPasswordMatch] = useState(true);
   const [correctUser, setCorrectUser] = useState(null);
 
   useEffect(() => {
@@ -292,24 +354,25 @@ const MyPage = () => {
   }, [posts]);
 
   useEffect(() => {
-    if (userInfo) {
+    if (userInfo !== null) {
+      const { role } = userInfo;
+      const owner = document.getElementById('before-edit-owner-radio');
+      const user = document.getElementById('before-edit-user-radio');
+      if (owner !== null && user !== null) {
+        if (role === 1) {
+          document.getElementById('before-edit-owner-radio').checked = true;
+        } else if (role === 2) {
+          document.getElementById('before-edit-user-radio').checked = true;
+        }
+      }
+    }
+
+    if (isEditing === true && userInfo !== null) {
       const { role } = userInfo;
       if (role === 1) {
         document.getElementById('owner-radio').checked = true;
       } else if (role === 2) {
         document.getElementById('user-radio').checked = true;
-      }
-    }
-
-    if (isEditing === true) {
-      const el = document.querySelector('input[name=role2]:checked');
-      if (el !== null) {
-        const role = el.value;
-        if (role === 1) {
-          document.getElementById('owner-radio').checked = true;
-        } else if (role === 2) {
-          document.getElementById('user-radio').checked = true;
-        }
       }
     }
   }, [userInfo, isEditing]);
@@ -369,11 +432,6 @@ const MyPage = () => {
     setIsClose(true);
   };
 
-  const modalCloseHandler = () => {
-    setIsOpen(false);
-    setIs8Digit(false);
-  };
-
   const editCompleteModalCloseHandler = () => {
     setIsEditing(false);
   };
@@ -411,15 +469,7 @@ const MyPage = () => {
     const el = document.querySelector('input[name=role2]:checked');
     if (el !== null) {
       const role = el.value;
-      console.log('password = ' + password?.length);
-      console.log('isPasswordMatch = ' + isPasswordMatch);
-      console.log('is8Digit = ' + is8Digit);
-      if (
-        password?.length === undefined ||
-        password?.length === 0 ||
-        ((isPasswordMatch === true || isPasswordMatch === null) &&
-          (is8Digit === true || is8Digit === null))
-      ) {
+      {
         axios
           .patch(`${process.env.REACT_APP_SERVER_URL}/user/${id}`, {
             nickname,
@@ -451,12 +501,8 @@ const MyPage = () => {
   };
 
   const checkPassword = () => {
-    if (password) {
-      if (password.length >= 8) {
-        setIs8Digit(true);
-      } else {
-        setIs8Digit(false);
-      }
+    if (password?.length >= 8) {
+      setIs8Digit(true);
     } else {
       setIs8Digit(false);
     }
@@ -568,26 +614,32 @@ const MyPage = () => {
                 )
               ) : (
                 <>
-                  <div className="email-div">{userInfo?.email}</div>
-                  <div className="nickname-div">{userInfo?.nickname}</div>
-                  <RadioSection>
-                    <div className="radio-container">
-                      <input
-                        type="radio"
-                        id="owner-radio"
-                        name="role1"
-                        value="1"
-                      />
-                      <div className="owner-div">사업자</div>
-                      <input
-                        type="radio"
-                        id="user-radio"
-                        name="role1"
-                        value="2"
-                      />
-                      <div className="user-div">일반사용자</div>
+                  <div className="wrapper-before-edit">
+                    <div className="before-edit-email-div">
+                      {userInfo?.email}
                     </div>
-                  </RadioSection>
+                    <div className="before-edit-nickname-div">
+                      {userInfo?.nickname}
+                    </div>
+                    <RadioSection>
+                      <div className="before-edit-radio-container">
+                        <input
+                          type="radio"
+                          id="before-edit-owner-radio"
+                          name="role1"
+                          value="1"
+                        />
+                        <div className="before-edit-owner-div">사업자</div>
+                        <input
+                          type="radio"
+                          id="before-edit-user-radio"
+                          name="role1"
+                          value="2"
+                        />
+                        <div className="before-edit-user-div">일반사용자</div>
+                      </div>
+                    </RadioSection>
+                  </div>
                 </>
               )}
             </div>
@@ -608,36 +660,33 @@ const MyPage = () => {
                   수정 완료
                 </Button>
               )}
-              {isOpen === true &&
-              (isPasswordMatch === true || isPasswordMatch === null) &&
-              (password === null || password === '' || is8Digit === true) ? (
-                <Modal
-                  message={'정상적으로 수정되었습니다'}
-                  setIsOpen={setIsOpen}
-                  withoutNo={true}
-                  callback={() => [editCompleteModalCloseHandler()]}
-                />
-              ) : null}
-
-              {isOpen === true &&
-              is8Digit === false &&
-              password !== null &&
-              password !== '' ? (
-                <Modal
-                  message={'비밀번호는 8자리 이상이어야 합니다'}
-                  setIsOpen={setIsOpen}
-                  withoutNo={true}
-                  callback={modalCloseHandler}
-                />
-              ) : isOpen === true && isPasswordMatch === false ? (
-                <Modal
-                  message={'예전 비밀번호와 일치하지 않습니다'}
-                  setIsOpen={setIsOpen}
-                  withoutNo={true}
-                  callback={modalCloseHandler}
-                />
+              {userInfo?.platform === 0 ? (
+                isOpen === true &&
+                is8Digit === true &&
+                isPasswordMatch === true ? (
+                  <Modal
+                    message={'정상적으로 수정되었습니다'}
+                    setIsOpen={setIsOpen}
+                    withoutNo={true}
+                    callback={() => [editCompleteModalCloseHandler()]}
+                  />
+                ) : null
               ) : null}
             </div>
+            {is8Digit === true || password?.length === 0 ? null : (
+              <ErrorMessage>
+                <div className="password-length-over-8">
+                  비밀번호는 8자리 이상이어야 합니다
+                </div>
+              </ErrorMessage>
+            )}
+            {isPasswordMatch === true ? null : (
+              <ErrorMessage>
+                <div className="password-not-match">
+                  예전 비밀번호와 일치하지 않습니다
+                </div>
+              </ErrorMessage>
+            )}
           </div>
           <div className="wrapper-3">
             <div className="wrapper-3-1"></div>

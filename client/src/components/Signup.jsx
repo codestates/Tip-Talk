@@ -166,6 +166,11 @@ const ErrorMessage = styled.div`
     top: 34rem;
     left: 9.5rem;
   }
+  .verification-not-match-error {
+    position: fixed;
+    top: 34.5rem;
+    left: 9.5rem;
+  }
 `;
 
 const RadioSection = styled.div`
@@ -199,6 +204,9 @@ const Signup = ({ setShowLogin, setShowSignup }) => {
   const [role, setRole] = useState(null);
   const [isExist, setIsExist] = useState(false);
   const [passwordLength, setPasswordLength] = useState(true);
+  const [verificationCode, setVerificationCode] = useState(null);
+  const [inputVerification, setInputVerification] = useState(null);
+  const [isVerified, setIsVerified] = useState(null);
 
   const closeSignupModal = () => {
     setShowSignup(false);
@@ -259,7 +267,10 @@ const Signup = ({ setShowLogin, setShowSignup }) => {
   };
 
   const submitHandler = () => {
-    if (passwordValidation() === true) {
+    if (
+      passwordValidation() === true &&
+      checkVerificationCodeMatch() === true
+    ) {
       axios
         .post(`${process.env.REACT_APP_SERVER_URL}/auth/signup`, {
           email,
@@ -289,8 +300,26 @@ const Signup = ({ setShowLogin, setShowSignup }) => {
   const verificationHandler = () => {
     axios
       .post('http://localhost:8000/auth/sendEmail', { email })
-      .then((res) => console.log(res))
+      .then((res) => {
+        const { number } = res.data.data;
+        console.log('number = ' + number);
+        setVerificationCode(number);
+      })
       .catch((err) => console.log(err));
+  };
+
+  const verificationInputHandler = (e) => {
+    setInputVerification(e.target.value);
+  };
+
+  const checkVerificationCodeMatch = () => {
+    if (verificationCode === inputVerification) {
+      setIsVerified(true);
+      return true;
+    } else {
+      setIsVerified(false);
+      return false;
+    }
   };
 
   return (
@@ -320,6 +349,7 @@ const Signup = ({ setShowLogin, setShowSignup }) => {
               type="text"
               id="verification"
               placeholder="verification code"
+              onChange={verificationInputHandler}
             />
             {emailValidation() === false ? (
               <ErrorMessage>
@@ -416,6 +446,13 @@ const Signup = ({ setShowLogin, setShowSignup }) => {
             <ErrorMessage>
               <div className="password-length-error">
                 비밀번호는 8자리 이상이어야 합니다
+              </div>
+            </ErrorMessage>
+          ) : null}
+          {isVerified === false ? (
+            <ErrorMessage>
+              <div className="verification-not-match-error">
+                인증번호가 일치하지 않습니다
               </div>
             </ErrorMessage>
           ) : null}

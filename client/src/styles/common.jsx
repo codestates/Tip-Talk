@@ -73,28 +73,27 @@ export const Meta = styled.div`
   padding: 10px 45px;
   background-color: ${({ theme }) => theme.formColor};
   border-radius: 6px;
-  box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.2);
-  -webkit-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.2);
-  -moz-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.2);
+  -webkit-box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.2);
   justify-content: space-between;
-
   @media ${({ theme }) => theme.size.mobile} {
     padding: 0 15px;
   }
 `;
 
 export const Label = styled.div`
-  font-size: 13px;
+  font-size: ${({ size }) => (size ? size : '13px')};
   margin: 6px 0;
-  margin-top: 20px;
+  margin-top: ${({ top }) => (top ? top : '20px')};
   font-weight: 500;
 `;
 
 export const Text = styled.div`
   font-size: ${({ size }) => (size ? size : '18px')};
   font-weight: 500;
-  margin-left: 5px;
-  margin-bottom: 20px;
+  margin-left: 10px;
+  margin-bottom: 10px;
 `;
 
 export const Info = styled.h3`

@@ -19,16 +19,22 @@ export const ModalBackground = styled.div`
   transition: 0.25s;
   align-items: center;
   z-index: 11;
-  @media ${({ theme }) => theme.size.mobile} {
+  @media ${({ theme }) => theme.size.tablet} {
     top: 0px;
+    width: 280px;
+  }
+  @media ${({ theme }) => theme.size.mobile} {
     width: 180px;
   }
 `;
 
 const CarouselContainer = styled.div`
   width: 100%;
-  height: 280px;
+  height: 320px;
   border-radius: 6px;
+  @media ${({ theme }) => theme.size.tablet} {
+    height: 260px;
+  }
   @media ${({ theme }) => theme.size.mobile} {
     height: 180px;
   }
@@ -38,7 +44,7 @@ const Info = styled.div`
   width: 100%;
   padding: 20px 20px 0 20px;
   color: ${Color_3};
-  @media ${({ theme }) => theme.size.mobile} {
+  @media ${({ theme }) => theme.size.tablet} {
     padding: 10px 10px 0 10px;
   }
 `;
@@ -76,7 +82,7 @@ const Text = styled.h1`
   font-size: 20px;
   font-weight: 600;
   margin: 6px 0 15px 4px;
-  @media ${({ theme }) => theme.size.mobile} {
+  @media ${({ theme }) => theme.size.tablet} {
     font-size: 16px;
     margin: 6px 0 6px 4px;
   }

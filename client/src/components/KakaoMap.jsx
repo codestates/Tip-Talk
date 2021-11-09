@@ -10,6 +10,7 @@ import { Button, Color_1, Color_3 } from '../styles/common';
 import MapModal, { ModalBackground } from './MapModal';
 import Modal from './Modal';
 import Navigator from './Navigator';
+import AutoComplete from './AutoComplete';
 
 const MapContainer = styled.div`
   position: relative;
@@ -49,7 +50,7 @@ const SearchForm = styled.form`
   border-radius: 3px;
   align-items: center;
   z-index: 12;
-  @media ${({ theme }) => theme.size.mobile} {
+  @media ${({ theme }) => theme.size.tablet} {
     top: -70px;
     left: 0;
     right: 0;
@@ -65,7 +66,7 @@ const Input = styled.input`
   border: none;
   padding: 0 8px;
   border-radius: 3px;
-  @media ${({ theme }) => theme.size.mobile} {
+  @media ${({ theme }) => theme.size.tablet} {
     margin-right: 10px;
   }
 `;
@@ -130,6 +131,8 @@ const KakaoMap = ({ posts, handleSearch }) => {
   const [address, setAddress] = useState();
   const [isMarked, setMarked] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [auto, setAuto] = useState();
+  const [isFocus, setIsFocus] = useState(false);
   const [user] = useContext(UserContext);
   const [marker, setMaker] = useState([]);
   const [naviIsOpen, setNaviIsOpen] = useState(true);
@@ -272,6 +275,33 @@ const KakaoMap = ({ posts, handleSearch }) => {
     history.push({ pathname: '/upload', state: { ...address } });
   };
 
+  const handleInputChange = () => {
+    const { value } = inputRef.current;
+
+    if (value) {
+      axios
+        .get(`${process.env.REACT_APP_SERVER_URL}/post/search`, {
+          params: { search: value },
+        })
+        .then(({ data }) => {
+          const { post } = data.data;
+          if (post.length) {
+            const result = post.map((p) => p.title);
+            setAuto(result);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      setAuto();
+    }
+  };
+
+  const changeInputValue = (value) => {
+    inputRef.current.value = value;
+  };
+
   return (
     <MapContainer>
       {isOpen && (
@@ -282,7 +312,13 @@ const KakaoMap = ({ posts, handleSearch }) => {
         />
       )}
       <SearchForm>
-        <Input ref={inputRef} placeholder="검색어를 입력해주세요" />
+        <Input
+          ref={inputRef}
+          onChange={handleInputChange}
+          onFocus={() => setIsFocus(true)}
+          onBlur={() => setIsFocus(false)}
+          placeholder="검색어를 입력해주세요"
+        />
         <Search type="submit" onClick={onSearch}>
           <FontAwesomeIcon icon={faSearch} />
         </Search>
@@ -296,6 +332,9 @@ const KakaoMap = ({ posts, handleSearch }) => {
             ))}
           </Select>
         </Categories>
+        {auto && isFocus && (
+          <AutoComplete value={auto} changeInputValue={changeInputValue} />
+        )}
       </SearchForm>
       <Map ref={containerRef} id="map">
         {naviIsOpen && (

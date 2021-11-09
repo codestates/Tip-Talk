@@ -12,6 +12,7 @@ import Modal from './Modal';
 
 const Container = styled.section`
   position: relative;
+  width: 100%;
   border-radius: 6px;
   background-color: ${({ theme }) => theme.formColor};
   box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.2);
@@ -20,6 +21,7 @@ const Container = styled.section`
 `;
 
 const CommentList = styled.ul`
+  width: 100%;
   height: 500px;
   padding: 20px 20px 10px 20px;
 `;

@@ -9,11 +9,12 @@ module.exports = async (req, res) => {
       .status(400)
       .json({ status: false, message: '존재하지 않는 유저입니다.' });
   }
+  console.log('userInfo ============= ', userInfo);
 
   const { email, nickname, password, img, role, platform } = userInfo;
 
   return res.status(200).json({
     status: true,
-    data: { email, nickname, password, img, role, platform },
+    data: { id, email, nickname, password, img, role, platform },
   });
 };

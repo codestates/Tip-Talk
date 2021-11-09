@@ -61,7 +61,7 @@ const Modal = ({ message, setIsOpen, callback, no, withoutNo }) => {
     if (no) {
       no();
     }
-    setIsOpen();
+    setIsOpen(false);
   };
   return (
     <Background>

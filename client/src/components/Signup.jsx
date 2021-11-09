@@ -86,8 +86,8 @@ const InputSection = styled.div`
 
   .verification-button {
     position: relative;
-    top: 2rem;
-    left: 13rem;
+    top: 1rem;
+    left: 14rem;
   }
 
   .password-line {
@@ -148,7 +148,7 @@ const ErrorMessage = styled.div`
   }
   .passwordError {
     position: fixed;
-    top: 30rem;
+    top: 31rem;
     left: 9.5rem;
   }
   .conflictError {
@@ -170,7 +170,7 @@ const ErrorMessage = styled.div`
 
 const RadioSection = styled.div`
   position: relative;
-  top: 5.5rem;
+  top: 6rem;
   text-align: center;
   display: flex;
   justify-content: center;
@@ -286,6 +286,13 @@ const Signup = ({ setShowLogin, setShowSignup }) => {
     }
   };
 
+  const verificationHandler = () => {
+    axios
+      .post('http://localhost:8000/auth/sendEmail', { email })
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
+  };
+
   return (
     <>
       <ModalBackdrop onClick={closeSignupModal}>
@@ -303,7 +310,12 @@ const Signup = ({ setShowLogin, setShowSignup }) => {
                 onChange={emailHandler}
               />
             </div>
-            <button className="verification-button">인증하기</button>
+            <Button
+              className="verification-button"
+              onClick={verificationHandler}
+            >
+              인증하기
+            </Button>
             <input
               type="text"
               id="verification"
@@ -366,7 +378,7 @@ const Signup = ({ setShowLogin, setShowSignup }) => {
                   value="2"
                   onClick={roleHandler}
                 />
-                <div className="user">일반인</div>
+                <div className="user">일반사용자</div>
               </div>
             </div>
           </RadioSection>

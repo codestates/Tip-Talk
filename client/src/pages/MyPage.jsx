@@ -261,12 +261,12 @@ const Carousel = styled.div`
 
 const MyPage = () => {
   const show = 4;
-  const [isEditing, setIsEditing] = useState(null);
+  const [isEditing, setIsEditing] = useState(false);
   const [isClose, setIsClose] = useState(null);
   const [image, setImage] = useState(null);
   const [imageBase64, setImageBase64] = useState(null);
   const [posts, setPosts] = useState(data);
-  const [isOpen, setIsOpen] = useState(null);
+  const [isOpen, setIsOpen] = useState(false);
   const [nickname, setNickname] = useState(null);
   const [password, setPassword] = useState(null);
   const [oldpassword, setOldpassword] = useState(null);
@@ -277,7 +277,8 @@ const MyPage = () => {
   const scrollRef = useRef();
   const history = useHistory();
   const { id } = useParams();
-  const [user, setUser] = useState(null);
+  const [userInfo, setUserInfo] = useState(null);
+  const [user, setUser] = useContext(UserContext);
   const [isPasswordMatch, setIsPasswordMatch] = useState(null);
 
   useEffect(() => {
@@ -285,8 +286,8 @@ const MyPage = () => {
   }, [posts]);
 
   useEffect(() => {
-    if (user) {
-      const { role } = user;
+    if (userInfo) {
+      const { role } = userInfo;
       if (role === 1) {
         document.getElementById('owner-radio').checked = true;
       } else if (role === 2) {
@@ -305,25 +306,26 @@ const MyPage = () => {
         }
       }
     }
-  }, [user, isEditing]);
+  }, [userInfo, isEditing]);
 
   useEffect(() => {
-    if (user) {
-      const { img } = user;
+    if (userInfo) {
+      const { img } = userInfo;
       setImage(img);
     }
-  }, [user]);
+  }, [userInfo]);
 
   useEffect(() => {
     axios
       .get(`http://localhost:8000/user/${id}`)
       .then((res) => {
+        console.log('useeffect');
         const { data } = res.data;
-        setUser(data);
+        setUserInfo(data);
         setImage(data.img);
       })
       .catch((err) => console.log(err));
-  }, []);
+  }, [isEditing]);
 
   const editHandler = () => {
     setIsEditing(true);
@@ -357,15 +359,23 @@ const MyPage = () => {
     }
   };
 
-  const modalOpenHandler = () => {
+  const closeModalOpenHandler = () => {
     setIsOpen(true);
     setIsClose(true);
   };
 
   const modalCloseHandler = () => {
     setIsOpen(false);
-    setIsPasswordMatch(true);
-    setIs8Digit(true);
+    setIs8Digit(false);
+  };
+
+  const editCompleteModalCloseHandler = () => {
+    setIsEditing(false);
+  };
+
+  const modalOpenHandler = () => {
+    setIsOpen(true);
+    setIsClose(false);
   };
 
   const deleteHandler = () => {
@@ -375,7 +385,7 @@ const MyPage = () => {
       })
       .then((res) => {
         history.push('/');
-        setUser(null);
+        setUserInfo(null);
       })
       .catch((err) => console.log(err));
   };
@@ -396,19 +406,30 @@ const MyPage = () => {
     const el = document.querySelector('input[name=role2]:checked');
     if (el !== null) {
       const role = el.value;
-      axios
-        .patch(`${process.env.REACT_APP_SERVER_URL}/user/${id}`, {
-          nickname,
-          oldpassword,
-          password,
-          role,
-        })
-        .then((res) => console.log(res))
-        .catch((err) => {
-          if (err.response.data.message === '비밀번호를 확인해주세요') {
+      console.log('password = ' + password?.length);
+      console.log('isPasswordMatch = ' + isPasswordMatch);
+      console.log('is8Digit = ' + is8Digit);
+      if (
+        password?.length === undefined ||
+        password?.length === 0 ||
+        ((isPasswordMatch === true || isPasswordMatch === null) &&
+          (is8Digit === true || is8Digit === null))
+      ) {
+        axios
+          .patch(`${process.env.REACT_APP_SERVER_URL}/user/${id}`, {
+            nickname,
+            oldpassword,
+            password,
+            role,
+          })
+          .then(() => {
+            setIsPasswordMatch(true);
+          })
+          .catch((err) => {
+            console.log(err.response);
             setIsPasswordMatch(false);
-          }
-        });
+          });
+      }
     }
   };
 
@@ -424,231 +445,481 @@ const MyPage = () => {
     }
   };
 
-  const checkPasswordLength = () => {
+  const checkPassword = () => {
     if (password) {
       if (password.length >= 8) {
         setIs8Digit(true);
       } else {
         setIs8Digit(false);
       }
+    } else {
+      setIs8Digit(false);
     }
   };
 
   return (
     <>
-      <Scroll ref={scrollRef} />
-      <Coin scrollRef={scrollRef} mode="up" right="40px" bottom="110px" />
-      <Container>
-        <Header>
-          <div className="top-header">마이페이지</div>
-        </Header>
-        <ProfileSection>
-          <div className="wrapper-1">
-            <div className="wrapper-1-1">
-              {image ? (
-                <img src={image} />
-              ) : imageBase64 ? (
-                <img src={imageBase64} />
-              ) : (
-                <FontAwesomeIcon icon={faUser} size="10x" />
-              )}
-            </div>
-            <div className="wrapper-1-2">
-              <input
-                type="file"
-                id="fileInput"
-                accept="image/*"
-                ref={fileInput}
-                onChange={fileHandler}
-              />
-              <Button onClick={() => fileInput.current.click()}>
-                이미지 변경
-              </Button>
-            </div>
-          </div>
-          <div className="wrapper-2">
-            <div className="wrapper-2-1">
-              {isEditing === true ? (
-                user?.platform === 0 ? (
-                  <>
-                    <div className="email-div">{user?.email}</div>
-                    <input
-                      type="password"
-                      id="old-password-input"
-                      placeholder="old password"
-                      onChange={oldPasswordHandler}
-                    />
-                    <input
-                      type="text"
-                      id="nickname-input"
-                      placeholder="new nickname"
-                      onChange={nicknameHandler}
-                    />
-                    <input
-                      type="password"
-                      id="password-input"
-                      placeholder="new password"
-                      onChange={passwordHandler}
-                    />
-                    <RadioSection>
-                      <input
-                        type="radio"
-                        id="owner-radio"
-                        name="role2"
-                        value="1"
-                      />
-                      <div className="owner-div">사업자</div>
-                      <input
-                        type="radio"
-                        id="user-radio"
-                        name="role2"
-                        value="2"
-                      />
-                      <div className="user-div">일반인</div>
-                    </RadioSection>
-                  </>
-                ) : (
-                  <>
-                    <div className="email-div">{user?.email}</div>
-                    <input
-                      type="text"
-                      id="nickname-input"
-                      placeholder="new nickname"
-                      onChange={nicknameHandler}
-                    />
-                    <RadioSection>
-                      <input
-                        type="radio"
-                        id="owner-radio"
-                        name="role2"
-                        value="1"
-                      />
-                      <div className="owner-div">사업자</div>
-                      <input
-                        type="radio"
-                        id="user-radio"
-                        name="role2"
-                        value="2"
-                      />
-                      <div className="user-div">일반인</div>
-                    </RadioSection>
-                  </>
-                )
-              ) : (
-                <>
-                  <div className="email-div">{user?.email}</div>
-                  <div className="nickname-div">{user?.nickname}</div>
-                  <RadioSection>
-                    <div className="radio-container">
-                      <input
-                        type="radio"
-                        id="owner-radio"
-                        name="role1"
-                        value="1"
-                      />
-                      <div className="owner-div">사업자</div>
-                      <input
-                        type="radio"
-                        id="user-radio"
-                        name="role1"
-                        value="2"
-                      />
-                      <div className="user-div">일반인</div>
-                    </div>
-                  </RadioSection>
-                </>
-              )}
-            </div>
-            <div className="wrapper-2-2">
-              {isEditing === false || isEditing === null ? (
-                <Button className="edit" onClick={editHandler}>
-                  수정하기
-                </Button>
-              ) : (
-                <Button
-                  className="edit"
-                  onClick={() => [submitHandler(), checkPasswordLength()]}
-                >
-                  수정 완료
-                </Button>
-              )}
-              {isOpen === true ? (
-                <Modal
-                  message={'정상적으로 수정되었습니다'}
-                  setIsOpen={setIsOpen}
-                  withoutNo={true}
-                  callback={modalCloseHandler}
-                />
-              ) : null}
-              {(isOpen === false || isOpen === null || isOpen === undefined) &&
-              (is8Digit === true || is8Digit === null) ? null : (
-                <Modal
-                  message={'비밀번호는 8자리 이상이어야 합니다'}
-                  setIsOpen={setIsOpen}
-                  withoutNo={true}
-                  callback={modalCloseHandler}
-                />
-              )}
-              {(isOpen === false || isOpen === null || isOpen === undefined) &&
-              (isPasswordMatch === true || isPasswordMatch === null) &&
-              (is8Digit === true || is8Digit === null) ? null : (
-                <Modal
-                  message={'예전 비밀번호가 일치하지 않습니다'}
-                  setIsOpen={setIsOpen}
-                  withoutNo={true}
-                  callback={modalCloseHandler}
-                />
-              )}
-            </div>
-          </div>
-          <div className="wrapper-3">
-            <div className="wrapper-3-1"></div>
-            <div className="wrapper-3-2">
-              <Button className="close-account" onClick={modalOpenHandler}>
-                회원탈퇴
-              </Button>
-            </div>
-            {(isOpen === true || isOpen === null) && isClose === true ? (
-              <Modal
-                message={'탈퇴하시겠습니까?'}
-                setIsOpen={setIsOpen}
-                callback={deleteHandler}
-              />
-            ) : null}
-          </div>
-        </ProfileSection>
-        <Header>
-          <div className="middle-header">내가 찜한 장소 목록</div>
-        </Header>
-        <Carousel currentIndex={currentIndex} show={show}>
-          <div className="carousel-container">
-            <div className="carousel-wrapper">
-              {currentIndex > 0 && (
-                <button className="left-arrow" onClick={prev}>
-                  &lt;
-                </button>
-              )}
-              <div className="carousel-content-wrapper">
-                <div className={'carousel-content'}>
-                  {posts.map((post) => (
-                    <Thumbnail thumbnail={post} key={post.id} />
-                  ))}
+      {user?.id === Number(userInfo?.id) ? (
+        <>
+          <Scroll ref={scrollRef} />
+          <Coin scrollRef={scrollRef} mode="up" right="40px" bottom="110px" />
+          <Container>
+            <Header>
+              <div className="top-header">마이페이지</div>
+            </Header>
+            <ProfileSection>
+              <div className="wrapper-1">
+                <div className="wrapper-1-1">
+                  {image ? (
+                    <img src={image} />
+                  ) : imageBase64 ? (
+                    <img src={imageBase64} />
+                  ) : (
+                    <FontAwesomeIcon icon={faUser} size="10x" />
+                  )}
+                </div>
+                <div className="wrapper-1-2">
+                  <input
+                    type="file"
+                    id="fileInput"
+                    accept="image/*"
+                    ref={fileInput}
+                    onChange={fileHandler}
+                  />
+                  <Button onClick={() => fileInput.current.click()}>
+                    이미지 변경
+                  </Button>
                 </div>
               </div>
-              {currentIndex < imageLength - show && (
-                <button className="right-arrow" onClick={next}>
-                  &gt;
-                </button>
-              )}
-            </div>
-          </div>
-        </Carousel>
-        {user?.role === 1 ? (
-          <Header role={1}>
-            <div className="bottom-header">내가 등록한 장소</div>
-          </Header>
-        ) : null}
-      </Container>
+              <div className="wrapper-2">
+                <div className="wrapper-2-1">
+                  {isEditing === true ? (
+                    userInfo?.platform === 0 ? (
+                      <>
+                        <div className="email-div">{userInfo?.email}</div>
+                        <input
+                          type="password"
+                          id="old-password-input"
+                          placeholder="old password"
+                          onChange={oldPasswordHandler}
+                        />
+                        <input
+                          type="text"
+                          id="nickname-input"
+                          placeholder="new nickname"
+                          onChange={nicknameHandler}
+                        />
+                        <input
+                          type="password"
+                          id="password-input"
+                          placeholder="new password"
+                          onChange={passwordHandler}
+                        />
+                        <RadioSection>
+                          <input
+                            type="radio"
+                            id="owner-radio"
+                            name="role2"
+                            value="1"
+                          />
+                          <div className="owner-div">사업자</div>
+                          <input
+                            type="radio"
+                            id="user-radio"
+                            name="role2"
+                            value="2"
+                          />
+                          <div className="user-div">일반사용자</div>
+                        </RadioSection>
+                      </>
+                    ) : (
+                      <>
+                        <div className="email-div">{userInfo?.email}</div>
+                        <input
+                          type="text"
+                          id="nickname-input"
+                          placeholder="new nickname"
+                          onChange={nicknameHandler}
+                        />
+                        <RadioSection>
+                          <input
+                            type="radio"
+                            id="owner-radio"
+                            name="role2"
+                            value="1"
+                          />
+                          <div className="owner-div">사업자</div>
+                          <input
+                            type="radio"
+                            id="user-radio"
+                            name="role2"
+                            value="2"
+                          />
+                          <div className="user-div">일반사용자</div>
+                        </RadioSection>
+                      </>
+                    )
+                  ) : (
+                    <>
+                      <div className="email-div">{userInfo?.email}</div>
+                      <div className="nickname-div">{userInfo?.nickname}</div>
+                      <RadioSection>
+                        <div className="radio-container">
+                          <input
+                            type="radio"
+                            id="owner-radio"
+                            name="role1"
+                            value="1"
+                          />
+                          <div className="owner-div">사업자</div>
+                          <input
+                            type="radio"
+                            id="user-radio"
+                            name="role1"
+                            value="2"
+                          />
+                          <div className="user-div">일반사용자</div>
+                        </div>
+                      </RadioSection>
+                    </>
+                  )}
+                </div>
+                <div className="wrapper-2-2">
+                  {isEditing === false ? (
+                    <Button className="edit" onClick={editHandler}>
+                      수정하기
+                    </Button>
+                  ) : (
+                    <Button
+                      className="edit"
+                      onClick={() => [
+                        checkPassword(),
+                        modalOpenHandler(),
+                        submitHandler(),
+                      ]}
+                    >
+                      수정 완료
+                    </Button>
+                  )}
+                  {isOpen === true &&
+                  (isPasswordMatch === true || isPasswordMatch === null) &&
+                  (password === null ||
+                    password === '' ||
+                    is8Digit === true) ? (
+                    <Modal
+                      message={'정상적으로 수정되었습니다'}
+                      setIsOpen={setIsOpen}
+                      withoutNo={true}
+                      callback={() => [editCompleteModalCloseHandler()]}
+                    />
+                  ) : null}
+
+                  {isOpen === true &&
+                  is8Digit === false &&
+                  password !== null &&
+                  password !== '' ? (
+                    <Modal
+                      message={'비밀번호는 8자리 이상이어야 합니다'}
+                      setIsOpen={setIsOpen}
+                      withoutNo={true}
+                      callback={modalCloseHandler}
+                    />
+                  ) : isOpen === true && isPasswordMatch === false ? (
+                    <Modal
+                      message={'예전 비밀번호와 일치하지 않습니다'}
+                      setIsOpen={setIsOpen}
+                      withoutNo={true}
+                      callback={modalCloseHandler}
+                    />
+                  ) : null}
+                </div>
+              </div>
+              <div className="wrapper-3">
+                <div className="wrapper-3-1"></div>
+                <div className="wrapper-3-2">
+                  <Button
+                    className="close-account"
+                    onClick={closeModalOpenHandler}
+                  >
+                    회원탈퇴
+                  </Button>
+                </div>
+                {isOpen === true && isClose === true ? (
+                  <Modal
+                    message={'탈퇴하시겠습니까?'}
+                    setIsOpen={setIsOpen}
+                    callback={deleteHandler}
+                  />
+                ) : null}
+              </div>
+            </ProfileSection>
+            <Header>
+              <div className="middle-header">
+                {userInfo?.nickname}의 찜한 장소 목록
+              </div>
+            </Header>
+            <Carousel currentIndex={currentIndex} show={show}>
+              <div className="carousel-container">
+                <div className="carousel-wrapper">
+                  {currentIndex > 0 && (
+                    <button className="left-arrow" onClick={prev}>
+                      &lt;
+                    </button>
+                  )}
+                  <div className="carousel-content-wrapper">
+                    <div className={'carousel-content'}>
+                      {posts.map((post) => (
+                        <Thumbnail thumbnail={post} key={post.id} />
+                      ))}
+                    </div>
+                  </div>
+                  {currentIndex < imageLength - show && (
+                    <button className="right-arrow" onClick={next}>
+                      &gt;
+                    </button>
+                  )}
+                </div>
+              </div>
+            </Carousel>
+            {userInfo?.role === 1 ? (
+              <Header role={1}>
+                <div className="bottom-header">내가 등록한 장소</div>
+              </Header>
+            ) : null}
+          </Container>
+        </>
+      ) : (
+        <>
+          <Scroll ref={scrollRef} />
+          <Coin scrollRef={scrollRef} mode="up" right="40px" bottom="110px" />
+          <Container>
+            <Header>
+              <div className="top-header">마이페이지</div>
+            </Header>
+            <ProfileSection>
+              <div className="wrapper-1">
+                <div className="wrapper-1-1">
+                  {image ? (
+                    <img src={image} />
+                  ) : imageBase64 ? (
+                    <img src={imageBase64} />
+                  ) : (
+                    <FontAwesomeIcon icon={faUser} size="10x" />
+                  )}
+                </div>
+                <div className="wrapper-1-2">
+                  <input
+                    type="file"
+                    id="fileInput"
+                    accept="image/*"
+                    ref={fileInput}
+                    onChange={fileHandler}
+                  />
+                  <Button disabled onClick={() => fileInput.current.click()}>
+                    이미지 변경
+                  </Button>
+                </div>
+              </div>
+              <div className="wrapper-2">
+                <div className="wrapper-2-1">
+                  {isEditing === true ? (
+                    userInfo?.platform === 0 ? (
+                      <>
+                        <div className="email-div">{userInfo?.email}</div>
+                        <input
+                          type="password"
+                          id="old-password-input"
+                          placeholder="old password"
+                          onChange={oldPasswordHandler}
+                        />
+                        <input
+                          type="text"
+                          id="nickname-input"
+                          placeholder="new nickname"
+                          onChange={nicknameHandler}
+                        />
+                        <input
+                          type="password"
+                          id="password-input"
+                          placeholder="new password"
+                          onChange={passwordHandler}
+                        />
+                        <RadioSection>
+                          <input
+                            type="radio"
+                            id="owner-radio"
+                            name="role2"
+                            value="1"
+                          />
+                          <div className="owner-div">사업자</div>
+                          <input
+                            type="radio"
+                            id="user-radio"
+                            name="role2"
+                            value="2"
+                          />
+                          <div className="user-div">일반사용자</div>
+                        </RadioSection>
+                      </>
+                    ) : (
+                      <>
+                        <div className="email-div">{userInfo?.email}</div>
+                        <input
+                          type="text"
+                          id="nickname-input"
+                          placeholder="new nickname"
+                          onChange={nicknameHandler}
+                        />
+                        <RadioSection>
+                          <input
+                            type="radio"
+                            id="owner-radio"
+                            name="role2"
+                            value="1"
+                          />
+                          <div className="owner-div">사업자</div>
+                          <input
+                            type="radio"
+                            id="user-radio"
+                            name="role2"
+                            value="2"
+                          />
+                          <div className="user-div">일반사용자</div>
+                        </RadioSection>
+                      </>
+                    )
+                  ) : (
+                    <>
+                      <div className="email-div">{userInfo?.email}</div>
+                      <div className="nickname-div">{userInfo?.nickname}</div>
+                      <RadioSection>
+                        <div className="radio-container">
+                          <input
+                            type="radio"
+                            id="owner-radio"
+                            name="role1"
+                            value="1"
+                          />
+                          <div className="owner-div">사업자</div>
+                          <input
+                            type="radio"
+                            id="user-radio"
+                            name="role1"
+                            value="2"
+                          />
+                          <div className="user-div">일반사용자</div>
+                        </div>
+                      </RadioSection>
+                    </>
+                  )}
+                </div>
+                <div className="wrapper-2-2">
+                  {isEditing === false ? (
+                    <Button disabled className="edit" onClick={editHandler}>
+                      수정하기
+                    </Button>
+                  ) : (
+                    <Button
+                      disabled
+                      className="edit"
+                      onClick={() => [
+                        checkPassword(),
+                        modalOpenHandler(),
+                        submitHandler(),
+                      ]}
+                    >
+                      수정 완료
+                    </Button>
+                  )}
+                  {isOpen === true &&
+                  (isPasswordMatch === true || isPasswordMatch === null) &&
+                  (password === null ||
+                    password === '' ||
+                    is8Digit === true) ? (
+                    <Modal
+                      message={'정상적으로 수정되었습니다'}
+                      setIsOpen={setIsOpen}
+                      withoutNo={true}
+                      callback={() => [editCompleteModalCloseHandler()]}
+                    />
+                  ) : null}
+
+                  {isOpen === true &&
+                  is8Digit === false &&
+                  password !== null &&
+                  password !== '' ? (
+                    <Modal
+                      message={'비밀번호는 8자리 이상이어야 합니다'}
+                      setIsOpen={setIsOpen}
+                      withoutNo={true}
+                      callback={modalCloseHandler}
+                    />
+                  ) : isOpen === true && isPasswordMatch === false ? (
+                    <Modal
+                      message={'예전 비밀번호와 일치하지 않습니다'}
+                      setIsOpen={setIsOpen}
+                      withoutNo={true}
+                      callback={modalCloseHandler}
+                    />
+                  ) : null}
+                </div>
+              </div>
+              <div className="wrapper-3">
+                <div className="wrapper-3-1"></div>
+                <div className="wrapper-3-2">
+                  <Button
+                    disabled
+                    className="close-account"
+                    onClick={closeModalOpenHandler}
+                  >
+                    회원탈퇴
+                  </Button>
+                </div>
+                {isOpen === true && isClose === true ? (
+                  <Modal
+                    message={'탈퇴하시겠습니까?'}
+                    setIsOpen={setIsOpen}
+                    callback={deleteHandler}
+                  />
+                ) : null}
+              </div>
+            </ProfileSection>
+            <Header>
+              <div className="middle-header">
+                {userInfo?.nickname}의 찜한 장소 목록
+              </div>
+            </Header>
+            <Carousel currentIndex={currentIndex} show={show}>
+              <div className="carousel-container">
+                <div className="carousel-wrapper">
+                  {currentIndex > 0 && (
+                    <button className="left-arrow" onClick={prev}>
+                      &lt;
+                    </button>
+                  )}
+                  <div className="carousel-content-wrapper">
+                    <div className={'carousel-content'}>
+                      {posts.map((post) => (
+                        <Thumbnail thumbnail={post} key={post.id} />
+                      ))}
+                    </div>
+                  </div>
+                  {currentIndex < imageLength - show && (
+                    <button className="right-arrow" onClick={next}>
+                      &gt;
+                    </button>
+                  )}
+                </div>
+              </div>
+            </Carousel>
+            {userInfo?.role === 1 ? (
+              <Header role={1}>
+                <div className="bottom-header">내가 등록한 장소</div>
+              </Header>
+            ) : null}
+          </Container>
+        </>
+      )}
     </>
   );
 };

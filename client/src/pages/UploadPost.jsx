@@ -70,9 +70,9 @@ const CurrentImageWrapper = styled.div`
   margin: 5px 0;
   border-radius: 6px;
   background-color: ${({ theme }) => theme.formColor};
-  box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.3);
-  -webkit-box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.3);
-  -moz-box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.3);
+  box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.2);
+  -webkit-box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.2);
   justify-content: center;
   align-items: center;
   overflow: hidden;
@@ -108,9 +108,9 @@ const ImageWrapper = styled.li`
   margin: 6px;
   border-radius: 6px;
   background-color: ${({ theme }) => theme.formColor};
-  box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.3);
-  -webkit-box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.3);
-  -moz-box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.3);
+  box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.2);
+  -webkit-box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.2);
   justify-content: center;
   align-items: center;
   overflow: hidden;

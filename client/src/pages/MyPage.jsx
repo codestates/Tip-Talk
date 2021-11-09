@@ -470,7 +470,7 @@ const MyPage = () => {
     <>
       <Scroll ref={scrollRef} />
       <Coin scrollRef={scrollRef} mode="up" right="40px" bottom="110px" />
-      <Container correctUser={correctUser}>
+      <Container correctUser={correctUser} role={userInfo?.role}>
         <Header>
           <div className="top-header">마이페이지</div>
         </Header>
@@ -683,9 +683,11 @@ const MyPage = () => {
             </div>
           </div>
         </Carousel>
-        <Header role={userInfo?.role}>
-          <div className="bottom-header">내가 등록한 장소</div>
-        </Header>
+        {userInfo?.role === 1 ? (
+          <Header>
+            <div className="bottom-header">내가 등록한 장소</div>
+          </Header>
+        ) : null}
       </Container>
     </>
   );

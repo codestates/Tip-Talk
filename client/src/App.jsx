@@ -57,6 +57,16 @@ function App() {
           }
         })
         .catch((res) => {});
+
+      axios
+        .post(`${process.env.REACT_APP_SERVER_URL}/oauth/kakao`, {
+          authorizationCode,
+        })
+        .then((res) => {
+          const { data } = res.data;
+          setUser(data.user);
+        })
+        .catch((err) => {});
     }
   }, []);
 

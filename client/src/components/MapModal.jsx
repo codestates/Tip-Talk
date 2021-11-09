@@ -19,18 +19,28 @@ export const ModalBackground = styled.div`
   transition: 0.25s;
   align-items: center;
   z-index: 11;
+  @media ${({ theme }) => theme.size.mobile} {
+    top: 0px;
+    width: 180px;
+  }
 `;
 
 const CarouselContainer = styled.div`
   width: 100%;
   height: 280px;
   border-radius: 6px;
+  @media ${({ theme }) => theme.size.mobile} {
+    height: 180px;
+  }
 `;
 
 const Info = styled.div`
   width: 100%;
   padding: 20px 20px 0 20px;
   color: ${Color_3};
+  @media ${({ theme }) => theme.size.mobile} {
+    padding: 10px 10px 0 10px;
+  }
 `;
 
 const Close = styled.button`
@@ -40,6 +50,7 @@ const Close = styled.button`
   width: 38px;
   height: 46px;
   text-align: center;
+  font-size: 32px;
   color: ${Color_1};
   border: none;
   border-radius: 4px;
@@ -47,6 +58,13 @@ const Close = styled.button`
   &:hover {
     background-color: ${Color_1};
     color: rgba(255, 255, 255, 0.8);
+  }
+  @media ${({ theme }) => theme.size.mobile} {
+    right: -28px;
+    width: 28px;
+    height: 28px;
+    font-size: 20px;
+    padding: 0;
   }
 `;
 
@@ -58,6 +76,10 @@ const Text = styled.h1`
   font-size: 20px;
   font-weight: 600;
   margin: 6px 0 15px 4px;
+  @media ${({ theme }) => theme.size.mobile} {
+    font-size: 16px;
+    margin: 6px 0 6px 4px;
+  }
 `;
 
 const MapModal = ({ post, backgroundRef, handleClose }) => {
@@ -69,7 +91,7 @@ const MapModal = ({ post, backgroundRef, handleClose }) => {
   return (
     <ModalBackground ref={backgroundRef}>
       <Close onClick={handleClose}>
-        <FontAwesomeIcon size="2x" icon={faChevronLeft} />
+        <FontAwesomeIcon icon={faChevronLeft} />
       </Close>
       {/* <Thumbnail src={post?.images[0]} alt={post?.title} /> */}
       <CarouselContainer>

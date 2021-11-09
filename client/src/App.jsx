@@ -98,6 +98,11 @@ function App() {
               <Coin mode="reply" />
               <Footer />
             </Route>
+            <Route path="/edit/:postId">
+              <UploadPost edit={true} />
+              <Coin mode="reply" />
+              <Footer />
+            </Route>
             <Route path="/mypage/:id">
               <MyPage />
               <Coin mode="reply" />

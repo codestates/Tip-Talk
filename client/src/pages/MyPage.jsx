@@ -261,12 +261,12 @@ const Carousel = styled.div`
 
 const MyPage = () => {
   const show = 4;
-  const [isEditing, setIsEditing] = useState(null);
+  const [isEditing, setIsEditing] = useState(false);
   const [isClose, setIsClose] = useState(null);
   const [image, setImage] = useState(null);
   const [imageBase64, setImageBase64] = useState(null);
   const [posts, setPosts] = useState(data);
-  const [isOpen, setIsOpen] = useState(null);
+  const [isOpen, setIsOpen] = useState(false);
   const [nickname, setNickname] = useState(null);
   const [password, setPassword] = useState(null);
   const [oldpassword, setOldpassword] = useState(null);
@@ -318,12 +318,13 @@ const MyPage = () => {
     axios
       .get(`http://localhost:8000/user/${id}`)
       .then((res) => {
+        console.log('useeffect');
         const { data } = res.data;
         setUser(data);
         setImage(data.img);
       })
       .catch((err) => console.log(err));
-  }, []);
+  }, [isEditing]);
 
   const editHandler = () => {
     setIsEditing(true);
@@ -357,15 +358,23 @@ const MyPage = () => {
     }
   };
 
-  const modalOpenHandler = () => {
+  const closeModalOpenHandler = () => {
     setIsOpen(true);
     setIsClose(true);
   };
 
   const modalCloseHandler = () => {
     setIsOpen(false);
-    setIsPasswordMatch(true);
-    setIs8Digit(true);
+    setIs8Digit(false);
+  };
+
+  const editCompleteModalCloseHandler = () => {
+    setIsEditing(false);
+  };
+
+  const modalOpenHandler = () => {
+    setIsOpen(true);
+    setIsClose(false);
   };
 
   const deleteHandler = () => {
@@ -396,19 +405,27 @@ const MyPage = () => {
     const el = document.querySelector('input[name=role2]:checked');
     if (el !== null) {
       const role = el.value;
-      axios
-        .patch(`${process.env.REACT_APP_SERVER_URL}/user/${id}`, {
-          nickname,
-          oldpassword,
-          password,
-          role,
-        })
-        .then((res) => console.log(res))
-        .catch((err) => {
-          if (err.response.data.message === '비밀번호를 확인해주세요') {
+      if (
+        password?.length === undefined ||
+        password?.length === 0 ||
+        isPasswordMatch === true ||
+        isPasswordMatch === null ||
+        is8Digit === true
+      ) {
+        axios
+          .patch(`${process.env.REACT_APP_SERVER_URL}/user/${id}`, {
+            nickname,
+            oldpassword,
+            password,
+            role,
+          })
+          .then(() => {
+            setIsPasswordMatch(true);
+          })
+          .catch((err) => {
             setIsPasswordMatch(false);
-          }
-        });
+          });
+      }
     }
   };
 
@@ -424,13 +441,15 @@ const MyPage = () => {
     }
   };
 
-  const checkPasswordLength = () => {
+  const checkPassword = () => {
     if (password) {
       if (password.length >= 8) {
         setIs8Digit(true);
       } else {
         setIs8Digit(false);
       }
+    } else {
+      setIs8Digit(false);
     }
   };
 
@@ -504,7 +523,7 @@ const MyPage = () => {
                         name="role2"
                         value="2"
                       />
-                      <div className="user-div">일반인</div>
+                      <div className="user-div">일반사용자</div>
                     </RadioSection>
                   </>
                 ) : (
@@ -530,7 +549,7 @@ const MyPage = () => {
                         name="role2"
                         value="2"
                       />
-                      <div className="user-div">일반인</div>
+                      <div className="user-div">일반사용자</div>
                     </RadioSection>
                   </>
                 )
@@ -553,62 +572,68 @@ const MyPage = () => {
                         name="role1"
                         value="2"
                       />
-                      <div className="user-div">일반인</div>
+                      <div className="user-div">일반사용자</div>
                     </div>
                   </RadioSection>
                 </>
               )}
             </div>
             <div className="wrapper-2-2">
-              {isEditing === false || isEditing === null ? (
+              {isEditing === false ? (
                 <Button className="edit" onClick={editHandler}>
                   수정하기
                 </Button>
               ) : (
                 <Button
                   className="edit"
-                  onClick={() => [submitHandler(), checkPasswordLength()]}
+                  onClick={() => [
+                    checkPassword(),
+                    modalOpenHandler(),
+                    submitHandler(),
+                  ]}
                 >
                   수정 완료
                 </Button>
               )}
-              {isOpen === true ? (
+              {isOpen === true &&
+              (isPasswordMatch === true || isPasswordMatch === null) &&
+              (password === null || password === '' || is8Digit === true) ? (
                 <Modal
                   message={'정상적으로 수정되었습니다'}
                   setIsOpen={setIsOpen}
                   withoutNo={true}
-                  callback={modalCloseHandler}
+                  callback={() => [editCompleteModalCloseHandler()]}
                 />
               ) : null}
-              {(isOpen === false || isOpen === null || isOpen === undefined) &&
-              (is8Digit === true || is8Digit === null) ? null : (
+
+              {isOpen === true &&
+              is8Digit === false &&
+              password !== null &&
+              password !== '' ? (
                 <Modal
                   message={'비밀번호는 8자리 이상이어야 합니다'}
                   setIsOpen={setIsOpen}
                   withoutNo={true}
                   callback={modalCloseHandler}
                 />
-              )}
-              {(isOpen === false || isOpen === null || isOpen === undefined) &&
-              (isPasswordMatch === true || isPasswordMatch === null) &&
-              (is8Digit === true || is8Digit === null) ? null : (
+              ) : isOpen === true && isPasswordMatch === false ? (
                 <Modal
-                  message={'예전 비밀번호가 일치하지 않습니다'}
+                  message={'예전 비밀번호와 일치하지 않습니다'}
                   setIsOpen={setIsOpen}
                   withoutNo={true}
                   callback={modalCloseHandler}
                 />
-              )}
+              ) : null}
             </div>
           </div>
           <div className="wrapper-3">
             <div className="wrapper-3-1"></div>
             <div className="wrapper-3-2">
-              <Button className="close-account" onClick={modalOpenHandler}>
+              <Button className="close-account" onClick={closeModalOpenHandler}>
                 회원탈퇴
               </Button>
             </div>
-            {(isOpen === true || isOpen === null) && isClose === true ? (
+            {isOpen === true && isClose === true ? (
               <Modal
                 message={'탈퇴하시겠습니까?'}
                 setIsOpen={setIsOpen}
@@ -618,7 +643,7 @@ const MyPage = () => {
           </div>
         </ProfileSection>
         <Header>
-          <div className="middle-header">내가 찜한 장소 목록</div>
+          <div className="middle-header">{user?.nickname}의 찜한 장소 목록</div>
         </Header>
         <Carousel currentIndex={currentIndex} show={show}>
           <div className="carousel-container">

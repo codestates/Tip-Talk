@@ -366,7 +366,7 @@ const Signup = ({ setShowLogin, setShowSignup }) => {
                   value="2"
                   onClick={roleHandler}
                 />
-                <div className="user">일반인</div>
+                <div className="user">일반사용자</div>
               </div>
             </div>
           </RadioSection>

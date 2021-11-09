@@ -50,7 +50,7 @@ const SearchForm = styled.form`
   border-radius: 3px;
   align-items: center;
   z-index: 12;
-  @media ${({ theme }) => theme.size.mobile} {
+  @media ${({ theme }) => theme.size.tablet} {
     top: -70px;
     left: 0;
     right: 0;
@@ -66,7 +66,7 @@ const Input = styled.input`
   border: none;
   padding: 0 8px;
   border-radius: 3px;
-  @media ${({ theme }) => theme.size.mobile} {
+  @media ${({ theme }) => theme.size.tablet} {
     margin-right: 10px;
   }
 `;

@@ -148,6 +148,7 @@ const TextEditor = styled(EditorForm)`
 
 const Post = () => {
   const map = useRef();
+  const marker = useRef();
   const scrollRef = useRef();
   const history = useHistory();
 
@@ -197,11 +198,11 @@ const Post = () => {
 
           const center = new kakao.maps.LatLng(+lat, +lng);
 
-          const marker = new kakao.maps.Marker({
+          marker.current = new kakao.maps.Marker({
             position: center,
           });
 
-          marker.setMap(map.current);
+          marker.current.setMap(map.current);
 
           axios
             .get(`${process.env.REACT_APP_SERVER_URL}/post/around/${postId}`, {
@@ -352,6 +353,7 @@ const Post = () => {
       block: 'start',
       inline: 'nearest',
     });
+    marker.current = undefined;
     history.push(`/loading`);
     setTimeout(() => {
       history.replace(`/post/${id}`);

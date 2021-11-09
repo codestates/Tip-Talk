@@ -99,7 +99,7 @@ const TextEditor = ({ content }) => {
     );
     if (isAstChange) {
       // Save the value to Local Storage.
-      const content = JSON.stringify(value);
+      const content = JSON.stringify(data);
       localStorage.setItem('content', content);
     }
   };

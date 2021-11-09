@@ -279,8 +279,8 @@ const Post = () => {
               parseDate(comment);
             });
             setComments(data.data);
-            const page = [];
-            for (let i = 0; i <= data.max; i++) {
+            const page = [1];
+            for (let i = 1; i <= data.max; i++) {
               page.push(i + 1);
             }
             setPages(page);

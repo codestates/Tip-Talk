@@ -3,6 +3,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { Coin } from '../components/Coin';
 import KakaoMap from '../components/KakaoMap';
+import Modal from '../components/Modal';
 import Thumbnail from '../components/Thumbnail';
 import { Color_1, Color_6, Meta, Scroll } from '../styles/common';
 
@@ -74,6 +75,7 @@ const Main = () => {
   const [page, setPage] = useState(0);
   const [max, setMax] = useState(1);
   const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState();
   const [posts, setPosts] = useState([]); // * 모든 posts
   const [filteredPosts, setFilteredPosts] = useState(); // * 검색 결과에 따른 posts
   const [order, setOrder] = useState(0);
@@ -88,9 +90,11 @@ const Main = () => {
       .then(({ data }) => {
         if (data.status) {
           const { post } = data.data;
-          if (post) {
+          if (post.length) {
             parsePost(post);
             setFilteredPosts([...post]);
+          } else {
+            setMessage('검색 결과가 없습니다!');
           }
         }
       });
@@ -174,6 +178,7 @@ const Main = () => {
   return (
     <>
       <MainContainer>
+        {message && <Modal message={message} setIsOpen={setMessage} />}
         <Scroll ref={scrollRef} />
         <Coin scrollRef={scrollRef} mode="up" right="40px" bottom="110px" />
         <KakaoMap posts={filteredPosts} handleSearch={handleSearch} />

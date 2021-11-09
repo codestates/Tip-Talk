@@ -319,10 +319,9 @@ const MyPage = () => {
     axios
       .get(`http://localhost:8000/user/${id}`)
       .then((res) => {
-        console.log('useeffect');
         const { data } = res.data;
-        setUserInfo(data);
-        setImage(data.img);
+        setUserInfo(data.user);
+        setImage(data.user.img);
       })
       .catch((err) => console.log(err));
   }, [isEditing]);

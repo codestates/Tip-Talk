@@ -15,8 +15,6 @@ module.exports = async (req, res) => {
   }
   console.log('userInfo ============= ', userInfo);
 
-  const { email, nickname, password, img, role, platform } = userInfo;
-
   return res.status(200).json({
     status: true,
     data: { user: userInfo },

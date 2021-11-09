@@ -6,7 +6,7 @@ const { user } = require('../../models');
 module.exports = async (req, res) => {
   try {
     const { authorizationCode } = req.body;
-    const kakaoToken = axios.post(
+    const kakaoToken = await axios.post(
       `https://kauth.kakao.com/oauth/token?code=${authorizationCode}&client_id=${process.env.KAKAO_CLIENT_ID}&redirect_uri=${process.env.REDIRECT_URI}&grant_type=${process.env.GRANT_TYPE}`,
     );
     const { access_token } = kakaoToken.data;
@@ -20,11 +20,11 @@ module.exports = async (req, res) => {
     const [userInfo, created] = await user.findOrCreate({
         where: {email: kakao.kakao_account.email},
         defaults: {
-            nickname = kakao.properties.nickname,
-            img = kakao.properties.profile_image,
-            email = kakao.kakao_account.email,
-            password = null,
-            platform= 2,
+            nickname: kakao.properties.nickname,
+            img: kakao.properties.profile_image,
+            email: kakao.kakao_account.email,
+            password: null,
+            platform: 2,
         }
     })
     const token = await jwt.sign({

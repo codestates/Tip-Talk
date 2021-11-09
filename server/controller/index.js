@@ -10,6 +10,7 @@ module.exports = {
   },
   oauthController: {
     googleLogin: require('./oauth/googleLogin'),
+    kakaoLogin: require('./oauth/kakaoLogin')
   },
   authController: {
     sendEmail: require('./auth/sendEmail'),

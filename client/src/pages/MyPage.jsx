@@ -406,12 +406,14 @@ const MyPage = () => {
     const el = document.querySelector('input[name=role2]:checked');
     if (el !== null) {
       const role = el.value;
+      console.log('password = ' + password?.length);
+      console.log('isPasswordMatch = ' + isPasswordMatch);
+      console.log('is8Digit = ' + is8Digit);
       if (
         password?.length === undefined ||
         password?.length === 0 ||
-        isPasswordMatch === true ||
-        isPasswordMatch === null ||
-        is8Digit === true
+        ((isPasswordMatch === true || isPasswordMatch === null) &&
+          (is8Digit === true || is8Digit === null))
       ) {
         axios
           .patch(`${process.env.REACT_APP_SERVER_URL}/user/${id}`, {
@@ -424,6 +426,7 @@ const MyPage = () => {
             setIsPasswordMatch(true);
           })
           .catch((err) => {
+            console.log(err.response);
             setIsPasswordMatch(false);
           });
       }

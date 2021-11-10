@@ -5,12 +5,11 @@ import styled from 'styled-components';
 import { Coin } from '../components/Coin';
 import { Scroll } from '../styles/common';
 import Thumbnail from '../components/Thumbnail';
-import { data } from '../dummy/post';
 import Modal from '../components/Modal';
 import UserContext from '../context/UserContext';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Button } from '../styles/common';
+import { Button, Color_1 } from '../styles/common';
 
 const Container = styled.div`
   width: 100%;
@@ -88,26 +87,10 @@ const ProfileSection = styled.div`
       .email-div {
         top: 1.5rem;
         line-height: 2.5rem;
-        border: solid 1px blue;
         position: relative;
         width: 14rem;
         height: 2.5rem;
-      }
-      .nickname-div {
-        line-height: 2.5rem;
-        border: solid 1px blue;
-        position: relative;
-        top: 5rem;
-        width: 14rem;
-        height: 2.5rem;
-      }
-      .password-div {
-        line-height: 2.5rem;
-        border: solid 1px blue;
-        position: relative;
-        top: 4rem;
-        width: 14rem;
-        height: 2.5rem;
+        border-bottom: 2px solid ${Color_1};
       }
       #nickname-input {
         position: relative;
@@ -174,19 +157,19 @@ const ProfileSection = styled.div`
     .before-edit-email-div {
       top: 6rem;
       line-height: 2.5rem;
-      border: solid 1px blue;
       position: relative;
+      border-bottom: 2px solid ${Color_1};
       width: 14rem;
       height: 2.5rem;
     }
 
     .before-edit-nickname-div {
       line-height: 2.5rem;
-      border: solid 1px blue;
       position: relative;
       top: 8rem;
       width: 14rem;
       height: 2.5rem;
+      border-bottom: 2px solid ${Color_1};
     }
   }
 `;
@@ -198,6 +181,7 @@ const RadioSection = styled.div`
     display: inline-block;
     position: relative;
     right: 1.5rem;
+    top: -0.1rem;
   }
   #owner-radio {
     display: inline-block;
@@ -208,6 +192,7 @@ const RadioSection = styled.div`
     display: inline-block;
     position: relative;
     left: 1.5rem;
+    top: -0.1rem;
   }
   #user-radio {
     display: inline-block;
@@ -223,6 +208,7 @@ const RadioSection = styled.div`
       display: inline-block;
       position: relative;
       right: 1.5rem;
+      top: -0.1rem;
     }
     #before-edit-owner-radio {
       display: inline-block;
@@ -233,12 +219,28 @@ const RadioSection = styled.div`
       display: inline-block;
       position: relative;
       left: 1.5rem;
+      top: -0.1rem;
     }
     #before-edit-user-radio {
       display: inline-block;
       position: relative;
       left: 1rem;
     }
+  }
+
+  input[type='radio'] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 15px;
+    height: 15px;
+    border: 1px solid #bbbbbb;
+    background-color: #e7e6e7;
+    border-radius: 50%;
+  }
+
+  input[type='radio']:checked {
+    background-color: ${Color_1};
   }
 `;
 

@@ -14,6 +14,7 @@ module.exports = async (req, res) => {
       where: {
         email: email,
         nickname: nickname,
+        platform: 0,
       },
     });
     if (userInfo) {

@@ -316,29 +316,29 @@ const ErrorMessage = styled.div`
   color: red;
 
   .password-length-over-8 {
-    position: relative;
-    bottom: 7rem;
+    position: absolute;
+    bottom: 2rem;
+    left: 19rem;
   }
 
   .password-not-match {
-    position: relative;
-    bottom: 18rem;
+    position: absolute;
+    bottom: 12rem;
+    left: 19rem;
   }
 `;
 
 const MyPage = () => {
-  const show = 4;
+  const [show, setShow] = useState(0);
   const [isEditing, setIsEditing] = useState(false);
   const [isClose, setIsClose] = useState(null);
   const [image, setImage] = useState(null);
   const [imageBase64, setImageBase64] = useState(null);
-  const [posts, setPosts] = useState(data);
   const [isOpen, setIsOpen] = useState(false);
   const [nickname, setNickname] = useState(null);
   const [password, setPassword] = useState('');
   const [oldpassword, setOldpassword] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [imageLength, setImageLength] = useState(posts.length);
   const [is8Digit, setIs8Digit] = useState(true);
   const fileInput = useRef(null);
   const scrollRef = useRef();
@@ -348,10 +348,12 @@ const MyPage = () => {
   const [user, setUser] = useContext(UserContext);
   const [isPasswordMatch, setIsPasswordMatch] = useState(true);
   const [correctUser, setCorrectUser] = useState(null);
+  const [likePost, setLikePost] = useState(null);
+  const [imageLength, setImageLength] = useState(likePost?.length);
 
   useEffect(() => {
-    setImageLength(posts.length);
-  }, [posts]);
+    setImageLength(likePost?.length);
+  }, [likePost]);
 
   useEffect(() => {
     if (userInfo !== null) {
@@ -511,6 +513,29 @@ const MyPage = () => {
   useEffect(() => {
     setCorrectUser(user?.id === Number(userInfo?.id));
   }, [user, userInfo]);
+
+  useEffect(() => {
+    const result = [];
+
+    axios
+      .get(`http://localhost:8000/post/like/${id}`)
+      .then((res) => {
+        const { data } = res.data;
+        const { find } = data;
+        for (let i = 0; i < find.length; i++) {
+          const { post } = find[i];
+          (({ id, images, title }) =>
+            result.push({
+              id: id,
+              title: title,
+              images: [images],
+            }))(post);
+        }
+        setLikePost(result);
+        setShow(find.length);
+      })
+      .catch((err) => console.log(err));
+  }, []);
 
   return (
     <>
@@ -719,7 +744,7 @@ const MyPage = () => {
               )}
               <div className="carousel-content-wrapper">
                 <div className={'carousel-content'}>
-                  {posts.map((post) => (
+                  {likePost?.map((post) => (
                     <Thumbnail thumbnail={post} key={post.id} />
                   ))}
                 </div>

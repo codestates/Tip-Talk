@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 import { useHistory } from 'react-router';
 import styled from 'styled-components';
-import { Button, Color_1, Color_3 } from '../styles/common';
+import { Button, Color_1, Color_3, Color_5, Color_6 } from '../styles/common';
 import Carousel from './Carousel';
 
 export const ModalBackground = styled.div`
@@ -60,9 +60,8 @@ const Close = styled.button`
   color: ${Color_1};
   border: none;
   border-radius: 4px;
-  background-color: rgba(255, 255, 255, 0.8);
+  background-color: rgba(0, 0, 0, 0.6);
   &:hover {
-    background-color: ${Color_1};
     color: rgba(255, 255, 255, 0.8);
   }
   @media ${({ theme }) => theme.size.mobile} {
@@ -86,6 +85,11 @@ const Text = styled.h1`
     font-size: 16px;
     margin: 6px 0 6px 4px;
   }
+`;
+
+const CustomButton = styled(Button)`
+  background-color: rgb(250, 250, 250);
+  color: rgba(0, 0, 0, 0.6);
 `;
 
 const MapModal = ({ post, backgroundRef, handleClose }) => {
@@ -113,9 +117,14 @@ const MapModal = ({ post, backgroundRef, handleClose }) => {
         <Label>조회수</Label>
         <Text>{post?.views}</Text>
       </Info>
-      <Button width="140px" height="40px" margin="10px 0 0" onClick={goToPost}>
+      <CustomButton
+        width="140px"
+        height="40px"
+        margin="10px 0 0"
+        onClick={goToPost}
+      >
         자세히 보기
-      </Button>
+      </CustomButton>
     </ModalBackground>
   );
 };

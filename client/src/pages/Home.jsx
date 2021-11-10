@@ -1,29 +1,58 @@
-import React, { useCallback, useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import { useHistory } from 'react-router';
 import styled from 'styled-components';
-import { Color_2, Hangeul, Logo } from '../styles/common';
+import { Coin } from '../components/Coin';
+import Svg from '../components/Svg';
+import { Button, Color_6 } from '../styles/common';
 
 const HomeContainer = styled.div`
-  flex-grow: 1;
-  height: 100%;
-
-  section {
-    height: 100vh;
-  }
-
-  section:nth-child(1) {
-    height: calc(100vh - 70px);
-    background-color: ${(props) => props.theme.navBgColor};
-  }
-`;
-
-const Slide = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
   height: 100%;
-  white-space: nowrap;
-  will-change: transform;
+  font-weight: bold;
+  justify-content: center;
+  align-items: center;
+  section {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  section:nth-child(1) {
+    width: 100vw;
+    height: calc(100vh - 70px);
+    background-color: rgba(255, 0, 0, 0.03);
+    @media ${({ theme }) => theme.size.mobile} {
+      article {
+        top: 5%;
+      }
+    }
+  }
+  section:nth-child(2) {
+    background-color: rgba(0, 0, 0, 0.02);
+    @media ${({ theme }) => theme.size.mobile} {
+      article {
+        top: 10%;
+      }
+    }
+  }
+  section:nth-child(3) {
+    @media ${({ theme }) => theme.size.mobile} {
+      article {
+        top: 60%;
+      }
+    }
+  }
+  section:nth-child(4) {
+    background-color: rgba(0, 0, 255, 0.02);
+    @media ${({ theme }) => theme.size.mobile} {
+      article {
+        top: 5%;
+      }
+    }
+  }
 `;
 
 const Section = styled.section`
@@ -33,90 +62,43 @@ const Section = styled.section`
   align-items: center;
 `;
 
-const SvgDiv = styled.div`
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  overflow: hidden;
-  line-height: 0;
-  transform: rotate(180deg);
-
-  svg {
-    position: relative;
-    display: block;
-    width: calc(300% + 1.3px);
-    height: 160px;
-  }
-
-  @media ${({ theme }) => theme.size.mobile} {
-    svg {
-      height: 80px;
-    }
-  }
-`;
-
-const Path = styled.path`
-  fill: #ffffff;
-`;
-
-const Body = styled.div`
-  display: flex;
-  width: 100%;
-  max-width: 1000px;
-  height: 80%;
-  margin: 0 auto 100px;
-  align-items: center;
-  justify-content: center;
-
-  @media ${({ theme }) => theme.size.mobile} {
-    flex-direction: column;
-  }
+const Fat = styled.h1`
+  font-size: 5rem;
+  line-height: 1.4;
+  color: #00693d;
+  text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.6);
+  margin-right: 10px;
 `;
 
 const P = styled.p`
-  font-size: 2rem;
+  font-size: ${({ size }) => (size ? size : '2.6rem')};
+  color: #00693d;
   line-height: 1.4;
+`;
+
+const S = styled.p`
+  font-size: 1.3rem;
+  color: ${Color_6};
+  line-height: 1.4;
+`;
+
+const Message = styled.article`
+  position: absolute;
+  left: 16%;
+  top: ${({ top }) => top};
   @media ${({ theme }) => theme.size.mobile} {
-    font-size: 1.6rem;
+    left: 10%;
   }
 `;
 
-const PreView = styled.article`
-  width: 50%;
-  margin-right: 50px;
+const Img = styled.img`
+  position: absolute;
+  left: ${({ left }) => left};
+  top: ${({ top }) => top};
+  width: ${({ size }) => (size ? size : '100vw')};
+  z-index: -1;
   @media ${({ theme }) => theme.size.mobile} {
-    width: 80%;
-    margin: 0;
-    margin-bottom: 30px;
-  }
-`;
-
-const Button = styled.button`
-  display: flex;
-  width: 100px;
-  height: 40px;
-  margin-top: 20px;
-  font-family: ${Hangeul};
-  font-size: 18px;
-  background-color: ${Color_2};
-  box-shadow: 0px 0px 3px 0px rgba(255, 255, 255, 0.45);
-  -webkit-box-shadow: 0px 0px 3px 0px rgba(255, 255, 255, 0.45);
-  border: none;
-  border-radius: 6px;
-  transition: 0.25s;
-  align-items: center;
-  justify-content: center;
-  &:hover {
-    box-shadow: 0px 0px 10px 0px rgba(255, 255, 255, 0.75);
-    -webkit-box-shadow: 0px 0px 10px 0px rgba(255, 255, 255, 0.75);
-  }
-`;
-
-const MainImage = styled.img`
-  width: 50%;
-  @media ${({ theme }) => theme.size.mobile} {
-    width: 80%;
+    width: ${({ size }) => (size ? size : '800px')};
   }
 `;
 
@@ -128,60 +110,62 @@ const Home = () => {
     history.push('/main');
   };
 
-  const Scroll = useCallback(() => {
-    // console.log(window.scrollY);
-  }, []);
-
-  useEffect(() => {
-    window.addEventListener('scroll', Scroll, true);
-    return () => window.removeEventListener('scroll', Scroll, true);
-  }, [Scroll]);
-
   return (
-    <HomeContainer>
-      <Slide ref={scrollRef}>
-        <Section>
-          <Body>
-            <SvgDiv>
-              <svg
-                data-name="Layer 1"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 1600 130"
-                preserveAspectRatio="none"
-              >
-                <Path
-                  d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z"
-                  opacity=".25"
-                />
-                <Path
-                  d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z"
-                  opacity=".5"
-                />
-                <Path d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z" />
-              </svg>
-            </SvgDiv>
-            <PreView>
-              <P>여행지는 많지만,</P>
-              <P>마땅한 여행지를 찾기 어려우셨죠?</P>
-              <P>TipTalk이 해결해 드리겠습니다!</P>
-              <Button onClick={goToMain}>시작하기</Button>
-            </PreView>
-            <MainImage src={Logo} />
-          </Body>
-        </Section>
-        <Section>
-          <h1>2</h1>
-        </Section>
-        <Section>
-          <h1>3</h1>
-        </Section>
-        <Section>
-          <h1>4</h1>
-        </Section>
-        <Section>
-          <h1>5</h1>
-        </Section>
-      </Slide>
+    <HomeContainer ref={scrollRef}>
+      <Coin scrollRef={scrollRef} mode="up" right="40px" bottom="110px" />
+      <Section>
+        <Img src="https://drawit.s3.ap-northeast-2.amazonaws.com/tiptalk/section1.png" />
+        <Svg />
+        <Message top="20%">
+          <Fat>TIP TALK</Fat>
+          <br />
+          <S size="1.3rem">가족 또는 연인과 소중한</S>
+          <S size="1.3rem">추억을 남기고</S>
+          <S size="1.3rem">나만의 장소를 만들어보세요</S>
+          <Button width="160px" margin="30px 15px" onClick={goToMain}>
+            시작하기
+          </Button>
+        </Message>
+      </Section>
+      <Section>
+        <Img src="https://drawit.s3.ap-northeast-2.amazonaws.com/tiptalk/section3-2.png" />
+        <Message top="15%">
+          <P>다양한 여행지를 검색하여</P>
+          <P>해당 장소에 대한 정보를</P>
+          <P>확인할 수 있어요</P>
+          <br />
+          <S>카테고리별로 여행지에 대한 정보를</S>
+          <S>검색할 수 있어요</S>
+          <Img
+            top="120%"
+            left="-5%"
+            size="420px"
+            src="https://drawit.s3.ap-northeast-2.amazonaws.com/tiptalk/section3-1.png"
+          />
+        </Message>
+      </Section>
+      <Section>
+        <Img src="https://drawit.s3.ap-northeast-2.amazonaws.com/tiptalk/section2.png" />
+        <Message top="40%">
+          <P>여행지 주변 정보를</P>
+          <P>확인하고 댓글을 남겨보세요</P>
+          <br />
+          <S>마음에 드신다면 하트 버튼을 눌러</S>
+          <S>찜 목록에 담아두실 수 있어요</S>
+        </Message>
+      </Section>
+      <Section>
+        <Svg />
+        <Img src="https://drawit.s3.ap-northeast-2.amazonaws.com/tiptalk/section4.png" />
+        <Message top="20%">
+          <P>사업자는 자신의 사업지를</P>
+          <P>등록할 수 있어요</P>
+          <br />
+          <S>사진과 간단한 소개를</S>
+          <S>작성하여 자신의 사업지를</S>
+          <S>알려보세요</S>
+        </Message>
+      </Section>
     </HomeContainer>
   );
 };

@@ -46,7 +46,7 @@ const SearchForm = styled.form`
   width: 360px;
   height: 60px;
   padding: 0 10px;
-  background-color: ${Color_1};
+  background-color: rgba(0, 0, 0, 0.6);
   border-radius: 3px;
   align-items: center;
   z-index: 12;

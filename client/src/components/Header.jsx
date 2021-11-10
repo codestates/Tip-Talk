@@ -7,7 +7,10 @@ const HeaderContainer = styled.header`
   width: 100%;
   height: 70px;
   color: ${(props) => props.theme.navColor};
-  background-color: ${(props) => props.theme.navBgColor};
+  background-color: rgba(255, 0, 0, 0.01);
+  box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.2);
+  -webkit-box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.2);
 `;
 
 const Header = ({ showLogin, setShowLogin, showSignup, setShowSignup }) => {

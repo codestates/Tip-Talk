@@ -3,9 +3,8 @@ import styled from 'styled-components';
 
 const Container = styled.footer`
   width: 100%;
-  height: 200px;
-  color: ${(props) => props.theme.navColor};
-  background-color: ${(props) => props.theme.navBgColor};
+  height: 160px;
+  background-color: rgba(0, 0, 0, 0.2);
   @media ${({ theme }) => theme.size.mobile} {
     padding: 0px 16px;
   }

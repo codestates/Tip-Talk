@@ -6,6 +6,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useEffect, useRef, useState } from 'react';
+import { useHistory } from 'react-router';
 import styled from 'styled-components';
 import { Color_2 } from '../styles/common';
 import Modal from './Modal';
@@ -23,6 +24,9 @@ const Name = styled.span`
   min-width: 60px;
   font-weight: 600;
   margin-right: 3px;
+  :hover {
+    cursor: pointer;
+  }
 `;
 
 const TextInput = styled.input`
@@ -68,6 +72,9 @@ const Profile = styled.div`
   border-radius: 3px;
   margin-right: 10px;
   overflow: hidden;
+  :hover {
+    cursor: pointer;
+  }
 `;
 
 const ProfileImg = styled.img`
@@ -76,6 +83,7 @@ const ProfileImg = styled.img`
 `;
 
 const Comment = ({ comment, handleEdit, handleDelete }) => {
+  const history = useHistory();
   const inputRef = useRef();
   const [isEdit, setIsEdit] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -119,6 +127,10 @@ const Comment = ({ comment, handleEdit, handleDelete }) => {
     }
   };
 
+  const goToMypage = () => {
+    history.push(`/mypage/${comment.userId}`);
+  };
+
   return (
     <CommentContainer>
       {isOpen && (
@@ -128,8 +140,8 @@ const Comment = ({ comment, handleEdit, handleDelete }) => {
           callback={() => (isEdit === true ? null : onDelete())}
         />
       )}
-      <Profile>{imageController()}</Profile>
-      <Name>{comment.user?.nickname}</Name>
+      <Profile onClick={goToMypage}>{imageController()}</Profile>
+      <Name onClick={goToMypage}>{comment.user?.nickname}</Name>
       {isEdit ? <TextInput ref={inputRef} /> : <Text>{comment.text}</Text>}
       {comment.isMine ? (
         isEdit ? (

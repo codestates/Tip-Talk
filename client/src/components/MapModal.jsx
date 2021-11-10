@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 import { useHistory } from 'react-router';
 import styled from 'styled-components';
-import { Button, Color_1, Color_3, Color_5, Color_6 } from '../styles/common';
+import { Button, Color_1, Color_3 } from '../styles/common';
 import Carousel from './Carousel';
 
 export const ModalBackground = styled.div`

@@ -20,6 +20,7 @@ const Background = styled.div`
 const Message = styled.div`
   color: ${Color_1};
   font-weight: bold;
+  letter-spacing: 5px;
   text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.4);
   margin: 0 2px;
   animation-duration: 2.8s;
@@ -37,19 +38,15 @@ const Message = styled.div`
   }
   &:nth-child(4) {
     animation-delay: 1.2s;
-    color: #00693d;
   }
   &:nth-child(5) {
     animation-delay: 1.6s;
-    color: #00693d;
   }
   &:nth-child(6) {
     animation-delay: 2s;
-    color: #00693d;
   }
   &:nth-child(7) {
     animation-delay: 2.4s;
-    color: #00693d;
   }
 `;
 

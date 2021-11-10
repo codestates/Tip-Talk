@@ -192,7 +192,7 @@ const UploadPost = ({ edit }) => {
           setCategories(data.data);
         }
       });
-  }, [postId, user, edit]);
+  }, [postId, user, edit, history]);
 
   useEffect(() => {
     if (!images.length) {

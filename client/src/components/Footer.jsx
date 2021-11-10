@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBookOpen } from '@fortawesome/free-solid-svg-icons';
+import { Color_1 } from '../styles/common';
 
 const Container = styled.footer`
   display: flex;
@@ -46,7 +47,8 @@ const Left = styled.div`
 `;
 
 const Fat = styled.h1`
-  margin: 6px 20px 0 0;
+  color: ${Color_1};
+  margin: 6px 28px 0 0;
 `;
 
 const Column = styled.div`

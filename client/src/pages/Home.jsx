@@ -31,7 +31,7 @@ const HomeContainer = styled.div`
   section:nth-child(3) {
     @media ${({ theme }) => theme.size.mobile} {
       article {
-        top: 10%;
+        top: 6%;
       }
     }
   }
@@ -64,7 +64,7 @@ const Fat = styled.h1`
   font-size: 5rem;
   line-height: 1.4;
   color: #00693d;
-  text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.6);
+  text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.3);
   margin-right: 10px;
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -84,7 +84,7 @@ const P = styled.p`
 
 const S = styled.p`
   font-size: 1.3rem;
-  color: ${Color_6};
+  color: ${({ inherit, theme }) => (inherit ? theme.color : Color_6)};
   line-height: 1.4;
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -151,10 +151,21 @@ const Home = () => {
         <Message top="20%">
           <Fat>TIP TALK</Fat>
           <br />
-          <S size="1.3rem">가족 또는 연인과 소중한</S>
-          <S size="1.3rem">추억을 남기고</S>
-          <S size="1.3rem">나만의 장소를 만들어보세요</S>
-          <Button width="160px" margin="30px 15px" onClick={goToMain}>
+          <S inherit="true" size="1.3rem">
+            가족 또는 연인과 소중한
+          </S>
+          <S inherit="true" size="1.3rem">
+            추억을 남기고
+          </S>
+          <S inherit="true" size="1.3rem">
+            나만의 장소를 만들어보세요
+          </S>
+          <Button
+            width="180px"
+            height="52px"
+            margin="30px 15px"
+            onClick={goToMain}
+          >
             시작하기
           </Button>
         </Message>

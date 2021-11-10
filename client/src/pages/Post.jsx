@@ -12,7 +12,6 @@ import {
   Body,
   Color_3,
   Color_4,
-  Hangeul,
   Info,
   Label,
   Meta,
@@ -41,10 +40,10 @@ const PostContainer = styled.article`
   width: 100%;
   max-width: 1600px;
   min-height: 600px;
-  padding: 50px;
+  padding: 50px 50px 100px;
   @media ${({ theme }) => theme.size.tablet} {
     flex-direction: column;
-    padding: 50px 10px;
+    padding: 50px 10px 100px;
     justify-content: center;
     align-items: center;
   }

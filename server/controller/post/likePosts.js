@@ -12,5 +12,5 @@ module.exports = async (req, res) => {
       },
     ],
   });
-  res.status(200).json({ status: true, data: find });
+  res.status(200).json({ status: true, data: { find } });
 };

@@ -2,7 +2,6 @@ const { post, user_place_likes } = require('../../models');
 
 module.exports = async (req, res) => {
   const { userId } = req.params;
-  console.log(userId);
   const find = await user_place_likes.findAll({
     where: { userId: +userId },
     include: [

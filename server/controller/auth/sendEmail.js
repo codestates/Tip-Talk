@@ -11,7 +11,6 @@ function generateRandomNumber(n) {
 
 module.exports = async (req, res) => {
   const { email } = req.body;
-  console.log(email);
   try {
     const transporter = nodemailer.createTransport({
       service: 'gmail',

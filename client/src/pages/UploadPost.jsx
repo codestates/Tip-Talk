@@ -291,7 +291,6 @@ const UploadPost = ({ edit }) => {
   const handleDeleteImage = (index, e) => {
     e.preventDefault();
     const filtered = images.filter((_, i) => i !== index);
-    console.log(filtered);
     URL.revokeObjectURL(images[index].url);
     setCurrent(filtered.length - 1);
     setImages([...filtered]);

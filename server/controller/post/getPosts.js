@@ -30,7 +30,6 @@ module.exports = async (req, res) => {
       });
       res.status(200).json({ status: true, data: { post: found } });
     } else {
-      console.log(offset);
       let max;
       if (page !== undefined) {
         max = await post.count();

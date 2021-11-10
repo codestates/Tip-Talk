@@ -25,8 +25,6 @@ module.exports = async (req, res) => {
       .json({ status: true, data: { img: imageUrl.Location } });
   }
 
-  console.log(oldpassword, findUser.password);
-
   try {
     bcrypt.compare(oldpassword, findUser.password, async (err, result) => {
       if (!result) {
@@ -36,6 +34,12 @@ module.exports = async (req, res) => {
       } else {
         let hashed;
         if (password) {
+          if (password.length < 8) {
+            return res.status(400).json({
+              status: false,
+              message: '비밀번호는 8자리 이상이어야 합니다',
+            });
+          }
           hashed = await bcrypt.hash(password, 10);
         }
 

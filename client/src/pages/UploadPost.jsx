@@ -20,10 +20,6 @@ const UploadForm = styled.form`
   padding: 50px;
   justify-content: center;
   align-items: center;
-  ul,
-  li {
-    list-style: none;
-  }
   @media ${({ theme }) => theme.size.mobile} {
     flex-direction: column;
     padding: 50px 30px;
@@ -91,13 +87,21 @@ const ImageInput = styled.input`
 `;
 
 const ImageList = styled.ul`
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
   min-width: 160px;
-  height: 120px;
+  min-height: 120px;
   text-align: center;
   margin: 20px 0;
+  list-style: none;
   justify-content: center;
   align-items: center;
+  @media ${({ theme }) => theme.size.tabletL} {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+  @media ${({ theme }) => theme.size.tablet} {
+    grid-template-columns: 1fr 1fr;
+  }
 `;
 
 const ImageWrapper = styled.li`
@@ -107,6 +111,7 @@ const ImageWrapper = styled.li`
   height: 120px;
   margin: 6px;
   border-radius: 6px;
+  list-style: none;
   background-color: ${({ theme }) => theme.formColor};
   box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.2);
   -webkit-box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.2);
@@ -201,6 +206,10 @@ const UploadPost = ({ edit }) => {
     const title = titleInputRef.current.value;
     if (images.length === 0 || !category || !title) {
       setMessage('모든 항목을 입력해주세요');
+      return;
+    }
+    if (title.length > 12) {
+      setMessage('상호명은 12글자 이하로 입력해주세요!');
       return;
     }
     setIsOpen(true);

@@ -388,7 +388,7 @@ const MyPage = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:8000/user/${id}`)
+      .get(`${process.env.REACT_APP_SERVER_URL}/user/${id}`)
       .then((res) => {
         const { data } = res.data;
         setUserInfo(data.user);
@@ -518,7 +518,7 @@ const MyPage = () => {
     const result = [];
 
     axios
-      .get(`http://localhost:8000/post/like/${id}`)
+      .get(`${process.env.REACT_APP_SERVER_URL}/post/like/${id}`)
       .then((res) => {
         const { data } = res.data;
         const { find } = data;
@@ -536,6 +536,13 @@ const MyPage = () => {
       })
       .catch((err) => console.log(err));
   }, []);
+
+  useEffect(() => {
+    axios
+      .get(`${process.env.REACT_APP_SERVER_URL}/post/mypost`)
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
+  });
 
   return (
     <>

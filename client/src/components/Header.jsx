@@ -7,7 +7,7 @@ const HeaderContainer = styled.header`
   width: 100%;
   height: 70px;
   color: ${(props) => props.theme.navColor};
-  background-color: rgba(0, 255, 0, 0.01);
+  background-color: transparent;
   box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.2);
   -webkit-box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.2);
   -moz-box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.2);

@@ -293,18 +293,18 @@ const UploadPost = ({ edit }) => {
   };
 
   const afterEvent = () => {
-    if (message.includes('!')) {
-      if (edit) {
-        const cb = () => {
-          history.replace(`/post/${postId}`);
-        };
-        return cb;
-      } else {
-        const cb = () => {
-          history.replace('/main');
-        };
-        return cb;
-      }
+    if (message.includes('수정')) {
+      const cb = () => {
+        history.replace(`/post/${postId}`);
+      };
+      return cb;
+    } else if (message.includes('업로드')) {
+      const cb = () => {
+        history.replace(`/main`);
+      };
+      return cb;
+    } else {
+      return undefined;
     }
   };
 

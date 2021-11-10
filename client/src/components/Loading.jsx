@@ -9,7 +9,9 @@ const Background = styled.div`
   left: 0;
   width: 100vw;
   height: 100vh;
+  font-size: 92px;
   background-color: ${Color_3};
+  user-select: none;
   z-index: 11;
   justify-content: center;
   align-items: center;
@@ -17,7 +19,6 @@ const Background = styled.div`
 
 const Message = styled.div`
   color: ${Color_1};
-  font-size: 92px;
   font-weight: bold;
   text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.4);
   margin: 0 2px;
@@ -36,15 +37,19 @@ const Message = styled.div`
   }
   &:nth-child(4) {
     animation-delay: 1.2s;
+    color: #00693d;
   }
   &:nth-child(5) {
     animation-delay: 1.6s;
+    color: #00693d;
   }
   &:nth-child(6) {
     animation-delay: 2s;
+    color: #00693d;
   }
   &:nth-child(7) {
     animation-delay: 2.4s;
+    color: #00693d;
   }
 `;
 

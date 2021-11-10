@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { useHistory } from 'react-router';
 import styled from 'styled-components';
-import { Color_3, Hangeul, Logo } from '../styles/common';
+import { Color_5, Hangeul, Logo } from '../styles/common';
 import Login from './Login';
 import Signup from './Signup';
 import Logout from './Logout';
@@ -29,9 +29,10 @@ const LogoImg = styled.img`
 
 const Button = styled.button`
   width: 80px;
-  font-size: 16px;
-  color: ${Color_3};
+  font-size: 17px;
+  color: ${Color_5};
   font-family: ${Hangeul};
+  font-weight: 500;
   background-color: transparent;
   padding: 0;
   border: none;

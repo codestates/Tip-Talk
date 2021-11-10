@@ -1,8 +1,8 @@
 import styled, { createGlobalStyle } from 'styled-components';
 
-export const Color_1 = '#8cbeff';
+export const Color_1 = '#00b667';
 export const Color_2 = '#fac125';
-export const Color_3 = '#E5F0FF';
+export const Color_3 = 'white';
 export const Color_4 = '#ff6e3a';
 export const Color_5 = '#3a3a3a';
 export const Color_6 = '#888';
@@ -20,7 +20,7 @@ const size = {
 
 export const lightTheme = {
   color: Color_5,
-  navColor: Color_3,
+  navColor: Color_1,
   bgColor: 'rgb(250, 250, 250)',
   formColor: 'white',
   navBgColor: Color_1,

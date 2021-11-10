@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useContext, useRef, useState } from 'react';
 import styled from 'styled-components';
 import UserContext from '../context/UserContext';
-import { Color_1 } from '../styles/common';
+import { Color_1, Color_6 } from '../styles/common';
 import Comment from './Comment';
 import Modal from './Modal';
 
@@ -78,7 +78,7 @@ const PageList = styled.li`
 `;
 
 const PageButton = styled.button`
-  color: ${({ active }) => (active ? '#006eff' : Color_1)};
+  color: ${({ active }) => (active ? Color_1 : Color_6)};
   padding: 0 2px;
   border: none;
   background-color: transparent;

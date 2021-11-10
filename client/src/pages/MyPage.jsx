@@ -308,9 +308,9 @@ const Carousel = styled.div`
   }
   .carousel-content {
     ${(props) =>
-      props.show > 4
-        ? `width: calc(92% / 4)`
-        : `width: calc(92% / ${props.show})`};
+      props.show < 4
+        ? `width: calc(92% / ${props.show})`
+        : `width: calc(92% / 4)`};
   }
 `;
 
@@ -380,9 +380,9 @@ const MypostCarousel = styled.div`
   }
   .mypost-carousel-content {
     ${(props) =>
-      props.show > 4
-        ? `width: calc(92% / 4)`
-        : `width: calc(92% / ${props.show})`};
+      props.show < 4
+        ? `width: calc(92% / ${props.show})`
+        : `width: calc(92% / 4)`};
   }
 `;
 
@@ -428,14 +428,6 @@ const MyPage = () => {
   const [likePostLength, setLikePostLength] = useState(likePost?.length);
   const [myPost, setMyPost] = useState(null);
   const [myPostLength, setMyPostLength] = useState(myPost?.length);
-
-  useEffect(() => {
-    setLikePostLength(likePost?.length);
-  }, [likePostLength]);
-
-  useEffect(() => {
-    setMyPostLength(myPost?.length);
-  }, [myPostLength]);
 
   useEffect(() => {
     if (userInfo !== null) {
@@ -573,7 +565,7 @@ const MyPage = () => {
   };
 
   const next = () => {
-    if (currentIndex < likePostLength - show) {
+    if (currentIndex < likePostLength - (show > 4 ? 4 : show)) {
       setCurrentIndex((prevState) => prevState + 1);
     }
   };
@@ -585,7 +577,7 @@ const MyPage = () => {
   };
 
   const myPostNext = () => {
-    if (myPostCurrentIndex < myPostLength - myPostShow) {
+    if (myPostCurrentIndex < myPostLength - (myPostShow > 4 ? 4 : myPostShow)) {
       setMyPostCurrentIndex((prevState) => prevState + 1);
     }
   };
@@ -651,6 +643,14 @@ const MyPage = () => {
       })
       .catch((err) => console.log(err));
   }, []);
+
+  useEffect(() => {
+    setLikePostLength(likePost?.length);
+  }, [likePostLength, likePost]);
+
+  useEffect(() => {
+    setMyPostLength(myPost?.length);
+  }, [myPostLength, myPost]);
 
   return (
     <>
@@ -854,6 +854,7 @@ const MyPage = () => {
             <div className="carousel-wrapper">
               {console.log('currentIndex = ' + currentIndex)}
               {console.log('likePostLength = ' + likePostLength)}
+              {console.log('show = ' + show)}
               {currentIndex > 0 && (
                 <button className="left-arrow" onClick={prev}>
                   &lt;
@@ -866,7 +867,7 @@ const MyPage = () => {
                   ))}
                 </div>
               </div>
-              {currentIndex < likePostLength - show && (
+              {currentIndex < likePostLength - (show > 4 ? 4 : show) && (
                 <button className="right-arrow" onClick={next}>
                   &gt;
                 </button>
@@ -892,7 +893,8 @@ const MyPage = () => {
                       ))}
                     </div>
                   </div>
-                  {myPostCurrentIndex < myPostLength - myPostShow && (
+                  {myPostCurrentIndex <
+                    myPostLength - (myPostShow > 4 ? 4 : show) && (
                     <button className="mypost-right-arrow" onClick={myPostNext}>
                       &gt;
                     </button>

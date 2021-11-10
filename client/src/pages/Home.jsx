@@ -1,7 +1,8 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useHistory } from 'react-router';
 import styled from 'styled-components';
 import { Coin } from '../components/Coin';
+import Loading from '../components/Loading';
 import Svg from '../components/Svg';
 import { Button, Color_6 } from '../styles/common';
 
@@ -105,13 +106,21 @@ const Img = styled.img`
 const Home = () => {
   const history = useHistory();
   const scrollRef = useRef();
+  const [loading, setLoading] = useState(true);
 
   const goToMain = () => {
     history.push('/main');
   };
 
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 3000);
+  }, []);
+
   return (
     <HomeContainer ref={scrollRef}>
+      {loading && <Loading />}
       <Coin scrollRef={scrollRef} mode="up" right="40px" bottom="110px" />
       <Section>
         <Img src="https://drawit.s3.ap-northeast-2.amazonaws.com/tiptalk/section1.png" />

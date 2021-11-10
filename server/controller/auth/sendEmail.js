@@ -27,8 +27,53 @@ module.exports = async (req, res) => {
     const mailOptions = {
       from: process.env.MAIL_ID,
       to: email,
-      subject: 'Tip Talk 이메일 인증번호입니다.',
-      html: `<div><h1>Tip Talk 이메일 인증번호입니다.</h1><h2>이메일 인증을 하셔야지 회원가입이 가능합니다.</h2><h3 style="margin-bottom:130px">TipTalk 인증번호 : ${randomNumber}</h3></div>`,
+      subject: '[Tip Talk] 인증번호를 알려드립니다.',
+      html: `<div
+      style="
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: rgb(249, 250, 249);
+        text-align: center;
+      "
+    >
+      <div style="border-bottom: 2px solid #00b667">
+        <img
+          style="padding: 14px"
+          src="https://drawit.s3.ap-northeast-2.amazonaws.com/Logo.png"
+          width="140px"
+          alt="TipTalk Logo"
+        />
+      </div>
+      <div style="margin: 20px 50px">
+        <h1
+          style="
+            color: rgb(46, 42, 42);
+            font-size: 20px;
+            font-family: arial;
+            text-align: left;
+          "
+        >
+          TIP TALK에서 요청하신 인증번호를 발송해 드립니다.
+        </h1>
+      </div>
+      <div style="border: 1px solid rgb(46, 42, 42); margin: 20px 50px">
+        <h2
+          style="
+            color: black;
+            text-align: center;
+            font-size: 17px;
+            padding: 15px;
+          "
+        >
+          아래 인증번호 6자리를 인증번호 입력창에 입력해주세요
+        </h2>
+        <h3 style="text-align: center; font-size: 17px; color: #00b667">
+          ${randomNumber}
+        </h3>
+      </div>
+    </div>`,
     };
     transporter.sendMail(mailOptions, (err, info) => {
       if (err) {

@@ -12,8 +12,5 @@ module.exports = async (req, res) => {
       },
     ],
   });
-  res.status(200).json({ status: true, data: { find } });
+  res.status(200).json({ status: true, data: find });
 };
-
-// 내가 보고 싶은 사람의 찜한 포스트를 볼 수 있게
-// 하나의 화면 안에 그럼 userId

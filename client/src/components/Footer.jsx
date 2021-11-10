@@ -8,7 +8,6 @@ const Container = styled.footer`
   display: flex;
   width: 100%;
   height: 120px;
-  margin-top: 60px;
   box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.2);
   -webkit-box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.2);
   -moz-box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.2);
@@ -30,6 +29,9 @@ const Row = styled.div`
   @media ${({ theme }) => theme.size.tablet} {
     margin-right: 56px;
     justify-content: flex-end;
+  }
+  @media ${({ theme }) => theme.size.mobile} {
+    margin-right: 0;
   }
 `;
 

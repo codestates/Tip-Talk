@@ -12,6 +12,7 @@ import {
   Body,
   Color_3,
   Color_4,
+  Hangeul,
   Info,
   Label,
   Meta,
@@ -25,7 +26,12 @@ import { createEditor } from 'slate';
 import { Slate, Editable, withReact } from 'slate-react';
 import { EditorForm, Element, Leaf } from '../components/TextEditor';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faHeart } from '@fortawesome/free-solid-svg-icons';
+import {
+  faBars,
+  faEdit,
+  faHeart,
+  faTimes,
+} from '@fortawesome/free-solid-svg-icons';
 import Modal from '../components/Modal';
 import UserContext from '../context/UserContext';
 
@@ -87,13 +93,24 @@ const CustomMeta = styled(Meta)`
   background-color: transparent;
   .title {
     display: flex;
+    font-size: 48px;
+    text-overflow: ellipsis;
     align-items: center;
+  }
+  @media ${({ theme }) => theme.size.tabletL} {
+    flex-direction: column;
   }
 `;
 
 const Row = styled.div`
   display: flex;
   justify-content: space-between;
+  @media ${({ theme }) => theme.size.tabletL} {
+    justify-content: flex-start;
+    div {
+      margin-right: 20px;
+    }
+  }
 `;
 
 const Map = styled.div`
@@ -119,6 +136,7 @@ const Map = styled.div`
 const CoinForm = styled.div`
   display: flex;
   position: fixed;
+  top: ${({ top }) => top};
   bottom: ${({ bottom }) => bottom};
   right: 40px;
   width: 40px;
@@ -170,6 +188,8 @@ const Post = () => {
   const [comments, setComments] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const [isLikeOpen, setIsLikeOpen] = useState(false);
+  const [toggle, setToggle] = useState(false);
+  const [confirm, setConfirm] = useState(false);
   const { postId } = useParams();
   const [user] = useContext(UserContext);
 
@@ -347,7 +367,7 @@ const Post = () => {
       });
   };
 
-  const handleDelete = (commentId) => {
+  const handleCommentDelete = (commentId) => {
     axios
       .delete(`${process.env.REACT_APP_SERVER_URL}/comment/${commentId}`)
       .then(() => {
@@ -395,6 +415,17 @@ const Post = () => {
     history.push(`/edit/${post.id}`);
   };
 
+  const handleDelete = () => {
+    axios
+      .delete(`${process.env.REACT_APP_SERVER_URL}/post/${post.id}`)
+      .then(() => {
+        history.push(`/main`);
+      })
+      .catch(() => {
+        history.push(`/main`);
+      });
+  };
+
   return (
     <Body ref={scrollRef}>
       {isOpen && (
@@ -419,6 +450,13 @@ const Post = () => {
           callback={() => callback()}
         />
       )}
+      {confirm && (
+        <Modal
+          message="정말 삭제하시겠어요?"
+          setIsOpen={setConfirm}
+          callback={handleDelete}
+        />
+      )}
       <PostContainer>
         <CoinForm bottom="110px">
           <CoinButton isLike={post?.isLike} onClick={() => setIsLikeOpen(true)}>
@@ -426,16 +464,31 @@ const Post = () => {
           </CoinButton>
         </CoinForm>
         {user?.id === post?.userId && (
-          <CoinForm bottom="160px">
-            <CoinButton onClick={goToEdit}>
-              <FontAwesomeIcon icon={faEdit} />
+          <CoinForm bottom="160px" onClick={() => setToggle(!toggle)}>
+            <CoinButton>
+              <FontAwesomeIcon icon={faBars} />
             </CoinButton>
           </CoinForm>
         )}
+        {toggle && (
+          <>
+            <CoinForm bottom="210px">
+              <CoinButton onClick={goToEdit}>
+                <FontAwesomeIcon icon={faEdit} />
+              </CoinButton>
+            </CoinForm>
+            <CoinForm bottom="260px">
+              <CoinButton onClick={() => setConfirm(true)}>
+                <FontAwesomeIcon icon={faTimes} />
+              </CoinButton>
+            </CoinForm>
+          </>
+        )}
+
         <Column>
           <CustomMeta>
             <div className="title">
-              <Text size="48px">{post?.title}</Text>
+              <Text>{post?.title}</Text>
             </div>
             <div>
               <Label top="0">주소</Label>
@@ -484,7 +537,7 @@ const Post = () => {
               comments={comments}
               handleSubmit={handleSubmit}
               handleEdit={handleEdit}
-              handleDelete={handleDelete}
+              handleDelete={handleCommentDelete}
               ChangePage={ChangePage}
               pages={getPages(pages)}
               current={current}

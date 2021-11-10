@@ -7,6 +7,7 @@ const router = express.Router();
 
 router.get('/', postController.getPosts);
 router.get('/mypost', isLoggedIn, postController.getMyPost);
+router.get('/like/:userId', postController.likePosts);
 router.get('/search', postController.autoComplete);
 router.get('/:id', isLoggedIn, postController.getPost);
 router.get('/around/:id', postController.getAround);

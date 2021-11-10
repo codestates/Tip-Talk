@@ -134,7 +134,7 @@ const Footer = () => {
           </div>
           <div>
             <Text>팀원</Text>
-            <A href="https://github.com/3000-2">
+            <A href="https://github.com/wolfdale-12f8217">
               <FontAwesomeIcon icon={faGithub} />
             </A>
           </div>
@@ -146,7 +146,7 @@ const Footer = () => {
           </div>
           <div>
             <Text>팀원</Text>
-            <A href="https://github.com/3000-2">
+            <A href="https://github.com/tnckddl14">
               <FontAwesomeIcon icon={faGithub} />
             </A>
           </div>

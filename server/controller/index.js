@@ -30,6 +30,7 @@ module.exports = {
     getAround: require('./post/around/getAround'),
     getMyPost: require('./post/mypost/getMyPost'),
     autoComplete: require('./post/autocomplete'),
+    likePosts: require('./post/likePosts'),
   },
   userController: {
     editUserInfo: require('./user/editUserInfo'),

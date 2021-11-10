@@ -299,7 +299,7 @@ const Signup = ({ setShowLogin, setShowSignup }) => {
 
   const verificationHandler = () => {
     axios
-      .post('http://localhost:8000/auth/sendEmail', { email })
+      .post(`${process.env.REACT_APP_SERVER_URL}/auth/sendEmail`, { email })
       .then((res) => {
         const { number } = res.data.data;
         console.log('number = ' + number);

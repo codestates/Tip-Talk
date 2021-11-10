@@ -21,8 +21,7 @@ const Container = styled.div`
   text-align: center;
 
   ${Button} {
-    display: ${(props) =>
-      props.correctUser === true ? 'inline-block' : 'none'};
+    display: ${(props) => (props.correctUser === true ? 'block' : 'none')};
   }
 `;
 
@@ -308,7 +307,82 @@ const Carousel = styled.div`
     right: 24px;
   }
   .carousel-content {
-    width: calc(92% / ${(props) => props.show});
+    ${(props) =>
+      props.show > 4
+        ? `width: calc(92% / 4)`
+        : `width: calc(92% / ${props.show})`};
+  }
+`;
+
+const MypostCarousel = styled.div`
+  position: absolute;
+  top: 77rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 40%;
+  .mypost-carousel-container {
+    width: 85%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  .mypost-carousel-wrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+  }
+  .mypost-carousel-content-wrapper {
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+  }
+  .mypost-carousel-content {
+    display: flex;
+    transition: all 250ms linear;
+    transform: translateX(
+      -${(props) => props.currentIndex * (430 / props.show)}%
+    );
+  }
+  .mypost-carousel-content::-webkit-scrollbar {
+    display: none;
+  }
+  .mypost-carousel-content > * {
+    width: 100%;
+    flex-shrink: 0;
+    flex-grow: 1;
+  }
+  .mypost-left-arrow {
+    position: absolute;
+    z-index: 1;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 48px;
+    height: 48px;
+    border-radius: 24px;
+    background-color: white;
+    border: 1px solid #ddd;
+    left: 24px;
+  }
+  .mypost-right-arrow {
+    position: absolute;
+    z-index: 1;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 48px;
+    height: 48px;
+    border-radius: 24px;
+    background-color: white;
+    border: 1px solid #ddd;
+    right: 24px;
+  }
+  .mypost-carousel-content {
+    ${(props) =>
+      props.show > 4
+        ? `width: calc(92% / 4)`
+        : `width: calc(92% / ${props.show})`};
   }
 `;
 
@@ -316,29 +390,31 @@ const ErrorMessage = styled.div`
   color: red;
 
   .password-length-over-8 {
-    position: relative;
-    bottom: 7rem;
+    position: absolute;
+    bottom: 2rem;
+    left: 19rem;
   }
 
   .password-not-match {
-    position: relative;
-    bottom: 18rem;
+    position: absolute;
+    bottom: 12rem;
+    left: 19rem;
   }
 `;
 
 const MyPage = () => {
-  const show = 4;
+  const [show, setShow] = useState(0);
+  const [myPostShow, setMyPostShow] = useState(0);
   const [isEditing, setIsEditing] = useState(false);
   const [isClose, setIsClose] = useState(null);
   const [image, setImage] = useState(null);
   const [imageBase64, setImageBase64] = useState(null);
-  const [posts, setPosts] = useState(data);
   const [isOpen, setIsOpen] = useState(false);
   const [nickname, setNickname] = useState(null);
   const [password, setPassword] = useState('');
   const [oldpassword, setOldpassword] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [imageLength, setImageLength] = useState(posts.length);
+  const [myPostCurrentIndex, setMyPostCurrentIndex] = useState(0);
   const [is8Digit, setIs8Digit] = useState(true);
   const fileInput = useRef(null);
   const scrollRef = useRef();
@@ -348,10 +424,18 @@ const MyPage = () => {
   const [user, setUser] = useContext(UserContext);
   const [isPasswordMatch, setIsPasswordMatch] = useState(true);
   const [correctUser, setCorrectUser] = useState(null);
+  const [likePost, setLikePost] = useState(null);
+  const [likePostLength, setLikePostLength] = useState(likePost?.length);
+  const [myPost, setMyPost] = useState(null);
+  const [myPostLength, setMyPostLength] = useState(myPost?.length);
 
   useEffect(() => {
-    setImageLength(posts.length);
-  }, [posts]);
+    setLikePostLength(likePost?.length);
+  }, [likePostLength]);
+
+  useEffect(() => {
+    setMyPostLength(myPost?.length);
+  }, [myPostLength]);
 
   useEffect(() => {
     if (userInfo !== null) {
@@ -386,7 +470,7 @@ const MyPage = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:8000/user/${id}`)
+      .get(`${process.env.REACT_APP_SERVER_URL}/user/${id}`)
       .then((res) => {
         const { data } = res.data;
         setUserInfo(data.user);
@@ -489,7 +573,7 @@ const MyPage = () => {
   };
 
   const next = () => {
-    if (currentIndex < imageLength - show) {
+    if (currentIndex < likePostLength - show) {
       setCurrentIndex((prevState) => prevState + 1);
     }
   };
@@ -497,6 +581,18 @@ const MyPage = () => {
   const prev = () => {
     if (currentIndex > 0) {
       setCurrentIndex((prevState) => prevState - 1);
+    }
+  };
+
+  const myPostNext = () => {
+    if (myPostCurrentIndex < myPostLength - myPostShow) {
+      setMyPostCurrentIndex((prevState) => prevState + 1);
+    }
+  };
+
+  const myPostPrev = () => {
+    if (myPostCurrentIndex > 0) {
+      setMyPostCurrentIndex((prevState) => prevState - 1);
     }
   };
 
@@ -511,6 +607,50 @@ const MyPage = () => {
   useEffect(() => {
     setCorrectUser(user?.id === Number(userInfo?.id));
   }, [user, userInfo]);
+
+  useEffect(() => {
+    const result = [];
+    axios
+      .get(`${process.env.REACT_APP_SERVER_URL}/post/like/${id}`)
+      .then((res) => {
+        const { data } = res.data;
+        const { find } = data;
+        for (let i = 0; i < find.length; i++) {
+          const { post } = find[i];
+          (({ id, images, title }) =>
+            result.push({
+              id: id,
+              title: title,
+              images: [images],
+            }))(post);
+        }
+        setLikePost(result);
+        setShow(find.length);
+      })
+      .catch((err) => console.log(err));
+  }, []);
+
+  useEffect(() => {
+    const result = [];
+    axios
+      .get(`${process.env.REACT_APP_SERVER_URL}/post/mypost`)
+      .then((res) => {
+        const { data } = res.data;
+        const { myPost } = data;
+        for (let i = 0; i < myPost.length; i++) {
+          const data = myPost[i];
+          (({ id, title, images }) =>
+            result.push({
+              id: id,
+              title: title,
+              images: [images],
+            }))(data);
+        }
+        setMyPost(result);
+        setMyPostShow(myPost.length);
+      })
+      .catch((err) => console.log(err));
+  }, []);
 
   return (
     <>
@@ -712,19 +852,21 @@ const MyPage = () => {
         <Carousel currentIndex={currentIndex} show={show}>
           <div className="carousel-container">
             <div className="carousel-wrapper">
+              {console.log('currentIndex = ' + currentIndex)}
+              {console.log('likePostLength = ' + likePostLength)}
               {currentIndex > 0 && (
                 <button className="left-arrow" onClick={prev}>
                   &lt;
                 </button>
               )}
               <div className="carousel-content-wrapper">
-                <div className={'carousel-content'}>
-                  {posts.map((post) => (
+                <div className="carousel-content">
+                  {likePost?.map((post) => (
                     <Thumbnail thumbnail={post} key={post.id} />
                   ))}
                 </div>
               </div>
-              {currentIndex < imageLength - show && (
+              {currentIndex < likePostLength - show && (
                 <button className="right-arrow" onClick={next}>
                   &gt;
                 </button>
@@ -735,6 +877,29 @@ const MyPage = () => {
         {userInfo?.role === 1 ? (
           <Header>
             <div className="bottom-header">내가 등록한 장소</div>
+            <MypostCarousel currentIndex={myPostCurrentIndex} show={myPostShow}>
+              <div className="mypost-carousel-container">
+                <div className="mypost-carousel-wrapper">
+                  {myPostCurrentIndex > 0 && (
+                    <button className="mypost-left-arrow" onClick={myPostPrev}>
+                      &lt;
+                    </button>
+                  )}
+                  <div className="mypost-carousel-content-wrapper">
+                    <div className="mypost-carousel-content">
+                      {myPost?.map((post) => (
+                        <Thumbnail thumbnail={post} key={post.id} />
+                      ))}
+                    </div>
+                  </div>
+                  {myPostCurrentIndex < myPostLength - myPostShow && (
+                    <button className="mypost-right-arrow" onClick={myPostNext}>
+                      &gt;
+                    </button>
+                  )}
+                </div>
+              </div>
+            </MypostCarousel>
           </Header>
         ) : null}
       </Container>

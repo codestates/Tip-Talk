@@ -631,6 +631,7 @@ const MyPage = () => {
     axios
       .get(`${process.env.REACT_APP_SERVER_URL}/post/like/${id}`)
       .then((res) => {
+        console.log('data == ', res.data.data.find);
         const { data } = res.data;
         const { find } = data;
         for (let i = 0; i < find.length; i++) {
@@ -639,7 +640,7 @@ const MyPage = () => {
             result.push({
               id: id,
               title: title,
-              images: [images],
+              images: images.split(' '),
             }))(post);
         }
         setLikePost(result);
@@ -661,7 +662,7 @@ const MyPage = () => {
             result.push({
               id: id,
               title: title,
-              images: [images],
+              images: images.split(' '),
             }))(data);
         }
         setMyPost(result);

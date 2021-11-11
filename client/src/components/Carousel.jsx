@@ -10,7 +10,7 @@ import { Color_6 } from '../styles/common';
 const CarouselContainer = styled.div`
   position: relative;
   width: 100%;
-  height: inherit;
+  height: 100%;
   border-radius: 8px;
   box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.2);
   -webkit-box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.2);
@@ -21,14 +21,14 @@ const CarouselContainer = styled.div`
 const Slide = styled.div`
   display: flex;
   width: 100%;
-  height: inherit;
+  height: 100%;
   white-space: nowrap;
   will-change: transform;
 `;
 
 const Image = styled.img`
   width: 100%;
-  height: inherit;
+  object-fit: fill;
   -webkit-user-drag: none;
   user-select: none;
   -moz-user-select: none;

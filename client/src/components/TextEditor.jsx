@@ -38,7 +38,12 @@ export const EditorForm = styled.div`
   -moz-box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.2);
   overflow: hidden;
   h1 {
-    margin: 12px 0;
+    display: inline;
+    line-height: 34px;
+  }
+  h2 {
+    display: inline;
+    line-height: 28px;
   }
 `;
 
@@ -133,7 +138,7 @@ const TextEditor = ({ content }) => {
               <MarkButton format="italic" icon={faItalic} />
               <MarkButton format="underline" icon={faUnderline} />
               <MarkButton format="code" icon={faCode} />
-              <BlockButton format="heading-one" icon={faHeading} />
+              <MarkButton format="heading-one" icon={faHeading} />
               <BlockButton format="center" icon={faAlignCenter} />
               <BlockButton format="block-quote" icon={faQuoteRight} />
               <BlockButton format="numbered-list" icon={faListOl} />
@@ -161,22 +166,24 @@ export const Element = ({ attributes, children, element }) => {
       return <blockquote {...attributes}>{children}</blockquote>;
     case 'bulleted-list':
       return <ul {...attributes}>{children}</ul>;
-    case 'heading-one':
-      return <h1 {...attributes}>{children}</h1>;
-    case 'heading-two':
-      return <h2 {...attributes}>{children}</h2>;
     case 'list-item':
       return <li {...attributes}>{children}</li>;
     case 'numbered-list':
       return <ol {...attributes}>{children}</ol>;
+    case 'heading-one':
+      return <h1 {...attributes}>{children}</h1>;
     case 'center':
       return <center {...attributes}>{children}</center>;
     default:
-      return <p {...attributes}>{children}</p>;
+      return <div {...attributes}>{children}</div>;
   }
 };
 
 export const Leaf = ({ attributes, children, leaf }) => {
+  if (leaf['heading-one']) {
+    children = <h1>{children}</h1>;
+  }
+
   if (leaf.bold) {
     children = <strong>{children}</strong>;
   }

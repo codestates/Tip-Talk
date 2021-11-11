@@ -826,27 +826,35 @@ const MyPage = () => {
                   수정 완료
                 </Button>
               )}
-              {userInfo?.platform === 0 ? (
-                isOpen === true &&
-                is8Digit === true &&
-                isPasswordMatch === true ? (
-                  <Modal
-                    message={'정상적으로 수정되었습니다'}
-                    setIsOpen={setIsOpen}
-                    withoutNo={true}
-                    callback={() => [editCompleteModalCloseHandler()]}
-                  />
-                ) : null
+              {isOpen === true &&
+              is8Digit === true &&
+              isPasswordMatch === true ? (
+                <Modal
+                  message={'정상적으로 수정되었습니다'}
+                  setIsOpen={setIsOpen}
+                  withoutNo={true}
+                  callback={() => [editCompleteModalCloseHandler()]}
+                />
+              ) : null}
+              {isOpen === true && userInfo?.platform !== 0 ? (
+                <Modal
+                  message={'정상적으로 수정되었습니다'}
+                  setIsOpen={setIsOpen}
+                  withoutNo={true}
+                  callback={() => [editCompleteModalCloseHandler()]}
+                />
               ) : null}
             </div>
-            {is8Digit === true || password?.length === 0 ? null : (
+            {is8Digit === true ||
+            password?.length === 0 ||
+            userInfo?.platform !== 0 ? null : (
               <ErrorMessage>
                 <div className="password-length-over-8">
                   비밀번호는 8자리 이상이어야 합니다
                 </div>
               </ErrorMessage>
             )}
-            {isPasswordMatch === true ? null : (
+            {isPasswordMatch === true || userInfo?.platform !== 0 ? null : (
               <ErrorMessage>
                 <div className="password-not-match">
                   예전 비밀번호와 일치하지 않습니다

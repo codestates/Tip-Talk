@@ -223,23 +223,15 @@ const Post = () => {
             content: JSON.parse(posts.content),
           });
 
-          const lat = posts.lat;
-          const lng = posts.lng;
-
-          const center = new kakao.maps.LatLng(+lat, +lng);
-
-          marker.current = new kakao.maps.Marker({
-            position: center,
-          });
-
-          marker.current.setMap(map.current);
+          const lat = +posts.lat;
+          const lng = +posts.lng;
 
           axios
             .get(`${process.env.REACT_APP_SERVER_URL}/post/around/${postId}`, {
               params: { lat, lng },
             })
             .then(({ data }) => {
-              if (data.status && data.data.posts.length) {
+              if (data.status && data.data.posts.length > 0) {
                 const { posts } = data.data;
                 let bounds = new kakao.maps.LatLngBounds();
                 posts.forEach((post) => {
@@ -252,6 +244,16 @@ const Post = () => {
                 map.current.setBounds(bounds);
               }
             });
+
+          const center = new kakao.maps.LatLng(+lat, +lng);
+
+          marker.current = new kakao.maps.Marker({
+            position: center,
+          });
+
+          setCenter(lat, lng);
+          marker.current.setPosition(new kakao.maps.LatLng(lat, lng));
+          marker.current.setMap(map.current);
         }
       })
       .catch((err) => {
@@ -319,6 +321,11 @@ const Post = () => {
         });
     }
   }, [current, postId]);
+
+  const setCenter = (lat, lng) => {
+    const moveLatLon = new kakao.maps.LatLng(lat, lng);
+    map.current.panTo(moveLatLon);
+  };
 
   const parseDate = (comment) => {
     comment.updatedAt = new Date(comment.updatedAt)

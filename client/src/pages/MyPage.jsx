@@ -22,6 +22,30 @@ const Container = styled.div`
   ${Button} {
     display: ${(props) => (props.correctUser === true ? 'block' : 'none')};
   }
+
+  .no-image {
+    font-size: 8rem;
+    position: absolute;
+    top: 50rem;
+
+    .no-picture {
+      position: relative;
+      font-size: 2rem;
+      top: 2.5rem;
+    }
+  }
+
+  .mypost-image {
+    font-size: 8rem;
+    position: absolute;
+    top: 80rem;
+
+    .no-picture-mypost {
+      position: relative;
+      font-size: 2rem;
+      top: 2.5rem;
+    }
+  }
 `;
 
 const Header = styled.div`
@@ -851,12 +875,15 @@ const MyPage = () => {
             {userInfo?.nickname}의 찜한 장소 목록
           </div>
         </Header>
+        {likePostLength === 0 ? (
+          <div className="no-image">
+            😅
+            <div className="no-picture">아직 사진이 없습니다.</div>
+          </div>
+        ) : null}
         <Carousel currentIndex={currentIndex} show={show}>
           <div className="carousel-container">
             <div className="carousel-wrapper">
-              {console.log('currentIndex = ' + currentIndex)}
-              {console.log('likePostLength = ' + likePostLength)}
-              {console.log('show = ' + show)}
               {currentIndex > 0 && (
                 <button className="left-arrow" onClick={prev}>
                   &lt;
@@ -880,6 +907,12 @@ const MyPage = () => {
         {userInfo?.role === 1 ? (
           <Header>
             <div className="bottom-header">내가 등록한 장소</div>
+            {myPostLength === 0 ? (
+              <div className="mypost-image">
+                😅
+                <div className="no-picture-mypost">아직 사진이 없습니다. </div>
+              </div>
+            ) : null}
             <MypostCarousel currentIndex={myPostCurrentIndex} show={myPostShow}>
               <div className="mypost-carousel-container">
                 <div className="mypost-carousel-wrapper">

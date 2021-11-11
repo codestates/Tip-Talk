@@ -276,7 +276,7 @@ const Carousel = styled.div`
   align-items: center;
   height: 40%;
   .carousel-container {
-    width: 85%;
+    width: 100%;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -297,14 +297,14 @@ const Carousel = styled.div`
     display: flex;
     transition: all 250ms linear;
     transform: translateX(
-      -${(props) => props.currentIndex * (430 / props.show)}%
+      -${(props) => props.currentIndex * (500 / props.show)}%
     );
   }
   .carousel-content::-webkit-scrollbar {
     display: none;
   }
   .carousel-content > * {
-    width: 100%;
+    width: 95%;
     flex-shrink: 0;
     flex-grow: 1;
   }
@@ -335,8 +335,8 @@ const Carousel = styled.div`
   .carousel-content {
     ${(props) =>
       props.show < 4
-        ? `width: calc(92% / ${props.show})`
-        : `width: calc(92% / 4)`};
+        ? `width: calc(100% / ${props.show})`
+        : `width: calc(100% / 4)`};
   }
 `;
 
@@ -348,7 +348,7 @@ const MypostCarousel = styled.div`
   align-items: center;
   height: 40%;
   .mypost-carousel-container {
-    width: 85%;
+    width: 100%;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -369,16 +369,15 @@ const MypostCarousel = styled.div`
     display: flex;
     transition: all 250ms linear;
     transform: translateX(
-      -${(props) => props.currentIndex * (430 / props.show)}%
+      -${(props) => props.currentIndex * (500 / props.show)}%
     );
   }
   .mypost-carousel-content::-webkit-scrollbar {
     display: none;
   }
   .mypost-carousel-content > * {
-    width: 100%;
+    width: 95%;
     flex-shrink: 0;
-    flex-grow: 1;
   }
   .mypost-left-arrow {
     position: absolute;
@@ -407,8 +406,8 @@ const MypostCarousel = styled.div`
   .mypost-carousel-content {
     ${(props) =>
       props.show < 4
-        ? `width: calc(92% / ${props.show})`
-        : `width: calc(92% / 4)`};
+        ? `width: calc(100% / ${props.show})`
+        : `width: calc(100% / 4)`};
   }
 `;
 

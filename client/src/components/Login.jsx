@@ -208,7 +208,7 @@ const Login = ({ setShowLogin, setShowSignup }) => {
         setUser(data.user);
         closeLoginModal();
       })
-      .catch((err) => setStatus(false));
+      .catch(() => setStatus(false));
   };
 
   const googleButtonHandler = (e) => {

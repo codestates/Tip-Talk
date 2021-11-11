@@ -494,7 +494,7 @@ const MyPage = () => {
         setUserInfo(data.user);
         setImage(data.user.img);
       })
-      .catch((err) => console.log(err));
+      .catch(() => {});
   }, [isEditing]);
 
   const editHandler = () => {
@@ -525,7 +525,7 @@ const MyPage = () => {
           const { img } = res.data;
           setImage(img);
         })
-        .catch((err) => console.log(err));
+        .catch(() => {});
     }
   };
 
@@ -552,7 +552,7 @@ const MyPage = () => {
         history.push('/');
         setUserInfo(null);
       })
-      .catch((err) => console.log(err));
+      .catch(() => {});
   };
 
   const nicknameHandler = (e) => {
@@ -582,8 +582,7 @@ const MyPage = () => {
           .then(() => {
             setIsPasswordMatch(true);
           })
-          .catch((err) => {
-            console.log(err.response);
+          .catch(() => {
             setIsPasswordMatch(false);
           });
       }
@@ -631,7 +630,6 @@ const MyPage = () => {
     axios
       .get(`${process.env.REACT_APP_SERVER_URL}/post/like/${id}`)
       .then((res) => {
-        console.log('data == ', res.data.data.find);
         const { data } = res.data;
         const { find } = data;
         for (let i = 0; i < find.length; i++) {
@@ -646,7 +644,7 @@ const MyPage = () => {
         setLikePost(result);
         setShow(find.length);
       })
-      .catch((err) => console.log(err));
+      .catch(() => {});
   }, []);
 
   useEffect(() => {
@@ -668,7 +666,7 @@ const MyPage = () => {
         setMyPost(result);
         setMyPostShow(myPost.length);
       })
-      .catch((err) => console.log(err));
+      .catch(() => {});
   }, []);
 
   useEffect(() => {
@@ -937,8 +935,6 @@ const MyPage = () => {
                       ))}
                     </div>
                   </div>
-                  {console.log('myPostLength = ' + myPostLength)}
-                  {console.log('myPostShow = ' + myPostShow)}
                   {myPostCurrentIndex <
                     myPostLength - (myPostShow > 4 ? 4 : show) &&
                   myPostLength > 4 ? (

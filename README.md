@@ -22,7 +22,7 @@
 <summary>랜딩페이지</summary>
 <br />
 
-여기에 사진, gif 넣기
+[[https://user-images.githubusercontent.com/82024136/141252250-798e430b-c1b0-4130-9133-6eabf5b4ff2d.gif | width=600px | height=400px | alt=랜딩페이지]]
 
 </details>
 <details>

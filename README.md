@@ -3,6 +3,14 @@
 # ✈️ Tip-Talk 🏖
 
 <img src="https://drawit.s3.ap-northeast-2.amazonaws.com/tiptalk/%E1%84%89%E1%85%B3%E1%84%8F%E1%85%B3%E1%84%85%E1%85%B5%E1%86%AB%E1%84%89%E1%85%A3%E1%86%BA+2021-11-11+%E1%84%8B%E1%85%A9%E1%84%92%E1%85%AE+1.05.56.png" />
+ 
+# 소개
+ 
+ <br />
+ 
+ > 코로나에 지친 여러분들을 위한 여행 정보 사이트입니다. `TipTalk`을 통해 가족 또는 연인과의 소중한 추억을 남기고 나만의 장소를 만들어 보세요!
+ 
+ <br />
 
 # 🏄‍♀️ 다음과 같은 서비스를 제공합니다! 🤼‍
 
@@ -15,6 +23,8 @@
  **• 이미지를 최대 4장까지 업로드할 수 있습니다.** <br />
  **• 소개란을 작성할 때 폰트 사이즈, 중앙정렬, 굵기 등을 조절할 수 있습니다.** <br />
  **• 자신이 등록한 사업지를 편집, 삭제할 수 있습니다.** <br />
+ 
+ <br />
  
  # TipTalk 미리보기
  
@@ -55,6 +65,8 @@
 
 </details>
  
+ <br />
+ 
  # 🐸 Team member 🐸♀️
  
  |이름|직책|역할|Github|
@@ -62,6 +74,8 @@
  |박상천|팀장|풀스택| <a href="https://github.com/3000-2"><img src="https://img.shields.io/badge/3002-00b667?style=for-the-badge&logo=github&logoColor=black&link=https://github.com/3000-2" />|
  |권용현|팀원|프론트엔드| <a href="https://github.com/wolfdale-12f8217"><img src="https://img.shields.io/badge/wolfdale-00b667?style=for-the-badge&logo=github&logoColor=black&link=https://github.com/wolfdale-12f8217" />|
  |정수창|팀원|백엔드|<a href="https://github.com/tnckddl14"><img src="https://img.shields.io/badge/tnckddl14-00b667?style=for-the-badge&logo=github&logoColor=black&link=https://github.com/tnckddl14" />|
+ 
+ <br />
  
  # 🛠 기술 스택 🛠
  
@@ -92,10 +106,14 @@
   <img src="https://img.shields.io/badge/MySQL-4479A1?style=flat-square&logo=MySQL&logoColor=white"/>
   <img src="https://img.shields.io/badge/Sequelize-52B0E7?style=flat-square&logo=Sequelize&logoColor=white"/>
   <img src="https://img.shields.io/badge/Bcrypt-2962FF?style=flat-square&logo=Node.js&logoColor=white"/>
+ 
+ <br />
   
   # ⚙️ 시스템 아키텍쳐 ⚙️
   
   <img src="https://drawit.s3.ap-northeast-2.amazonaws.com/tiptalk/system.png" />
+ 
+ <br />
   
   # 📚 Wiki 📚
   

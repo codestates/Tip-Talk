@@ -39,7 +39,7 @@ module.exports = async (req, res) => {
       <div style="border-bottom: 2px solid #00b667">
         <img
           style="padding: 14px"
-          src="https://drawit.s3.ap-northeast-2.amazonaws.com/Logo.png"
+          src="https://drawit.s3.ap-northeast-2.amazonaws.com/tiptalk/logo.png"
           width="140px"
           alt="TipTalk Logo"
         />

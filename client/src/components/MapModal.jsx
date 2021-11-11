@@ -30,10 +30,10 @@ export const ModalBackground = styled.div`
 
 const CarouselContainer = styled.div`
   width: 100%;
-  height: 320px;
+  height: 280px;
   border-radius: 6px;
   @media ${({ theme }) => theme.size.tablet} {
-    height: 260px;
+    height: 220px;
   }
   @media ${({ theme }) => theme.size.mobile} {
     height: 180px;
@@ -42,10 +42,10 @@ const CarouselContainer = styled.div`
 
 const Info = styled.div`
   width: 100%;
-  padding: 20px 20px 0 20px;
+  padding: 10px 10px 0 10px;
   color: ${Color_3};
-  @media ${({ theme }) => theme.size.tablet} {
-    padding: 10px 10px 0 10px;
+  @media ${({ theme }) => theme.size.mobile} {
+    margin-bottom: 20px;
   }
 `;
 
@@ -78,7 +78,7 @@ const Label = styled.div`
 `;
 
 const Text = styled.h1`
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 600;
   margin: 6px 0 15px 4px;
   @media ${({ theme }) => theme.size.tablet} {
@@ -103,7 +103,6 @@ const MapModal = ({ post, backgroundRef, handleClose }) => {
       <Close onClick={handleClose}>
         <FontAwesomeIcon icon={faChevronLeft} />
       </Close>
-      {/* <Thumbnail src={post?.images[0]} alt={post?.title} /> */}
       <CarouselContainer>
         <Carousel images={post?.images} />
       </CarouselContainer>
@@ -120,7 +119,7 @@ const MapModal = ({ post, backgroundRef, handleClose }) => {
       <CustomButton
         width="140px"
         height="40px"
-        margin="10px 0 0"
+        margin="6px 0 0"
         onClick={goToPost}
       >
         자세히 보기

@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Color_3, Samlib, Logo } from '../styles/common';
 import axios from 'axios';
 import { Button } from '../styles/common';
+import Modal from './Modal';
 
 const ModalBackdrop = styled.div`
   position: fixed;
@@ -207,6 +208,8 @@ const Signup = ({ setShowLogin, setShowSignup }) => {
   const [verificationCode, setVerificationCode] = useState(null);
   const [inputVerification, setInputVerification] = useState(null);
   const [isVerified, setIsVerified] = useState(null);
+  const [isOpen, setIsOpen] = useState(null);
+  const [isValidEmail, setIsValidEmail] = useState(null);
 
   const closeSignupModal = () => {
     setShowSignup(false);
@@ -236,16 +239,20 @@ const Signup = ({ setShowLogin, setShowSignup }) => {
     setRole(e.target.value);
   };
 
-  const emailValidation = () => {
+  useEffect(() => {
     const regex = /^[a-zA-Z0-9]+@(?:[a-zA-Z0-9]+\.)+[A-Za-z]+$/;
     if (email.length === 0) {
-      return true;
+      console.log('if');
+      setIsValidEmail(false);
     }
     if (regex.test(email) === false) {
-      return false;
+      console.log('if 2nd');
+      setIsValidEmail(false);
+    } else {
+      console.log('else');
+      setIsValidEmail(true);
     }
-    return true;
-  };
+  }, [email]);
 
   const passwordValidation = () => {
     if (password === rePassword) return true;
@@ -298,14 +305,16 @@ const Signup = ({ setShowLogin, setShowSignup }) => {
   };
 
   const verificationHandler = () => {
-    axios
-      .post(`${process.env.REACT_APP_SERVER_URL}/auth/sendEmail`, { email })
-      .then((res) => {
-        const { number } = res.data.data;
-        console.log('number = ' + number);
-        setVerificationCode(number);
-      })
-      .catch((err) => console.log(err));
+    if (email !== null && isValidEmail === true) {
+      axios
+        .post(`${process.env.REACT_APP_SERVER_URL}/auth/sendEmail`, { email })
+        .then((res) => {
+          const { data } = res.data;
+          const { number } = data;
+          setVerificationCode(number);
+        })
+        .catch((err) => console.log(err));
+    }
   };
 
   const verificationInputHandler = (e) => {
@@ -320,6 +329,10 @@ const Signup = ({ setShowLogin, setShowSignup }) => {
       setIsVerified(false);
       return false;
     }
+  };
+
+  const modalHandler = () => {
+    setIsOpen(true);
   };
 
   return (
@@ -341,17 +354,24 @@ const Signup = ({ setShowLogin, setShowSignup }) => {
             </div>
             <Button
               className="verification-button"
-              onClick={verificationHandler}
+              onClick={() => [modalHandler(), verificationHandler()]}
             >
               인증하기
             </Button>
+            {isOpen === true && isValidEmail === true ? (
+              <Modal
+                message={'인증 메일이 발송되었습니다'}
+                withoutNo={true}
+                setIsOpen={setIsOpen}
+              />
+            ) : null}
             <input
               type="text"
               id="verification"
               placeholder="verification code"
               onChange={verificationInputHandler}
             />
-            {emailValidation() === false ? (
+            {isValidEmail === false && email !== '' ? (
               <ErrorMessage>
                 <div className="idError">이메일 형식을 입력해주세요</div>
               </ErrorMessage>

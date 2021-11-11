@@ -5,12 +5,11 @@ import styled from 'styled-components';
 import { Coin } from '../components/Coin';
 import { Scroll } from '../styles/common';
 import Thumbnail from '../components/Thumbnail';
-import { data } from '../dummy/post';
 import Modal from '../components/Modal';
 import UserContext from '../context/UserContext';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Button } from '../styles/common';
+import { Button, Color_1 } from '../styles/common';
 
 const Container = styled.div`
   width: 100%;
@@ -88,26 +87,10 @@ const ProfileSection = styled.div`
       .email-div {
         top: 1.5rem;
         line-height: 2.5rem;
-        border: solid 1px blue;
         position: relative;
         width: 14rem;
         height: 2.5rem;
-      }
-      .nickname-div {
-        line-height: 2.5rem;
-        border: solid 1px blue;
-        position: relative;
-        top: 5rem;
-        width: 14rem;
-        height: 2.5rem;
-      }
-      .password-div {
-        line-height: 2.5rem;
-        border: solid 1px blue;
-        position: relative;
-        top: 4rem;
-        width: 14rem;
-        height: 2.5rem;
+        border-bottom: 2px solid ${Color_1};
       }
       #nickname-input {
         position: relative;
@@ -174,19 +157,19 @@ const ProfileSection = styled.div`
     .before-edit-email-div {
       top: 6rem;
       line-height: 2.5rem;
-      border: solid 1px blue;
       position: relative;
+      border-bottom: 2px solid ${Color_1};
       width: 14rem;
       height: 2.5rem;
     }
 
     .before-edit-nickname-div {
       line-height: 2.5rem;
-      border: solid 1px blue;
       position: relative;
       top: 8rem;
       width: 14rem;
       height: 2.5rem;
+      border-bottom: 2px solid ${Color_1};
     }
   }
 `;
@@ -198,6 +181,7 @@ const RadioSection = styled.div`
     display: inline-block;
     position: relative;
     right: 1.5rem;
+    top: -0.1rem;
   }
   #owner-radio {
     display: inline-block;
@@ -208,6 +192,7 @@ const RadioSection = styled.div`
     display: inline-block;
     position: relative;
     left: 1.5rem;
+    top: -0.1rem;
   }
   #user-radio {
     display: inline-block;
@@ -223,6 +208,7 @@ const RadioSection = styled.div`
       display: inline-block;
       position: relative;
       right: 1.5rem;
+      top: -0.1rem;
     }
     #before-edit-owner-radio {
       display: inline-block;
@@ -233,12 +219,28 @@ const RadioSection = styled.div`
       display: inline-block;
       position: relative;
       left: 1.5rem;
+      top: -0.1rem;
     }
     #before-edit-user-radio {
       display: inline-block;
       position: relative;
       left: 1rem;
     }
+  }
+
+  input[type='radio'] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 15px;
+    height: 15px;
+    border: 1px solid #bbbbbb;
+    background-color: #e7e6e7;
+    border-radius: 50%;
+  }
+
+  input[type='radio']:checked {
+    background-color: ${Color_1};
   }
 `;
 
@@ -308,9 +310,9 @@ const Carousel = styled.div`
   }
   .carousel-content {
     ${(props) =>
-      props.show > 4
-        ? `width: calc(92% / 4)`
-        : `width: calc(92% / ${props.show})`};
+      props.show < 4
+        ? `width: calc(92% / ${props.show})`
+        : `width: calc(92% / 4)`};
   }
 `;
 
@@ -380,9 +382,9 @@ const MypostCarousel = styled.div`
   }
   .mypost-carousel-content {
     ${(props) =>
-      props.show > 4
-        ? `width: calc(92% / 4)`
-        : `width: calc(92% / ${props.show})`};
+      props.show < 4
+        ? `width: calc(92% / ${props.show})`
+        : `width: calc(92% / 4)`};
   }
 `;
 
@@ -428,14 +430,6 @@ const MyPage = () => {
   const [likePostLength, setLikePostLength] = useState(likePost?.length);
   const [myPost, setMyPost] = useState(null);
   const [myPostLength, setMyPostLength] = useState(myPost?.length);
-
-  useEffect(() => {
-    setLikePostLength(likePost?.length);
-  }, [likePostLength]);
-
-  useEffect(() => {
-    setMyPostLength(myPost?.length);
-  }, [myPostLength]);
 
   useEffect(() => {
     if (userInfo !== null) {
@@ -573,7 +567,7 @@ const MyPage = () => {
   };
 
   const next = () => {
-    if (currentIndex < likePostLength - show) {
+    if (currentIndex < likePostLength - (show > 4 ? 4 : show)) {
       setCurrentIndex((prevState) => prevState + 1);
     }
   };
@@ -585,7 +579,7 @@ const MyPage = () => {
   };
 
   const myPostNext = () => {
-    if (myPostCurrentIndex < myPostLength - myPostShow) {
+    if (myPostCurrentIndex < myPostLength - (myPostShow > 4 ? 4 : myPostShow)) {
       setMyPostCurrentIndex((prevState) => prevState + 1);
     }
   };
@@ -651,6 +645,14 @@ const MyPage = () => {
       })
       .catch((err) => console.log(err));
   }, []);
+
+  useEffect(() => {
+    setLikePostLength(likePost?.length);
+  }, [likePostLength, likePost]);
+
+  useEffect(() => {
+    setMyPostLength(myPost?.length);
+  }, [myPostLength, myPost]);
 
   return (
     <>
@@ -854,6 +856,7 @@ const MyPage = () => {
             <div className="carousel-wrapper">
               {console.log('currentIndex = ' + currentIndex)}
               {console.log('likePostLength = ' + likePostLength)}
+              {console.log('show = ' + show)}
               {currentIndex > 0 && (
                 <button className="left-arrow" onClick={prev}>
                   &lt;
@@ -866,7 +869,7 @@ const MyPage = () => {
                   ))}
                 </div>
               </div>
-              {currentIndex < likePostLength - show && (
+              {currentIndex < likePostLength - (show > 4 ? 4 : show) && (
                 <button className="right-arrow" onClick={next}>
                   &gt;
                 </button>
@@ -892,7 +895,8 @@ const MyPage = () => {
                       ))}
                     </div>
                   </div>
-                  {myPostCurrentIndex < myPostLength - myPostShow && (
+                  {myPostCurrentIndex <
+                    myPostLength - (myPostShow > 4 ? 4 : show) && (
                     <button className="mypost-right-arrow" onClick={myPostNext}>
                       &gt;
                     </button>

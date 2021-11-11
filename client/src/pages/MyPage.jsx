@@ -549,7 +549,7 @@ const MyPage = () => {
       })
       .then((res) => {
         history.push('/');
-        setUserInfo(null);
+        setUser(null);
       })
       .catch(() => {});
   };

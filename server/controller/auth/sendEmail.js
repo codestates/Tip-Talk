@@ -22,7 +22,6 @@ module.exports = async (req, res) => {
       },
     });
     const randomNumber = generateRandomNumber(6);
-    //const logo = '';
     const mailOptions = {
       from: process.env.MAIL_ID,
       to: email,
@@ -30,10 +29,10 @@ module.exports = async (req, res) => {
       html: `<div
       style="
         position: absolute;
-        top: 50%;
-        left: 50%;
+        width: 400px;
+        height: 500px;
+        margin: 70px 250px;
         transform: translate(-50%, -50%);
-        background-color: rgb(249, 250, 249);
         text-align: center;
       "
     >

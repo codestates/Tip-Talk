@@ -9,6 +9,7 @@ import { Color_6 } from '../styles/common';
 
 const CarouselContainer = styled.div`
   position: relative;
+  display: flex;
   width: 100%;
   height: 100%;
   border-radius: 8px;
@@ -19,7 +20,6 @@ const CarouselContainer = styled.div`
 `;
 
 const Slide = styled.div`
-  display: flex;
   width: 100%;
   height: 100%;
   white-space: nowrap;
@@ -28,6 +28,7 @@ const Slide = styled.div`
 
 const Image = styled.img`
   width: 100%;
+  height: 100%;
   object-fit: fill;
   -webkit-user-drag: none;
   user-select: none;

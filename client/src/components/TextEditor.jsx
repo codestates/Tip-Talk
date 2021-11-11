@@ -27,7 +27,7 @@ const LIST_TYPES = ['numbered-list', 'bulleted-list'];
 
 export const EditorForm = styled.div`
   width: 100%;
-  height: 500px;
+  min-height: 500px;
   font-size: 18px;
   line-height: 21px;
   padding: 18px;

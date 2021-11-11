@@ -827,8 +827,7 @@ const MyPage = () => {
                 </Button>
               )}
               {isOpen === true &&
-              is8Digit === true &&
-              isPasswordMatch === true ? (
+              (is8Digit === true || isPasswordMatch === true) ? (
                 <Modal
                   message={'정상적으로 수정되었습니다'}
                   setIsOpen={setIsOpen}

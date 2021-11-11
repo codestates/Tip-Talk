@@ -3,7 +3,6 @@ import { useHistory } from 'react-router';
 import styled from 'styled-components';
 import { Coin } from '../components/Coin';
 import Loading from '../components/Loading';
-import Svg from '../components/Svg';
 import { Button, Color_6 } from '../styles/common';
 
 const HomeContainer = styled.div`
@@ -16,21 +15,11 @@ const HomeContainer = styled.div`
   align-items: center;
   section {
     position: relative;
-    width: 100vw;
+    width: 100%;
     height: 100vh;
     overflow: hidden;
   }
 
-  section:nth-child(1) {
-    width: 100vw;
-    height: calc(100vh - 70px);
-    background-color: rgba(255, 0, 0, 0.03);
-    @media ${({ theme }) => theme.size.mobile} {
-      article {
-        top: 5%;
-      }
-    }
-  }
   section:nth-child(2) {
     background-color: rgba(0, 0, 0, 0.02);
     @media ${({ theme }) => theme.size.mobile} {
@@ -42,7 +31,7 @@ const HomeContainer = styled.div`
   section:nth-child(3) {
     @media ${({ theme }) => theme.size.mobile} {
       article {
-        top: 60%;
+        top: 6%;
       }
     }
   }
@@ -50,7 +39,15 @@ const HomeContainer = styled.div`
     background-color: rgba(0, 0, 255, 0.02);
     @media ${({ theme }) => theme.size.mobile} {
       article {
-        top: 5%;
+        top: 65%;
+      }
+    }
+  }
+  section:nth-child(5) {
+    background-color: rgba(255, 0, 0, 0.03);
+    @media ${({ theme }) => theme.size.mobile} {
+      article {
+        top: 10%;
       }
     }
   }
@@ -67,28 +64,47 @@ const Fat = styled.h1`
   font-size: 5rem;
   line-height: 1.4;
   color: #00693d;
-  text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.6);
+  text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.3);
   margin-right: 10px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 `;
 
 const P = styled.p`
   font-size: ${({ size }) => (size ? size : '2.6rem')};
   color: #00693d;
   line-height: 1.4;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 `;
 
 const S = styled.p`
   font-size: 1.3rem;
-  color: ${Color_6};
+  color: ${({ inherit, theme }) => (inherit ? theme.color : Color_6)};
   line-height: 1.4;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 `;
 
 const Message = styled.article`
   position: absolute;
-  left: 16%;
+  left: 12%;
   top: ${({ top }) => top};
-  @media ${({ theme }) => theme.size.mobile} {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  @media ${({ theme }) => theme.size.tabletL} {
     left: 10%;
+  }
+  @media ${({ theme }) => theme.size.mobile} {
+    left: 7%;
   }
 `;
 
@@ -97,6 +113,10 @@ const Img = styled.img`
   left: ${({ left }) => left};
   top: ${({ top }) => top};
   width: ${({ size }) => (size ? size : '100vw')};
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   z-index: -1;
   @media ${({ theme }) => theme.size.mobile} {
     width: ${({ size }) => (size ? size : '800px')};
@@ -118,26 +138,43 @@ const Home = () => {
     }, 3000);
   }, []);
 
+  const eventPrevent = (e) => {
+    e.preventDefault();
+  };
+
   return (
     <HomeContainer ref={scrollRef}>
       {loading && <Loading />}
       <Coin scrollRef={scrollRef} mode="up" right="40px" bottom="110px" />
-      <Section>
+      <Section onContextMenu={eventPrevent}>
         <Img src="https://drawit.s3.ap-northeast-2.amazonaws.com/tiptalk/section1.png" />
-        <Svg />
         <Message top="20%">
           <Fat>TIP TALK</Fat>
           <br />
-          <S size="1.3rem">가족 또는 연인과 소중한</S>
-          <S size="1.3rem">추억을 남기고</S>
-          <S size="1.3rem">나만의 장소를 만들어보세요</S>
-          <Button width="160px" margin="30px 15px" onClick={goToMain}>
+          <S inherit="true" size="1.3rem">
+            가족 또는 연인과 소중한
+          </S>
+          <S inherit="true" size="1.3rem">
+            추억을 남기고
+          </S>
+          <S inherit="true" size="1.3rem">
+            나만의 장소를 만들어보세요
+          </S>
+          <Button
+            width="180px"
+            height="52px"
+            margin="30px 15px"
+            onClick={goToMain}
+          >
             시작하기
           </Button>
         </Message>
       </Section>
-      <Section>
-        <Img src="https://drawit.s3.ap-northeast-2.amazonaws.com/tiptalk/section3-2.png" />
+      <Section onContextMenu={eventPrevent}>
+        <Img
+          onContextMenu={eventPrevent}
+          src="https://drawit.s3.ap-northeast-2.amazonaws.com/tiptalk/section3-2.png"
+        />
         <Message top="15%">
           <P>다양한 여행지를 검색하여</P>
           <P>해당 장소에 대한 정보를</P>
@@ -153,7 +190,7 @@ const Home = () => {
           />
         </Message>
       </Section>
-      <Section>
+      <Section onContextMenu={eventPrevent}>
         <Img src="https://drawit.s3.ap-northeast-2.amazonaws.com/tiptalk/section2.png" />
         <Message top="40%">
           <P>여행지 주변 정보를</P>
@@ -163,8 +200,7 @@ const Home = () => {
           <S>찜 목록에 담아두실 수 있어요</S>
         </Message>
       </Section>
-      <Section>
-        <Svg />
+      <Section onContextMenu={eventPrevent}>
         <Img src="https://drawit.s3.ap-northeast-2.amazonaws.com/tiptalk/section4.png" />
         <Message top="20%">
           <P>사업자는 자신의 사업지를</P>

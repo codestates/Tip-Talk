@@ -13,8 +13,6 @@ module.exports = async (req, res) => {
       .status(400)
       .json({ status: false, message: '존재하지 않는 유저입니다.' });
   }
-  console.log('userInfo ============= ', userInfo);
-
   return res.status(200).json({
     status: true,
     data: { user: userInfo },

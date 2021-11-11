@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import axios from 'axios';
 import { kakao } from '../App';
 import UserContext from '../context/UserContext';
-import { Button, Color_1, Color_3 } from '../styles/common';
+import { Button, Color_3 } from '../styles/common';
 import MapModal, { ModalBackground } from './MapModal';
 import Modal from './Modal';
 import Navigator from './Navigator';

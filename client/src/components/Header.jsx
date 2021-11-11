@@ -1,6 +1,5 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import UserContext from '../context/UserContext';
 import Menu from './Menu';
 
 const HeaderContainer = styled.header`
@@ -8,13 +7,10 @@ const HeaderContainer = styled.header`
   height: 70px;
   color: ${(props) => props.theme.navColor};
   background-color: transparent;
-  box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.2);
-  -webkit-box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.2);
-  -moz-box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.2);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 `;
 
 const Header = ({ showLogin, setShowLogin, showSignup, setShowSignup }) => {
-  const [user, setUser] = useContext(UserContext);
   return (
     <>
       <HeaderContainer>

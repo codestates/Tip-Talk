@@ -3,12 +3,12 @@ import styled from 'styled-components';
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBookOpen } from '@fortawesome/free-solid-svg-icons';
+import { Color_1 } from '../styles/common';
 
 const Container = styled.footer`
   display: flex;
   width: 100%;
   height: 120px;
-  margin-top: 60px;
   box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.2);
   -webkit-box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.2);
   -moz-box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.2);
@@ -31,6 +31,9 @@ const Row = styled.div`
     margin-right: 56px;
     justify-content: flex-end;
   }
+  @media ${({ theme }) => theme.size.mobile} {
+    margin-right: 0;
+  }
 `;
 
 const Left = styled.div`
@@ -44,7 +47,8 @@ const Left = styled.div`
 `;
 
 const Fat = styled.h1`
-  margin: 6px 20px 0 0;
+  color: ${Color_1};
+  margin: 6px 28px 0 0;
 `;
 
 const Column = styled.div`

@@ -12,7 +12,7 @@ const Navbar = styled.nav`
   max-width: 1500px;
   height: 70px;
   margin: 0 auto;
-  padding: 0 20px;
+  padding: 0 30px;
   align-items: center;
   justify-content: space-between;
   @media ${({ theme }) => theme.size.mobile} {
@@ -72,7 +72,12 @@ const Menu = ({ showLogin, setShowLogin, showSignup, setShowSignup }) => {
   return (
     <>
       <Navbar>
-        <LogoImg src={Logo} alt="로고" onClick={goToMain} />
+        <LogoImg
+          src={Logo}
+          alt="로고"
+          onClick={goToMain}
+          onContextMenu={(e) => e.preventDefault()}
+        />
         {user === null ? (
           <div>
             <Button onClick={showLoginHandler}>로그인</Button>

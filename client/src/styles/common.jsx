@@ -2,19 +2,21 @@ import styled, { createGlobalStyle } from 'styled-components';
 
 export const Color_1 = '#00b667';
 export const Color_2 = '#fac125';
-export const Color_3 = 'white';
+export const Color_3 = 'rgb(240, 240, 240)';
 export const Color_4 = '#ff6e3a';
 export const Color_5 = '#3a3a3a';
 export const Color_6 = '#888';
 export const Color_7 = '#1a1a1a';
 export const Samlib = 'Pretendard-Regular';
 export const Hangeul = 'Pretendard-Regular';
-export const Logo = 'https://drawit.s3.ap-northeast-2.amazonaws.com/Logo.png';
+export const Logo =
+  'https://drawit.s3.ap-northeast-2.amazonaws.com/tiptalk/logo.png';
 
 const size = {
   mobileS: `(max-width: 500px)`,
   mobile: `(max-width: 770px)`,
   tablet: `(max-width: 1200px)`,
+  tabletL: `(max-width: 1500px)`,
   desktop: `(max-width: 1700px)`,
 };
 
@@ -83,22 +85,23 @@ export const Meta = styled.div`
 `;
 
 export const Label = styled.div`
+  color: ${Color_6};
   font-size: ${({ size }) => (size ? size : '13px')};
   margin: 6px 0;
   margin-top: ${({ top }) => (top ? top : '20px')};
-  font-weight: 500;
+  font-weight: 600;
 `;
 
 export const Text = styled.div`
-  font-size: ${({ size }) => (size ? size : '18px')};
-  font-weight: 500;
+  font-size: ${({ size }) => size};
+  font-weight: 600;
   margin-left: 10px;
   margin-bottom: 10px;
 `;
 
 export const Info = styled.h3`
   font-size: 24px;
-  font-weight: 500;
+  font-weight: 600;
   padding: 10px 3px;
   margin-bottom: 10px;
   margin-right: auto;

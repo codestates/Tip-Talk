@@ -10,7 +10,7 @@ import { Color_1, Color_6, Meta, Scroll } from '../styles/common';
 const MainContainer = styled.div`
   display: flex;
   width: 100%;
-  padding: 80px 0;
+  padding: 80px 0 150px;
   flex-direction: column;
   align-items: center;
 `;

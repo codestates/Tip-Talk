@@ -1,7 +1,6 @@
 const { post, user } = require('../../../models');
 
 module.exports = async (req, res) => {
-  console.log(req.user.id);
   try {
     const myPost = await post.findAll({
       where: { userId: req.user.id },

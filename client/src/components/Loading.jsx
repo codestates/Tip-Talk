@@ -9,7 +9,9 @@ const Background = styled.div`
   left: 0;
   width: 100vw;
   height: 100vh;
+  font-size: 92px;
   background-color: ${Color_3};
+  user-select: none;
   z-index: 11;
   justify-content: center;
   align-items: center;
@@ -17,8 +19,8 @@ const Background = styled.div`
 
 const Message = styled.div`
   color: ${Color_1};
-  font-size: 92px;
   font-weight: bold;
+  letter-spacing: 5px;
   text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.4);
   margin: 0 2px;
   animation-duration: 2.8s;

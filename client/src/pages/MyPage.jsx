@@ -904,11 +904,12 @@ const MyPage = () => {
                   ))}
                 </div>
               </div>
-              {currentIndex < likePostLength - (show > 4 ? 4 : show) && (
+              {currentIndex < likePostLength - (show > 4 ? 4 : show) &&
+              likePostLength > 4 ? (
                 <button className="right-arrow" onClick={next}>
                   &gt;
                 </button>
-              )}
+              ) : null}
             </div>
           </div>
         </Carousel>
@@ -936,12 +937,15 @@ const MyPage = () => {
                       ))}
                     </div>
                   </div>
+                  {console.log('myPostLength = ' + myPostLength)}
+                  {console.log('myPostShow = ' + myPostShow)}
                   {myPostCurrentIndex <
-                    myPostLength - (myPostShow > 4 ? 4 : show) && (
+                    myPostLength - (myPostShow > 4 ? 4 : show) &&
+                  myPostLength > 4 ? (
                     <button className="mypost-right-arrow" onClick={myPostNext}>
                       &gt;
                     </button>
-                  )}
+                  ) : null}
                 </div>
               </div>
             </MypostCarousel>

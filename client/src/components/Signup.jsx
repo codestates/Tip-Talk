@@ -242,14 +242,11 @@ const Signup = ({ setShowLogin, setShowSignup }) => {
   useEffect(() => {
     const regex = /^[a-zA-Z0-9]+@(?:[a-zA-Z0-9]+\.)+[A-Za-z]+$/;
     if (email.length === 0) {
-      console.log('if');
       setIsValidEmail(false);
     }
     if (regex.test(email) === false) {
-      console.log('if 2nd');
       setIsValidEmail(false);
     } else {
-      console.log('else');
       setIsValidEmail(true);
     }
   }, [email]);
@@ -288,7 +285,7 @@ const Signup = ({ setShowLogin, setShowSignup }) => {
         .then((res) => {
           closeSignupModal();
         })
-        .catch((err) => {
+        .catch(() => {
           setIsExist(true);
         });
     }
@@ -313,7 +310,7 @@ const Signup = ({ setShowLogin, setShowSignup }) => {
           const { number } = data;
           setVerificationCode(number);
         })
-        .catch((err) => console.log(err));
+        .catch(() => {});
     }
   };
 

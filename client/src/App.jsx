@@ -57,7 +57,7 @@ function App() {
           const { data } = res.data;
           setUser(data.user);
         })
-        .catch((err) => {});
+        .catch(() => {});
     }
   }, []);
 

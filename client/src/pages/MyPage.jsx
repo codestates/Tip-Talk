@@ -276,7 +276,7 @@ const Carousel = styled.div`
   align-items: center;
   height: 40%;
   .carousel-container {
-    width: 85%;
+    width: 100%;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -297,14 +297,14 @@ const Carousel = styled.div`
     display: flex;
     transition: all 250ms linear;
     transform: translateX(
-      -${(props) => props.currentIndex * (430 / props.show)}%
+      -${(props) => props.currentIndex * (500 / props.show)}%
     );
   }
   .carousel-content::-webkit-scrollbar {
     display: none;
   }
   .carousel-content > * {
-    width: 100%;
+    width: 95%;
     flex-shrink: 0;
     flex-grow: 1;
   }
@@ -335,8 +335,8 @@ const Carousel = styled.div`
   .carousel-content {
     ${(props) =>
       props.show < 4
-        ? `width: calc(92% / ${props.show})`
-        : `width: calc(92% / 4)`};
+        ? `width: calc(100% / ${props.show})`
+        : `width: calc(100% / 4)`};
   }
 `;
 
@@ -348,7 +348,7 @@ const MypostCarousel = styled.div`
   align-items: center;
   height: 40%;
   .mypost-carousel-container {
-    width: 85%;
+    width: 100%;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -369,16 +369,15 @@ const MypostCarousel = styled.div`
     display: flex;
     transition: all 250ms linear;
     transform: translateX(
-      -${(props) => props.currentIndex * (430 / props.show)}%
+      -${(props) => props.currentIndex * (500 / props.show)}%
     );
   }
   .mypost-carousel-content::-webkit-scrollbar {
     display: none;
   }
   .mypost-carousel-content > * {
-    width: 100%;
+    width: 95%;
     flex-shrink: 0;
-    flex-grow: 1;
   }
   .mypost-left-arrow {
     position: absolute;
@@ -407,8 +406,8 @@ const MypostCarousel = styled.div`
   .mypost-carousel-content {
     ${(props) =>
       props.show < 4
-        ? `width: calc(92% / ${props.show})`
-        : `width: calc(92% / 4)`};
+        ? `width: calc(100% / ${props.show})`
+        : `width: calc(100% / 4)`};
   }
 `;
 
@@ -494,7 +493,7 @@ const MyPage = () => {
         setUserInfo(data.user);
         setImage(data.user.img);
       })
-      .catch((err) => console.log(err));
+      .catch(() => {});
   }, [isEditing]);
 
   const editHandler = () => {
@@ -525,7 +524,7 @@ const MyPage = () => {
           const { img } = res.data;
           setImage(img);
         })
-        .catch((err) => console.log(err));
+        .catch(() => {});
     }
   };
 
@@ -550,9 +549,9 @@ const MyPage = () => {
       })
       .then((res) => {
         history.push('/');
-        setUserInfo(null);
+        setUser(null);
       })
-      .catch((err) => console.log(err));
+      .catch(() => {});
   };
 
   const nicknameHandler = (e) => {
@@ -582,8 +581,7 @@ const MyPage = () => {
           .then(() => {
             setIsPasswordMatch(true);
           })
-          .catch((err) => {
-            console.log(err.response);
+          .catch(() => {
             setIsPasswordMatch(false);
           });
       }
@@ -639,13 +637,13 @@ const MyPage = () => {
             result.push({
               id: id,
               title: title,
-              images: [images],
+              images: images.split(' '),
             }))(post);
         }
         setLikePost(result);
         setShow(find.length);
       })
-      .catch((err) => console.log(err));
+      .catch(() => {});
   }, []);
 
   useEffect(() => {
@@ -661,13 +659,13 @@ const MyPage = () => {
             result.push({
               id: id,
               title: title,
-              images: [images],
+              images: images.split(' '),
             }))(data);
         }
         setMyPost(result);
         setMyPostShow(myPost.length);
       })
-      .catch((err) => console.log(err));
+      .catch(() => {});
   }, []);
 
   useEffect(() => {
@@ -826,27 +824,34 @@ const MyPage = () => {
                   수정 완료
                 </Button>
               )}
-              {userInfo?.platform === 0 ? (
-                isOpen === true &&
-                is8Digit === true &&
-                isPasswordMatch === true ? (
-                  <Modal
-                    message={'정상적으로 수정되었습니다'}
-                    setIsOpen={setIsOpen}
-                    withoutNo={true}
-                    callback={() => [editCompleteModalCloseHandler()]}
-                  />
-                ) : null
+              {isOpen === true &&
+              (is8Digit === true || isPasswordMatch === true) ? (
+                <Modal
+                  message={'정상적으로 수정되었습니다'}
+                  setIsOpen={setIsOpen}
+                  withoutNo={true}
+                  callback={() => [editCompleteModalCloseHandler()]}
+                />
+              ) : null}
+              {isOpen === true && userInfo?.platform !== 0 ? (
+                <Modal
+                  message={'정상적으로 수정되었습니다'}
+                  setIsOpen={setIsOpen}
+                  withoutNo={true}
+                  callback={() => [editCompleteModalCloseHandler()]}
+                />
               ) : null}
             </div>
-            {is8Digit === true || password?.length === 0 ? null : (
+            {is8Digit === true ||
+            password?.length === 0 ||
+            userInfo?.platform !== 0 ? null : (
               <ErrorMessage>
                 <div className="password-length-over-8">
                   비밀번호는 8자리 이상이어야 합니다
                 </div>
               </ErrorMessage>
             )}
-            {isPasswordMatch === true ? null : (
+            {isPasswordMatch === true || userInfo?.platform !== 0 ? null : (
               <ErrorMessage>
                 <div className="password-not-match">
                   예전 비밀번호와 일치하지 않습니다
@@ -896,11 +901,12 @@ const MyPage = () => {
                   ))}
                 </div>
               </div>
-              {currentIndex < likePostLength - (show > 4 ? 4 : show) && (
+              {currentIndex < likePostLength - (show > 4 ? 4 : show) &&
+              likePostLength > 4 ? (
                 <button className="right-arrow" onClick={next}>
                   &gt;
                 </button>
-              )}
+              ) : null}
             </div>
           </div>
         </Carousel>
@@ -929,11 +935,12 @@ const MyPage = () => {
                     </div>
                   </div>
                   {myPostCurrentIndex <
-                    myPostLength - (myPostShow > 4 ? 4 : show) && (
+                    myPostLength - (myPostShow > 4 ? 4 : show) &&
+                  myPostLength > 4 ? (
                     <button className="mypost-right-arrow" onClick={myPostNext}>
                       &gt;
                     </button>
-                  )}
+                  ) : null}
                 </div>
               </div>
             </MypostCarousel>

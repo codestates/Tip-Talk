@@ -858,6 +858,7 @@ const MyPage = () => {
             </div>
             {is8Digit === true ||
             password?.length === 0 ||
+            password?.length >= 8 ||
             userInfo?.platform !== 0 ? null : (
               <ErrorMessage>
                 <div className="password-length-over-8">

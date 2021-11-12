@@ -77,7 +77,7 @@ const InputSection = styled.div`
 
   #verification {
     position: relative;
-    top: 4.5rem;
+    top: 3.5rem;
     font-size: 1.5rem;
     border-top: none;
     border-left: none;
@@ -104,7 +104,7 @@ const InputSection = styled.div`
     }
     #re-password {
       position: relative;
-      top: 1rem;
+      top: 1.5rem;
       font-size: 1.5rem;
       border-top: none;
       border-left: none;
@@ -115,7 +115,7 @@ const InputSection = styled.div`
 
   .nickname-line {
     position: relative;
-    top: 5.5rem;
+    top: 5rem;
     #nickname {
       font-size: 1.5rem;
       border-top: none;
@@ -149,7 +149,7 @@ const ErrorMessage = styled.div`
   }
   .passwordError {
     position: fixed;
-    top: 31rem;
+    top: 31.5rem;
     left: 9.5rem;
   }
   .conflictError {
@@ -159,12 +159,12 @@ const ErrorMessage = styled.div`
   }
   .insufficientError {
     position: fixed;
-    top: 36rem;
+    top: 36.5rem;
     left: 9.5rem;
   }
   .password-length-error {
     position: fixed;
-    top: 34rem;
+    top: 35rem;
     left: 9.5rem;
   }
   .verification-not-match-error {
@@ -176,7 +176,7 @@ const ErrorMessage = styled.div`
 
 const RadioSection = styled.div`
   position: relative;
-  top: 6rem;
+  top: 6.5rem;
   text-align: center;
   display: flex;
   justify-content: center;

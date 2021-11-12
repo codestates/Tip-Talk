@@ -440,14 +440,14 @@ const MyPage = () => {
   const [oldpassword, setOldpassword] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [myPostCurrentIndex, setMyPostCurrentIndex] = useState(0);
-  const [is8Digit, setIs8Digit] = useState(true);
+  const [is8Digit, setIs8Digit] = useState(null);
   const fileInput = useRef(null);
   const scrollRef = useRef();
   const history = useHistory();
   const { id } = useParams();
   const [userInfo, setUserInfo] = useState(null);
   const [user, setUser] = useContext(UserContext);
-  const [isPasswordMatch, setIsPasswordMatch] = useState(true);
+  const [isPasswordMatch, setIsPasswordMatch] = useState(null);
   const [correctUser, setCorrectUser] = useState(null);
   const [likePost, setLikePost] = useState(null);
   const [likePostLength, setLikePostLength] = useState(likePost?.length);
@@ -535,6 +535,7 @@ const MyPage = () => {
 
   const editCompleteModalCloseHandler = () => {
     setIsEditing(false);
+    setIsPasswordMatch(null);
   };
 
   const modalOpenHandler = () => {
@@ -571,12 +572,25 @@ const MyPage = () => {
     const el = document.querySelector('input[name=role2]:checked');
     if (el !== null) {
       const role = el.value;
-      {
+      if (userInfo?.platform === 0) {
         axios
           .patch(`${process.env.REACT_APP_SERVER_URL}/user/${id}`, {
             nickname,
             oldpassword,
             password,
+            role,
+          })
+          .then(() => {
+            setIsPasswordMatch(true);
+          })
+          .catch(() => {
+            setIsPasswordMatch(false);
+          });
+      } else {
+        axios
+          .patch(`${process.env.REACT_APP_SERVER_URL}/user/${id}`, {
+            nickname,
+            oldpassword: '',
             role,
           })
           .then(() => {
@@ -825,6 +839,8 @@ const MyPage = () => {
                   수정 완료
                 </Button>
               )}
+              {console.log('is8Digit = ' + is8Digit)}
+              {console.log('isPasswordMatch = ' + isPasswordMatch)}
               {isOpen === true &&
               (is8Digit === true || isPasswordMatch === true) ? (
                 <Modal
@@ -845,6 +861,7 @@ const MyPage = () => {
             </div>
             {is8Digit === true ||
             password?.length === 0 ||
+            password?.length >= 8 ||
             userInfo?.platform !== 0 ? null : (
               <ErrorMessage>
                 <div className="password-length-over-8">
@@ -852,7 +869,9 @@ const MyPage = () => {
                 </div>
               </ErrorMessage>
             )}
-            {isPasswordMatch === true || userInfo?.platform !== 0 ? null : (
+            {isPasswordMatch === true ||
+            isPasswordMatch === null ||
+            userInfo?.platform !== 0 ? null : (
               <ErrorMessage>
                 <div className="password-not-match">
                   예전 비밀번호와 일치하지 않습니다

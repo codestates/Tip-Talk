@@ -549,6 +549,7 @@ const MyPage = () => {
       })
       .then((res) => {
         history.push('/');
+        setUserInfo(null);
         setUser(null);
       })
       .catch(() => {});
@@ -868,7 +869,7 @@ const MyPage = () => {
             </div>
             {isOpen === true && isClose === true ? (
               <Modal
-                message={'탈퇴하시겠습니까?'}
+                message="회원 탈퇴하시겠습니까?"
                 setIsOpen={setIsOpen}
                 callback={deleteHandler}
               />

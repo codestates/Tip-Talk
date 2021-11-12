@@ -30,7 +30,7 @@ const LogoImg = styled.img`
 const Button = styled.button`
   width: 80px;
   font-size: 17px;
-  color: ${Color_5};
+  color: ${({ theme }) => theme.color};
   font-family: ${Hangeul};
   font-weight: 500;
   background-color: transparent;

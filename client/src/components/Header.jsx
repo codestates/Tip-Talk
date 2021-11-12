@@ -5,7 +5,7 @@ import Menu from './Menu';
 const HeaderContainer = styled.header`
   width: 100%;
   height: 70px;
-  color: ${(props) => props.theme.navColor};
+  color: ${({ theme }) => theme.color};
   background-color: transparent;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 `;

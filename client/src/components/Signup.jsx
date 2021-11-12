@@ -303,6 +303,7 @@ const Signup = ({ setShowLogin, setShowSignup }) => {
 
   const verificationHandler = () => {
     if (email !== null && isValidEmail === true) {
+      modalHandler();
       axios
         .post(`${process.env.REACT_APP_SERVER_URL}/auth/sendEmail`, { email })
         .then((res) => {
@@ -351,10 +352,12 @@ const Signup = ({ setShowLogin, setShowSignup }) => {
             </div>
             <Button
               className="verification-button"
-              onClick={() => [modalHandler(), verificationHandler()]}
+              onClick={verificationHandler}
             >
               인증하기
             </Button>
+            {console.log('isOpen = ' + isOpen)}
+            {console.log('isValidEmail = ' + isValidEmail)}
             {isOpen === true && isValidEmail === true ? (
               <Modal
                 message={'인증 메일이 발송되었습니다'}

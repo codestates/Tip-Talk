@@ -30,6 +30,7 @@ module.exports = async (req, res) => {
       await user.update(
         {
           nickname: nickname ? nickname : findUser.nickname,
+          role: role ? role : findUser.role,
         },
         {
           where: { id: req.user.id },

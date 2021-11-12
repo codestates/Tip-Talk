@@ -22,7 +22,7 @@ const ModalContainer = styled.div`
   flex-direction: column;
   position: relative;
   width: 380px;
-  height: 180px;
+  height: 160px;
   padding: 20px;
   border-radius: 6px;
   background-color: ${({ theme }) => theme.bgColor};

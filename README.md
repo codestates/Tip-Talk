@@ -39,21 +39,22 @@
 <summary>메인페이지</summary>
 <br />
 
-여기에 사진, gif 넣기
+<img src="https://user-images.githubusercontent.com/82024136/141295381-86675f29-ed81-46be-b0de-c8a6d2201105.gif" width="600px" height="480px" alt="main" />
+<img src="https://user-images.githubusercontent.com/82024136/141296157-16da07fb-2472-4ab2-ad9c-38fbf7bb377c.gif" width="600px" height="480px" alt="main" />
 
 </details>
 <details>
 <summary>게시글페이지</summary>
 <br />
 
-여기에 사진, gif 넣기
+<img src="https://user-images.githubusercontent.com/82024136/141297454-a2550a49-184b-463e-abb1-d7459a844b32.gif" width="600px" alt="main2" />
 
 </details>
 <details>
 <summary>댓글</summary>
 <br />
 
-여기에 사진, gif 넣기
+<img src="https://user-images.githubusercontent.com/82024136/141298254-63686ff9-eefd-469b-97f9-984e79dd7e06.gif" width="600px" alt="comment" />
 
 </details>
 <details>

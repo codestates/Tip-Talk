@@ -571,12 +571,25 @@ const MyPage = () => {
     const el = document.querySelector('input[name=role2]:checked');
     if (el !== null) {
       const role = el.value;
-      {
+      if (userInfo?.platform === 0) {
         axios
           .patch(`${process.env.REACT_APP_SERVER_URL}/user/${id}`, {
             nickname,
             oldpassword,
             password,
+            role,
+          })
+          .then(() => {
+            setIsPasswordMatch(true);
+          })
+          .catch(() => {
+            setIsPasswordMatch(false);
+          });
+      } else {
+        axios
+          .patch(`${process.env.REACT_APP_SERVER_URL}/user/${id}`, {
+            nickname,
+            oldpassword: '',
             role,
           })
           .then(() => {

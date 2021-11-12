@@ -26,7 +26,7 @@ module.exports = async (req, res) => {
   }
 
   try {
-    if (oldpassword === null) {
+    if (oldpassword === '') {
       await user.update(
         {
           nickname: nickname ? nickname : findUser.nickname,

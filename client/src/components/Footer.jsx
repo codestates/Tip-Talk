@@ -17,6 +17,9 @@ const Container = styled.footer`
   @media ${({ theme }) => theme.size.mobile} {
     padding: 0px 16px;
   }
+  @media ${({ theme }) => theme.size.small} {
+    padding: 0px;
+  }
 `;
 
 const Row = styled.div`
@@ -71,6 +74,10 @@ const Column = styled.div`
 
   @media ${({ theme }) => theme.size.tablet} {
     width: 160px;
+  }
+  @media ${({ theme }) => theme.size.small} {
+    width: 125px;
+    font-size: 14px;
   }
 `;
 

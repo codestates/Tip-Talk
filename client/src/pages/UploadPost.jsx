@@ -20,9 +20,12 @@ const UploadForm = styled.form`
   padding: 50px;
   justify-content: center;
   align-items: center;
-  @media ${({ theme }) => theme.size.mobile} {
+  @media ${({ theme }) => theme.size.tablet} {
     flex-direction: column;
     padding: 50px 30px;
+  }
+  @media ${({ theme }) => theme.size.mobile} {
+    padding: 30px 10px;
   }
 `;
 
@@ -41,6 +44,7 @@ const Input = styled.input`
   height: 38px;
   padding: 8px 12px;
   font-size: 18px;
+  color: ${({ theme }) => theme.color};
   border: 1px solid ${({ theme }) => theme.line};
   border-radius: 6px;
   background-color: transparent;
@@ -123,7 +127,7 @@ const ImageWrapper = styled.li`
 
 const DeleteButton = styled.button`
   position: absolute;
-  right: 0;
+  right: -2px;
   top: 0;
   border: none;
   background-color: transparent;

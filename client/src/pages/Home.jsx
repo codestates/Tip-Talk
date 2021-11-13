@@ -22,14 +22,14 @@ const HomeContainer = styled.div`
 
   section:nth-child(2) {
     background-color: rgba(0, 0, 0, 0.02);
-    @media ${({ theme }) => theme.size.mobile} {
+    @media ${({ theme }) => theme.size.mobileL} {
       article {
         top: 10%;
       }
     }
   }
   section:nth-child(3) {
-    @media ${({ theme }) => theme.size.mobile} {
+    @media ${({ theme }) => theme.size.mobileL} {
       article {
         top: 6%;
       }
@@ -37,7 +37,7 @@ const HomeContainer = styled.div`
   }
   section:nth-child(4) {
     background-color: rgba(0, 0, 255, 0.02);
-    @media ${({ theme }) => theme.size.mobile} {
+    @media ${({ theme }) => theme.size.mobileL} {
       article {
         top: 65%;
       }
@@ -45,7 +45,7 @@ const HomeContainer = styled.div`
   }
   section:nth-child(5) {
     background-color: rgba(255, 0, 0, 0.03);
-    @media ${({ theme }) => theme.size.mobile} {
+    @media ${({ theme }) => theme.size.mobileL} {
       article {
         top: 10%;
       }
@@ -80,6 +80,9 @@ const P = styled.p`
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+  @media ${({ theme }) => theme.size.small} {
+    font-size: 1.6rem;
+  }
 `;
 
 const S = styled.p`
@@ -90,6 +93,9 @@ const S = styled.p`
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+  @media ${({ theme }) => theme.size.small} {
+    font-size: 1rem;
+  }
 `;
 
 const Message = styled.article`

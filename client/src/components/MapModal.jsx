@@ -47,6 +47,9 @@ const Info = styled.div`
   @media ${({ theme }) => theme.size.mobile} {
     margin-bottom: 20px;
   }
+  @media ${({ theme }) => theme.size.small} {
+    margin-bottom: 0px;
+  }
 `;
 
 const Close = styled.button`
@@ -84,6 +87,9 @@ const Text = styled.h1`
   @media ${({ theme }) => theme.size.tablet} {
     font-size: 16px;
     margin: 6px 0 6px 4px;
+  }
+  @media ${({ theme }) => theme.size.small} {
+    font-size: 14px;
   }
 `;
 

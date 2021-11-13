@@ -61,8 +61,8 @@
 
 <summary>마이페이지</summary>
 <br />
-
-여기에 사진, gif 넣기
+ 
+ <img src="https://user-images.githubusercontent.com/82024136/141407239-323698a4-ab36-448a-90dd-fe0feb65ac5e.gif" width="600px" alt="comment" />
 
 </details>
  

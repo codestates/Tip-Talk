@@ -20,9 +20,12 @@ const UploadForm = styled.form`
   padding: 50px;
   justify-content: center;
   align-items: center;
-  @media ${({ theme }) => theme.size.mobile} {
+  @media ${({ theme }) => theme.size.tablet} {
     flex-direction: column;
     padding: 50px 30px;
+  }
+  @media ${({ theme }) => theme.size.mobile} {
+    padding: 30px 10px;
   }
 `;
 

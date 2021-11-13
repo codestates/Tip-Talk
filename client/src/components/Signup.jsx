@@ -77,7 +77,7 @@ const InputSection = styled.div`
 
   #verification {
     position: relative;
-    top: 4.5rem;
+    top: 3.5rem;
     font-size: 1.5rem;
     border-top: none;
     border-left: none;
@@ -104,7 +104,7 @@ const InputSection = styled.div`
     }
     #re-password {
       position: relative;
-      top: 1rem;
+      top: 1.5rem;
       font-size: 1.5rem;
       border-top: none;
       border-left: none;
@@ -115,7 +115,7 @@ const InputSection = styled.div`
 
   .nickname-line {
     position: relative;
-    top: 5.5rem;
+    top: 5rem;
     #nickname {
       font-size: 1.5rem;
       border-top: none;
@@ -149,7 +149,7 @@ const ErrorMessage = styled.div`
   }
   .passwordError {
     position: fixed;
-    top: 31rem;
+    top: 31.5rem;
     left: 9.5rem;
   }
   .conflictError {
@@ -159,12 +159,12 @@ const ErrorMessage = styled.div`
   }
   .insufficientError {
     position: fixed;
-    top: 36rem;
+    top: 36.5rem;
     left: 9.5rem;
   }
   .password-length-error {
     position: fixed;
-    top: 34rem;
+    top: 35rem;
     left: 9.5rem;
   }
   .verification-not-match-error {
@@ -176,7 +176,7 @@ const ErrorMessage = styled.div`
 
 const RadioSection = styled.div`
   position: relative;
-  top: 6rem;
+  top: 6.5rem;
   text-align: center;
   display: flex;
   justify-content: center;
@@ -242,14 +242,11 @@ const Signup = ({ setShowLogin, setShowSignup }) => {
   useEffect(() => {
     const regex = /^[a-zA-Z0-9]+@(?:[a-zA-Z0-9]+\.)+[A-Za-z]+$/;
     if (email.length === 0) {
-      console.log('if');
       setIsValidEmail(false);
     }
     if (regex.test(email) === false) {
-      console.log('if 2nd');
       setIsValidEmail(false);
     } else {
-      console.log('else');
       setIsValidEmail(true);
     }
   }, [email]);
@@ -288,7 +285,7 @@ const Signup = ({ setShowLogin, setShowSignup }) => {
         .then((res) => {
           closeSignupModal();
         })
-        .catch((err) => {
+        .catch(() => {
           setIsExist(true);
         });
     }
@@ -306,6 +303,7 @@ const Signup = ({ setShowLogin, setShowSignup }) => {
 
   const verificationHandler = () => {
     if (email !== null && isValidEmail === true) {
+      modalHandler();
       axios
         .post(`${process.env.REACT_APP_SERVER_URL}/auth/sendEmail`, { email })
         .then((res) => {
@@ -313,7 +311,7 @@ const Signup = ({ setShowLogin, setShowSignup }) => {
           const { number } = data;
           setVerificationCode(number);
         })
-        .catch((err) => console.log(err));
+        .catch(() => {});
     }
   };
 
@@ -354,10 +352,12 @@ const Signup = ({ setShowLogin, setShowSignup }) => {
             </div>
             <Button
               className="verification-button"
-              onClick={() => [modalHandler(), verificationHandler()]}
+              onClick={verificationHandler}
             >
               인증하기
             </Button>
+            {console.log('isOpen = ' + isOpen)}
+            {console.log('isValidEmail = ' + isValidEmail)}
             {isOpen === true && isValidEmail === true ? (
               <Modal
                 message={'인증 메일이 발송되었습니다'}

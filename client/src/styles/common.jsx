@@ -13,6 +13,7 @@ export const Logo =
   'https://drawit.s3.ap-northeast-2.amazonaws.com/tiptalk/logo.png';
 
 const size = {
+  small: `(max-width: 375px)`,
   mobileS: `(max-width: 500px)`,
   mobile: `(max-width: 770px)`,
   tablet: `(max-width: 1200px)`,

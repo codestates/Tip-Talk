@@ -29,22 +29,30 @@ const ModalBackdrop = styled.div`
     top: 40%;
     transform: translate(-50%, -40%);
     box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.3), 0 0 5px 5px rgba(0, 0, 0, 0.3);
+    @media ${({ theme }) => theme.size.mobile} {
+      width: 90%;
+    }
 
-    .close-btn {
-      border-radius: 10px;
-      top: -5rem;
-      cursor: pointer;
+    .close-btn-wrapper {
       position: relative;
-      left: 17rem;
-      border: none;
-      background-color: ${({ theme }) => theme.navBgColor};
-      color: ${Color_3};
-      &:hover {
-        color: ${({ theme }) => theme.navBgColor};
-        background-color: ${Color_3};
+      display: flex;
+      justify-content: right;
+      top: -5rem;
+      right: 1rem;
+      width: 100%;
+      .close-btn {
+        border-radius: 10px;
+        cursor: pointer;
+        border: none;
+        background-color: ${({ theme }) => theme.navBgColor};
+        color: ${Color_3};
+        &:hover {
+          color: ${({ theme }) => theme.navBgColor};
+          background-color: ${Color_3};
+        }
+        transition-duration: 0.3s;
+        font-size: 2rem;
       }
-      transition-duration: 0.3s;
-      font-size: 2rem;
     }
 
     .icon {
@@ -208,7 +216,7 @@ const Login = ({ setShowLogin, setShowSignup }) => {
         setUser(data.user);
         closeLoginModal();
       })
-      .catch((err) => setStatus(false));
+      .catch(() => setStatus(false));
   };
 
   const googleButtonHandler = (e) => {
@@ -224,9 +232,11 @@ const Login = ({ setShowLogin, setShowSignup }) => {
       <ModalBackdrop onClick={closeLoginModal}>
         <div className="modalView" onClick={(e) => e.stopPropagation()}>
           <img className="icon" src={Logo} alt="logo" />
-          <button onClick={closeLoginModal} className="close-btn">
-            &times;
-          </button>
+          <div className="close-btn-wrapper">
+            <button onClick={closeLoginModal} className="close-btn">
+              &times;
+            </button>
+          </div>
           <InputSection>
             <div className="id-line">
               <input

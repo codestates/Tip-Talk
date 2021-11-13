@@ -7,7 +7,7 @@ module.exports = async (req, res) => {
   try {
     const { email, password } = req.body;
     const userInfo = await user.findOne({
-      where: { email: email }, // password: password },
+      where: { email, platform: 0 }, // password: password },
     });
     if (!userInfo) {
       res.status(400).json({

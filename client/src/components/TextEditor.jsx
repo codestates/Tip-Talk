@@ -20,7 +20,7 @@ import {
   faQuoteRight,
   faUnderline,
 } from '@fortawesome/free-solid-svg-icons';
-import { Color_4 } from '../styles/common';
+import { Color_4, Hangeul } from '../styles/common';
 import Modal from './Modal';
 
 const LIST_TYPES = ['numbered-list', 'bulleted-list'];
@@ -38,7 +38,29 @@ export const EditorForm = styled.div`
   -moz-box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.2);
   overflow: hidden;
   h1 {
-    margin: 12px 0;
+    display: inline;
+    line-height: 34px;
+  }
+  h2 {
+    display: inline;
+    font-size: 1.4em;
+    line-height: 28px;
+  }
+  h3 {
+    display: inline;
+    font-size: 1.2em;
+    line-height: 28px;
+  }
+  blockquote {
+    background-color: ${({ theme }) => theme.bgColor};
+    border-radius: 3px;
+    padding: 8px;
+    margin: 0px 10px;
+  }
+  code {
+    color: tomato;
+    font-family: ${Hangeul};
+    margin: 0 3px;
   }
 `;
 
@@ -51,12 +73,18 @@ const Toolbar = styled.div`
 `;
 
 const Button = styled.button`
+  position: relative;
   width: 42px;
   height: 42px;
   font-size: 20px;
   color: ${({ active, theme }) => (active ? Color_4 : theme.active)};
   border: none;
   background-color: transparent;
+`;
+
+const Number = styled.span`
+  position: absolute;
+  font-size: 10px;
 `;
 
 const filter = [
@@ -67,6 +95,8 @@ const filter = [
   'Backspace',
   'Delete',
 ];
+
+const size = ['heading-one', 'heading-two', 'heading-thr'];
 
 export function deserialize(string) {
   return string.split('\n').map((line) => {
@@ -133,7 +163,9 @@ const TextEditor = ({ content }) => {
               <MarkButton format="italic" icon={faItalic} />
               <MarkButton format="underline" icon={faUnderline} />
               <MarkButton format="code" icon={faCode} />
-              <BlockButton format="heading-one" icon={faHeading} />
+              <MarkButton format="heading-one" icon={faHeading} />
+              <MarkButton format="heading-two" icon={faHeading} />
+              <MarkButton format="heading-thr" icon={faHeading} />
               <BlockButton format="center" icon={faAlignCenter} />
               <BlockButton format="block-quote" icon={faQuoteRight} />
               <BlockButton format="numbered-list" icon={faListOl} />
@@ -161,22 +193,32 @@ export const Element = ({ attributes, children, element }) => {
       return <blockquote {...attributes}>{children}</blockquote>;
     case 'bulleted-list':
       return <ul {...attributes}>{children}</ul>;
-    case 'heading-one':
-      return <h1 {...attributes}>{children}</h1>;
-    case 'heading-two':
-      return <h2 {...attributes}>{children}</h2>;
     case 'list-item':
       return <li {...attributes}>{children}</li>;
     case 'numbered-list':
       return <ol {...attributes}>{children}</ol>;
+    case 'heading-one':
+      return <h1 {...attributes}>{children}</h1>;
     case 'center':
       return <center {...attributes}>{children}</center>;
     default:
-      return <p {...attributes}>{children}</p>;
+      return <div {...attributes}>{children}</div>;
   }
 };
 
 export const Leaf = ({ attributes, children, leaf }) => {
+  if (leaf['heading-one']) {
+    children = <h1>{children}</h1>;
+  }
+
+  if (leaf['heading-two']) {
+    children = <h2>{children}</h2>;
+  }
+
+  if (leaf['heading-thr']) {
+    children = <h3>{children}</h3>;
+  }
+
   if (leaf.bold) {
     children = <strong>{children}</strong>;
   }
@@ -203,6 +245,21 @@ const isMarkActive = (editor, format) => {
 
 const MarkButton = ({ format, icon }) => {
   const editor = useSlate();
+
+  const isNumber = format.includes('heading');
+
+  const getNumber = () => {
+    const splited = format.split('-')[1];
+    switch (splited) {
+      case 'one':
+        return 1;
+      case 'two':
+        return 2;
+      default:
+        return 3;
+    }
+  };
+
   return (
     <Button
       type="button"
@@ -213,6 +270,7 @@ const MarkButton = ({ format, icon }) => {
       }}
     >
       <FontAwesomeIcon icon={icon} />
+      {isNumber && <Number>{getNumber()}</Number>}
     </Button>
   );
 };
@@ -223,6 +281,16 @@ const toggleMark = (editor, format) => {
   if (isActive) {
     Editor.removeMark(editor, format);
   } else {
+    if (format.includes('heading')) {
+      size.forEach((s) => {
+        if (s !== format) {
+          const active = isMarkActive(editor, s);
+          if (active) {
+            Editor.removeMark(editor, s);
+          }
+        }
+      });
+    }
     Editor.addMark(editor, format, true);
   }
 };

@@ -1,6 +1,6 @@
 <div align="center">
 
-# ✈️ Tip-Talk 🏖
+ # ✈️ <a href="https://tiptalk.site/">Tip-Talk</a> 🏖
 
 <img src="https://drawit.s3.ap-northeast-2.amazonaws.com/tiptalk/%E1%84%89%E1%85%B3%E1%84%8F%E1%85%B3%E1%84%85%E1%85%B5%E1%86%AB%E1%84%89%E1%85%A3%E1%86%BA+2021-11-11+%E1%84%8B%E1%85%A9%E1%84%92%E1%85%AE+1.05.56.png" />
  
@@ -14,15 +14,15 @@
 
 # 🏄‍♀️ 다음과 같은 서비스를 제공합니다! 🤼‍
 
- **• 검색 기능을 활용하여 여행지 또는 장소를 검색할 수 있습니다.** <br />
- **• 해당 위치 주변 안내 기능으로 근처 숙박, 음식점, 카페 등을 안내합니다.** <br />
- **• 다른 사람이 방문한 장소에 대한 질문과 의견을 남길 수 있습니다.** <br />
- **• 마이페이지에서 마음에 드는 게시글을 따로 모아 확인할 수 있습니다.** <br />
- **• 메인페이지에서 최신순, 조회순, 인기순으로 정렬하여 여러 장소들을 확인할 수 있습니다.** <br />
- **• 사업자는 자신의 사업지를 등록할 수 있습니다.** <br />
- **• 이미지를 최대 4장까지 업로드할 수 있습니다.** <br />
- **• 소개란을 작성할 때 폰트 사이즈, 중앙정렬, 굵기 등을 조절할 수 있습니다.** <br />
- **• 자신이 등록한 사업지를 편집, 삭제할 수 있습니다.** <br />
+ <p>• 검색 기능을 활용하여 여행지 또는 장소를 검색할 수 있습니다.</p>
+ <p>• 해당 위치 주변 안내 기능으로 근처 숙박, 음식점, 카페 등을 안내합니다.</p>
+ <p>• 다른 사람이 방문한 장소에 대한 질문과 의견을 남길 수 있습니다.</p>
+ <p>• 마이페이지에서 마음에 드는 게시글을 따로 모아 확인할 수 있습니다.</p>
+ <p>• 메인페이지에서 최신순, 조회순, 인기순으로 정렬하여 여러 장소들을 확인할 수 있습니다.</p>
+ <p>• 사업자는 자신의 사업지를 등록할 수 있습니다.</p>
+ <p>• 이미지를 최대 4장까지 업로드할 수 있습니다.</p>
+ <p>• 소개란을 작성할 때 폰트 사이즈, 중앙정렬, 굵기 등을 조절할 수 있습니다.</p>
+ <p>• 자신이 등록한 사업지를 편집, 삭제할 수 있습니다.</p>
  
  <br />
  
@@ -39,31 +39,37 @@
 <summary>메인페이지</summary>
 <br />
 
-여기에 사진, gif 넣기
+<img src="https://user-images.githubusercontent.com/82024136/141295381-86675f29-ed81-46be-b0de-c8a6d2201105.gif" width="600px" height="480px" alt="main" />
+<img src="https://user-images.githubusercontent.com/82024136/141296157-16da07fb-2472-4ab2-ad9c-38fbf7bb377c.gif" width="600px" height="480px" alt="main" />
 
 </details>
 <details>
 <summary>게시글페이지</summary>
 <br />
 
-여기에 사진, gif 넣기
+<img src="https://user-images.githubusercontent.com/82024136/141297454-a2550a49-184b-463e-abb1-d7459a844b32.gif" width="600px" alt="main2" />
 
 </details>
 <details>
 <summary>댓글</summary>
 <br />
 
-여기에 사진, gif 넣기
+<img src="https://user-images.githubusercontent.com/82024136/141298254-63686ff9-eefd-469b-97f9-984e79dd7e06.gif" width="600px" alt="comment" />
 
 </details>
 <details>
 
 <summary>마이페이지</summary>
 <br />
-
-여기에 사진, gif 넣기
+ 
+ <img src="https://user-images.githubusercontent.com/82024136/141407239-323698a4-ab36-448a-90dd-fe0feb65ac5e.gif" width="600px" alt="comment" />
 
 </details>
+ 
+ <br />
+ 
+ # 배포 링크
+ <a href="https://tiptalk.site/">Tip-Talk</a>
  
  <br />
  

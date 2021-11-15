@@ -35,6 +35,7 @@ const Row = styled.div`
     justify-content: flex-end;
   }
   @media ${({ theme }) => theme.size.mobile} {
+    justify-content: center;
     margin-right: 0;
   }
 `;
@@ -74,6 +75,9 @@ const Column = styled.div`
 
   @media ${({ theme }) => theme.size.tablet} {
     width: 160px;
+  }
+  @media ${({ theme }) => theme.size.mobile} {
+    border: none;
   }
   @media ${({ theme }) => theme.size.small} {
     width: 125px;

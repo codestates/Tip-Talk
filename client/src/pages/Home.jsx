@@ -70,6 +70,9 @@ const Fat = styled.h1`
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+  @media ${({ theme }) => theme.size.mobile} {
+    font-size: 3rem;
+  }
 `;
 
 const P = styled.p`
@@ -80,6 +83,9 @@ const P = styled.p`
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+  @media ${({ theme }) => theme.size.mobile} {
+    font-size: 1.8rem;
+  }
   @media ${({ theme }) => theme.size.small} {
     font-size: 1.6rem;
   }

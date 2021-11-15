@@ -15,6 +15,12 @@ const Background = styled.div`
   z-index: 11;
   justify-content: center;
   align-items: center;
+  @media ${({ theme }) => theme.size.mobile} {
+    font-size: 80px;
+  }
+  @media ${({ theme }) => theme.size.small} {
+    font-size: 68px;
+  }
 `;
 
 const Message = styled.div`

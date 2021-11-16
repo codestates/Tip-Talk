@@ -29,6 +29,12 @@ const UploadForm = styled.form`
   }
 `;
 
+const CustomMeta = styled(Meta)`
+  @media ${({ theme }) => theme.size.mobile} {
+    flex-direction: column;
+  }
+`;
+
 const CustomLabel = styled(Label)`
   width: 80px;
 `;
@@ -103,7 +109,10 @@ const ImageList = styled.ul`
   @media ${({ theme }) => theme.size.tabletL} {
     grid-template-columns: 1fr 1fr 1fr;
   }
-  @media ${({ theme }) => theme.size.tablet} {
+  /* @media ${({ theme }) => theme.size.tablet} {
+    grid-template-columns: 1fr 1fr 1fr;
+  } */
+  @media ${({ theme }) => theme.size.mobile} {
     grid-template-columns: 1fr 1fr;
   }
 `;
@@ -341,7 +350,7 @@ const UploadPost = ({ edit }) => {
       <UploadForm onSubmit={handleSubmit}>
         <Column>
           <CustomInfo>사업지 등록하기</CustomInfo>
-          <Meta>
+          <CustomMeta>
             <div>
               <CustomLabel>상호명</CustomLabel>
               <Input
@@ -363,7 +372,7 @@ const UploadPost = ({ edit }) => {
               <CustomLabel>주소</CustomLabel>
               <Text>{address?.name}</Text>
             </div>
-          </Meta>
+          </CustomMeta>
           <CustomInfo>소개란 입력하기</CustomInfo>
           {edit ? (
             content.length && <TextEditor content={content} />

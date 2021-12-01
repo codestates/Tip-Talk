@@ -144,11 +144,11 @@ const KakaoButton = styled.img`
 
 const Login = ({ setShowLogin, setShowSignup }) => {
   const googleNormal =
-    'https://tiptalk-client.s3.us-east-2.amazonaws.com/btn_google_signin_light_normal_web.png';
+    'https://tiptalk-images.s3.ap-northeast-2.amazonaws.com/btn_google_signin_light_normal_web.png';
   const googleFocus =
-    'https://tiptalk-client.s3.us-east-2.amazonaws.com/btn_google_signin_light_focus_web.png';
+    'https://tiptalk-images.s3.ap-northeast-2.amazonaws.com/btn_google_signin_light_focus_web.png';
   const googlePressed =
-    'https://tiptalk-client.s3.us-east-2.amazonaws.com/btn_google_signin_light_pressed_web.png';
+    'https://tiptalk-images.s3.ap-northeast-2.amazonaws.com/btn_google_signin_light_pressed_web.png';
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -278,7 +278,7 @@ const Login = ({ setShowLogin, setShowSignup }) => {
                 onMouseLeave={googleButtonHandler}
               ></GoogleButton>
               <KakaoButton
-                src="https://tiptalk-client.s3.us-east-2.amazonaws.com/kakao_login_medium_narrow.png"
+                src="https://tiptalk-images.s3.ap-northeast-2.amazonaws.com/kakao_login_medium_narrow.png"
                 alt="kakao-button"
                 onClick={KakaoLogin}
               ></KakaoButton>

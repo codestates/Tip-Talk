@@ -79,7 +79,7 @@
  |:-:|:-:|:-:|:-:|
  |박상천|팀장|풀스택| <a href="https://github.com/3000-2"><img src="https://img.shields.io/badge/3002-00b667?style=for-the-badge&logo=github&logoColor=black&link=https://github.com/3000-2" />|
  |권용현|팀원|프론트엔드| <a href="https://github.com/wolfdale-12f8217"><img src="https://img.shields.io/badge/wolfdale-00b667?style=for-the-badge&logo=github&logoColor=black&link=https://github.com/wolfdale-12f8217" />|
- |정수창|팀원|백엔드|<a href="https://github.com/tnckddl14"><img src="https://img.shields.io/badge/tnckddl14-00b667?style=for-the-badge&logo=github&logoColor=black&link=https://github.com/tnckddl14" />|
+ |정수창|팀원|백엔드|<a href="https://github.com/DevCeo"><img src="https://img.shields.io/badge/tnckddl14-00b667?style=for-the-badge&logo=github&logoColor=black&link=https://github.com/DevCeo" />|
  
  <br />
  
